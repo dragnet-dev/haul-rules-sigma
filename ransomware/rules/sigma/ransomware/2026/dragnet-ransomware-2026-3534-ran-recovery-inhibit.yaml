@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-3534 — Recovery Inhibition (krybit)'
+id: ef4f8e40-32b2-5386-aab4-245b1a9dcf2b
+status: stable
+description: |
+  Detects boot/recovery disabling associated with krybit ransomware.
+  Incident: dragnet-ransomware-2026-3534
+  Ransomware victim claim by krybit: SARL CANIS EVENTS SÉCURITÉ PRIVÉE; country: FR; sector: Business Services
+  First observed: 2026-05-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://krybitqsdzwmhnitvwuhvsntfgf2wrhxveyxroxpc44c6gkft2cqldyd.onion/blog/b15894372ddbb2ea10962a5ec4eaab9594a0406f9ce1d66c7db3c9e23ef52003/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-3525 — Recovery Inhibition (krybit)'
+id: 69647fb8-6a2e-5a3f-b048-7be235b0e989
+status: stable
+description: |
+  Detects boot/recovery disabling associated with krybit ransomware.
+  Incident: dragnet-ransomware-2026-3525
+  Ransomware victim claim by krybit: mindmastersg.com; country: SG; sector: Business Services
+  First observed: 2026-05-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://krybitqsdzwmhnitvwuhvsntfgf2wrhxveyxroxpc44c6gkft2cqldyd.onion/blog/c85187d385f46c389ffedc6352916a38aa071e0f3d745b6928b803a6acd70627/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

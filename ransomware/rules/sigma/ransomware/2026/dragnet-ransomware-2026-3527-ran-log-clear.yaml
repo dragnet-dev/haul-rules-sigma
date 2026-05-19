@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-3527 — Event Log Clearing (lamashtu)'
+id: 82b311cb-6226-501f-bb67-2cfeb946e877
+status: stable
+description: |
+  Detects event log clearing associated with lamashtu ransomware.
+  Incident: dragnet-ransomware-2026-3527
+  Ransomware victim claim by lamashtu: ROTH‑TECHNIK AUSTRIA; country: AT; sector: Manufacturing
+  First observed: 2026-05-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lamashtux5j74mcm7lwwgn5yrvuwtrpxjoyendif3v3hrztjesfoyayd.onion/post/0522f9eaa57f29972a81829a210bd9fe
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

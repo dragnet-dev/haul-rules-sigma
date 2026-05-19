@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2026-3527 — Ransomware C2 Communication'
+id: c2f45579-adc0-5f30-beb7-8a9b6dc80843
+status: stable
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2026-3527
+  Ransomware victim claim by lamashtu: ROTH‑TECHNIK AUSTRIA; country: AT; sector: Manufacturing
+  First observed: 2026-05-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lamashtux5j74mcm7lwwgn5yrvuwtrpxjoyendif3v3hrztjesfoyayd.onion/post/0522f9eaa57f29972a81829a210bd9fe
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lamashtux5j74mcm7lwwgn5yrvuwtrpxjoyendif3v3hrztjesfoyayd.onion/post/0522f9eaa57f29972a81829a210bd9fe'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

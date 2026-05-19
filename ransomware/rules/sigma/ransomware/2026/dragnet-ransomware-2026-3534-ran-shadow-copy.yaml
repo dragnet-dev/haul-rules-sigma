@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-3534 — Shadow Copy Deletion (krybit)'
+id: 76961c46-68c0-5531-8198-48fbb3e0ce92
+status: stable
+description: |
+  Detects shadow copy deletion commands associated with krybit ransomware.
+  Incident: dragnet-ransomware-2026-3534
+  Ransomware victim claim by krybit: SARL CANIS EVENTS SÉCURITÉ PRIVÉE; country: FR; sector: Business Services
+  First observed: 2026-05-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://krybitqsdzwmhnitvwuhvsntfgf2wrhxveyxroxpc44c6gkft2cqldyd.onion/blog/b15894372ddbb2ea10962a5ec4eaab9594a0406f9ce1d66c7db3c9e23ef52003/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

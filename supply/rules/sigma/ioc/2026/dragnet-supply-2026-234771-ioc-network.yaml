@@ -1,0 +1,31 @@
+
+title: 'Dragnet [IOC]: dragnet-supply-2026-234771 — C2 Network Communication'
+id: e2fcdf55-f961-5f9d-9a2b-ea904d800957
+status: stable
+description: |
+  Detects network connections to known C2 infrastructure associated with a supply chain incident.
+  Incident: dragnet-supply-2026-234771
+  First observed: 2026-05-19.
+  Confidence: 90% (wiz).
+references:
+  - https://www.wiz.io/blog/durabletask-teampcp-supply-chain-attack
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_domain:
+    DestinationHostname|contains:
+      - 'check.git-service.com'
+      - 't.m-kosche.com'
+  selection_url:
+    DestinationHostname|contains:
+      - 'https://check.git-service[.]com/rope.pyz'
+  condition: selection_domain or selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: medium

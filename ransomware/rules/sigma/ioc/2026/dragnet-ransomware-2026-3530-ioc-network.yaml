@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2026-3530 — Ransomware C2 Communication'
+id: c9cd7343-807b-5053-ab5a-8830ba30cd58
+status: stable
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2026-3530
+  Ransomware victim claim by dragonforce: ZFG ALTHERM Engineering; country: AT; sector: Manufacturing
+  First observed: 2026-05-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://z3wqggtxft7id3ibr7srivv5gjof5fwg76slewnzwwakjuf3nlhukdid.onion/blog/?post_uuid=b4c8e56d-f86c-4d17-af4c-2eb1157d3ddc
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://z3wqggtxft7id3ibr7srivv5gjof5fwg76slewnzwwakjuf3nlhukdid.onion/blog/?post_uuid=b4c8e56d-f86c-4d17-af4c-2eb1157d3ddc'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

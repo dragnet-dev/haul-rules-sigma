@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2026-3534 — Ransomware C2 Communication'
+id: 7ca4ded6-2c05-5737-b6c5-8972f276fdef
+status: stable
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2026-3534
+  Ransomware victim claim by krybit: SARL CANIS EVENTS SÉCURITÉ PRIVÉE; country: FR; sector: Business Services
+  First observed: 2026-05-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://krybitqsdzwmhnitvwuhvsntfgf2wrhxveyxroxpc44c6gkft2cqldyd.onion/blog/b15894372ddbb2ea10962a5ec4eaab9594a0406f9ce1d66c7db3c9e23ef52003/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://krybitqsdzwmhnitvwuhvsntfgf2wrhxveyxroxpc44c6gkft2cqldyd.onion/blog/b15894372ddbb2ea10962a5ec4eaab9594a0406f9ce1d66c7db3c9e23ef52003/'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

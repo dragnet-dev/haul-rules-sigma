@@ -1,0 +1,31 @@
+
+title: 'Dragnet [IOC]: dragnet-supply-2026-234768 — C2 Network Communication'
+id: 4b7b01dd-bbfb-5400-ac44-0644c7c19021
+status: test
+description: |
+  Detects network connections to known C2 infrastructure associated with a supply chain incident.
+  Incident: dragnet-supply-2026-234768
+  First observed: 2026-05-19.
+  Confidence: 80% (aikido).
+references:
+  - https://www.aikido.dev/blog/durabletask-package-compromised-mini-shai-hulud
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'https://check.git-service.com/rope.pyz'
+      - 'https://check.git-service.com/v1/models'
+      - 'https://check.git-service.com/api/public/version'
+      - 'https://check.git-service.com/audio.mp3'
+      - 'https://t.m-kosche.com/rope.pyz'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: medium

@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-3529 — Event Log Clearing (krybit)'
+id: b006bc63-9ebf-5f74-8c72-6ebe1a49fd7f
+status: stable
+description: |
+  Detects event log clearing associated with krybit ransomware.
+  Incident: dragnet-ransomware-2026-3529
+  Ransomware victim claim by krybit: nacs.com.hk; country: HK; sector: Not Found
+  First observed: 2026-05-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://krybitqsdzwmhnitvwuhvsntfgf2wrhxveyxroxpc44c6gkft2cqldyd.onion/blog/9ed049f13a6c03647605778e699066649aea5265c7351bff6fd5e509a294ba2e/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high
