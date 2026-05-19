@@ -1,0 +1,35 @@
+title: 'Dragnet [Container]: dragnet-container-2026-1361 — Vulnerable Base Image Pull'
+id: fcdc9aa1-a0da-5e13-b543-b003050ca276
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-1361 (Tier 2, CVSS 9.8)
+  A security flaw has been discovered in OFFIS DCMTK up to 3.7.0. This impacts the function executeOnReception/executeOnEndOfStudy of the file dcmnet/apps/storescp.cc of the component storescp. Performing a manipulation results in os command injection. Remote exploitation of the attack is possible. The patch is named edbb085e45788dccaf0e64d71534cfca925784b8. Applying a patch is the recommended action to fix this issue.
+  First observed: 2026-04-27.
+references:
+  - https://github.com/DCMTK/dcmtk/commit/edbb085e45788dccaf0e64d71534cfca925784b8
+  - https://machinespirits.com/advisory/2e1627/
+  - https://support.dcmtk.org/redmine/issues/1194
+  - https://vuldb.com/submit/786061
+  - https://vuldb.com/vuln/355486
+  - https://vuldb.com/vuln/355486/cti
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

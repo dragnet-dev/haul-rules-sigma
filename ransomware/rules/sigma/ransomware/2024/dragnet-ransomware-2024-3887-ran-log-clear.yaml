@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3887 — Event Log Clearing (ransomhub)'
+id: 99b65ebc-d776-50fd-be23-8d75b580abf1
+status: experimental
+description: |
+  Detects event log clearing associated with ransomhub ransomware.
+  Incident: dragnet-ransomware-2024-3887
+  Ransomware victim claim by ransomhub: krigerconstruction.com; country: US; sector: Business Services
+  First observed: 2024-11-03.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ransomxifxwc5eteopdobynonjctkxxvap77yqifu2emfbecgbqdw6qd.onion/8d95a48d-4069-4efc-b159-05313d6587fb/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

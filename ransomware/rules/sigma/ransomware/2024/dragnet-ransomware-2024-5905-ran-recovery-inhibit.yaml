@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5905 — Recovery Inhibition (qilin)'
+id: 17cb1c80-a67b-5b03-8be9-9f3703bfcedb
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with qilin ransomware.
+  Incident: dragnet-ransomware-2024-5905
+  Ransomware victim claim by qilin: TJKM; country: US; sector: Transportation/Logistics
+  First observed: 2024-12-07.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/view?uuid=a58d66b2-206f-3a8a-911b-b2a3030b0a2b
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,31 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-1810 — Recovery Inhibition (play)'
+id: 2e01e52f-9ff6-5d98-9a43-e65741aa8028
+status: test
+description: |
+  Detects boot/recovery disabling associated with play ransomware.
+  Incident: dragnet-ransomware-2026-1810
+  Associated with Play.
+  Ransomware victim claim by play: Woodfield; country: US; sector: Not Found
+  First observed: 2026-01-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://mbrlkbtq5jonaqkurjwmxftytyn2ethqvbxfu4rgjbkkknndqwae6byd.onion/index.php?page=1/topic.php?id=QrCQ8NKAycf5nR
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+  - dragnet.actor.play
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

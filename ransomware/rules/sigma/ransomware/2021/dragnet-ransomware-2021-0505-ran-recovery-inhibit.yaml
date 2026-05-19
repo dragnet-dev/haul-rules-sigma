@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0505 — Recovery Inhibition (snatch)'
+id: 2aeda770-423b-5864-991c-31f86a0f11dd
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with snatch ransomware.
+  Incident: dragnet-ransomware-2021-0505
+  Ransomware victim claim by snatch: APG Neuros; sector: Healthcare
+  First observed: 2021-11-29.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

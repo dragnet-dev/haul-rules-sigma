@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5074 — Recovery Inhibition (dragonforce)'
+id: 11c8e022-6232-5963-8db4-23b356a87d1e
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with dragonforce ransomware.
+  Incident: dragnet-ransomware-2025-5074
+  Ransomware victim claim by dragonforce: Sonitrol Security Solutions (SecureFL); country: US; sector: Business Services
+  First observed: 2025-08-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://z3wqggtxft7id3ibr7srivv5gjof5fwg76slewnzwwakjuf3nlhukdid.onion/blog/?post_uuid=d0191eda-0d3b-44cc-b550-a3eb8fd886f8
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

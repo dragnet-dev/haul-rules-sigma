@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-3975 — Ransomware C2 Communication'
+id: eb585262-8e3e-5f66-9dcc-6b7f3d0ec234
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-3975
+  Ransomware victim claim by ransomhub: www.nissan-dubai.com; country: AE; sector: Transportation/Logistics
+  First observed: 2024-08-31.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ransomxifxwc5eteopdobynonjctkxxvap77yqifu2emfbecgbqdw6qd.onion/e0ee27c4-71f3-4c56-a0d3-503d37a3a300/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://ransomxifxwc5eteopdobynonjctkxxvap77yqifu2emfbecgbqdw6qd.onion/e0ee27c4-71f3-4c56-a0d3-503d37a3a300/'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5241 — Event Log Clearing (qilin)'
+id: a10f2bbc-50ec-5561-a1a5-7adffc0b50f3
+status: experimental
+description: |
+  Detects event log clearing associated with qilin ransomware.
+  Incident: dragnet-ransomware-2025-5241
+  Ransomware victim claim by qilin: SHRADERLAW; country: US; sector: Financial Services
+  First observed: 2025-05-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/view?uuid=035a24a3-8f37-3b42-afff-c70d85337551
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

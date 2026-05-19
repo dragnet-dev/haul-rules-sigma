@@ -1,0 +1,31 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3725 — Recovery Inhibition (akira)'
+id: f9fb4080-4d66-5203-a272-1d5cd73d4f6a
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with akira ransomware.
+  Incident: dragnet-ransomware-2024-3725
+  Associated with Akira.
+  Ransomware victim claim by akira: PJ's Rebar; country: US; sector: Manufacturing
+  First observed: 2024-12-28.
+  Confidence: 90% (ransomware_live).
+references:
+  - unionstudioarch.com
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+  - dragnet.actor.akira
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

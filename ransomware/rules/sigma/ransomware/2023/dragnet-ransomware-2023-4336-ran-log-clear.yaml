@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4336 — Event Log Clearing (royal)'
+id: a9381193-6ff2-51df-8f82-428276b2e70a
+status: experimental
+description: |
+  Detects event log clearing associated with royal ransomware.
+  Incident: dragnet-ransomware-2023-4336
+  Ransomware victim claim by royal: Liberty Lines; sector: Transportation/Logistics
+  First observed: 2023-03-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://royal4ezp7xrbakkus3oofjw6gszrohpodmdnfbe5e4w3og5sm7vb3qd.onion/5X6gzUMENrJhcJMjkIchvHj2WsehoSKn
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

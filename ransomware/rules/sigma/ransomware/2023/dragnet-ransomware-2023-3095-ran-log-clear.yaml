@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-3095 — Event Log Clearing (alphv)'
+id: def8451d-6226-533e-8c5f-c4d7b1bffa7f
+status: experimental
+description: |
+  Detects event log clearing associated with alphv ransomware.
+  Incident: dragnet-ransomware-2023-3095
+  Ransomware victim claim by alphv: Noteboom - The Law Firm; sector: Business Services
+  First observed: 2023-04-05.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://alphvmmm27o3abo3r2mlmjrpdmzle3rykajqc5xsj7j7ejksbpsa36ad.onion/9049913d-b50a-4f5d-834f-6e738abf6eac
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

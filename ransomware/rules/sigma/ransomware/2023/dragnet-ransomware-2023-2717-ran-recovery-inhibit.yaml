@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-2717 — Recovery Inhibition (cyclops)'
+id: 8744be25-d32e-52f1-b72d-554b4228ecb8
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with cyclops ransomware.
+  Incident: dragnet-ransomware-2023-2717
+  Ransomware victim claim by cyclops: Superloop ISP; country: AU; sector: Telecommunication
+  First observed: 2023-07-08.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

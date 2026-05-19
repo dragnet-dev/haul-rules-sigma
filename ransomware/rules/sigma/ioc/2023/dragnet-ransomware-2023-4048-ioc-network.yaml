@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-4048 — Ransomware C2 Communication'
+id: 010bef12-8df6-5712-9461-0bbc2150b9df
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-4048
+  Ransomware victim claim by dispossessor: co.pickens.sc.us; country: US; sector: Public Sector
+  First observed: 2023-12-25.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://dispossessor.com/blogs/1260
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'https://dispossessor.com/blogs/1260'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

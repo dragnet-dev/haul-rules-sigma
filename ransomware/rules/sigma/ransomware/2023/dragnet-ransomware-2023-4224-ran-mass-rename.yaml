@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4224 — Mass File Rename (arvinclub)'
+id: 871b2390-9ccd-57ba-96ce-386cdc3cb2d3
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by arvinclub.
+  Incident: dragnet-ransomware-2023-4224
+  Ransomware victim claim by arvinclub: Shirin Travel Agency; sector: Hospitality and Tourism
+  First observed: 2023-10-01.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

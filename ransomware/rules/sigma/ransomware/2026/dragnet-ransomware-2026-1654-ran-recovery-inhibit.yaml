@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-1654 — Recovery Inhibition (payoutsking)'
+id: 8896c599-96bd-5a78-9d88-1e2615e35d97
+status: test
+description: |
+  Detects boot/recovery disabling associated with payoutsking ransomware.
+  Incident: dragnet-ransomware-2026-1654
+  Ransomware victim claim by payoutsking: Maderas del Alto Urgel; country: ES; sector: Manufacturing
+  First observed: 2026-01-14.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://payoutsgn7cy6uliwevdqspncjpfxpmzgirwl2au65la7rfs5x3qnbqd.onion/97WDSQ-JUpkbs-a98JKd-wvWiRQ-OfInGm
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

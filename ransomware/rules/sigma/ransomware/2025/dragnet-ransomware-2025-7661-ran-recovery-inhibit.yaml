@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7661 — Recovery Inhibition (safepay)'
+id: 1b1657a6-6ea9-5ffb-952d-6f8e0574d7d6
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with safepay ransomware.
+  Incident: dragnet-ransomware-2025-7661
+  Ransomware victim claim by safepay: venetianassociates.com; country: US; sector: Financial Services
+  First observed: 2025-08-22.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://safepaypfxntwixwjrlcscft433ggemlhgkkdupi2ynhtcmvdgubmoyd.onion/blog/post/venetianassociatescom/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

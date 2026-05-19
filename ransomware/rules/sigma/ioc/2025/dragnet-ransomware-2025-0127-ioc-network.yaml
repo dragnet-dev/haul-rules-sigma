@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-0127 — Ransomware C2 Communication'
+id: 03e04dbf-2a50-5bce-8460-62db3185ff25
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-0127
+  Ransomware victim claim by embargo: allstarflooring.com; country: US; sector: Manufacturing
+  First observed: 2025-05-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://embargobe3n5okxyzqphpmk3moinoap2snz5k6765mvtkk7hhi544jid.onion/#/post/bbc8cef2-ec0f-4e5d-9c2c-d447559f7e86
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://embargobe3n5okxyzqphpmk3moinoap2snz5k6765mvtkk7hhi544jid.onion/#/post/bbc8cef2-ec0f-4e5d-9c2c-d447559f7e86'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

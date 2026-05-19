@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-3825 — Ransomware C2 Communication'
+id: bb8134a9-6c91-5c1f-974f-6561036a85ef
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-3825
+  Ransomware victim claim by lockbit3: spaldingssd.com; country: CA; sector: Agriculture and Food Production
+  First observed: 2024-02-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lockbitapt2d73krlbewgv27tquljgxr33xbwwsp6rkyieto7u4ncead.onion/post/OJ8tk3qQQPdJrbOE65cf1bc14ce9f
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lockbitapt2d73krlbewgv27tquljgxr33xbwwsp6rkyieto7u4ncead.onion/post/OJ8tk3qQQPdJrbOE65cf1bc14ce9f'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

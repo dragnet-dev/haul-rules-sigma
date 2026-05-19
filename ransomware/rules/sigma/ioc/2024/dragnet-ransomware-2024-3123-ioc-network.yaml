@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-3123 — Ransomware C2 Communication'
+id: 4fae44f5-69d9-5877-8cdf-209f24ccbe32
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-3123
+  Ransomware victim claim by handala: SolidCAM 2024 SP0; sector: Technology
+  First observed: 2024-06-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://handala.to/solidcam-2024-sp0/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'https://handala.to/solidcam-2024-sp0/'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

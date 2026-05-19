@@ -1,0 +1,31 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5152 — Recovery Inhibition (play)'
+id: 04fd5ec4-ab25-5ad1-a3ee-54e2b1dc3408
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with play ransomware.
+  Incident: dragnet-ransomware-2024-5152
+  Associated with Play.
+  Ransomware victim claim by play: InteriorWorx Commercial Flooring; country: US; sector: Business Services
+  First observed: 2024-09-03.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://k7kg3jqxang3wh7hnmaiokchk7qoebupfgoik6rha6mjpzwupwtj25yd.onion/topic.php?id=2DOKci0NykMZqi
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+  - dragnet.actor.play
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

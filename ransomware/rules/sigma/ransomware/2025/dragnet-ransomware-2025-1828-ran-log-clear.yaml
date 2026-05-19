@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1828 — Event Log Clearing (ralord)'
+id: fa8a4bfc-5b9e-5bbf-ba04-708469f1f71d
+status: experimental
+description: |
+  Detects event log clearing associated with ralord ransomware.
+  Incident: dragnet-ransomware-2025-1828
+  Ransomware victim claim by ralord: HELUKABEL company; country: DE; sector: Manufacturing
+  First observed: 2025-04-23.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ralord3htj7v2dkavss2hjzviviwgsf4anfdnihn5qcjl6eb5if3cuqd.onion/HELUKABEL
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

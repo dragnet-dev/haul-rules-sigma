@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5969 — Shadow Copy Deletion (lynx)'
+id: 255fce94-6216-5f10-bc69-f72576c11827
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with lynx ransomware.
+  Incident: dragnet-ransomware-2024-5969
+  Ransomware victim claim by lynx: Textiles Coated International; country: US; sector: Manufacturing
+  First observed: 2024-10-31.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lynxblog.net/leaks/67442c78e42beed9ed2f5162
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

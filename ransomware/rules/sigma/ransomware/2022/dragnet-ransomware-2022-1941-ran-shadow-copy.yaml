@@ -1,0 +1,37 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-1941 — Shadow Copy Deletion (quantum)'
+id: 72de4c78-2b09-5363-adf6-cb5896f496a6
+status: deprecated
+description: |
+  Detects shadow copy deletion commands associated with quantum ransomware.
+  Incident: dragnet-ransomware-2022-1941
+  Ransomware victim claim by quantum: Medlab Pathology; country: AU; sector: Healthcare
+  First observed: 2022-06-14.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

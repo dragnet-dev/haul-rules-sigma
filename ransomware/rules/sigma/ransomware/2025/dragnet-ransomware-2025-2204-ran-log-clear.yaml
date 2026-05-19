@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2204 — Event Log Clearing (qilin)'
+id: 501728bc-2058-5507-a649-897933a4c16d
+status: test
+description: |
+  Detects event log clearing associated with qilin ransomware.
+  Incident: dragnet-ransomware-2025-2204
+  Ransomware victim claim by qilin: Grupo Hafesa; country: ES; sector: Energy
+  First observed: 2025-12-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/view?uuid=dbff4c3e-a9ce-3c72-8f68-8fa02be7cd08
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

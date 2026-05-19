@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-1221 — Event Log Clearing (interlock)'
+id: e316d0bd-fab4-543e-bb12-67a8997cb770
+status: stable
+description: |
+  Detects event log clearing associated with interlock ransomware.
+  Incident: dragnet-ransomware-2026-1221
+  Ransomware victim claim by interlock: Uniwersytet Warszawski; country: PL; sector: Education
+  First observed: 2026-04-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://efs3fkrjyvqsk7nugzteelo5i5jxoch5ziqhf37dzmmlmzzlymhawmid.onion/index.php?p=
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

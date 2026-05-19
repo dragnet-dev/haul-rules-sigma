@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2426 — Mass File Rename (thegentlemen)'
+id: adc96f6e-9547-5b24-b079-390433de3fe0
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by thegentlemen.
+  Incident: dragnet-ransomware-2025-2426
+  Ransomware victim claim by thegentlemen: Laboratorio Clinico Santa Rita; country: CR; sector: Healthcare
+  First observed: 2025-08-14.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://tezwsse5czllksjb7cwp65rvnk4oobmzti2znn42i43bjdfd2prqqkad.onion
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5965 — Shadow Copy Deletion (sinobi)'
+id: 619f72b8-7733-5d41-b54c-adbeb0894c33
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with sinobi ransomware.
+  Incident: dragnet-ransomware-2025-5965
+  Ransomware victim claim by sinobi: LASER AUTOMOTIVE VALENCIA SL; country: ES; sector: Manufacturing
+  First observed: 2025-08-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://sinobi6ftrg27d6g4sjdt65malds6cfptlnjyw52rskakqjda6uvb7yd.onion/leaks/68dd9f7f88b6823fa246c49d
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

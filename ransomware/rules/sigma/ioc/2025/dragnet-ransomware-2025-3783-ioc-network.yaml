@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-3783 — Ransomware C2 Communication'
+id: 9eb7c006-c3da-58dc-8628-3d75939335cd
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-3783
+  Ransomware victim claim by BrainCipher: VIRTUALWEB.US; country: US; sector: Technology
+  First observed: 2025-07-28.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://vkvsgl7lhipjirmz6j5ubp3w3bwvxgcdbpi3fsbqngfynetqtw4w5hyd.onion/s/CIdieBhPPG2hMMO3e1HiAO6l0asbARmKi35GYNPAD2fCb9G+o6LSIKxeUj+Y52uZfjjXRHfy1IMPqO7OnWX1plWFB0SDJX
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://vkvsgl7lhipjirmz6j5ubp3w3bwvxgcdbpi3fsbqngfynetqtw4w5hyd.onion/s/CIdieBhPPG2hMMO3e1HiAO6l0asbARmKi35GYNPAD2fCb9G+o6LSIKxeUj+Y52uZfjjXRHfy1IMPqO7OnWX1plWFB0SDJX'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

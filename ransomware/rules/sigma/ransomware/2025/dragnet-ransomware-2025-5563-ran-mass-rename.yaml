@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5563 — Mass File Rename (blacknevas)'
+id: 79591df1-7165-5e71-bb88-c28d00ada941
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by blacknevas.
+  Incident: dragnet-ransomware-2025-5563
+  Ransomware victim claim by blacknevas: T. Choithram And Sons, LLC; country: US; sector: Consumer Services
+  First observed: 2025-09-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ctyfftrjgtwdjzlgqh4avbd35sqrs6tde4oyam2ufbjch6oqpqtkdtid.onion/publications/details/d5deb426-7ff6-4951-a75e-4dcd304dd8fd
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1963 — Mass File Rename (incransom)'
+id: ce3bcfed-b749-5d63-b70a-07058d506b5b
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by incransom.
+  Incident: dragnet-ransomware-2025-1963
+  Ransomware victim claim by incransom: sandg.local; country: US; sector: Financial Services
+  First observed: 2025-09-03.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://incblog6qu4y4mm4zvw5nrmue6qbwtgjsxpw6b7ixzssu36tsajldoad.onion/blog/disclosures/68b8e9c3115cdd92918ba5f7
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

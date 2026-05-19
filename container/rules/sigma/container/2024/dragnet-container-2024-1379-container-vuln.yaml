@@ -1,0 +1,30 @@
+title: 'Dragnet [Container]: dragnet-container-2024-1379 — Vulnerable Base Image Pull'
+id: c8c42b48-d58c-55a8-997d-0d53a08d8414
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-1379 (Tier 2, CVSS 9.8)
+  Suricata version 4.0.4 incorrectly handles the parsing of an EtherNet/IP PDU. A malformed PDU can cause the parsing code to read beyond the allocated data because DecodeENIPPDU in app-layer-enip-commmon.c has an integer overflow during a length check.
+  First observed: 2024-11-21.
+references:
+  - https://suricata-ids.org/2018/07/18/suricata-4-0-5-available/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:13'
+      - 'debian:14'
+      - 'debian:9'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1413 — Recovery Inhibition (blackmatter)'
+id: e4ee95ba-7ac8-5f2c-b36d-bbd76c042621
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with blackmatter ransomware.
+  Incident: dragnet-ransomware-2021-1413
+  Ransomware victim claim by blackmatter: northwoods & spectrumfurniture; sector: Consumer Services
+  First observed: 2021-09-17.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5870 — Mass File Rename (lynx)'
+id: 540f3533-e353-52ff-b60b-a8b63eeb00ce
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by lynx.
+  Incident: dragnet-ransomware-2025-5870
+  Ransomware victim claim by lynx: BÜCHNER BARELLA Holding; country: DE; sector: Financial Services
+  First observed: 2025-08-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lynxblogmx3rbiwg3rpj4nds25hjsnrwkpxt5gaznetfikz4gz2csyad.onion/leaks/68aede68cc2d2d4e68bba956
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

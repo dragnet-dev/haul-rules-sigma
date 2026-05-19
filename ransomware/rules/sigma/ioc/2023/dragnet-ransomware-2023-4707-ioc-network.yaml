@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-4707 — Ransomware C2 Communication'
+id: 6a146ee9-9fc8-5b35-b8d0-1ff98325725f
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-4707
+  Ransomware victim claim by royal: Brauerei Schimpf; country: DE; sector: Agriculture and Food Production
+  First observed: 2023-03-09.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://royal4ezp7xrbakkus3oofjw6gszrohpodmdnfbe5e4w3og5sm7vb3qd.onion/bbf2f9qSX66BRv7I3aRMB4BAEM6HjBb0
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://royal4ezp7xrbakkus3oofjw6gszrohpodmdnfbe5e4w3og5sm7vb3qd.onion/bbf2f9qSX66BRv7I3aRMB4BAEM6HjBb0'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

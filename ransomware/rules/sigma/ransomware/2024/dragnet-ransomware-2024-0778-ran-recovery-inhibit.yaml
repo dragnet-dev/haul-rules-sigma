@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0778 — Recovery Inhibition (arcusmedia)'
+id: 2cc0ddea-c543-59cc-a1c5-c9c3ef3b22b7
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with arcusmedia ransomware.
+  Incident: dragnet-ransomware-2024-0778
+  Ransomware victim claim by arcusmedia: Enge Ilha Construção; country: BR; sector: Business Services
+  First observed: 2024-12-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://arcuufpr5xxbbkin4mlidt7itmr6znlppk63jbtkeguuhszmc5g7qdyd.onion/?p=392
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

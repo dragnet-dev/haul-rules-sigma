@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-4955 — Mass File Rename (hellogookie)'
+id: e1a8c808-a7e7-5498-929f-2170bc683e11
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by hellogookie.
+  Incident: dragnet-ransomware-2024-4955
+  Ransomware victim claim by hellogookie: Hey everyone! Some private keys here.; sector: Technology
+  First observed: 2024-04-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://hellogookie256cvccntvenyxrvn7ht73bs6ss3oj2ocfkjt5y6vq6gfi2tad.onion/news/bb27072d9edbc55651ad21b068807fd3
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

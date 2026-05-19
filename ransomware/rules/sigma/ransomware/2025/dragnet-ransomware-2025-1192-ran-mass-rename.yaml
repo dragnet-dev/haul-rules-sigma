@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1192 — Mass File Rename (termite)'
+id: 6d8ce6fa-795e-5a5a-86bd-9958990a0153
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by termite.
+  Incident: dragnet-ransomware-2025-1192
+  Ransomware victim claim by termite: Ligentia; country: GB; sector: Transportation/Logistics
+  First observed: 2025-02-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://termiteuslbumdge2zmfmfcsrvmvsfe4gvyudc5j6cdnisnhtftvokid.onion/post/67b667819b91b4933324dc71
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

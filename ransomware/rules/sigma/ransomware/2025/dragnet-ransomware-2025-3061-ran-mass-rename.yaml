@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3061 — Mass File Rename (play)'
+id: f7cd0f3d-e726-5d4d-a4f5-0825029cae5f
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by play.
+  Incident: dragnet-ransomware-2025-3061
+  Associated with Play.
+  Ransomware victim claim by play: Eau Palm Beach Resort & Spa; country: US; sector: Hospitality and Tourism
+  First observed: 2025-09-09.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://k7kg3jqxang3wh7hnmaiokchk7qoebupfgoik6rha6mjpzwupwtj25yd.onion/topic.php?id=c7RsVFeRBqfihH
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+  - dragnet.actor.play
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

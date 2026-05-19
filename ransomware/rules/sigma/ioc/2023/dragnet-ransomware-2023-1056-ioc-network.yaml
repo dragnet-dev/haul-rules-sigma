@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-1056 — Ransomware C2 Communication'
+id: 7f8a6b03-dbfe-5258-a520-d6c940a5c36f
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-1056
+  Ransomware victim claim by royal: KMVP; country: DE; sector: Not Found
+  First observed: 2023-03-10.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://royal4ezp7xrbakkus3oofjw6gszrohpodmdnfbe5e4w3og5sm7vb3qd.onion/1QdGLvueSnK3c01PYaeJt7pEws4cdIBJ
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://royal4ezp7xrbakkus3oofjw6gszrohpodmdnfbe5e4w3og5sm7vb3qd.onion/1QdGLvueSnK3c01PYaeJt7pEws4cdIBJ'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

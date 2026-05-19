@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-1983 — Event Log Clearing (qilin)'
+id: cd99c94f-41b0-5514-86bf-0886c830a0a4
+status: test
+description: |
+  Detects event log clearing associated with qilin ransomware.
+  Incident: dragnet-ransomware-2026-1983
+  Ransomware victim claim by qilin: Cary Pediatric Center; country: US; sector: Healthcare
+  First observed: 2026-01-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/view?uuid=83a9eeb0-57c8-36e8-9857-2d3635169191
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

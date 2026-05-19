@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-4866 — Ransomware C2 Communication'
+id: f483ca8e-2e2e-5282-8131-13d1688f6db6
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-4866
+  Ransomware victim claim by ElDorado: www.curvc.com; country: US; sector: Technology
+  First observed: 2024-08-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://dataleakypypu7uwblm5kttv726l3iripago6p336xjnbstkjwrlnlid.onion/posts/www.curvc.com
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://dataleakypypu7uwblm5kttv726l3iripago6p336xjnbstkjwrlnlid.onion/posts/www.curvc.com'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

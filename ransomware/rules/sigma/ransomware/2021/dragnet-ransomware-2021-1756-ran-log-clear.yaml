@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1756 — Event Log Clearing (karma)'
+id: 5c7576c1-e8fa-51bd-83b1-1b8c75bea9cd
+status: deprecated
+description: |
+  Detects event log clearing associated with karma ransomware.
+  Incident: dragnet-ransomware-2021-1756
+  Associated with VOID MANTICORE.
+  Ransomware victim claim by karma: SI Group. Part 1.; sector: Manufacturing
+  First observed: 2021-10-04.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+  - dragnet.actor.void-manticore
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

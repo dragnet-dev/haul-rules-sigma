@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3032 — Recovery Inhibition (incransom)'
+id: 8f69e7e9-8cad-597a-8942-6c3737d20bd8
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with incransom ransomware.
+  Incident: dragnet-ransomware-2024-3032
+  Ransomware victim claim by incransom: ERoko Distributors + Colonial Countertops; country: US; sector: Business Services
+  First observed: 2024-08-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://incblog6qu4y4mm4zvw5nrmue6qbwtgjsxpw6b7ixzssu36tsajldoad.onion/blog/disclosures/66ca014e4b308506095697e9
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

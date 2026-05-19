@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7719 — Mass File Rename (ransomhub)'
+id: 4e959c9a-0cbf-52b0-a1b4-a732cdb499ca
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by ransomhub.
+  Incident: dragnet-ransomware-2025-7719
+  Ransomware victim claim by ransomhub: www.alphamedctr.com; country: US; sector: Healthcare
+  First observed: 2025-02-02.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ransomxifxwc5eteopdobynonjctkxxvap77yqifu2emfbecgbqdw6qd.onion/51c9c721-33d1-4eea-8509-881f16de07a1/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

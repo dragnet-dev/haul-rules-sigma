@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-3447 — Recovery Inhibition (akira)'
+id: a0a7b063-155d-5f6c-bd88-04f8e0b3fbc7
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with akira ransomware.
+  Incident: dragnet-ransomware-2023-3447
+  Associated with Akira.
+  Ransomware victim claim by akira: Yamaha Canada Music Ltd; country: JP; sector: Consumer Services
+  First observed: 2023-07-21.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+  - dragnet.actor.akira
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

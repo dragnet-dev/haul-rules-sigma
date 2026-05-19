@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4877 — Event Log Clearing (qilin)'
+id: 16b3931d-72eb-5d2e-9e5a-6a16b386b65b
+status: experimental
+description: |
+  Detects event log clearing associated with qilin ransomware.
+  Incident: dragnet-ransomware-2023-4877
+  Ransomware victim claim by qilin: SMDEA; country: FR; sector: Public Sector
+  First observed: 2023-05-22.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://kbsqoivihgdmwczmxkbovk7ss2dcynitwhhfu5yw725dboqo5kthfaad.onion/site/view?id=94
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

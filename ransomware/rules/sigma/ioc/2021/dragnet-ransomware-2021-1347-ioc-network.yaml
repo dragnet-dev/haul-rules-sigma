@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2021-1347 — Ransomware C2 Communication'
+id: ae740fdf-d7b9-51a7-a416-7cc2eb678778
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2021-1347
+  Ransomware victim claim by dispossessor: aa.com; country: US; sector: Transportation/Logistics
+  First observed: 2021-11-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://dispossessor.com/blogs/107
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'https://dispossessor.com/blogs/107'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

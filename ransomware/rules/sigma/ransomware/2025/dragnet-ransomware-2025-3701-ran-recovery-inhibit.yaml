@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3701 — Recovery Inhibition (devman)'
+id: 567f5018-8e39-5f0e-a032-990bcd330681
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with devman ransomware.
+  Incident: dragnet-ransomware-2025-3701
+  Ransomware victim claim by devman: r*p**fl*wa*ps.com; sector: Technology
+  First observed: 2025-10-28.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://devmanblggk7ddrtqj3tsocnayow3bwnozab2s4yhv4shpv6ueitjzid.onion#rpflwapscom
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

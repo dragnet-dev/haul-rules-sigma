@@ -1,0 +1,31 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-2217 — Recovery Inhibition (play)'
+id: 2c1255e3-a1cc-550a-9eed-ff0f96305093
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with play ransomware.
+  Incident: dragnet-ransomware-2023-2217
+  Associated with Play.
+  Ransomware victim claim by play: Unico Data,INSYS Industriesysteme,PathA Suisse,PB Swiss Tools,Boess Gruppe; country: CH; sector: Business Services
+  First observed: 2023-06-02.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://mbrlkbtq5jonaqkurjwmxftytyn2ethqvbxfu4rgjbkkknndqwae6byd.onion/topic.php?id=rpQK16Vv4C5uhl
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+  - dragnet.actor.play
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

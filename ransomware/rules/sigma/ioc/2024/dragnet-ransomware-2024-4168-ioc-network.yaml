@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-4168 — Ransomware C2 Communication'
+id: 0a9676f5-90e5-5be0-9b12-c835da7359fa
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-4168
+  Ransomware victim claim by medusa: Lakesight Technologies Information; country: DE; sector: Technology
+  First observed: 2024-10-25.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://cx5u7zxbvrfyoj6ughw76oa264ucuuizmmzypwum6ear7pct4yc723qd.onion/detail?id=795f132d4060c3154fe8224b53901bd0
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://cx5u7zxbvrfyoj6ughw76oa264ucuuizmmzypwum6ear7pct4yc723qd.onion/detail?id=795f132d4060c3154fe8224b53901bd0'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

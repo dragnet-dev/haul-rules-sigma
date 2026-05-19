@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1400 — Recovery Inhibition (everest)'
+id: 3c7c07cc-639a-5044-aa09-c79d4f8f59a6
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with everest ransomware.
+  Incident: dragnet-ransomware-2025-1400
+  Ransomware victim claim by everest: Best Price Financial Services; country: GB; sector: Financial Services
+  First observed: 2025-07-23.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ransomocmou6mnbquqz44ewosbkjk3o5qjsl3orawojexfook2j7esad.onion/news/Best_Price_Financial_Services
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

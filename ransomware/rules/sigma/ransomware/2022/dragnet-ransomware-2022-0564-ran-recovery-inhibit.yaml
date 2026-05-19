@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-0564 — Recovery Inhibition (lockbit3)'
+id: 738421a1-f991-5663-b4f8-9cb8675a37ca
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with lockbit3 ransomware.
+  Incident: dragnet-ransomware-2022-0564
+  Ransomware victim claim by lockbit3: roedeanschool.co.za; country: ZA; sector: Education
+  First observed: 2022-07-23.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

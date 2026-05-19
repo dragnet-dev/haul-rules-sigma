@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-1045 — Mass File Rename (blackbasta)'
+id: 2048b667-3f41-5d9d-a353-78079d6b7b7a
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by blackbasta.
+  Incident: dragnet-ransomware-2024-1045
+  Ransomware victim claim by blackbasta: doyon.com | doyondrilling.com; country: US; sector: Energy
+  First observed: 2024-04-02.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://stniiomyjliimcgkvdszvgen3eaaoz55hreqqx6o77yvmpwt7gklffqd.onion/?id=doyon.com%20|%20doyondrilling.com
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

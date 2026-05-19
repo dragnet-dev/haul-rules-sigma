@@ -1,0 +1,37 @@
+title: 'Dragnet [Container]: dragnet-container-2024-1244 — Vulnerable Base Image Pull'
+id: 67869225-81f8-5666-aad0-bc5569349351
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-1244 (Tier 2, CVSS 9.8)
+  A memory corruption vulnerability in Skia that can occur when using transforms to make gradients, resulting in a potentially exploitable crash. This vulnerability affects Firefox < 51.
+  First observed: 2024-11-21.
+references:
+  - http://www.securityfocus.com/bid/95761
+  - http://www.securitytracker.com/id/1037693
+  - https://bugzilla.mozilla.org/show_bug.cgi?id=1306883
+  - https://ubuntu.com/security/notices/USN-3175-1
+  - https://www.cve.org/CVERecord?id=CVE-2017-5377
+  - https://www.mozilla.org/en-US/security/advisories/mfsa2017-01/#CVE-2017-5377
+  - https://www.mozilla.org/security/advisories/mfsa2017-01/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'ubuntu:12.04'
+      - 'ubuntu:14.04'
+      - 'ubuntu:16.04'
+      - 'ubuntu:16.10'
+      - 'ubuntu:17.04'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

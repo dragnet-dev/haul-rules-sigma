@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0143 — Event Log Clearing (clop)'
+id: 02d9440d-cdbc-5bc4-979b-4cca0fb8ea39
+status: experimental
+description: |
+  Detects event log clearing associated with clop ransomware.
+  Incident: dragnet-ransomware-2023-0143
+  Ransomware victim claim by clop: CYTOMX.COM; sector: Technology
+  First observed: 2023-07-07.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://santat7kpllt6iyvqbr7q4amdv6dzrh6paatvyrzl7ry3zm72zigf4ad.onion/cytomx-com
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

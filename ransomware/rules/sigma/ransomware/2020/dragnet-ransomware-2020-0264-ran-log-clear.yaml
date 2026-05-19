@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0264 — Event Log Clearing (prolock)'
+id: b6c1a2e0-159c-589e-a0ed-e49d13ed938f
+status: deprecated
+description: |
+  Detects event log clearing associated with prolock ransomware.
+  Incident: dragnet-ransomware-2020-0264
+  Ransomware victim claim by prolock: LaSalle County Government; country: US; sector: Public Sector
+  First observed: 2020-02-23.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

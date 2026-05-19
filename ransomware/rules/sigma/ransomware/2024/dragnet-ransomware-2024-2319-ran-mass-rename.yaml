@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2319 — Mass File Rename (medusa)'
+id: 558e0ef8-8196-5a7c-a416-596747849940
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by medusa.
+  Incident: dragnet-ransomware-2024-2319
+  Ransomware victim claim by medusa: Brick Court Chambers; country: GB; sector: Business Services
+  First observed: 2024-05-12.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://medusaxko7jxtrojdkxo66j7ck4q5tgktf7uqsqyfry4ebnxlcbkccyd.onion/detail?id=2057b1194ef3dc8e54ba2342269a7338
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

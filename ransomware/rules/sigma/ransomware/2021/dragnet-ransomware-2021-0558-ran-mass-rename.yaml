@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0558 — Mass File Rename (spook)'
+id: 06f8d4ec-d516-5741-97d2-4ba6d05b9564
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by spook.
+  Incident: dragnet-ransomware-2021-0558
+  Ransomware victim claim by spook: TOA ELECTRIC INDUSTRIAL CO., LTD.; sector: Manufacturing
+  First observed: 2021-10-04.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

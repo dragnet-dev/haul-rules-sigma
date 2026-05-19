@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0053 — Recovery Inhibition (clop)'
+id: 05486601-dc3a-520c-9db0-262e18c5a7b2
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with clop ransomware.
+  Incident: dragnet-ransomware-2020-0053
+  Ransomware victim claim by clop: Software AG; country: DE; sector: Technology
+  First observed: 2020-10-03.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

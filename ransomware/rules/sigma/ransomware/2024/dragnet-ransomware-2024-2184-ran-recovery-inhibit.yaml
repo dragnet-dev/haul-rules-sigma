@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2184 — Recovery Inhibition (ElDorado)'
+id: ef1ce08e-7804-54b9-b3f1-04a5fe487b2a
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with ElDorado ransomware.
+  Incident: dragnet-ransomware-2024-2184
+  Ransomware victim claim by ElDorado: Bells Tax Service; country: US; sector: Business Services
+  First observed: 2024-11-18.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2180 — Recovery Inhibition (qilin)'
+id: 53d71983-b54f-502a-b5c5-ff765ddd2059
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with qilin ransomware.
+  Incident: dragnet-ransomware-2025-2180
+  Ransomware victim claim by qilin: cadex.com; country: CA; sector: Technology
+  First observed: 2025-08-01.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/view?uuid=30436cec-d26c-3a2e-b584-b3b96fcf7931
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

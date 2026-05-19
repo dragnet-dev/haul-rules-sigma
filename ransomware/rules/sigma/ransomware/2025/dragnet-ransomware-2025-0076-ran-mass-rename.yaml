@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0076 — Mass File Rename (qilin)'
+id: 3eef0f1b-92b2-55f5-841d-c45e8d7f99cc
+status: test
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by qilin.
+  Incident: dragnet-ransomware-2025-0076
+  Ransomware victim claim by qilin: Vestil Manufacturing; country: US; sector: Manufacturing
+  First observed: 2025-12-10.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/view?uuid=9f723b6a-f27a-3f2a-9231-d1a6f9006742
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

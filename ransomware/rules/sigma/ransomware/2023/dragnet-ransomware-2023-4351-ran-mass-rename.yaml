@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4351 — Mass File Rename (nokoyawa)'
+id: ee777f96-9e8c-58e5-8231-f53ed98c1c08
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by nokoyawa.
+  Incident: dragnet-ransomware-2023-4351
+  Ransomware victim claim by nokoyawa: Miescor; country: PH; sector: Energy
+  First observed: 2023-01-25.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nokoleakb76znymx443veg4n6fytx6spck6pc7nkr4dvfuygpub6jsid.onion/leak/63acb4be0cc2cef7f87770a4
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

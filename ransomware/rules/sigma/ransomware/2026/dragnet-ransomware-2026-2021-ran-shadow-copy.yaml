@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2021 — Shadow Copy Deletion (clop)'
+id: 52a31d6b-1796-5fa5-a668-d10fe06efc3d
+status: test
+description: |
+  Detects shadow copy deletion commands associated with clop ransomware.
+  Incident: dragnet-ransomware-2026-2021
+  Ransomware victim claim by clop: IDEALWELDERS.COM; country: CA; sector: Manufacturing
+  First observed: 2026-02-07.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://santat7kpllt6iyvqbr7q4amdv6dzrh6paatvyrzl7ry3zm72zigf4ad.onion/idealwelders-com
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

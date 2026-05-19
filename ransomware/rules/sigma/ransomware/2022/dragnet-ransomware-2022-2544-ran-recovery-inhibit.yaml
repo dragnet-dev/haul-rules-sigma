@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2544 — Recovery Inhibition (royal)'
+id: 6a4aeafe-52ac-5cbd-b512-ce4804d0fcdc
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with royal ransomware.
+  Incident: dragnet-ransomware-2022-2544
+  Ransomware victim claim by royal: https://www.whitneyoilco.com; sector: Energy
+  First observed: 2022-11-04.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

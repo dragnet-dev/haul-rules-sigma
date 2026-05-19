@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1380 — Event Log Clearing (bianlian)'
+id: 689c9ae9-1357-558e-901f-5c1e926cb1ca
+status: experimental
+description: |
+  Detects event log clearing associated with bianlian ransomware.
+  Incident: dragnet-ransomware-2023-1380
+  Ransomware victim claim by bianlian: Hiberus Tecnología; country: ES; sector: Technology
+  First observed: 2023-06-26.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://bianlianlbc5an4kgnay3opdemgcryg2kpfcbgczopmm3dnbz3uaunad.onion/companies/hiberus.com
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

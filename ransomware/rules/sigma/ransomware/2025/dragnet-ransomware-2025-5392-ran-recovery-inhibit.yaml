@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5392 — Recovery Inhibition (sinobi)'
+id: 58a77fa5-93ad-5445-8bda-45750fc6f13b
+status: test
+description: |
+  Detects boot/recovery disabling associated with sinobi ransomware.
+  Incident: dragnet-ransomware-2025-5392
+  Ransomware victim claim by sinobi: Geometrics; country: US; sector: Manufacturing
+  First observed: 2025-12-22.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://sinobi6rlec6f2bgn6rd72xo7hvds4a5ajiu2if4oub2sut7fg3gomqd.onion/leaks/6949c3a888b6823fa2f54a3c
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

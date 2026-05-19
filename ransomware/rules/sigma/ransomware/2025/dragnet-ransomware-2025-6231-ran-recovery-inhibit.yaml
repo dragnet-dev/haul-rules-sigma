@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6231 — Recovery Inhibition (lynx)'
+id: 74f992fc-2c39-57fb-a855-9a845c7f3c8c
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with lynx ransomware.
+  Incident: dragnet-ransomware-2025-6231
+  Ransomware victim claim by lynx: lgipr; country: PR; sector: Transportation/Logistics
+  First observed: 2025-06-06.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lynxblogtwatfsrwj3oatpejwxk5bngqcd5f7s26iskagfu7ouaomjad.onion/leaks/6842e2bae2d7f43c8f84e001
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

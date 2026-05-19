@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-2806 — Ransomware C2 Communication'
+id: bd67b969-c59c-59f5-a8b5-17c0ee2cea97
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-2806
+  Ransomware victim claim by medusa: Fall River Public Schools; country: US; sector: Education
+  First observed: 2025-04-12.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://xfv4jzckytb4g3ckwemcny3ihv4i5p4lqzdpi624cxisu35my5fwi5qd.onion/detail?id=e8b22c830ef1fbaabddc943f6e661c61
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://xfv4jzckytb4g3ckwemcny3ihv4i5p4lqzdpi624cxisu35my5fwi5qd.onion/detail?id=e8b22c830ef1fbaabddc943f6e661c61'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

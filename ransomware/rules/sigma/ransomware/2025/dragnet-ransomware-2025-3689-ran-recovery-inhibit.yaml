@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3689 — Recovery Inhibition (clop)'
+id: 0f109d62-b148-5e35-9c82-839a4e56f68e
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with clop ransomware.
+  Incident: dragnet-ransomware-2025-3689
+  Ransomware victim claim by clop: FERNGROUP.COM; country: CA; sector: Technology
+  First observed: 2025-02-27.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

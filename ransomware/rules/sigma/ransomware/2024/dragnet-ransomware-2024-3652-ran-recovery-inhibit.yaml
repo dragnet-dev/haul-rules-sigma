@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3652 — Recovery Inhibition (lockbit3)'
+id: f19e4999-3217-5404-b575-f5af9f3bcbb5
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with lockbit3 ransomware.
+  Incident: dragnet-ransomware-2024-3652
+  Ransomware victim claim by lockbit3: hetero.com; country: IN; sector: Healthcare
+  First observed: 2024-05-02.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lockbit3g3ohd3katajf6zaehxz4h4cnhmz5t735zpltywhwpc6oy3id.onion/post/BqT7xwZPtqpWD2ri663caff741b39
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

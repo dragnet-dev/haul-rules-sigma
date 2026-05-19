@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-0199 — Recovery Inhibition (dispossessor)'
+id: d474941d-58c6-5851-8dd3-e84cb3a32230
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with dispossessor ransomware.
+  Incident: dragnet-ransomware-2022-0199
+  Ransomware victim claim by dispossessor: schnabel-eng.com; sector: Business Services
+  First observed: 2022-08-13.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://dispossessor.com/blogs/208
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

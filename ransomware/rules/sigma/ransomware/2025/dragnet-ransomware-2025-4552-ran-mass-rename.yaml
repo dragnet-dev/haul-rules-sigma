@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4552 — Mass File Rename (hunters)'
+id: fc4a77c1-0de5-5c00-a2ec-cd908a45f021
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by hunters.
+  Incident: dragnet-ransomware-2025-4552
+  Ransomware victim claim by hunters: Hofmann Fördertechnik GmbH; country: DE; sector: Manufacturing
+  First observed: 2025-04-06.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://hunters55rdxciehoqzwv7vgyv6nt37tbwax2reroyzxhou7my5ejyid.onion/companies/2688488066
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3616 — Mass File Rename (devman)'
+id: 4875b528-b7ab-578a-bfe6-cd881cf85e3c
+status: test
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by devman.
+  Incident: dragnet-ransomware-2025-3616
+  Ransomware victim claim by devman: gsccca.org; country: US; sector: Public Sector
+  First observed: 2025-11-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://devmanblggk7ddrtqj3tsocnayow3bwnozab2s4yhv4shpv6ueitjzid.onion#gscccaorg
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

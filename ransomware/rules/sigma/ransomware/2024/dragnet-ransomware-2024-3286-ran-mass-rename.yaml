@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3286 — Mass File Rename (blacksuit)'
+id: c067743d-7b57-521f-8925-9f610df550fb
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by blacksuit.
+  Incident: dragnet-ransomware-2024-3286
+  Ransomware victim claim by blacksuit: nathcompanies.com; country: US; sector: Hospitality and Tourism
+  First observed: 2024-10-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?id=qsLY5yejL9xTtkic
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

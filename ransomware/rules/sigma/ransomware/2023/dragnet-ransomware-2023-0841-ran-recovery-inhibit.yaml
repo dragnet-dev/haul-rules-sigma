@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0841 — Recovery Inhibition (incransom)'
+id: cbfae312-21c1-5442-b5f1-1c05a0afc7c0
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with incransom ransomware.
+  Incident: dragnet-ransomware-2023-0841
+  Ransomware victim claim by incransom: Greenpoint Technologies Inc; country: US; sector: Technology
+  First observed: 2023-10-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://incblog7vmuq7rktic73r4ha4j757m3ptym37tyvifzp2roedyyzzxid.onion/blog/leak/2D0488D070A82D64
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

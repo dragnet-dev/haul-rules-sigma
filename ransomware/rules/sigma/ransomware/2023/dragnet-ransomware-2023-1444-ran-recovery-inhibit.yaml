@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1444 — Recovery Inhibition (cuba)'
+id: bb37a5e7-66ca-5c12-8606-949c09b06255
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with cuba ransomware.
+  Incident: dragnet-ransomware-2023-1444
+  Ransomware victim claim by cuba: portadelaidefc; country: AU; sector: Consumer Services
+  First observed: 2023-11-13.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

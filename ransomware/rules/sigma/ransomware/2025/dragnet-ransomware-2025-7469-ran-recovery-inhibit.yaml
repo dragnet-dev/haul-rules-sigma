@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7469 — Recovery Inhibition (handala)'
+id: fc7e0326-29ae-5256-b44e-7bc4d735aa90
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with handala ransomware.
+  Incident: dragnet-ransomware-2025-7469
+  Ransomware victim claim by handala: Freedom Wood Doors Ltd; sector: Manufacturing
+  First observed: 2025-07-06.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://handala-hack.to/freedom-wood-doors-ltd-hacked/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

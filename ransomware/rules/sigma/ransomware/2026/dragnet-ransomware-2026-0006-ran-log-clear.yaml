@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-0006 — Event Log Clearing (anubis)'
+id: e2eddd81-3789-58d3-aab7-fbdd51d866eb
+status: stable
+description: |
+  Detects event log clearing associated with anubis ransomware.
+  Incident: dragnet-ransomware-2026-0006
+  Ransomware victim claim by anubis: L. S. King and Associates; country: US; sector: Financial Services
+  First observed: 2026-03-10.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://om6q4a6cyipxvt7ioudxt24cw4oqu4yodmqzl25mqd2hgllymrgu4aqd.onion/r/d2cY8O8AQB2OzlSDs78lnb7I8ahUw9Z1KZpxhyoUKonzDDWcAzZiYzupAjEhOuF5vRLSwP3RpxLKba384PFIoTh5bmFCblF0
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

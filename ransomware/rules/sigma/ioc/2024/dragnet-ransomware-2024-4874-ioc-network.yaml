@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-4874 — Ransomware C2 Communication'
+id: d90096dd-3b18-5d12-a5d6-3fa85230a532
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-4874
+  Ransomware victim claim by lockbit3: aytosanlorenzo.es; country: ES; sector: Public Sector
+  First observed: 2024-05-30.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lockbit4lahhluquhoka3t4spqym2m3dhe66d6lr337glmnlgg2nndad.onion/post/mbeGP9tHq89We5Sd665904076bf7f
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lockbit4lahhluquhoka3t4spqym2m3dhe66d6lr337glmnlgg2nndad.onion/post/mbeGP9tHq89We5Sd665904076bf7f'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

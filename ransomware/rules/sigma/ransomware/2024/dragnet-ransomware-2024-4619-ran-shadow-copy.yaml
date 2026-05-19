@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-4619 — Shadow Copy Deletion (lockbit3)'
+id: 7fa94026-980b-5559-86ef-a8171500ef82
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with lockbit3 ransomware.
+  Incident: dragnet-ransomware-2024-4619
+  Ransomware victim claim by lockbit3: icn-artem.com; country: FR; sector: Technology
+  First observed: 2024-01-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lockbitapt2d73krlbewgv27tquljgxr33xbwwsp6rkyieto7u4ncead.onion/post/im4pNn6UP0pjGHIH65b10dc8abfe7
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

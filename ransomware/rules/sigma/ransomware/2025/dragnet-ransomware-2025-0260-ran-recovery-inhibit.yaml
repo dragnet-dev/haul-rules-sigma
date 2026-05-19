@@ -1,0 +1,31 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0260 — Recovery Inhibition (play)'
+id: a75ec700-1731-567d-8d08-ffbfa2b55d2a
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with play ransomware.
+  Incident: dragnet-ransomware-2025-0260
+  Associated with Play.
+  Ransomware victim claim by play: Dectron; country: CA; sector: Technology
+  First observed: 2025-02-18.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://mbrlkbtq5jonaqkurjwmxftytyn2ethqvbxfu4rgjbkkknndqwae6byd.onion/index.php?page=1topic.php?id=RP9gJwbM40tBv8
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+  - dragnet.actor.play
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

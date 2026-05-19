@@ -1,0 +1,31 @@
+title: 'Dragnet [Container]: dragnet-container-2024-1301 — Vulnerable Base Image Pull'
+id: 70d9b167-6493-581c-8ea7-f4ec7a3a373c
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-1301 (Tier 2, CVSS 9.8)
+  An issue was discovered in the diesel crate before 1.4.6 for Rust. There is a use-after-free in the SQLite backend because the semantics of sqlite3_column_name are not followed.
+  First observed: 2024-11-21.
+references:
+  - https://github.com/diesel-rs/diesel
+  - https://github.com/diesel-rs/diesel/pull/2663
+  - https://nvd.nist.gov/vuln/detail/CVE-2021-28305
+  - https://rustsec.org/advisories/RUSTSEC-2021-0037.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

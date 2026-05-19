@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-2251 — Recovery Inhibition (lockbit3)'
+id: ce64c2c7-22f1-53e0-96e8-ad2df27e47cc
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with lockbit3 ransomware.
+  Incident: dragnet-ransomware-2023-2251
+  Ransomware victim claim by lockbit3: treves-group.com; sector: Manufacturing
+  First observed: 2023-02-21.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

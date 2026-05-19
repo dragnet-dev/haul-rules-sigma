@@ -1,0 +1,29 @@
+title: 'Dragnet [Container]: dragnet-container-2024-0115 — Vulnerable Base Image Pull'
+id: 1f48c081-3621-562a-b996-e35dfcd8b862
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-0115 (Tier 2, CVSS 9.8)
+  Hoteldruid v3.0.5 was discovered to contain multiple SQL injection vulnerabilities at /hoteldruid/clienti.php via the annonascita, annoscaddoc, giornonascita, giornoscaddoc, lingua_cli, mesenascita, and mesescaddoc parameters.
+  First observed: 2024-11-21.
+references:
+  - https://flashy-lemonade-192.notion.site/Cross-site-scripting-in-hoteldruid-version-3-0-5-via-multiple-post-parameter-ddbd9a9011744ed2b8fc995bbc9de56d?pvs=4
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:10'
+      - 'debian:11'
+      - 'debian:12'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

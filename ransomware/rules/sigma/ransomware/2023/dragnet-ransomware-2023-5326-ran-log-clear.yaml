@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-5326 — Event Log Clearing (8base)'
+id: 2bb11d45-c714-5c20-b843-926f4cbbfb5f
+status: experimental
+description: |
+  Detects event log clearing associated with 8base ransomware.
+  Incident: dragnet-ransomware-2023-5326
+  Ransomware victim claim by 8base: APIQROO; country: MX; sector: Public Sector
+  First observed: 2023-05-09.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://basemmnnqwxevlymli5bs36o5ynti55xojzvn246spahniugwkff2pad.onion/company/789084
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

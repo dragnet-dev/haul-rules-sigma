@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5395 — Mass File Rename (weyhro)'
+id: 74ed764b-69d0-530b-b19a-fdad698ec548
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by weyhro.
+  Incident: dragnet-ransomware-2024-5395
+  Ransomware victim claim by weyhro: Resnick & Caffrey, PC; country: US; sector: Business Services
+  First observed: 2024-12-12.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://xtxtpqpyaaek4p4525ksepyyy75gfvi47fptm2gftw7cn656rnfhzdqd.onion/leaks/resnickandcaffreypc
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-4852 — Ransomware C2 Communication'
+id: 6480993e-1e29-57d0-9cb9-84ac15f28c0f
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-4852
+  Ransomware victim claim by alphv: bluebirdnetwork; sector: Telecommunication
+  First observed: 2023-03-23.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://alphvmmm27o3abo3r2mlmjrpdmzle3rykajqc5xsj7j7ejksbpsa36ad.onion/6df8169e-2265-4748-9faa-fc71f605a4d2
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://alphvmmm27o3abo3r2mlmjrpdmzle3rykajqc5xsj7j7ejksbpsa36ad.onion/6df8169e-2265-4748-9faa-fc71f605a4d2'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

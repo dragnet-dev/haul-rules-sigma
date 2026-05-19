@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0197 — Mass File Rename (lorenz)'
+id: fea17d63-143b-5950-a445-2bde8a99a696
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by lorenz.
+  Incident: dragnet-ransomware-2023-0197
+  Ransomware victim claim by lorenz: Truck Bodies & Equipment International; sector: Transportation/Logistics
+  First observed: 2023-10-27.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

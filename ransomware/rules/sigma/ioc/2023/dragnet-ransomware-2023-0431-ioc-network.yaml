@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-0431 — Ransomware C2 Communication'
+id: 1e9acb7e-d8e4-523b-86e0-6aa88a5f2140
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-0431
+  Ransomware victim claim by snatch: Wasserstrom; sector: Business Services
+  First observed: 2023-07-18.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://hl66646wtlp2naoqnhattngigjp5palgqmbwixepcjyq5i534acgqyad.onion/news.php?id=ab8a53c6-7575-421f-9d16-7376b5998432
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://hl66646wtlp2naoqnhattngigjp5palgqmbwixepcjyq5i534acgqyad.onion/news.php?id=ab8a53c6-7575-421f-9d16-7376b5998432'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

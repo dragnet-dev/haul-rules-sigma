@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0127 — Recovery Inhibition (netwalker)'
+id: 5412b3d6-e1fc-510c-8a02-0c8736ab9ec0
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with netwalker ransomware.
+  Incident: dragnet-ransomware-2020-0127
+  Ransomware victim claim by netwalker: Canadian Tire; country: CA; sector: Consumer Services
+  First observed: 2020-08-01.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

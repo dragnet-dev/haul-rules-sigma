@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6799 — Event Log Clearing (interlock)'
+id: d92056c5-35cf-5963-9e0c-3f4c84a08e19
+status: experimental
+description: |
+  Detects event log clearing associated with interlock ransomware.
+  Incident: dragnet-ransomware-2025-6799
+  Ransomware victim claim by interlock: Drive Products; country: CA; sector: Manufacturing
+  First observed: 2025-02-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ebhmkoohccl45qesdbvrjqtyro2hmhkmh6vkyfyjjzfllm3ix72aqaid.onion/leaks.phphttp://k5nuvkinhjd3nf75zb452xl5oxtdhg4hucmui5n72fou3frw6e25v5id.onion/index.php?p=
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

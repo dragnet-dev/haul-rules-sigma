@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-1223 — Mass File Rename (qilin)'
+id: a4c6efa3-ad67-5c19-b830-f7f78773d81d
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by qilin.
+  Incident: dragnet-ransomware-2024-1223
+  Ransomware victim claim by qilin: EQ Chartered Accountants; country: GB; sector: Business Services
+  First observed: 2024-11-26.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/view?uuid=80ff18d4-7e78-3eba-acae-361ec834d4e0
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

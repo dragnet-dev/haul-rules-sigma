@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-3189 — Mass File Rename (rhysida)'
+id: 2c45bc6f-f3d6-50e4-a8cb-188e1c60d312
+status: test
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by rhysida.
+  Incident: dragnet-ransomware-2026-3189
+  Ransomware victim claim by rhysida: Cytek Biosciences; country: US; sector: Healthcare
+  First observed: 2026-01-25.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://rhysidafohrhyy2aszi7bm32tnjat5xri65fopcxkdfxhi4tidsg7cad.onion/archive.php/archive.php?company=240
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

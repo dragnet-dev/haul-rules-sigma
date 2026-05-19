@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-2676 — Ransomware C2 Communication'
+id: 2a0e8a61-6af6-5d41-a818-179b34284cce
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-2676
+  Ransomware victim claim by lockbit3: federalreserve.gov; country: US; sector: Financial Services
+  First observed: 2024-04-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ofj3oaltwaf67qtd7oafk5r44upm6wkc2jurpsdyih2c7mbrbshuwayd.onion/post/7uTtXnLiP4aeqMqj6678851e3c73e
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://ofj3oaltwaf67qtd7oafk5r44upm6wkc2jurpsdyih2c7mbrbshuwayd.onion/post/7uTtXnLiP4aeqMqj6678851e3c73e'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

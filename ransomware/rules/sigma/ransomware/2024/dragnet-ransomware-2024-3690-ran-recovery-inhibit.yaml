@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3690 — Recovery Inhibition (qilin)'
+id: 782e00ec-ec20-5120-a1c0-c5e6351be0fe
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with qilin ransomware.
+  Incident: dragnet-ransomware-2024-3690
+  Ransomware victim claim by qilin: promises2kids.org; country: US; sector: Business Services
+  First observed: 2024-06-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://kbsqoivihgdmwczmxkbovk7ss2dcynitwhhfu5yw725dboqo5kthfaad.onion/site/view?uuid=e5113b7a-5136-36d3-8352-ec61cb81398b
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

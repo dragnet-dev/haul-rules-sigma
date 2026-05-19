@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4392 — Recovery Inhibition (bianlian)'
+id: 9223925f-47f2-59e7-a12f-fa79b5441ac6
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with bianlian ransomware.
+  Incident: dragnet-ransomware-2023-4392
+  Ransomware victim claim by bianlian: Suburban Laboratories; sector: Business Services
+  First observed: 2023-02-17.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

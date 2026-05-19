@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0127 — Mass File Rename (alphv)'
+id: cc61b671-d5a2-5e51-8aeb-9b813a2bd19b
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by alphv.
+  Incident: dragnet-ransomware-2023-0127
+  Ransomware victim claim by alphv: The Middleton Group; sector: Manufacturing
+  First observed: 2023-05-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://alphvmmm27o3abo3r2mlmjrpdmzle3rykajqc5xsj7j7ejksbpsa36ad.onion/ba08ccea-3ea1-4046-b5a8-1c09572d93f5
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

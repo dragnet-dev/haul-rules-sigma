@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-6775 — Ransomware C2 Communication'
+id: 678d6b15-fda1-5771-a8d3-ac8b1c049663
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-6775
+  Ransomware victim claim by kraken: www.kvhealth.net; country: US; sector: Healthcare
+  First observed: 2025-03-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://krakenccj3wr23452a4ibkbkuph4d6soyx2xgjoogtuamc3m7u7wemad.onion/news/88ac508322dfc8cac987d1d612c69d5d
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://krakenccj3wr23452a4ibkbkuph4d6soyx2xgjoogtuamc3m7u7wemad.onion/news/88ac508322dfc8cac987d1d612c69d5d'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

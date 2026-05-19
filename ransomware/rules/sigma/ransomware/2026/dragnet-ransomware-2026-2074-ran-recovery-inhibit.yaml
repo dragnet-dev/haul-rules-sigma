@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2074 — Recovery Inhibition (payload)'
+id: 9cfa321d-3bdc-5317-99c5-0e0eb49ba79a
+status: stable
+description: |
+  Detects boot/recovery disabling associated with payload ransomware.
+  Incident: dragnet-ransomware-2026-2074
+  Ransomware victim claim by payload: meditron.com.ve; country: VE; sector: Healthcare
+  First observed: 2026-04-23.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://payloadrz5yw227brtbvdqpnlhq3rdcdekdnn3rgucbcdeawq2v6vuyd.onion/posts/b3bc9c9e-ed72-44f0-a1a3-51b5cf745265
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

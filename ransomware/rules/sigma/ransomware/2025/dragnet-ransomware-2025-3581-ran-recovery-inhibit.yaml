@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3581 — Recovery Inhibition (underground)'
+id: 4fb2fb9a-31ee-50b1-8e56-e3d008f29f2c
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with underground ransomware.
+  Incident: dragnet-ransomware-2025-3581
+  Ransomware victim claim by underground: Afa Systems Ltd.; country: CA; sector: Technology
+  First observed: 2025-02-13.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://47glxkuxyayqrvugfumgsblrdagvrah7gttfscgzn56eyss5wg3uvmqd.onion/packages/39dc0afb-d3e1-49f9-8645-62276e3f26eb
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

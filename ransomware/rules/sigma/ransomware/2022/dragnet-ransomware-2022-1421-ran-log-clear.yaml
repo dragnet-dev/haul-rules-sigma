@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-1421 — Event Log Clearing (alphv)'
+id: 22ce0386-a3c3-5dac-9662-a3c766091419
+status: experimental
+description: |
+  Detects event log clearing associated with alphv ransomware.
+  Incident: dragnet-ransomware-2022-1421
+  Ransomware victim claim by alphv: Nelsonslaw LLP; country: GB; sector: Business Services
+  First observed: 2022-07-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://alphvmmm27o3abo3r2mlmjrpdmzle3rykajqc5xsj7j7ejksbpsa36ad.onion/222d25fc-ce40-4e82-84af-70155ae47c70
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

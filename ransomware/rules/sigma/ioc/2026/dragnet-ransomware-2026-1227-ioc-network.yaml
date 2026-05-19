@@ -1,0 +1,31 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2026-1227 — Ransomware C2 Communication'
+id: 08e8a295-23e8-5c36-af78-367b771089f6
+status: test
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2026-1227
+  Associated with Play.
+  Ransomware victim claim by play: CBH Homes; country: US; sector: Construction
+  First observed: 2026-01-23.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://mbrlkbtq5jonaqkurjwmxftytyn2ethqvbxfu4rgjbkkknndqwae6byd.onion/index.php?page=1/topic.php?id=vfXFCBqSe2Y4D
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+  - dragnet.actor.play
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://mbrlkbtq5jonaqkurjwmxftytyn2ethqvbxfu4rgjbkkknndqwae6byd.onion/index.php?page=1/topic.php?id=vfXFCBqSe2Y4D'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

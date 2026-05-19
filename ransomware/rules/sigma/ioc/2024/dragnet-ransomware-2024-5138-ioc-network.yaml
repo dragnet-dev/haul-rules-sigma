@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-5138 — Ransomware C2 Communication'
+id: 48f00e28-fc31-5d4f-a1fd-f09ceb80c039
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-5138
+  Ransomware victim claim by killsec: extramarks.com; country: IN; sector: Technology
+  First observed: 2024-10-10.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://kill432ltnkqvaqntbalnsgojqqs2wz4lhnamrqjg66tq6fuvcztilyd.onion/post/Qz7h6Q8hYcu3wXA9OszMoa88R
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://kill432ltnkqvaqntbalnsgojqqs2wz4lhnamrqjg66tq6fuvcztilyd.onion/post/Qz7h6Q8hYcu3wXA9OszMoa88R'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

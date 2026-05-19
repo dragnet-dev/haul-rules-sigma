@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2054 — Mass File Rename (bianlian)'
+id: 80a0ae57-4eb8-5b79-89bb-1214c12f0da0
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by bianlian.
+  Incident: dragnet-ransomware-2025-2054
+  Ransomware victim claim by bianlian: Layfield & Borel CPA's L.L.C; country: US; sector: Financial Services
+  First observed: 2025-02-13.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://bianlianlbc5an4kgnay3opdemgcryg2kpfcbgczopmm3dnbz3uaunad.onion/companies/layfieldandborelcpas.com/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-5128 — Ransomware C2 Communication'
+id: 3ab3c558-5eb9-5262-8350-ddeb485dbb30
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-5128
+  Ransomware victim claim by nokoyawa: Pea River Electric Cooperative; sector: Energy
+  First observed: 2023-08-01.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nokoleakb76znymx443veg4n6fytx6spck6pc7nkr4dvfuygpub6jsid.onion/leak/64c8f251f6451b16e059a5bb
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://nokoleakb76znymx443veg4n6fytx6spck6pc7nkr4dvfuygpub6jsid.onion/leak/64c8f251f6451b16e059a5bb'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

@@ -1,0 +1,31 @@
+title: 'Dragnet [Container]: dragnet-container-2026-1123 — Vulnerable Base Image Pull'
+id: 76cdcd6b-d108-52f9-9249-2738bae44491
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-1123 (Tier 2, CVSS 10)
+  Multiple unspecified vulnerabilities in the Server component in OCS Inventory NG before 1.02 have unknown impact and attack vectors.
+  First observed: 2026-04-23.
+references:
+  - http://secunia.com/advisories/34763
+  - http://www.ocsinventory-ng.org/index.php?mact=News%2Ccntnt01%2Cdetail%2C0&cntnt01articleid=133&cntnt01returnid=51
+  - http://www.securityfocus.com/bid/34694
+  - http://www.vupen.com/english/advisories/2009/1152
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

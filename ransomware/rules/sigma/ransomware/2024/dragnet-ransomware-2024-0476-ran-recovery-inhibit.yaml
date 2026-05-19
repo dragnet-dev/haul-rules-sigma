@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0476 — Recovery Inhibition (akira)'
+id: 7e7bf267-08dc-5bc8-a67f-7eb5249058e1
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with akira ransomware.
+  Incident: dragnet-ransomware-2024-0476
+  Associated with Akira.
+  Ransomware victim claim by akira: CoreData; country: CA; sector: Technology
+  First observed: 2024-03-01.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+  - dragnet.actor.akira
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

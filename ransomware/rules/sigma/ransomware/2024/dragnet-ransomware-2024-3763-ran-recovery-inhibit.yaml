@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3763 — Recovery Inhibition (qilin)'
+id: 4e3c862e-cc4a-56e5-80cf-7e4c25d35a1b
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with qilin ransomware.
+  Incident: dragnet-ransomware-2024-3763
+  Ransomware victim claim by qilin: prinsotel.com; country: ES; sector: Hospitality and Tourism
+  First observed: 2024-05-02.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://kbsqoivihgdmwczmxkbovk7ss2dcynitwhhfu5yw725dboqo5kthfaad.onion/site/view?uuid=cef08046-a0df-33de-9f06-0e6cba539b93
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

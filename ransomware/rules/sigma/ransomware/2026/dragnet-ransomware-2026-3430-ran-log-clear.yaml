@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-3430 — Event Log Clearing (lamashtu)'
+id: c517b119-fa5f-5f37-815b-1254d60d5258
+status: stable
+description: |
+  Detects event log clearing associated with lamashtu ransomware.
+  Incident: dragnet-ransomware-2026-3430
+  Ransomware victim claim by lamashtu: Ashtech Infotech; country: IN; sector: Technology
+  First observed: 2026-05-08.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lamashtux5j74mcm7lwwgn5yrvuwtrpxjoyendif3v3hrztjesfoyayd.onion/post/75662fbf3cec830a266b944485445eb6
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

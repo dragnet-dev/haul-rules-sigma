@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-4545 — Ransomware C2 Communication'
+id: bdec50d9-e8f6-5622-9fb0-e463dd309580
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-4545
+  Ransomware victim claim by sinobi: Genrose Stone + Tile; country: US; sector: Manufacturing
+  First observed: 2025-11-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://sinobi57mfegeov2naiufkidlkpze263jtbldokimfjqmk2mye6s4yqd.onion/leaks/691b7fd088b6823fa2a7c72f
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://sinobi57mfegeov2naiufkidlkpze263jtbldokimfjqmk2mye6s4yqd.onion/leaks/691b7fd088b6823fa2a7c72f'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2075 — Recovery Inhibition (crypto24)'
+id: d20ae55a-6883-59e1-9300-6926b388f6cf
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with crypto24 ransomware.
+  Incident: dragnet-ransomware-2026-2075
+  Ransomware victim claim by crypto24: Invaccs software technologies pvt ltd; country: IN; sector: Technology
+  First observed: 2026-03-10.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

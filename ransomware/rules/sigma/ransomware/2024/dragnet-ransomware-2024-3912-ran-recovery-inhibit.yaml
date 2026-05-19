@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3912 — Recovery Inhibition (cactus)'
+id: 577428f5-2dd5-559b-a44e-e8ad2852571d
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with cactus ransomware.
+  Incident: dragnet-ransomware-2024-3912
+  Ransomware victim claim by cactus: regencyfurniture.com; country: US; sector: Business Services
+  First observed: 2024-03-23.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://cactusbloguuodvqjmnzlwetjlpj6aggc6iocwhuupb47laukux7ckid.onion/posts/REGENCYFURNITUR
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

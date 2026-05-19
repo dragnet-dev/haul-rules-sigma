@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-4241 — Recovery Inhibition (abyss)'
+id: b938639a-9e00-51d2-a769-d26689b7b53c
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with abyss ransomware.
+  Incident: dragnet-ransomware-2024-4241
+  Ransomware victim claim by abyss: q-cells.de; country: DE; sector: Energy
+  First observed: 2024-08-02.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

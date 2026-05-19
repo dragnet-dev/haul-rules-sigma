@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2022-0096 — Ransomware C2 Communication'
+id: 0f954dfb-bf8a-5309-b2e8-49abd9434efa
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2022-0096
+  Ransomware victim claim by lockbit3: hphood.com; country: US; sector: Agriculture and Food Production
+  First observed: 2022-03-14.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lbb6ud2vyf23z4hw6fzskr5gru7eftbjfbd6yzra3hzuqqvjy63blqqd.onion//post/mP0bw7UKSE85Itki66d099301aac9
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lbb6ud2vyf23z4hw6fzskr5gru7eftbjfbd6yzra3hzuqqvjy63blqqd.onion//post/mP0bw7UKSE85Itki66d099301aac9'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

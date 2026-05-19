@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0221 — Recovery Inhibition (revil)'
+id: 29d3c491-21c5-50bb-b71f-3843687283c6
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with revil ransomware.
+  Incident: dragnet-ransomware-2020-0221
+  Ransomware victim claim by revil: Valley Health Systems; sector: Healthcare
+  First observed: 2020-08-01.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

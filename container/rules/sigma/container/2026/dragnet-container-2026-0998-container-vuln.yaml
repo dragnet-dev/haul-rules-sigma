@@ -1,0 +1,43 @@
+title: 'Dragnet [Container]: dragnet-container-2026-0998 — Vulnerable Base Image Pull'
+id: 78a8b068-9821-5537-817e-aaa7f91b32b9
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-0998 (Tier 2, CVSS 9.3)
+  Associated with Earth Lusca.
+  Integer overflow in Google Chrome before 31.0.1650.57 allows remote attackers to execute arbitrary code or cause a denial of service (memory corruption) via unspecified vectors, as demonstrated during a Mobile Pwn2Own competition at PacSec 2013.
+  First observed: 2026-04-29.
+references:
+  - http://googlechromereleases.blogspot.com/2013/11/chrome-for-android-update.html
+  - http://googlechromereleases.blogspot.com/2013/11/stable-channel-update_14.html
+  - http://lists.opensuse.org/opensuse-security-announce/2013-11/msg00025.html
+  - http://lists.opensuse.org/opensuse-security-announce/2013-11/msg00026.html
+  - http://lists.opensuse.org/opensuse-security-announce/2013-12/msg00002.html
+  - http://lists.opensuse.org/opensuse-updates/2014-01/msg00042.html
+  - http://www.debian.org/security/2013/dsa-2799
+  - http://www.hppwn2own.com/chrome-nexus-4-samsung-galaxy-s4-falls/
+  - https://code.google.com/p/chromium/issues/detail?id=319117
+  - https://code.google.com/p/chromium/issues/detail?id=319125
+  - https://www.cve.org/CVERecord?id=CVE-2013-6632
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+  - dragnet.actor.earth-lusca
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:7'
+      - 'ubuntu:12.04'
+      - 'ubuntu:12.10'
+      - 'ubuntu:13.04'
+      - 'ubuntu:13.10'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

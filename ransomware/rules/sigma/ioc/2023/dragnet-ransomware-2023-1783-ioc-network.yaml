@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-1783 — Ransomware C2 Communication'
+id: 98adf55a-0130-58d1-959b-011a2c10bae2
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-1783
+  Ransomware victim claim by lockbit3: swiftatlanta.com; country: US; sector: Manufacturing
+  First observed: 2023-03-28.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lockbitaptbdiajqtplcrigzgdjprwugkkut63nbvy2d5r4w2agyekqd.onion/post/Cx1v5S2lE2bO6yH96422833ee0175
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lockbitaptbdiajqtplcrigzgdjprwugkkut63nbvy2d5r4w2agyekqd.onion/post/Cx1v5S2lE2bO6yH96422833ee0175'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

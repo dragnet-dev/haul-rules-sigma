@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-3961 — Ransomware C2 Communication'
+id: 80268a3d-502c-5921-95a5-88f197167025
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-3961
+  Ransomware victim claim by BrainCipher: cyceron.fr; country: FR; sector: Healthcare
+  First observed: 2024-08-12.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://vkvsgl7lhipjirmz6j5ubp3w3bwvxgcdbpi3fsbqngfynetqtw4w5hyd.onion/r/qCyKv0rJUqLO68fNlB34zje1gogdBFHZSEGdN6+bxuL3H9NYBCk1hUsCHcGMYwiKXyMcOJ++4obG+wrQq2poTTI2Rmha
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://vkvsgl7lhipjirmz6j5ubp3w3bwvxgcdbpi3fsbqngfynetqtw4w5hyd.onion/r/qCyKv0rJUqLO68fNlB34zje1gogdBFHZSEGdN6+bxuL3H9NYBCk1hUsCHcGMYwiKXyMcOJ++4obG+wrQq2poTTI2Rmha'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

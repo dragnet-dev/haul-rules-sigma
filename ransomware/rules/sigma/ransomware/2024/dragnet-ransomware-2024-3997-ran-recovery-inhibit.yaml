@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3997 — Recovery Inhibition (qilin)'
+id: 03d0159d-ea49-5d7d-88de-87aa8c3d9da8
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with qilin ransomware.
+  Incident: dragnet-ransomware-2024-3997
+  Ransomware victim claim by qilin: McAbee Construction, Inc; country: US; sector: Business Services
+  First observed: 2024-09-30.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://kbsqoivihgdmwczmxkbovk7ss2dcynitwhhfu5yw725dboqo5kthfaad.onion/site/view?uuid=27e9260b-bf04-301f-88a6-c41f59565476
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

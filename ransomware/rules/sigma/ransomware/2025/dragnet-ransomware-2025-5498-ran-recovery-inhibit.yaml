@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5498 — Recovery Inhibition (devman)'
+id: 7ca6312c-ca0a-5802-9351-bb5a9fb0dd84
+status: test
+description: |
+  Detects boot/recovery disabling associated with devman ransomware.
+  Incident: dragnet-ransomware-2025-5498
+  Ransomware victim claim by devman: a**o*50*****.org; country: CA; sector: Financial Services
+  First observed: 2025-12-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://devmanblggk7ddrtqj3tsocnayow3bwnozab2s4yhv4shpv6ueitjzid.onion
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0555 — Event Log Clearing (direwolf)'
+id: 16cb251b-c611-5d73-a681-06d5d3e061df
+status: experimental
+description: |
+  Detects event log clearing associated with direwolf ransomware.
+  Incident: dragnet-ransomware-2025-0555
+  Ransomware victim claim by direwolf: Wilson International; country: IN; sector: Agriculture and Food Production
+  First observed: 2025-05-09.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://direwolfcdkv5whaz2spehizdg22jsuf5aeje4asmetpbt6ri4jnd4qd.onion/articles/Wilson_International.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

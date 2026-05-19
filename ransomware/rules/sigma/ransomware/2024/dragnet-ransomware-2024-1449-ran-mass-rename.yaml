@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-1449 — Mass File Rename (spacebears)'
+id: b9e5dc1d-2b00-5414-a42f-3b492cc3a5f3
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by spacebears.
+  Incident: dragnet-ransomware-2024-1449
+  Ransomware victim claim by spacebears: Intermed Hospital Mongolia; country: MN; sector: Healthcare
+  First observed: 2024-10-30.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://5butbkrljkaorg5maepuca25oma7eiwo6a2rlhvkblb4v6mf3ki2ovid.onion/companies/39/intermed-hospital-mongolia
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

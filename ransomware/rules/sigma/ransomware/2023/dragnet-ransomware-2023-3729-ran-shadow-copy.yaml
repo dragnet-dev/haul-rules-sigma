@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-3729 — Shadow Copy Deletion (lockbit3)'
+id: 85ee1ebd-e590-528a-b687-1a86ddc22542
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with lockbit3 ransomware.
+  Incident: dragnet-ransomware-2023-3729
+  Ransomware victim claim by lockbit3: hitzler-ingenieure.de; country: DE; sector: Construction
+  First observed: 2023-03-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lockbitapt2d73krlbewgv27tquljgxr33xbwwsp6rkyieto7u4ncead.onion/post/KNd9zXxSCNxM4efn64171bcc83549
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

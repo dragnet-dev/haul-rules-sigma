@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1315 — Mass File Rename (metaencryptor)'
+id: f1ddf24a-b8ac-5e53-bd63-afd698f6e37e
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by metaencryptor.
+  Incident: dragnet-ransomware-2023-1315
+  Ransomware victim claim by metaencryptor: Belzona UK Ltd; country: GB; sector: Manufacturing
+  First observed: 2023-09-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://metacrptmytukkj7ajwjovdpjqzd7esg5v3sg344uzhigagpezcqlpyd.onion/0AFC:a40e344676624757953c7a57684ae9a8/0AFC:ca52c735a3fe7adfd61a696b0e428291b7bba88d662d56cb363dde13a7fab408/0AFC:aee6bd80a01cd6b1410697b21a1ddfcfa05115936cbca5907badaf81f405466a
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0804 — Recovery Inhibition (knight)'
+id: b79328c9-d560-5147-b5e3-efb4a0b6045d
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with knight ransomware.
+  Incident: dragnet-ransomware-2023-0804
+  Ransomware victim claim by knight: Studio D.EL.LA. SRL; country: IT; sector: Business Services
+  First observed: 2023-11-12.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://knight3xppu263m7g4ag3xlit2qxpryjwueobh7vjdc3zrscqlfu3pqd.onion/1ca83fbf-50d7-4a6b-a3f9-3f8c51eea302/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

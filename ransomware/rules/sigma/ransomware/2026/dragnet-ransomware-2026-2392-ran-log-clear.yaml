@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2392 — Event Log Clearing (payload)'
+id: 9175cbcf-2bd0-5cf2-8ea9-f75ad7ae3629
+status: stable
+description: |
+  Detects event log clearing associated with payload ransomware.
+  Incident: dragnet-ransomware-2026-2392
+  Ransomware victim claim by payload: In.Sa.Cor; country: US; sector: Energy
+  First observed: 2026-03-14.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://payloadrz5yw227brtbvdqpnlhq3rdcdekdnn3rgucbcdeawq2v6vuyd.onion/posts/25a9556d-86ed-45dd-a113-c1338f2488a4
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

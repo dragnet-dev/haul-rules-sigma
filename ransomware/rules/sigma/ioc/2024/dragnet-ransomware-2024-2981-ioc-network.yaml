@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-2981 — Ransomware C2 Communication'
+id: bcd0ad0c-d1ae-57f8-8714-5cc845d82a0d
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-2981
+  Ransomware victim claim by lockbit3: apeagers.com.au; country: NZ; sector: Business Services
+  First observed: 2024-02-25.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lockbit3olp7oetlc4tl5zydnoluphh7fvdt5oa6arcp2757r7xkutid.onion/post/YV7EdRbhaHshp9Uy65dba2c019d56
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lockbit3olp7oetlc4tl5zydnoluphh7fvdt5oa6arcp2757r7xkutid.onion/post/YV7EdRbhaHshp9Uy65dba2c019d56'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

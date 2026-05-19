@@ -1,0 +1,31 @@
+title: 'Dragnet [Container]: dragnet-container-2024-0394 — Vulnerable Base Image Pull'
+id: e48b68e2-4547-5b41-ace9-2a8ba123d1d6
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-0394 (Tier 2, CVSS 9.1)
+  OCS Inventory 2.4.1 lacks a proper XML parsing configuration, allowing the use of external entities. This issue can be exploited by an attacker sending a crafted HTTP request in order to exfiltrate information or cause a Denial of Service.
+  First observed: 2024-11-21.
+references:
+  - https://www.cve.org/CVERecord?id=CVE-2018-14473
+  - https://www.tarlogic.com/en/blog/vulnerabilities-in-ocs-inventory-2-4-1/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'ubuntu:16.04-ESM'
+      - 'ubuntu:18.04-ESM'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

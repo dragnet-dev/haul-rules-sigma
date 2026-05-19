@@ -1,0 +1,31 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-3597 — Ransomware C2 Communication'
+id: e1df3a1c-d5af-5227-a92e-fc4515f94e13
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-3597
+  Associated with Play.
+  Ransomware victim claim by play: NachtExpress Austria GmbH; country: AT; sector: Transportation/Logistics
+  First observed: 2023-10-09.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://k7kg3jqxang3wh7hnmaiokchk7qoebupfgoik6rha6mjpzwupwtj25yd.onion/topic.php?id=TTJG8Ttz750Kza
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+  - dragnet.actor.play
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://k7kg3jqxang3wh7hnmaiokchk7qoebupfgoik6rha6mjpzwupwtj25yd.onion/topic.php?id=TTJG8Ttz750Kza'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

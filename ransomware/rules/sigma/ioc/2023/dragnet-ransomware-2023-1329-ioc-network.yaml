@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-1329 — Ransomware C2 Communication'
+id: 538a4b85-c51e-52ea-af66-33366bb80813
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-1329
+  Ransomware victim claim by lockbit3: securens.in; country: IN; sector: Business Services
+  First observed: 2023-03-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lockbitaptbdiajqtplcrigzgdjprwugkkut63nbvy2d5r4w2agyekqd.onion/post/qJB0Z0HXc3FT7krN641da6c22a2fc
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lockbitaptbdiajqtplcrigzgdjprwugkkut63nbvy2d5r4w2agyekqd.onion/post/qJB0Z0HXc3FT7krN641da6c22a2fc'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

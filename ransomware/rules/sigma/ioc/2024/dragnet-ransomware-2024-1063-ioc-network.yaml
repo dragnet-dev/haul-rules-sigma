@@ -1,0 +1,31 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-1063 — Ransomware C2 Communication'
+id: 815fc6ec-a543-51fc-9bed-585efac0b9e4
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-1063
+  Associated with Play.
+  Ransomware victim claim by play: Haumiller Engineering; country: US; sector: Manufacturing
+  First observed: 2024-05-10.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://k7kg3jqxang3wh7hnmaiokchk7qoebupfgoik6rha6mjpzwupwtj25yd.onion/topic.php?id=wxLymGGTibJ1A
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+  - dragnet.actor.play
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://k7kg3jqxang3wh7hnmaiokchk7qoebupfgoik6rha6mjpzwupwtj25yd.onion/topic.php?id=wxLymGGTibJ1A'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

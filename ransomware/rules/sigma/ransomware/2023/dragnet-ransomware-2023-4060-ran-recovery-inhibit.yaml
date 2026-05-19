@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4060 — Recovery Inhibition (arvinclub)'
+id: 841aa5be-6c53-5264-b594-43aa9390c26c
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with arvinclub ransomware.
+  Incident: dragnet-ransomware-2023-4060
+  Ransomware victim claim by arvinclub: 150k sib360 Database; sector: Not Found
+  First observed: 2023-07-27.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

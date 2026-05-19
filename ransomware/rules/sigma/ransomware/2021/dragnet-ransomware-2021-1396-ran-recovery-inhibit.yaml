@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1396 — Recovery Inhibition (lockbit2)'
+id: f76086f7-3383-57dc-97f0-b34a2dcfc08d
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with lockbit2 ransomware.
+  Incident: dragnet-ransomware-2021-1396
+  Ransomware victim claim by lockbit2: chipsaway.at; country: AT; sector: Consumer Services
+  First observed: 2021-10-01.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

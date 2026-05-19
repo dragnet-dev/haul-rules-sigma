@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0569 — Recovery Inhibition (toufan)'
+id: 497c915e-612e-5c89-a343-6b219b9da594
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with toufan ransomware.
+  Incident: dragnet-ransomware-2023-0569
+  Ransomware victim claim by toufan: old.shefa-online.co.il; country: IL; sector: Business Services
+  First observed: 2023-12-19.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

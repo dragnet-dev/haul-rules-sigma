@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-3094 — Recovery Inhibition (cuba)'
+id: b657f856-7f8d-5185-bf9f-f3f1cbb36feb
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with cuba ransomware.
+  Incident: dragnet-ransomware-2022-3094
+  Ransomware victim claim by cuba: the_rose_executive_team; sector: Not Found
+  First observed: 2022-11-04.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

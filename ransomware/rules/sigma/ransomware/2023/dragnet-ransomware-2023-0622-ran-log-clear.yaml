@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0622 — Event Log Clearing (noescape)'
+id: 2e8e153d-9c5f-5ee0-a1f5-e4b37402caf9
+status: experimental
+description: |
+  Detects event log clearing associated with noescape ransomware.
+  Incident: dragnet-ransomware-2023-0622
+  Ransomware victim claim by noescape: LDLC ASVEL; country: FR; sector: Hospitality and Tourism
+  First observed: 2023-10-09.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://noescapemsqxvizdxyl7f7rmg5cdjwp33pg2wpmiaaibilb4btwzttad.onion/post/9a54137f-7150-4475-864b-f939cbe47e85
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

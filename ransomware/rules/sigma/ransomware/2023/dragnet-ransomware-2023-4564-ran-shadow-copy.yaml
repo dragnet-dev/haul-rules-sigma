@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4564 — Shadow Copy Deletion (knight)'
+id: 9c8be4b4-64da-52b5-9027-d1a0c922008f
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with knight ransomware.
+  Incident: dragnet-ransomware-2023-4564
+  Ransomware victim claim by knight: DAIHO INDUSTRIAL Co.,Ltd.; country: JP; sector: Manufacturing
+  First observed: 2023-12-13.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://knight3xppu263m7g4ag3xlit2qxpryjwueobh7vjdc3zrscqlfu3pqd.onion/8a4937db-f14b-4f01-b3d1-82cd2b32dbd2/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

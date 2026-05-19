@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2788 — Recovery Inhibition (karakurt)'
+id: 9453f072-6032-5ebf-b2eb-2ffe1ba86211
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with karakurt ransomware.
+  Incident: dragnet-ransomware-2022-2788
+  Ransomware victim claim by karakurt: LIBERTY PULTRUSIONS; sector: Construction
+  First observed: 2022-12-20.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

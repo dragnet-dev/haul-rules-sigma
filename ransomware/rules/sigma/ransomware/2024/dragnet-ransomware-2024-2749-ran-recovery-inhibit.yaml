@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2749 — Recovery Inhibition (sarcoma)'
+id: 5daa4e6f-d582-5343-bd1c-020480531c88
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with sarcoma ransomware.
+  Incident: dragnet-ransomware-2024-2749
+  Ransomware victim claim by sarcoma: Gmg Mining Supplies; country: ZA; sector: Agriculture and Food Production
+  First observed: 2024-08-24.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

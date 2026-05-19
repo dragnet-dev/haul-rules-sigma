@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3111 — Recovery Inhibition (qilin)'
+id: 7bb254f3-c416-5e74-b50a-e34d5c8f6738
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with qilin ransomware.
+  Incident: dragnet-ransomware-2024-3111
+  Ransomware victim claim by qilin: wannagocloud; country: AE; sector: Technology
+  First observed: 2024-01-25.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://kbsqoivihgdmwczmxkbovk7ss2dcynitwhhfu5yw725dboqo5kthfaad.onion/site/view?uuid=70a03fae-8a4a-3288-bfe2-2cfcfb8d42ab
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4083 — Shadow Copy Deletion (cactus)'
+id: 7b70876d-e972-5bc5-ad04-2954b9cc4212
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with cactus ransomware.
+  Incident: dragnet-ransomware-2023-4083
+  Ransomware victim claim by cactus: Wasserstrom; sector: Agriculture and Food Production
+  First observed: 2023-07-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://cactusbloguuodvqjmnzlwetjlpj6aggc6iocwhuupb47laukux7ckid.onion/posts/WASSERSTROM
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

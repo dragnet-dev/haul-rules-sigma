@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5678 — Recovery Inhibition (crypto24)'
+id: 8ab7c400-d42c-5098-9f6c-add44e698b0c
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with crypto24 ransomware.
+  Incident: dragnet-ransomware-2025-5678
+  Ransomware victim claim by crypto24: Generali Group; country: IT; sector: Financial Services
+  First observed: 2025-09-18.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

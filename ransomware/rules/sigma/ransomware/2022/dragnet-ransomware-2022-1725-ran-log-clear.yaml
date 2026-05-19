@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-1725 — Event Log Clearing (blackbasta)'
+id: aae2341f-aa5a-5972-9d1b-dc9c31fef850
+status: deprecated
+description: |
+  Detects event log clearing associated with blackbasta ransomware.
+  Incident: dragnet-ransomware-2022-1725
+  Ransomware victim claim by blackbasta: Wilks Tire & Battery Service; sector: Consumer Services
+  First observed: 2022-08-06.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

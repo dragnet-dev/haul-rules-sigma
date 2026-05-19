@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2130 — Recovery Inhibition (hive)'
+id: 5a78d5c9-7c02-5443-a6a1-4088694ffe56
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with hive ransomware.
+  Incident: dragnet-ransomware-2022-2130
+  Ransomware victim claim by hive: Travira Air; country: ID; sector: Transportation/Logistics
+  First observed: 2022-05-28.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

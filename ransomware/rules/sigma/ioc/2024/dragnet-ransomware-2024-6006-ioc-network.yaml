@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-6006 — Ransomware C2 Communication'
+id: 541533a1-4f57-56df-a2bb-31ced9f4374a
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-6006
+  Ransomware victim claim by snatch: HSPG & Associates; country: US; sector: Healthcare
+  First observed: 2024-02-28.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://hl66646wtlp2naoqnhattngigjp5palgqmbwixepcjyq5i534acgqyad.onion/news.php?id=43b6177f-77a6-4279-aa20-02289bb69733
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://hl66646wtlp2naoqnhattngigjp5palgqmbwixepcjyq5i534acgqyad.onion/news.php?id=43b6177f-77a6-4279-aa20-02289bb69733'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

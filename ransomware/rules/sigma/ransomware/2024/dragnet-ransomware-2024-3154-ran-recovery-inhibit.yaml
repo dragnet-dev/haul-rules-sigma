@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3154 — Recovery Inhibition (trinity)'
+id: 75980811-04cd-5f22-bd67-0807d0427029
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with trinity ransomware.
+  Incident: dragnet-ransomware-2024-3154
+  Ransomware victim claim by trinity: Fabrica Industrial Machinery & Equipment; country: AR; sector: Manufacturing
+  First observed: 2024-09-23.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://txtggyng5euqkyzl2knbejwpm4rlq575jn2egqldu27osbqytrj6ruyd.onion/articles/articles/10
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

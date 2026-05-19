@@ -1,0 +1,27 @@
+title: 'Dragnet [IOC]: dragnet-supply-2026-153870 — Malicious File Hash'
+id: 62a9ef2a-00f2-58a7-b1b6-c2e2247a3518
+status: test
+description: |
+  Detects known-malicious file hashes associated with compromised package artifacts.
+  Incident: dragnet-supply-2026-153870
+  First observed: 2026-05-19.
+  Confidence: 80% (stepsecurity).
+references:
+  - https://www.stepsecurity.io/blog/node-ipc-npm-supply-chain-attack
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1195.002
+logsource:
+  category: file_event
+  product: any
+detection:
+  selection:
+    Hashes|contains:
+      - 'SHA256=78a82d93b4f580835f5823b85a3d9ee1f03a15ee6f0e01b4eac86252a7002981'
+      - 'SHA256=c2f4dc64aec4631540a568e88932b61daebbfb7e8281b812fa01b7215f9be9ea'
+      - 'SHA256=449e4265979b5fdb2d3446c021af437e815debd66de7da2fe54f1ad93cbcc75e'
+  condition: selection
+falsepositives:
+  - None expected — these are exact cryptographic hashes
+level: medium

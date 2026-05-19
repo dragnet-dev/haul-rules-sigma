@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-1415 — Event Log Clearing (nokoyawa)'
+id: 465368e8-5669-5be0-a829-1e4500a25af8
+status: deprecated
+description: |
+  Detects event log clearing associated with nokoyawa ransomware.
+  Incident: dragnet-ransomware-2022-1415
+  Ransomware victim claim by nokoyawa: Nexon Asia Pacific; sector: Technology
+  First observed: 2022-12-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

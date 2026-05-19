@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3371 — Recovery Inhibition (ransomhub)'
+id: dabd3bfe-cefc-54e7-9d43-b324fd7d2a46
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with ransomhub ransomware.
+  Incident: dragnet-ransomware-2024-3371
+  Ransomware victim claim by ransomhub: LPDB KUMKM LPDB.ID/LPDB.GO.ID; country: ID; sector: Public Sector
+  First observed: 2024-05-14.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ransomxifxwc5eteopdobynonjctkxxvap77yqifu2emfbecgbqdw6qd.onion/27cbde17-1b02-4aa2-8d43-9c97cfa6be55/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

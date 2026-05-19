@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1790 — Mass File Rename (medusa)'
+id: 07af900a-b228-5adf-aa1e-aca369c6554c
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by medusa.
+  Incident: dragnet-ransomware-2023-1790
+  Ransomware victim claim by medusa: Jules B; country: GB; sector: Consumer Services
+  First observed: 2023-09-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://medusaxko7jxtrojdkxo66j7ck4q5tgktf7uqsqyfry4ebnxlcbkccyd.onion/detail?id=c3669d641b955932742f2f86935c0f61
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

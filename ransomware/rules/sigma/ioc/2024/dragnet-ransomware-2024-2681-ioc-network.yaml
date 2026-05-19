@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-2681 — Ransomware C2 Communication'
+id: 236806ab-9326-59db-b607-a8b5180d785c
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-2681
+  Ransomware victim claim by lynx: GBC; country: GB; sector: Telecommunication
+  First observed: 2024-12-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lynxblog.net/leaks/67501b7fe42beed9ed50bc5e
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lynxblog.net/leaks/67501b7fe42beed9ed50bc5e'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

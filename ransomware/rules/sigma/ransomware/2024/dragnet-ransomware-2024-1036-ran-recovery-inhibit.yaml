@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-1036 — Recovery Inhibition (ransomhouse)'
+id: a2dcfd1d-d2dd-52cb-a44f-ddeb0daf7345
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with ransomhouse ransomware.
+  Incident: dragnet-ransomware-2024-1036
+  Ransomware victim claim by ransomhouse: Gestores Administrativos Reunidos; country: ES; sector: Business Services
+  First observed: 2024-05-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://zohlm7ahjwegcedoz7lrdrti7bvpofymcayotp744qhx6gjmxbuo2yid.onion/r/740afa51d3ef2239d90a1ef880601b7372b124bb
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

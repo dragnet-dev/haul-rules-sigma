@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-2915 — Recovery Inhibition (dispossessor)'
+id: e5405247-6ed1-58eb-8d76-0bf4d1836dfa
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with dispossessor ransomware.
+  Incident: dragnet-ransomware-2023-2915
+  Ransomware victim claim by dispossessor: virginpulse.com; country: US; sector: Healthcare
+  First observed: 2023-03-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://dispossessor.com/blogs/71
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-3754 — Ransomware C2 Communication'
+id: 70399763-3aef-5b75-84e2-2d827330f690
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-3754
+  Ransomware victim claim by lockbit3: chcm.us; country: US; sector: Healthcare
+  First observed: 2024-09-26.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lbb6ud2vyf23z4hw6fzskr5gru7eftbjfbd6yzra3hzuqqvjy63blqqd.onion//post/ZWbdohqcHq9AYUGH66f2bbbfc465c
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lbb6ud2vyf23z4hw6fzskr5gru7eftbjfbd6yzra3hzuqqvjy63blqqd.onion//post/ZWbdohqcHq9AYUGH66f2bbbfc465c'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

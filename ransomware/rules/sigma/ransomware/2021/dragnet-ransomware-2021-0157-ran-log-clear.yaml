@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0157 — Event Log Clearing (lockbit2)'
+id: c7cd8884-0e20-57f4-b6e8-ab74143ae9bd
+status: deprecated
+description: |
+  Detects event log clearing associated with lockbit2 ransomware.
+  Incident: dragnet-ransomware-2021-0157
+  Ransomware victim claim by lockbit2: totalfire.biz; sector: Consumer Services
+  First observed: 2021-11-29.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

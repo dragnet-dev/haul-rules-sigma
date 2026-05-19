@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-0829 — Event Log Clearing (interlock)'
+id: 73696e9f-d1fb-5cb2-bc72-c0854952c06a
+status: test
+description: |
+  Detects event log clearing associated with interlock ransomware.
+  Incident: dragnet-ransomware-2026-0829
+  Ransomware victim claim by interlock: Urban Edge Architecture; country: GB; sector: Construction
+  First observed: 2026-01-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://fbvrolfvadyhigunc5hfw5hextwqn4lvq7d5ieeivcizsxh3avn6dryd.onion/index.php?p=
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

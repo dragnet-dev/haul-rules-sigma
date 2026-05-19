@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-3900 — Ransomware C2 Communication'
+id: 3dd60ec4-580b-5904-a7d0-1d0095fb1e23
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-3900
+  Ransomware victim claim by handala: Hotam EC; country: EC; sector: Business Services
+  First observed: 2025-06-30.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://handala-hack.to/hotam-ec-hacked/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'https://handala-hack.to/hotam-ec-hacked/'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-1879 — Recovery Inhibition (anubis)'
+id: cc15ad13-4795-59ca-a055-fb4578600468
+status: test
+description: |
+  Detects boot/recovery disabling associated with anubis ransomware.
+  Incident: dragnet-ransomware-2026-1879
+  Ransomware victim claim by anubis: Rutherford Investment Company; country: US; sector: Financial Services
+  First observed: 2026-02-09.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://om6q4a6cyipxvt7ioudxt24cw4oqu4yodmqzl25mqd2hgllymrgu4aqd.onion/r/fyhkJZB5p2GAqlXlBrqEK2UIx1evfW1amzefCUSOchcuqeKNytasL9DSXDi4Vn14kjHPCragk6M7wG9PWgm0JXJEalNpenRz
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

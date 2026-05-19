@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1018 — Mass File Rename (qilin)'
+id: 0aa94c5b-e0cd-5ff8-86cc-fb2e1d953a32
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by qilin.
+  Incident: dragnet-ransomware-2025-1018
+  Ransomware victim claim by qilin: mossyoak.com; country: US; sector: Business Services
+  First observed: 2025-04-30.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/view?uuid=1a8f11e2-57fd-3508-adc8-243c411f4cf9
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

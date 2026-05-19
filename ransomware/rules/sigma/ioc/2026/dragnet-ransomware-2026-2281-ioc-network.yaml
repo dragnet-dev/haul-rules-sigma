@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2026-2281 — Ransomware C2 Communication'
+id: adaed752-117e-5eca-9aef-bab1b8bba56f
+status: stable
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2026-2281
+  Ransomware victim claim by payoutsking: Sofinter S.p.a; country: IT; sector: Business Services
+  First observed: 2026-02-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://payoutsgn7cy6uliwevdqspncjpfxpmzgirwl2au65la7rfs5x3qnbqd.onion/4qDCcB-uN4ha8-gzhW4u-84L3ij-k77sBe
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://payoutsgn7cy6uliwevdqspncjpfxpmzgirwl2au65la7rfs5x3qnbqd.onion/4qDCcB-uN4ha8-gzhW4u-84L3ij-k77sBe'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

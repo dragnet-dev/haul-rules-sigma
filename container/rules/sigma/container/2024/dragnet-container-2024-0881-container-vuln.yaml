@@ -1,0 +1,31 @@
+title: 'Dragnet [Container]: dragnet-container-2024-0881 — Vulnerable Base Image Pull'
+id: 140b8fb7-debd-5738-8708-818150edf13c
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-0881 (Tier 2, CVSS 9.8)
+  fish (aka fish-shell) 2.0.0 before 2.1.1 does not restrict access to the configuration service (aka fish_config), which allows remote attackers to execute arbitrary code via unspecified vectors, as demonstrated by set_prompt.
+  First observed: 2024-11-21.
+references:
+  - http://www.openwall.com/lists/oss-security/2014/04/28/4
+  - https://github.com/fish-shell/fish-shell/issues/1438
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

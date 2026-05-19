@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3975 — Event Log Clearing (lynx)'
+id: 9d2bf592-c9ad-5163-b840-1971c3f7d033
+status: experimental
+description: |
+  Detects event log clearing associated with lynx ransomware.
+  Incident: dragnet-ransomware-2025-3975
+  Ransomware victim claim by lynx: GRECA Asfaltos (grupogreca.com.br); country: BR; sector: Manufacturing
+  First observed: 2025-06-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lynxblogtwatfsrwj3oatpejwxk5bngqcd5f7s26iskagfu7ouaomjad.onion/leaks/68407abbe2d7f43c8f77debd
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

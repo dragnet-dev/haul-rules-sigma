@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6862 — Event Log Clearing (pear)'
+id: 2d740463-4c20-5676-9a58-2f1572d7fe2c
+status: experimental
+description: |
+  Detects event log clearing associated with pear ransomware.
+  Incident: dragnet-ransomware-2025-6862
+  Ransomware victim claim by pear: Hamilton Park; country: US; sector: Consumer Services
+  First observed: 2025-06-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://peargxn3oki34c4savcbcfqofjjwjnnyrlrbszfv6ujlx36mhrh57did.onion/Companies/hamiltonparkinteriors
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

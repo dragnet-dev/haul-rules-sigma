@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2079 — Recovery Inhibition (trinity)'
+id: 618029fb-94dd-5250-84e6-46ab121d9fec
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with trinity ransomware.
+  Incident: dragnet-ransomware-2025-2079
+  Ransomware victim claim by trinity: CNS; country: CN; sector: Not Found
+  First observed: 2025-03-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://txtggyng5euqkyzl2knbejwpm4rlq575jn2egqldu27osbqytrj6ruyd.onion/articles/13
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

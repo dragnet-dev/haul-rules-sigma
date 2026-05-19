@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-1209 — Recovery Inhibition (lockbit3)'
+id: 045cf0b4-2170-5363-87d6-a171b330b2f8
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with lockbit3 ransomware.
+  Incident: dragnet-ransomware-2022-1209
+  Ransomware victim claim by lockbit3: coopavegra.fi.cr; sector: Agriculture and Food Production
+  First observed: 2022-10-31.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

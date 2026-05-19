@@ -1,0 +1,29 @@
+title: 'Dragnet [Container]: dragnet-container-2025-0675 — Vulnerable Base Image Pull'
+id: 3d14bf2f-eaed-5252-b3f6-f59ad574c9f8
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2025-0675 (Tier 2, CVSS 9.8)
+  Command Injection vulnerability in Mathtex v.1.05 and before allows a remote attacker to execute arbitrary code via crafted string in application URL.
+  First observed: 2025-06-20.
+references:
+  - https://blog.yulun.ac.cn/posts/2023/fuzzing-mathtex/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:10'
+      - 'debian:11'
+      - 'debian:12'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

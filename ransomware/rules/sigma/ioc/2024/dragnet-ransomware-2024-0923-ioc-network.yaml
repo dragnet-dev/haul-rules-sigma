@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-0923 — Ransomware C2 Communication'
+id: 0218bc33-ad76-588f-b35b-ccfeb468509c
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-0923
+  Ransomware victim claim by ransomhub: cardiovirginia.com; country: US; sector: Healthcare
+  First observed: 2024-08-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ransomxifxwc5eteopdobynonjctkxxvap77yqifu2emfbecgbqdw6qd.onion/ba8e9bdc-529e-4fd5-bd57-8e2c268cff14/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://ransomxifxwc5eteopdobynonjctkxxvap77yqifu2emfbecgbqdw6qd.onion/ba8e9bdc-529e-4fd5-bd57-8e2c268cff14/'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

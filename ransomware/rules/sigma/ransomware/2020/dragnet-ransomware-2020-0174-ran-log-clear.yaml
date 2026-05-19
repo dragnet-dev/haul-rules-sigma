@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0174 — Event Log Clearing (sekhmet)'
+id: d1df3634-9e2b-55ba-93b7-d7a777e9c988
+status: deprecated
+description: |
+  Detects event log clearing associated with sekhmet ransomware.
+  Incident: dragnet-ransomware-2020-0174
+  Ransomware victim claim by sekhmet: SilPac; country: US; sector: Energy
+  First observed: 2020-06-20.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

@@ -1,0 +1,31 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-4739 — Recovery Inhibition (play)'
+id: aa35ec7d-fc7f-5b4e-b696-c8df66c8c297
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with play ransomware.
+  Incident: dragnet-ransomware-2024-4739
+  Associated with Play.
+  Ransomware victim claim by play: Legislative Bill Drafting Commission; country: US; sector: Public Sector
+  First observed: 2024-04-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://mbrlkbtq5jonaqkurjwmxftytyn2ethqvbxfu4rgjbkkknndqwae6byd.onion/topic.php?id=CV1lIlSmdZu0GI
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+  - dragnet.actor.play
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

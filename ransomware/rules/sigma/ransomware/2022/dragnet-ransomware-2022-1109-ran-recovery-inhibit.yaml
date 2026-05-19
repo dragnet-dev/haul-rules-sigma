@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-1109 — Recovery Inhibition (stormous)'
+id: 818b85a0-b6a6-5a18-bc70-ddcfd352b432
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with stormous ransomware.
+  Incident: dragnet-ransomware-2022-1109
+  Ransomware victim claim by stormous: A message to France; sector: Not Found
+  First observed: 2022-04-04.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-6211 — Ransomware C2 Communication'
+id: 82055fa0-cf78-5046-bfce-b1a164dc6554
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-6211
+  Ransomware victim claim by shinyhunters: HMH (hmhco.com); country: US; sector: Education
+  First observed: 2025-07-08.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://breachforums.hn//hmhco.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'https://breachforums.hn//hmhco.html'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3388 — Mass File Rename (cephalus)'
+id: c9d2486b-f76e-5da7-948d-443cad66d34d
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by cephalus.
+  Incident: dragnet-ransomware-2025-3388
+  Ransomware victim claim by cephalus: LPL Financial; country: US; sector: Financial Services
+  First observed: 2025-08-26.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://darkforums.st/Thread-Document-LPL-Financial-DATA-LEAK-I-FORGOT-THE-SIZE-BUT-ITS-HUGE
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

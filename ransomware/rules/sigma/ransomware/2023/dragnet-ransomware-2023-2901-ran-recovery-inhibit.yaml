@@ -1,0 +1,31 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-2901 — Recovery Inhibition (akira)'
+id: 590292c5-6aac-5253-9c33-ffbfb9963309
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with akira ransomware.
+  Incident: dragnet-ransomware-2023-2901
+  Associated with Akira.
+  Ransomware victim claim by akira: The City of Nassau Bay; sector: Public Sector
+  First observed: 2023-06-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://akiral2iz6a7qgd3ayp3l6yub7xx2uep76idk3u2kollpj5z3z636bad.onion/t/679b5fc6b472f01bf4ef9abbb97d4a3a
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+  - dragnet.actor.akira
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

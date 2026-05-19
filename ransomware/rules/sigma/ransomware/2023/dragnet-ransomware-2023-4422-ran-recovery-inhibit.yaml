@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4422 — Recovery Inhibition (noescape)'
+id: 6c52c923-118d-5d29-ac0a-5cec6203bd3e
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with noescape ransomware.
+  Incident: dragnet-ransomware-2023-4422
+  Ransomware victim claim by noescape: Fiocruz; country: BR; sector: Healthcare
+  First observed: 2023-08-18.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://noescapemsqxvizdxyl7f7rmg5cdjwp33pg2wpmiaaibilb4btwzttad.onion/post/99ec361e-4b72-4ad7-8b51-84d572bb04b7
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

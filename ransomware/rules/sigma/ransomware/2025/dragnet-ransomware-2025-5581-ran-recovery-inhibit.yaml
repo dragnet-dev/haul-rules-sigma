@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5581 — Recovery Inhibition (yurei)'
+id: ad612a66-4154-5415-841e-2c9a0c1ff91c
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with yurei ransomware.
+  Incident: dragnet-ransomware-2025-5581
+  Ransomware victim claim by yurei: noblecorp.net; country: CH; sector: Energy
+  First observed: 2025-09-09.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://fewcriet5rhoy66k6c4cyvb2pqrblxtx4mekj3s5l4jjt4t4kn4vheyd.onion/blog/11ac6b8c40ceefc19fdefe1df6e614ab9f8ba80dd5f38c78ec6bc90f22668cdc/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

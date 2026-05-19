@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2091 — Shadow Copy Deletion (worldleaks)'
+id: 289ac93a-ae84-5637-b3e0-0fb5b3bb8620
+status: test
+description: |
+  Detects shadow copy deletion commands associated with worldleaks ransomware.
+  Incident: dragnet-ransomware-2025-2091
+  Ransomware victim claim by worldleaks: Wavenet; country: GB; sector: Telecommunication
+  First observed: 2025-12-14.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://worldleaksartrjm3c6vasllvgacbi5u3mgzkluehrzhk2jz4taufuid.onion/companies/5982962779
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3322 — Mass File Rename (medusa)'
+id: e82b7460-3f5c-54db-ba39-e5b5c8ff49fc
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by medusa.
+  Incident: dragnet-ransomware-2025-3322
+  Ransomware victim claim by medusa: DeVita & Associates, Inc.; country: US; sector: Business Services
+  First observed: 2025-05-13.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://xfv4jzckytb4g3ckwemcny3ihv4i5p4lqzdpi624cxisu35my5fwi5qd.onion/detail?id=7348cfaf22b6354eeb2dd9b101b89a18
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

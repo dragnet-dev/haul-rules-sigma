@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-4348 — Recovery Inhibition (ransomhub)'
+id: 0ca1a969-4557-5891-8c52-b250ff080f48
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with ransomhub ransomware.
+  Incident: dragnet-ransomware-2024-4348
+  Ransomware victim claim by ransomhub: www.faithfc.org; country: US; sector: Not Found
+  First observed: 2024-08-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ransomxifxwc5eteopdobynonjctkxxvap77yqifu2emfbecgbqdw6qd.onion/ee8b302c-3f2c-41fe-9473-9b46779b3ac8/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

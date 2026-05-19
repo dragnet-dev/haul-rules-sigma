@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5123 — Event Log Clearing (alphv)'
+id: 4f85ee0e-9a07-5c3b-b5e5-ffbde0fd9917
+status: experimental
+description: |
+  Detects event log clearing associated with alphv ransomware.
+  Incident: dragnet-ransomware-2024-5123
+  Ransomware victim claim by alphv: Triella; country: CA; sector: Technology
+  First observed: 2024-01-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://alphvuzxyxv6ylumd2ngp46xzq3pw6zflomrghvxeuks6kklberrbmyd.onion/d2ba842b-eb1b-4d85-89e9-9378d7dae033
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

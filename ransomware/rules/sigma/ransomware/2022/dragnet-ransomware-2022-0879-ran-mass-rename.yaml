@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-0879 — Mass File Rename (hive)'
+id: 152be540-3197-5bd9-8865-9891294c196d
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by hive.
+  Incident: dragnet-ransomware-2022-0879
+  Ransomware victim claim by hive: Emil Frey; country: CH; sector: Manufacturing
+  First observed: 2022-02-25.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

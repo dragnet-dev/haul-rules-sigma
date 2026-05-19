@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-2268 — Recovery Inhibition (alphv)'
+id: 6fd68b5f-e3e5-51cc-a06b-04b7fd26c1d5
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with alphv ransomware.
+  Incident: dragnet-ransomware-2023-2268
+  Ransomware victim claim by alphv: Viking Therapeutics; sector: Healthcare
+  First observed: 2023-12-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://alphvmmm27o3abo3r2mlmjrpdmzle3rykajqc5xsj7j7ejksbpsa36ad.onion/8889f23f-552b-4069-8794-87ab07802789
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

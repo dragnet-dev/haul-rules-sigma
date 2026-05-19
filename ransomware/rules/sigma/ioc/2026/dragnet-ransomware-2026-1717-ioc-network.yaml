@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2026-1717 — Ransomware C2 Communication'
+id: 84dc46ec-2dc8-578a-b2dd-fc81266f0f27
+status: stable
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2026-1717
+  Ransomware victim claim by gunra: triotech.com.sg; country: SG; sector: Technology
+  First observed: 2026-04-08.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lgiil72vkmdtbc3qv4tyq6wedyjxqr2qd4ze7xl2cxgerdnymxj7soqd.onion/company/-jkHgiHpWSP6PRVqrFl4a
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lgiil72vkmdtbc3qv4tyq6wedyjxqr2qd4ze7xl2cxgerdnymxj7soqd.onion/company/-jkHgiHpWSP6PRVqrFl4a'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

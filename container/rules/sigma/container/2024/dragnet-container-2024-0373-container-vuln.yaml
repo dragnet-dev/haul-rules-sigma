@@ -1,0 +1,38 @@
+title: 'Dragnet [Container]: dragnet-container-2024-0373 — Vulnerable Base Image Pull'
+id: 85f7aabe-ddb0-532d-a242-edfe5cf609ed
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-0373 (Tier 2, CVSS 9.8)
+  The R programming language’s default package manager CRAN is affected by a path traversal vulnerability that can lead to server compromise. This vulnerability affects packages installed via the R CMD install cli command or the install.packages() function from the interpreter. Update to version 4.0.3
+  First observed: 2024-11-21.
+references:
+  - https://labs.bishopfox.com/advisories/cran-version-4.0.2
+  - https://security.gentoo.org/glsa/202401-07
+  - https://www.cve.org/CVERecord?id=CVE-2020-27637
+  - https://www.r-project.org/foundation/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:10'
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+      - 'debian:9'
+      - 'ubuntu:16.04-ESM'
+      - 'ubuntu:18.04-ESM'
+      - 'ubuntu:20.04-ESM'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

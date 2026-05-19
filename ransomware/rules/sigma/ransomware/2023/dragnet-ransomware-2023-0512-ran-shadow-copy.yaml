@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0512 — Shadow Copy Deletion (clop)'
+id: 536de620-bfb8-5567-b9f7-95f51e3c104d
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with clop ransomware.
+  Incident: dragnet-ransomware-2023-0512
+  Ransomware victim claim by clop: CINEPLEX.COM; sector: Hospitality and Tourism
+  First observed: 2023-03-23.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://santat7kpllt6iyvqbr7q4amdv6dzrh6paatvyrzl7ry3zm72zigf4ad.onion/cineplex-com
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

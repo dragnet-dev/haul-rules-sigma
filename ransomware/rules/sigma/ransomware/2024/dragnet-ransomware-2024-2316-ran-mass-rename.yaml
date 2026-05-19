@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2316 — Mass File Rename (cactus)'
+id: 92ce99fd-0b43-525b-93e3-2c5d486d715b
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by cactus.
+  Incident: dragnet-ransomware-2024-2316
+  Ransomware victim claim by cactus: hydmech.com; country: CA; sector: Manufacturing
+  First observed: 2024-06-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://cactusbloguuodvqjmnzlwetjlpj6aggc6iocwhuupb47laukux7ckid.onion/posts/HYDMECH
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4445 — Recovery Inhibition (lynx)'
+id: 5e8d4220-3cf5-5f73-91d5-1268978bd6e6
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with lynx ransomware.
+  Incident: dragnet-ransomware-2025-4445
+  Ransomware victim claim by lynx: motorsport-de-la-capitale; country: CA; sector: Consumer Services
+  First observed: 2025-06-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lynxchatly4zludmhmi75jrwhycnoqvkxb4prohxmyzf4euf5gjxroad.onion/leaks/685a9dfee2d7f43c8f0df697
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

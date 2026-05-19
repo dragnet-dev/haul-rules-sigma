@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-4550 — Ransomware C2 Communication'
+id: 5ed656be-0340-587b-a08a-22a6a1339c63
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-4550
+  Ransomware victim claim by darkvault: oexpress.id; country: ID; sector: Transportation/Logistics
+  First observed: 2024-06-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://mdhby62yvvg6sd5jmx5gsyucs7ynb5j45lvvdh4dsymg43puitu7tfid.onion//post/OTJkNjE5OGE5NzRjNzdlMWVmMzMwMD
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://mdhby62yvvg6sd5jmx5gsyucs7ynb5j45lvvdh4dsymg43puitu7tfid.onion//post/OTJkNjE5OGE5NzRjNzdlMWVmMzMwMD'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

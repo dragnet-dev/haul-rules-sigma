@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0535 — Mass File Rename (interlock)'
+id: aeec8c12-216e-569d-9260-44906e893da2
+status: test
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by interlock.
+  Incident: dragnet-ransomware-2025-0535
+  Ransomware victim claim by interlock: Hunneman; country: US; sector: Business Services
+  First observed: 2025-12-31.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://mpyeixjqjufjki2qg7dutvxk6tjjzv2jf7qc63bljzfqrtbjcdktziqd.onion/index.php?p=
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

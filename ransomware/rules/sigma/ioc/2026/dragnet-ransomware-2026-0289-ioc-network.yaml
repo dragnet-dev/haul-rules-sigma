@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2026-0289 — Ransomware C2 Communication'
+id: dcfde7f9-00da-5da3-93e8-d11060fe881e
+status: stable
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2026-0289
+  Ransomware victim claim by lamashtu: Jesin Group; country: MY; sector: Construction
+  First observed: 2026-04-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lamashtux5j74mcm7lwwgn5yrvuwtrpxjoyendif3v3hrztjesfoyayd.onion/post/33b6727db6b8cd5e8d214d8ab4574368
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lamashtux5j74mcm7lwwgn5yrvuwtrpxjoyendif3v3hrztjesfoyayd.onion/post/33b6727db6b8cd5e8d214d8ab4574368'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

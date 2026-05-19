@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0060 — Recovery Inhibition (everest)'
+id: 4dea543b-1093-595a-a855-cc3cc1efbf73
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with everest ransomware.
+  Incident: dragnet-ransomware-2021-0060
+  Ransomware victim claim by everest: Steel Projects; sector: Manufacturing
+  First observed: 2021-09-17.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

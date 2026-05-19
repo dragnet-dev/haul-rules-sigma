@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5009 — Recovery Inhibition (cephalus)'
+id: 3b2d411c-5a1e-52c1-b712-4872d7869df6
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with cephalus ransomware.
+  Incident: dragnet-ransomware-2025-5009
+  Ransomware victim claim by cephalus: Lee & Associates; country: US; sector: Business Services
+  First observed: 2025-08-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://darkforums.st/Thread-Lee-Associates-DATA-LEAK-TB
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

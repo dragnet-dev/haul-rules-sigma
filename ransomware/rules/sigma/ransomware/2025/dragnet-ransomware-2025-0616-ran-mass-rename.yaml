@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0616 — Mass File Rename (beast)'
+id: 4e327eae-d248-52f6-9636-28f26155068f
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by beast.
+  Incident: dragnet-ransomware-2025-0616
+  Ransomware victim claim by beast: IQgistics; country: US; sector: Technology
+  First observed: 2025-08-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://beast6azu4f7fxjakiayhnssybibsgjnmy77a6duufqw5afjzfjhzuqd.onion/card/iqgistics
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-5273 — Recovery Inhibition (lockbit3)'
+id: 79479b53-e4ae-57f1-9fba-2e253be394e3
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with lockbit3 ransomware.
+  Incident: dragnet-ransomware-2023-5273
+  Ransomware victim claim by lockbit3: yateemgroup.com; sector: Consumer Services
+  First observed: 2023-04-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lockbitapt5x4zkjbcqmz6frdhecqqgadevyiwqxukksspnlidyvd7qd.onion/post/YyrBUvutHWcN6BAX64461b56c62d5
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

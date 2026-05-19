@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0527 — Recovery Inhibition (meow)'
+id: e967a88e-6b71-52bd-b713-26b76af319a5
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with meow ransomware.
+  Incident: dragnet-ransomware-2024-0527
+  Ransomware victim claim by meow: FatBoy Cellular; country: US; sector: Business Services
+  First observed: 2024-08-07.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://meow6xanhzfci2gbkn3lmbqq7xjjufskkdfocqdngt3ltvzgqpsg5mid.onion/product/41
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

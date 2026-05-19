@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0820 — Recovery Inhibition (alphv)'
+id: 09e9b9a8-ac47-5a02-a1fb-ff937faa6f7c
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with alphv ransomware.
+  Incident: dragnet-ransomware-2021-0820
+  Ransomware victim claim by alphv: Hunter Douglas | hunterdouglas.com.au; sector: Manufacturing
+  First observed: 2021-12-30.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5036 — Recovery Inhibition (nightspire)'
+id: a9a44055-1591-5696-8229-2aac0fc1dbfb
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with nightspire ransomware.
+  Incident: dragnet-ransomware-2025-5036
+  Ransomware victim claim by nightspire: KHAZMODAN STUDIOS; country: KR; sector: Consumer Services
+  First observed: 2025-03-22.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

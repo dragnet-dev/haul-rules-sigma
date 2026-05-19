@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-0714 — Ransomware C2 Communication'
+id: eb66b94d-9fb9-5bd5-9c9b-b30661bc58a3
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-0714
+  Ransomware victim claim by killsec: rudrakshahospitals.com; country: IN; sector: Healthcare
+  First observed: 2024-10-14.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://kill432ltnkqvaqntbalnsgojqqs2wz4lhnamrqjg66tq6fuvcztilyd.onion/post/XVtDAlg9xqY98ccZ2FbR9fBxV
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://kill432ltnkqvaqntbalnsgojqqs2wz4lhnamrqjg66tq6fuvcztilyd.onion/post/XVtDAlg9xqY98ccZ2FbR9fBxV'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-4701 — Ransomware C2 Communication'
+id: ca379cf6-6dcb-5046-9154-fc9da80819ce
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-4701
+  Ransomware victim claim by cephalus: K Strategies Marketing and Public Relations; country: US; sector: Business Services
+  First observed: 2025-08-26.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://darkforums.st/Thread-Document-K-Strategies-Marketing-and-Public-Relations-LEAK-900-GB
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'https://darkforums.st/Thread-Document-K-Strategies-Marketing-and-Public-Relations-LEAK-900-GB'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

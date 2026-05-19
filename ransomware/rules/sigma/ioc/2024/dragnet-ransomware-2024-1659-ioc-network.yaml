@@ -1,0 +1,31 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-1659 — Ransomware C2 Communication'
+id: a98d2f55-51d5-5a5b-bee0-08dffc305c8e
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-1659
+  Associated with Turla.
+  Ransomware victim claim by ransomhub: kryptonresources.com; country: CA; sector: Energy
+  First observed: 2024-09-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ransomxifxwc5eteopdobynonjctkxxvap77yqifu2emfbecgbqdw6qd.onion/2c803c3a-62fa-445d-898f-63e3fa1f4c65/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+  - dragnet.actor.turla
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://ransomxifxwc5eteopdobynonjctkxxvap77yqifu2emfbecgbqdw6qd.onion/2c803c3a-62fa-445d-898f-63e3fa1f4c65/'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

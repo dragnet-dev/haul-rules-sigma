@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-4397 — Ransomware C2 Communication'
+id: 684a8ccb-9266-5c3b-b0d0-4bd39b12d619
+status: test
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-4397
+  Ransomware victim claim by lockbit5: bwk-berlin.de; country: DE; sector: Education
+  First observed: 2025-12-26.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lockbitapt67g6rwzjbcxnww5efpg4qok6vpfeth7wx3okj52ks4wtad.onion/post/97e81c6e1472cef5685932bcb5f088da
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lockbitapt67g6rwzjbcxnww5efpg4qok6vpfeth7wx3okj52ks4wtad.onion/post/97e81c6e1472cef5685932bcb5f088da'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

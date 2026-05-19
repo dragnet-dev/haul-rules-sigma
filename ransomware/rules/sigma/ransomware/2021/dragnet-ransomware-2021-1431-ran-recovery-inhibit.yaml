@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1431 — Recovery Inhibition (snatch)'
+id: e60fe605-c84f-5620-b4f6-3a2d58f889e5
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with snatch ransomware.
+  Incident: dragnet-ransomware-2021-1431
+  Ransomware victim claim by snatch: Fittingbox; country: FR; sector: Technology
+  First observed: 2021-12-07.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

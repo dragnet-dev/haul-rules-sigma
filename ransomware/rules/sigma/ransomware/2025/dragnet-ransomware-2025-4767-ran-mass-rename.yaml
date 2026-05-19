@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4767 — Mass File Rename (sinobi)'
+id: 405daab6-e028-5e99-9576-93b1238af5b6
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by sinobi.
+  Incident: dragnet-ransomware-2025-4767
+  Ransomware victim claim by sinobi: WarmBlue; country: GB; sector: Not Found
+  First observed: 2025-10-28.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://sinobi23i75c3znmqqxxyuzqvhxnjsar7actgvc4nqeuhgcn5yvz3zqd.onion/leaks/69013a0888b6823fa2fa33d0
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

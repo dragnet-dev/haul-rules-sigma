@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-1371 — Mass File Rename (fog)'
+id: 0ca727f9-bb82-5c8f-b447-46c57a919bfb
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by fog.
+  Incident: dragnet-ransomware-2024-1371
+  Ransomware victim claim by fog: Central Pennsylvania Food Bank; country: US; sector: Agriculture and Food Production
+  First observed: 2024-10-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://xbkv2qey6u3gd3qxcojynrt4h5sgrhkar6whuo74wo63hijnn677jnyd.onion/posts/670e83ffffa6d0708588b7a6/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-1009 — Recovery Inhibition (fog)'
+id: cea907d1-95ee-5cd9-9c4a-bbfdb57fc5d5
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with fog ransomware.
+  Incident: dragnet-ransomware-2024-1009
+  Ransomware victim claim by fog: Weld Racing (weldracing.com); country: US; sector: Manufacturing
+  First observed: 2024-11-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://xbkv2qey6u3gd3qxcojynrt4h5sgrhkar6whuo74wo63hijnn677jnyd.onion/posts/6749a0b1ffa6d0708588cba5/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

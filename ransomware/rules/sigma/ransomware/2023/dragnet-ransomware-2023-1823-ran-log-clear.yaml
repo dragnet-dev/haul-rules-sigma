@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1823 — Event Log Clearing (alphv)'
+id: 05044739-9aed-5c10-8feb-1d1955a81870
+status: experimental
+description: |
+  Detects event log clearing associated with alphv ransomware.
+  Incident: dragnet-ransomware-2023-1823
+  Ransomware victim claim by alphv: Mutual Underwriters; sector: Financial Services
+  First observed: 2023-10-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://alphvmmm27o3abo3r2mlmjrpdmzle3rykajqc5xsj7j7ejksbpsa36ad.onion/fab1817a-0925-4837-b799-7fb95ba3e4fa
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

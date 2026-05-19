@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0228 — Recovery Inhibition (incransom)'
+id: 307be0c2-2c63-5e49-989a-88968ba617ec
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with incransom ransomware.
+  Incident: dragnet-ransomware-2024-0228
+  Ransomware victim claim by incransom: Electric Mirror; country: US; sector: Manufacturing
+  First observed: 2024-05-06.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://incblog6qu4y4mm4zvw5nrmue6qbwtgjsxpw6b7ixzssu36tsajldoad.onion/blog/disclosures/66386bcbb24e38251bbbc1de
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4018 — Event Log Clearing (8base)'
+id: 89c54036-0da1-5923-b09c-32a2fd0e0bbb
+status: experimental
+description: |
+  Detects event log clearing associated with 8base ransomware.
+  Incident: dragnet-ransomware-2025-4018
+  Ransomware victim claim by 8base: FIO; country: FR; sector: Technology
+  First observed: 2025-01-23.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://xfycpauc22t5jsmfjcaz2oydrrrfy75zuk6chr32664bsscq4fgyaaqd.onion/company/7890515
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4369 — Recovery Inhibition (blackbasta)'
+id: d54a8520-18b9-51ec-a461-0269f6644170
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with blackbasta ransomware.
+  Incident: dragnet-ransomware-2023-4369
+  Ransomware victim claim by blackbasta: Kittle’s; country: IN; sector: Consumer Services
+  First observed: 2023-03-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://stniiomyjliimcgkvdszvgen3eaaoz55hreqqx6o77yvmpwt7gklffqd.onion/?id=KITTLES_2
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

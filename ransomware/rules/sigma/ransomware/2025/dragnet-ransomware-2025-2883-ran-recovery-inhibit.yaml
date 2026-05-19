@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2883 — Recovery Inhibition (pear)'
+id: cc991e36-5ba4-5ce5-8bf4-c1d0530d3c78
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with pear ransomware.
+  Incident: dragnet-ransomware-2025-2883
+  Ransomware victim claim by pear: Expert MRI; country: US; sector: Healthcare
+  First observed: 2025-09-02.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://pearsmob5sn44ismokiusuld34pnfwi6ctgin3qbvonpoob4lh3rmtqd.onion/Companies/expertmri
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

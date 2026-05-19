@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-3151 — Recovery Inhibition (genesis)'
+id: c6f37ac2-1794-593c-8729-df016d5813df
+status: test
+description: |
+  Detects boot/recovery disabling associated with genesis ransomware.
+  Incident: dragnet-ransomware-2026-3151
+  Ransomware victim claim by genesis: Fong Ilagan, LLP; country: US; sector: Business Services
+  First observed: 2026-02-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://genesis6ixpb5mcy4kudybtw5op2wqlrkocfogbnenz3c647ibqixiad.onion/55fa78332ad7de2c6669/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

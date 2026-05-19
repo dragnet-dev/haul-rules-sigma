@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0717 — Recovery Inhibition (0mega)'
+id: 5146a3f6-71c0-5267-90ee-1495d7783f83
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with 0mega ransomware.
+  Incident: dragnet-ransomware-2023-0717
+  Ransomware victim claim by 0mega: Rotorcraft Leasing Company; sector: Transportation/Logistics
+  First observed: 2023-10-17.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

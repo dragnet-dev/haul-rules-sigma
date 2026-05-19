@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2600 — Recovery Inhibition (nitrogen)'
+id: e025ea16-0cdb-5b19-a529-8f28f2ca05a5
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with nitrogen ransomware.
+  Incident: dragnet-ransomware-2024-2600
+  Ransomware victim claim by nitrogen: Research Electronics International; country: US; sector: Technology
+  First observed: 2024-07-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nitrogenczslprh3xyw6lh5xyjvmsz7ciljoqxxknd7uymkfetfhgvqd.onion/postrei
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

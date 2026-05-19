@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-1362 — Ransomware C2 Communication'
+id: 8f83003f-a277-588f-a7f6-23316578e63e
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-1362
+  Ransomware victim claim by darkvault: hawkremote2.com; country: US; sector: Technology
+  First observed: 2024-02-08.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://mdhby62yvvg6sd5jmx5gsyucs7ynb5j45lvvdh4dsymg43puitu7tfid.onion//post/MDBkZjBjNGM5YmQ1NzU2YjAxMDAwOT
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://mdhby62yvvg6sd5jmx5gsyucs7ynb5j45lvvdh4dsymg43puitu7tfid.onion//post/MDBkZjBjNGM5YmQ1NzU2YjAxMDAwOT'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3926 — Mass File Rename (qilin)'
+id: bc2b71de-cd89-5d04-b558-99b70467c385
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by qilin.
+  Incident: dragnet-ransomware-2025-3926
+  Ransomware victim claim by qilin: Human and Bridge Asset Management; country: JP; sector: Financial Services
+  First observed: 2025-09-14.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/view?uuid=731d6706-62b7-3623-97e3-5ae6ec1ee332
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

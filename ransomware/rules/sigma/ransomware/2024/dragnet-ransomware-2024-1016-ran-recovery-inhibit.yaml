@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-1016 — Recovery Inhibition (dragonransomware)'
+id: c70be7ee-0a70-51ae-b5e7-c36f9c3f77d3
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with dragonransomware ransomware.
+  Incident: dragnet-ransomware-2024-1016
+  Ransomware victim claim by dragonransomware: oakenglish.com; country: CN; sector: Education
+  First observed: 2024-12-06.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://t.me/DragonRansom/421
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

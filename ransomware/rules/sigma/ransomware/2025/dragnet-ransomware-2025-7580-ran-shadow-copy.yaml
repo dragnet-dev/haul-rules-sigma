@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7580 — Shadow Copy Deletion (GDLockerSec)'
+id: cad6b463-860b-59d6-8c57-e273c9f45206
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with GDLockerSec ransomware.
+  Incident: dragnet-ransomware-2025-7580
+  Ransomware victim claim by GDLockerSec: www.fgse.cu.edu.eg; country: EG; sector: Education
+  First observed: 2025-01-26.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://igziys7pres4644kbrtakxfbrwkyld64nxk5prpkgtcexwrrjgtfjzyd.onion/304bddb7-1ae9-48d1-b5d1-370e4a308575/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

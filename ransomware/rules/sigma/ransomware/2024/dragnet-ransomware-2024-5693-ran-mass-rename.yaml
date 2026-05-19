@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5693 — Mass File Rename (blacklock)'
+id: 17b60e9f-6984-57a9-9c4e-6cdf969bf5d3
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by blacklock.
+  Incident: dragnet-ransomware-2024-5693
+  Ransomware victim claim by blacklock: D&G Enviro-Group; country: CA; sector: Manufacturing
+  First observed: 2024-12-28.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://zdkexsh2e7yihw5uhg5hpsgq3dois2m5je7lzfagij2y6iw5ptl35gyd.onion/Data_Download/dgenviro.com
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

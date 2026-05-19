@@ -1,0 +1,28 @@
+title: 'Dragnet [Container]: dragnet-container-2024-0934 — Vulnerable Base Image Pull'
+id: 8692a528-e463-5db2-bbb9-ea5185c4a498
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-0934 (Tier 2, CVSS 9.8)
+  Information Exposure vulnerability in eXtplorer makes the /usr/ and /etc/extplorer/ system directories world-accessible over HTTP. Introduced in the Makefile patch file debian/patches/debian-changes-2.1.0b6+dfsg-1 or debian/patches/adds-a-makefile.patch, this can lead to data leakage, information disclosure and potentially remote code execution on the web server. This issue affects all versions of eXtplorer in Ubuntu and Debian
+  First observed: 2024-11-21.
+references:
+  - https://launchpad.net/bugs/1822013
+  - https://www.cve.org/CVERecord?id=CVE-2019-7305
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'ubuntu:16.04-ESM'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

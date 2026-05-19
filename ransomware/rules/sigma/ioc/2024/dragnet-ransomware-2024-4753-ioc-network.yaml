@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-4753 — Ransomware C2 Communication'
+id: 506b7a06-54f7-5644-96da-af2b17b01642
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-4753
+  Ransomware victim claim by medusa: Maxeon; country: SG; sector: Energy
+  First observed: 2024-11-18.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://cx5u7zxbvrfyoj6ughw76oa264ucuuizmmzypwum6ear7pct4yc723qd.onion/detail?id=13c0c1bc1d35c87f899c151c7cfb3480
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://cx5u7zxbvrfyoj6ughw76oa264ucuuizmmzypwum6ear7pct4yc723qd.onion/detail?id=13c0c1bc1d35c87f899c151c7cfb3480'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

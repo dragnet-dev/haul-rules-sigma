@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5897 — Recovery Inhibition (ciphbit)'
+id: 14c6b74f-3ada-5621-8103-01acbd344028
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with ciphbit ransomware.
+  Incident: dragnet-ransomware-2025-5897
+  Ransomware victim claim by ciphbit: Corneilhan; country: FR; sector: Agriculture and Food Production
+  First observed: 2025-10-20.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

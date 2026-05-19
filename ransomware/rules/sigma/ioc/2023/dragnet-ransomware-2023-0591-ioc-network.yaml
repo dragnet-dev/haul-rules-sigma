@@ -1,0 +1,31 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-0591 — Ransomware C2 Communication'
+id: be144f01-c1c7-59ee-b235-13d7180b7203
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-0591
+  Associated with Play.
+  Ransomware victim claim by play: PKF Antares; country: CA; sector: Business Services
+  First observed: 2023-04-09.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://mbrlkbtq5jonaqkurjwmxftytyn2ethqvbxfu4rgjbkkknndqwae6byd.onion/topic.php?id=Zm0jdyCmHyOawo
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+  - dragnet.actor.play
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://mbrlkbtq5jonaqkurjwmxftytyn2ethqvbxfu4rgjbkkknndqwae6byd.onion/topic.php?id=Zm0jdyCmHyOawo'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

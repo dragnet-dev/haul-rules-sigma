@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0545 — Recovery Inhibition (midas)'
+id: 5c7d42ae-27ed-5dd2-ae3a-178df4da0306
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with midas ransomware.
+  Incident: dragnet-ransomware-2021-0545
+  Ransomware victim claim by midas: EPOWER INTERNATIONAL ( SHANGHAl )CO.,LTD.; sector: Energy
+  First observed: 2021-11-29.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

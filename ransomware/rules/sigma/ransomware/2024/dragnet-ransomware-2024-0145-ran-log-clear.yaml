@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0145 — Event Log Clearing (medusa)'
+id: 6ba7ab18-178a-5f01-a728-4ec85306400d
+status: experimental
+description: |
+  Detects event log clearing associated with medusa ransomware.
+  Incident: dragnet-ransomware-2024-0145
+  Ransomware victim claim by medusa: Suburban Surgical Care Specialists; country: US; sector: Healthcare
+  First observed: 2024-03-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://medusaxko7jxtrojdkxo66j7ck4q5tgktf7uqsqyfry4ebnxlcbkccyd.onion/detail?id=fd708848ecd94fbbda63b9a3d041fb9e
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

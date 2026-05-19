@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5253 — Event Log Clearing (ransomhouse)'
+id: c66b4d5c-2c33-55f5-81a1-6749c09b0f08
+status: experimental
+description: |
+  Detects event log clearing associated with ransomhouse ransomware.
+  Incident: dragnet-ransomware-2024-5253
+  Ransomware victim claim by ransomhouse: Berge Bulk; country: US; sector: Transportation/Logistics
+  First observed: 2024-04-18.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://zohlm7ahjwegcedoz7lrdrti7bvpofymcayotp744qhx6gjmxbuo2yid.onion/r/7b0cfdcbb0081d3d83367619cbbd39806cb3118b
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

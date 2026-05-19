@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2309 — Recovery Inhibition (abyss)'
+id: 5f5deed8-2ae5-5a88-801a-23924e04ac45
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with abyss ransomware.
+  Incident: dragnet-ransomware-2024-2309
+  Ransomware victim claim by abyss: malca-amit.com; country: IL; sector: Transportation/Logistics
+  First observed: 2024-06-18.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0054 — Event Log Clearing (ransomhub)'
+id: 688634bf-9cd2-5aeb-9426-511dc268a9f0
+status: experimental
+description: |
+  Detects event log clearing associated with ransomhub ransomware.
+  Incident: dragnet-ransomware-2024-0054
+  Ransomware victim claim by ransomhub: Benthanh Group; country: VN; sector: Hospitality and Tourism
+  First observed: 2024-02-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ransomxifxwc5eteopdobynonjctkxxvap77yqifu2emfbecgbqdw6qd.onion/4e6756b5-6994-4ed4-8583-3587fd38020d/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

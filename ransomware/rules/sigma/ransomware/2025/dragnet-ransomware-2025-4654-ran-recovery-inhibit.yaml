@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4654 — Recovery Inhibition (dragonforce)'
+id: e16a2547-ab7b-5e9a-93d8-25a46808b013
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with dragonforce ransomware.
+  Incident: dragnet-ransomware-2025-4654
+  Ransomware victim claim by dragonforce: JCC Rockland; country: US; sector: Education
+  First observed: 2025-07-02.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://z3wqggtxft7id3ibr7srivv5gjof5fwg76slewnzwwakjuf3nlhukdid.onion/blog/?post_uuid=4d26296c-31be-45d0-be6b-807ac461b8aa
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

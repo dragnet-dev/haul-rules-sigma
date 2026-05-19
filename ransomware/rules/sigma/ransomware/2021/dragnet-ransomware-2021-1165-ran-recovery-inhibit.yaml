@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1165 — Recovery Inhibition (mosesstaff)'
+id: dafb4b28-4e9f-5196-a0db-94faa816d44d
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with mosesstaff ransomware.
+  Incident: dragnet-ransomware-2021-1165
+  Ransomware victim claim by mosesstaff: H.G.M Engineering; sector: Manufacturing
+  First observed: 2021-12-18.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

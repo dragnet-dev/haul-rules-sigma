@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2022-0240 — Ransomware C2 Communication'
+id: 3244af54-dcad-58bd-83ac-9185f13df0bf
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2022-0240
+  Ransomware victim claim by alphv: nobilityrcmcom / altapartnersllccom / MFASTcom / MSBSbiz sym / elitemedicalbillcom; sector: Business Services
+  First observed: 2022-11-07.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://alphvmmm27o3abo3r2mlmjrpdmzle3rykajqc5xsj7j7ejksbpsa36ad.onion/595caab2-debe-4fb5-b3b0-15302c9bd67d
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://alphvmmm27o3abo3r2mlmjrpdmzle3rykajqc5xsj7j7ejksbpsa36ad.onion/595caab2-debe-4fb5-b3b0-15302c9bd67d'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Container]: dragnet-container-2026-2989 — Vulnerable Base Image Pull'
+id: cd0fe116-e7b7-5cd6-9869-af63c9d4f815
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-2989 (Tier 2, CVSS 9.3)
+  libavcodec/alsdec.c in FFmpeg before 1.0.4 allows remote attackers to have an unspecified impact via a crafted block length, which triggers an out-of-bounds write.
+  First observed: 2026-04-29.
+references:
+  - http://git.videolan.org/?p=ffmpeg.git%3Ba=commit%3Bh=0ceca269b66ec12a23bf0907bd2c220513cdbf16
+  - http://git.videolan.org/?p=ffmpeg.git%3Ba=commitdiff%3Bh=6df0d3e2916c223dbe4262bf1b876dff1cb3f980
+  - http://www.debian.org/security/2014/dsa-2855
+  - http://www.ffmpeg.org/security.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:7'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

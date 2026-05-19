@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4067 — Mass File Rename (play)'
+id: 235dd7c9-815f-54a2-b634-b9e455167583
+status: test
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by play.
+  Incident: dragnet-ransomware-2025-4067
+  Associated with Play.
+  Ransomware victim claim by play: Fairgrove Oil; country: US; sector: Energy
+  First observed: 2025-11-25.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://k7kg3jqxang3wh7hnmaiokchk7qoebupfgoik6rha6mjpzwupwtj25yd.onion/topic.php?id=rOH9oohwbkN2V
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+  - dragnet.actor.play
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0867 — Mass File Rename (trigona)'
+id: 684ce82d-540d-5304-b2d8-12b88163a335
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by trigona.
+  Incident: dragnet-ransomware-2023-0867
+  Ransomware victim claim by trigona: Treadwell, Tamplin & Company, Certified Public Accountants, Madison, GA; sector: Financial Services
+  First observed: 2023-04-18.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://6n5tfadusp4sarzuxntz34q4ohspiaya2mc6aw6uhlusfqfsdomavyyd.onion/leak/9
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

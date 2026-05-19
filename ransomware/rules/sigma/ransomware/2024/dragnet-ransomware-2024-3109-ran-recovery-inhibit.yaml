@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3109 — Recovery Inhibition (hunters)'
+id: a08c0f43-240a-56e5-8a19-df6b48f5da8c
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with hunters ransomware.
+  Incident: dragnet-ransomware-2024-3109
+  Ransomware victim claim by hunters: Navitas Semiconductor; country: IE; sector: Technology
+  First observed: 2024-08-30.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://hunters55rdxciehoqzwv7vgyv6nt37tbwax2reroyzxhou7my5ejyid.onion/companies/2354341879
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

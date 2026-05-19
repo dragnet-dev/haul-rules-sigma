@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1198 — Mass File Rename (akira)'
+id: 9a3a5b85-d358-570e-a4c6-e2f95bbf42cc
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by akira.
+  Incident: dragnet-ransomware-2025-1198
+  Associated with Akira.
+  Ransomware victim claim by akira: JFGV.ca; country: CA; sector: Not Found
+  First observed: 2025-01-31.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+  - dragnet.actor.akira
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

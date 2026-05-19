@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2057 — Recovery Inhibition (nightspire)'
+id: c2cf6f46-43a6-5144-ba74-2d2c2681682c
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with nightspire ransomware.
+  Incident: dragnet-ransomware-2026-2057
+  Ransomware victim claim by nightspire: C**U*O Co., Ltd; country: JP; sector: Not Found
+  First observed: 2026-02-05.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-1443 — Shadow Copy Deletion (akira)'
+id: 77f54ccd-f37e-5bee-86df-c1ff58fbff11
+status: deprecated
+description: |
+  Detects shadow copy deletion commands associated with akira ransomware.
+  Incident: dragnet-ransomware-2026-1443
+  Associated with Akira.
+  Ransomware victim claim by akira: MN Health Insurance Network; country: US; sector: Healthcare
+  First observed: 2026-04-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+  - dragnet.actor.akira
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

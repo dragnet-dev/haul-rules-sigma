@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-5436 — Ransomware C2 Communication'
+id: ac1a3da1-9cb4-5139-bcd2-209e5d3904c3
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-5436
+  Ransomware victim claim by lynx: salamanderresort.com; country: US; sector: Hospitality and Tourism
+  First observed: 2025-07-10.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lynxblogco7r37jt7p5wrmfxzqze7ghxw6rihzkqc455qluacwotciyd.onion/leaks/6882bbd8cc2d2d4e68e799f4
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lynxblogco7r37jt7p5wrmfxzqze7ghxw6rihzkqc455qluacwotciyd.onion/leaks/6882bbd8cc2d2d4e68e799f4'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2442 — Mass File Rename (lockbit3)'
+id: 25538752-4a6e-50ae-b9df-21e1aa623379
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by lockbit3.
+  Incident: dragnet-ransomware-2024-2442
+  Ransomware victim claim by lockbit3: hotel-ostella.com; country: FR; sector: Hospitality and Tourism
+  First observed: 2024-04-28.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lockbit3g3ohd3katajf6zaehxz4h4cnhmz5t735zpltywhwpc6oy3id.onion/post/pa9P3ZeiXyEfcloI663cb1941d03f
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

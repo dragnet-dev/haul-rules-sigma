@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-3101 — Recovery Inhibition (hive)'
+id: c6f28fc4-06a4-5697-8764-9d94cf7c53d1
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with hive ransomware.
+  Incident: dragnet-ransomware-2022-3101
+  Ransomware victim claim by hive: Dayton T. Brown, Inc; sector: Manufacturing
+  First observed: 2022-03-22.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

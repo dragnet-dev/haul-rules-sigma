@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4392 — Mass File Rename (bianlian)'
+id: c903b5e5-9553-5902-a49d-49f362b31748
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by bianlian.
+  Incident: dragnet-ransomware-2023-4392
+  Ransomware victim claim by bianlian: Suburban Laboratories; sector: Business Services
+  First observed: 2023-02-17.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

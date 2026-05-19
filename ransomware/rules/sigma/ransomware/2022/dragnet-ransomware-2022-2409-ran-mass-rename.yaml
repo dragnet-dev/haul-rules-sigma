@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2409 — Mass File Rename (conti)'
+id: 8d070e7c-7122-5cc0-9c87-b99a7c2da5d0
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by conti.
+  Incident: dragnet-ransomware-2022-2409
+  Ransomware victim claim by conti: SLH; sector: Hospitality and Tourism
+  First observed: 2022-04-03.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

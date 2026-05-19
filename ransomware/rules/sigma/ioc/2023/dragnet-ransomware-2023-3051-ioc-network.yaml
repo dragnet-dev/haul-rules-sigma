@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-3051 — Ransomware C2 Communication'
+id: d902671f-d444-50f3-aa97-5d8c0d008317
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-3051
+  Ransomware victim claim by noescape: Jeffcoat Mechanical Services Inc; country: US; sector: Business Services
+  First observed: 2023-10-31.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://noescapemsqxvizdxyl7f7rmg5cdjwp33pg2wpmiaaibilb4btwzttad.onion/post/9a812b7e-2556-49a7-9679-565ab6dbd0f9
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://noescapemsqxvizdxyl7f7rmg5cdjwp33pg2wpmiaaibilb4btwzttad.onion/post/9a812b7e-2556-49a7-9679-565ab6dbd0f9'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

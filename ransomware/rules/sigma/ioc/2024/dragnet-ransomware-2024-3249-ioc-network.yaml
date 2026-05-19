@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-3249 — Ransomware C2 Communication'
+id: 9a1f9213-ccce-5e60-943e-ddfd137296df
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-3249
+  Ransomware victim claim by medusa: National Metalwares, L.P; country: US; sector: Manufacturing
+  First observed: 2024-05-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://medusaxko7jxtrojdkxo66j7ck4q5tgktf7uqsqyfry4ebnxlcbkccyd.onion/detail?id=1e7076846824a7f941ac7bfecee6d1c2
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://medusaxko7jxtrojdkxo66j7ck4q5tgktf7uqsqyfry4ebnxlcbkccyd.onion/detail?id=1e7076846824a7f941ac7bfecee6d1c2'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

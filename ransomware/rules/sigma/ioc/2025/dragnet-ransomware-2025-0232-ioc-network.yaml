@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-0232 — Ransomware C2 Communication'
+id: 13d3ddce-b260-5ed1-ae66-90dea56d483d
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-0232
+  Ransomware victim claim by lockbit3: ehlers-inc.com; country: US; sector: Technology
+  First observed: 2025-04-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lockbit3olp7oetlc4tl5zydnoluphh7fvdt5oa6arcp2757r7xkutid.onion/post/7gAczZ5ot4BSxdCe681a3b761cffd
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lockbit3olp7oetlc4tl5zydnoluphh7fvdt5oa6arcp2757r7xkutid.onion/post/7gAczZ5ot4BSxdCe681a3b761cffd'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

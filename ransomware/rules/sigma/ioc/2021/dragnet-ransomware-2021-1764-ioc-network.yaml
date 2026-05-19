@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2021-1764 — Ransomware C2 Communication'
+id: 97bd245d-3da7-5c3e-a2ba-6de8789659a5
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2021-1764
+  Ransomware victim claim by atomsilo: Eisai Co., Ltd; country: JP; sector: Healthcare
+  First observed: 2021-12-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://npmh5ahrgakbniuntyc7io4adm6ietbdbuejrfonowqtyqn24or556qd.onion/leaks.html/post.html?id=eisai
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://npmh5ahrgakbniuntyc7io4adm6ietbdbuejrfonowqtyqn24or556qd.onion/leaks.html/post.html?id=eisai'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-1228 — Ransomware C2 Communication'
+id: 5bb00268-39da-56b7-8ce6-831922839d47
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-1228
+  Ransomware victim claim by medusa: Fritzøe Engros; country: NO; sector: Manufacturing
+  First observed: 2024-09-10.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://cx5u7zxbvrfyoj6ughw76oa264ucuuizmmzypwum6ear7pct4yc723qd.onion/detail?id=17d73bbffe28aac37845c8a635593d57
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://cx5u7zxbvrfyoj6ughw76oa264ucuuizmmzypwum6ear7pct4yc723qd.onion/detail?id=17d73bbffe28aac37845c8a635593d57'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2239 — Recovery Inhibition (dragonforce)'
+id: 633cc39d-c6ce-5af3-bef2-a0c93f930d0c
+status: test
+description: |
+  Detects boot/recovery disabling associated with dragonforce ransomware.
+  Incident: dragnet-ransomware-2026-2239
+  Ransomware victim claim by dragonforce: Wayco Inc; country: US; sector: Construction
+  First observed: 2026-02-05.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://z3wqggtxft7id3ibr7srivv5gjof5fwg76slewnzwwakjuf3nlhukdid.onion/blog/?post_uuid=2c740bbf-6650-422e-bee7-f04df28a3e92
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

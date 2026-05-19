@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3194 — Mass File Rename (dragonransomware)'
+id: 1f0c43ad-ca6f-5c11-8d6f-ef9370e5259f
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by dragonransomware.
+  Incident: dragnet-ransomware-2024-3194
+  Ransomware victim claim by dragonransomware: starlinkvietnam.vn; country: VN; sector: Business Services
+  First observed: 2024-12-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://t.me/DragonRansom/415
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

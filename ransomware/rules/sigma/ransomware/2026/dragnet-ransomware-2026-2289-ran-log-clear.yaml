@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2289 — Event Log Clearing (netrunner)'
+id: 5475a0cf-4b0e-54ad-a22a-61fa27e640b6
+status: stable
+description: |
+  Detects event log clearing associated with netrunner ransomware.
+  Incident: dragnet-ransomware-2026-2289
+  Ransomware victim claim by netrunner: GEG Telecomunicazioni; country: IT; sector: Telecommunication
+  First observed: 2026-04-03.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://netrunrsb3bivj5gnwajzxlig5qkteb6edgthxj7fmsvhkzxtwfxwaad.onion/view/GEGSRL
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

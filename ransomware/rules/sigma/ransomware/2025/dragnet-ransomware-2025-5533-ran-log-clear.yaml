@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5533 — Event Log Clearing (akira)'
+id: 36b64330-b571-5032-b1eb-157b5085c0d0
+status: deprecated
+description: |
+  Detects event log clearing associated with akira ransomware.
+  Incident: dragnet-ransomware-2025-5533
+  Associated with Akira.
+  Ransomware victim claim by akira: Sweeney; country: US; sector: Construction
+  First observed: 2025-06-12.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+  - dragnet.actor.akira
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

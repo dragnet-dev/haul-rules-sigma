@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2894 — Shadow Copy Deletion (lockbit3)'
+id: e60723c2-7fb3-5994-a412-832bd9379a32
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with lockbit3 ransomware.
+  Incident: dragnet-ransomware-2022-2894
+  Ransomware victim claim by lockbit3: ciberviaxesespecial.net; country: ES; sector: Technology
+  First observed: 2022-11-13.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lbb6ud2vyf23z4hw6fzskr5gru7eftbjfbd6yzra3hzuqqvjy63blqqd.onion//post/7SkDzRungn4ObwHz66a6395a0ac62
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

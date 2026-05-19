@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0959 — Recovery Inhibition (medusa)'
+id: 27e19527-50c6-577b-9958-795e815f0d81
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with medusa ransomware.
+  Incident: dragnet-ransomware-2025-0959
+  Ransomware victim claim by medusa: National Association for Stock Car Auto Racing; country: US; sector: Hospitality and Tourism
+  First observed: 2025-04-08.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://xfv4jzckytb4g3ckwemcny3ihv4i5p4lqzdpi624cxisu35my5fwi5qd.onion/detail?id=f6eee37d16fc90bcab9929540d10a374
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

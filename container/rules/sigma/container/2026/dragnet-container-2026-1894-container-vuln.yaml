@@ -1,0 +1,34 @@
+title: 'Dragnet [Container]: dragnet-container-2026-1894 — Vulnerable Base Image Pull'
+id: 6772e6b3-0c66-5715-9b09-494557a5c4b7
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-1894 (Tier 2, CVSS 10)
+  SQL injection vulnerability in SQLgrey Postfix greylisting service before 1.2.0 allows remote attackers to execute arbitrary SQL commands via the (1) sender or (2) recipient e-mail addresses.
+  First observed: 2026-04-16.
+references:
+  - http://secunia.com/advisories/13135/
+  - http://sourceforge.net/project/shownotes.php?release_id=281256
+  - http://www.securityfocus.com/bid/11633
+  - http://www.trustix.org/errata/2004/0058/
+  - https://exchange.xforce.ibmcloud.com/vulnerabilities/17998
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

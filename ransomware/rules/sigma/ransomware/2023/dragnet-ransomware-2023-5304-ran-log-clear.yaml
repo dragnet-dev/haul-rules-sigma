@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-5304 — Event Log Clearing (alphv)'
+id: 32c2d023-8dba-5a6c-ae00-f70ca3751bdc
+status: experimental
+description: |
+  Detects event log clearing associated with alphv ransomware.
+  Incident: dragnet-ransomware-2023-5304
+  Ransomware victim claim by alphv: Reach Cooling Group was hacked A company whose cooperation is dangerous to your business h; country: US; sector: Manufacturing
+  First observed: 2023-05-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://alphvmmm27o3abo3r2mlmjrpdmzle3rykajqc5xsj7j7ejksbpsa36ad.onion/a6764fb7-415e-4229-93ac-694b9519f84e
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

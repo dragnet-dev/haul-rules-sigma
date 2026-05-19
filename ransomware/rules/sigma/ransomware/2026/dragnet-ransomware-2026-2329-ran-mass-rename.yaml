@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2329 — Mass File Rename (krybit)'
+id: fc811174-c253-5b48-beb4-5bd4870848fd
+status: stable
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by krybit.
+  Incident: dragnet-ransomware-2026-2329
+  Ransomware victim claim by krybit: secran.com.br; country: BR; sector: Business Services
+  First observed: 2026-04-14.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://krybitxdpxohsmjooeb3gbgpmdddreh6mnflzac6bnezz74b7yje67yd.onion/blog/59817f58a05bc6e9720a72bfca2c7857539f7a9ee0e56f52b937752d26bde155/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

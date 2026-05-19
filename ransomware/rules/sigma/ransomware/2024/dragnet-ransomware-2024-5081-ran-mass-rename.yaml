@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5081 — Mass File Rename (medusa)'
+id: c1dfce72-7046-52c5-bff5-9480c80eb22b
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by medusa.
+  Incident: dragnet-ransomware-2024-5081
+  Ransomware victim claim by medusa: American Golf; country: US; sector: Hospitality and Tourism
+  First observed: 2024-07-12.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://cx5u7zxbvrfyoj6ughw76oa264ucuuizmmzypwum6ear7pct4yc723qd.onion/detail?id=f200105b675fcc9a4f3e9cfd30b0ee08
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

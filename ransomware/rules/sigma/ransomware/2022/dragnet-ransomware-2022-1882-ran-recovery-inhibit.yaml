@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-1882 — Recovery Inhibition (hive)'
+id: 9ba04f76-8876-5f91-a397-e06c1a8648f2
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with hive ransomware.
+  Incident: dragnet-ransomware-2022-1882
+  Ransomware victim claim by hive: Interface; country: US; sector: Manufacturing
+  First observed: 2022-12-20.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

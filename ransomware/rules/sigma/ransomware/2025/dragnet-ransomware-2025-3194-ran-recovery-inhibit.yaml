@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3194 — Recovery Inhibition (incransom)'
+id: a7b78fdd-373e-50e0-b418-8d1054054ef5
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with incransom ransomware.
+  Incident: dragnet-ransomware-2025-3194
+  Ransomware victim claim by incransom: New Jersey Association on Correction; country: US; sector: Public Sector
+  First observed: 2025-06-18.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://incblog6qu4y4mm4zvw5nrmue6qbwtgjsxpw6b7ixzssu36tsajldoad.onion/blog/disclosures/6852ffc4ba68908013c5cb6f
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0084 — Recovery Inhibition (datacarry)'
+id: 81bdceb0-64a5-5d26-8ffd-2ce51d6d3370
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with datacarry ransomware.
+  Incident: dragnet-ransomware-2024-0084
+  Ransomware victim claim by datacarry: ALB Forex; country: TR; sector: Financial Services
+  First observed: 2024-10-25.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

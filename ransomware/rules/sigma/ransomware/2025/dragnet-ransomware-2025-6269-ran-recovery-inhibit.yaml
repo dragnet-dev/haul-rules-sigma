@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6269 — Recovery Inhibition (clop)'
+id: 3da7d3b1-5356-5e2c-8cec-f21cd67122bd
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with clop ransomware.
+  Incident: dragnet-ransomware-2025-6269
+  Ransomware victim claim by clop: STEVENSONBEERDISTRIBUTING.COM; sector: Consumer Services
+  First observed: 2025-02-27.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

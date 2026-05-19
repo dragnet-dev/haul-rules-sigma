@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7853 — Mass File Rename (ransomhub)'
+id: 64d437f3-408a-5d81-ac9a-25a5d61561c5
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by ransomhub.
+  Incident: dragnet-ransomware-2025-7853
+  Ransomware victim claim by ransomhub: www.macter.com; country: PK; sector: Healthcare
+  First observed: 2025-02-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ransomxifxwc5eteopdobynonjctkxxvap77yqifu2emfbecgbqdw6qd.onion/453b77f1-5f1d-4cfd-a8d1-63690231ad5f/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

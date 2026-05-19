@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-0421 — Event Log Clearing (genesis)'
+id: cb4369d9-1610-5cf7-acdc-e61fe3b5c4a1
+status: test
+description: |
+  Detects event log clearing associated with genesis ransomware.
+  Incident: dragnet-ransomware-2026-0421
+  Ransomware victim claim by genesis: Stockton Cardiology Medical Group; country: US; sector: Healthcare
+  First observed: 2026-02-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://genesis6ixpb5mcy4kudybtw5op2wqlrkocfogbnenz3c647ibqixiad.onion/be0c14b9d1c63648c24a/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

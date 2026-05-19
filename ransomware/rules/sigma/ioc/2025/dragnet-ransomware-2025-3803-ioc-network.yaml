@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-3803 — Ransomware C2 Communication'
+id: 74fac72a-ba0e-5a44-9e30-87bda1f0c8f4
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-3803
+  Ransomware victim claim by blacknevas: CILI; country: LT; sector: Hospitality and Tourism
+  First observed: 2025-07-02.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ctyfftrjgtwdjzlgqh4avbd35sqrs6tde4oyam2ufbjch6oqpqtkdtid.onion/publications/details/6e43dbb1-dc04-4fd1-a380-b755cf4a38d2
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://ctyfftrjgtwdjzlgqh4avbd35sqrs6tde4oyam2ufbjch6oqpqtkdtid.onion/publications/details/6e43dbb1-dc04-4fd1-a380-b755cf4a38d2'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

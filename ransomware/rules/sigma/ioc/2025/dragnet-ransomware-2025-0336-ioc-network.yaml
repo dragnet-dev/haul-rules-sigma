@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-0336 — Ransomware C2 Communication'
+id: b31ab23b-0222-50a7-846e-28a46164477e
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-0336
+  Ransomware victim claim by shinyhunters: TransUnion; country: US; sector: Financial Services
+  First observed: 2025-06-28.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://breachforums.hn//transunion.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'https://breachforums.hn//transunion.html'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

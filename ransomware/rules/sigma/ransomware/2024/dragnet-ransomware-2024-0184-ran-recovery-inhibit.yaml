@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0184 — Recovery Inhibition (abyss)'
+id: 91e15787-4d90-52f0-8f21-338c3d75a561
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with abyss ransomware.
+  Incident: dragnet-ransomware-2024-0184
+  Ransomware victim claim by abyss: sunharbormanor.com; country: US; sector: Healthcare
+  First observed: 2024-02-29.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

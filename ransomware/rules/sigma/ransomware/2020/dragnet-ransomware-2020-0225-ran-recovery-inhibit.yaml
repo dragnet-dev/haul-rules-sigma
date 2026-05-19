@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0225 — Recovery Inhibition (nefilim)'
+id: 655e6be7-fa19-5eee-9930-caa476d1c821
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with nefilim ransomware.
+  Incident: dragnet-ransomware-2020-0225
+  Ransomware victim claim by nefilim: Fisher and Paykel Appliances; country: NZ; sector: Manufacturing
+  First observed: 2020-06-01.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

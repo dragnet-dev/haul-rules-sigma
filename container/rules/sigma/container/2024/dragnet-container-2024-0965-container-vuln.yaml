@@ -1,0 +1,34 @@
+title: 'Dragnet [Container]: dragnet-container-2024-0965 — Vulnerable Base Image Pull'
+id: 2ecd55e9-0932-5e17-a9a2-caaa80baf047
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-0965 (Tier 2, CVSS 9.8)
+  An issue was discovered in the ROS communications-related packages (aka ros_comm or ros-melodic-ros-comm) through 1.14.3. parseOptions() in tools/rosbag/src/record.cpp has an integer overflow when a crafted split option can be entered on the command line.
+  First observed: 2024-11-21.
+references:
+  - https://github.com/ros/ros_comm/blob/melodic-devel/tools/rosbag/src/record.cpp#L129
+  - https://github.com/ros/ros_comm/issues/1738
+  - https://github.com/ros/ros_comm/pull/1741
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:10'
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+      - 'debian:9'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2852 — Event Log Clearing (blackbasta)'
+id: d9e81581-bd0e-54f9-9eb6-8c90471d70af
+status: experimental
+description: |
+  Detects event log clearing associated with blackbasta ransomware.
+  Incident: dragnet-ransomware-2024-2852
+  Ransomware victim claim by blackbasta: igf-inc.com; country: US; sector: Agriculture and Food Production
+  First observed: 2024-02-08.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://stniiomyjliimcgkvdszvgen3eaaoz55hreqqx6o77yvmpwt7gklffqd.onion/?id=igf-inc.com
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

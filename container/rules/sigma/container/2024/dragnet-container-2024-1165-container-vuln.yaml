@@ -1,0 +1,34 @@
+title: 'Dragnet [Container]: dragnet-container-2024-1165 — Vulnerable Base Image Pull'
+id: a0faa6e6-35cb-59a3-8cb7-5f169c8c41a8
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-1165 (Tier 2, CVSS 9.8)
+  An issue was discovered in the ROS communications-related packages (aka ros_comm or ros-melodic-ros-comm) through 1.14.3. A buffer overflow allows attackers to cause a denial of service and possibly execute arbitrary code via an IP address with a long hostname.
+  First observed: 2024-11-21.
+references:
+  - https://github.com/ros/ros_comm/issues/1735
+  - https://github.com/ros/ros_comm/issues/1752
+  - https://github.com/ros/ros_comm/pull/1771
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:10'
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+      - 'debian:9'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-3697 — Recovery Inhibition (cactus)'
+id: 520b7c5d-3581-5317-982b-be90a238aa8f
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with cactus ransomware.
+  Incident: dragnet-ransomware-2023-3697
+  Ransomware victim claim by cactus: Bacon Universal; sector: Construction
+  First observed: 2023-08-22.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://cactusbloguuodvqjmnzlwetjlpj6aggc6iocwhuupb47laukux7ckid.onion/posts/BACONUNIVERSAL
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

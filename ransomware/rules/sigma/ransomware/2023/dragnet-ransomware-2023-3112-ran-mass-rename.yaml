@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-3112 — Mass File Rename (moneymessage)'
+id: 0d5e35bc-8b15-59ed-9f47-d1f350725a32
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by moneymessage.
+  Incident: dragnet-ransomware-2023-3112
+  Ransomware victim claim by moneymessage: Guess who!; sector: Financial Services
+  First observed: 2023-04-05.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

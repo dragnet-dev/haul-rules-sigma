@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5262 — Mass File Rename (ransomhub)'
+id: d9f4eb21-0ddd-5546-8442-417de39a7ae3
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by ransomhub.
+  Incident: dragnet-ransomware-2024-5262
+  Ransomware victim claim by ransomhub: iseta.fr; country: FR; sector: Business Services
+  First observed: 2024-05-08.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ransomxifxwc5eteopdobynonjctkxxvap77yqifu2emfbecgbqdw6qd.onion/ce958c48-cb25-448e-acd1-6455d72e6781/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

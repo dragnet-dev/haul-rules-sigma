@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-2970 — Recovery Inhibition (alphv)'
+id: 2c6c22d3-7294-5214-a3f2-295fe62e198d
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with alphv ransomware.
+  Incident: dragnet-ransomware-2023-2970
+  Ransomware victim claim by alphv: thinkweltycom; sector: Construction
+  First observed: 2023-02-26.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://alphvmmm27o3abo3r2mlmjrpdmzle3rykajqc5xsj7j7ejksbpsa36ad.onion/c0927863-78e8-4821-9c8c-44d5484189fa
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

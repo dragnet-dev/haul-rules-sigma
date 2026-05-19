@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4574 — Mass File Rename (clop)'
+id: 426b918b-1dc2-52ee-a970-7146ed0642cf
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by clop.
+  Incident: dragnet-ransomware-2023-4574
+  Ransomware victim claim by clop: L8SOLUTIONS.CO.UK; country: GB; sector: Business Services
+  First observed: 2023-07-07.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://santat7kpllt6iyvqbr7q4amdv6dzrh6paatvyrzl7ry3zm72zigf4ad.onion/l8solutions-co-uk
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

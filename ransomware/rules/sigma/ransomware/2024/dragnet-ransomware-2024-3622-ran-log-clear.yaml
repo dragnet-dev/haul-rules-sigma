@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3622 — Event Log Clearing (lockbit3)'
+id: 0de05047-461b-5688-8495-f1efffb419a0
+status: experimental
+description: |
+  Detects event log clearing associated with lockbit3 ransomware.
+  Incident: dragnet-ransomware-2024-3622
+  Ransomware victim claim by lockbit3: pbwtulsa.com; country: US; sector: Business Services
+  First observed: 2024-02-03.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lockbitapt2d73krlbewgv27tquljgxr33xbwwsp6rkyieto7u4ncead.onion/post/svatRXEb3vawdrNL65be12ec7c130
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

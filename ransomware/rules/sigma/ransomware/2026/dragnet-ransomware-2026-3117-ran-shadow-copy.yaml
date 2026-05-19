@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-3117 — Shadow Copy Deletion (everest)'
+id: 76ebb74b-6f1e-5fde-a7a7-e028489efb13
+status: test
+description: |
+  Detects shadow copy deletion commands associated with everest ransomware.
+  Incident: dragnet-ransomware-2026-3117
+  Ransomware victim claim by everest: Virginia Records; country: BG; sector: Consumer Services
+  First observed: 2026-01-10.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ransomocmou6mnbquqz44ewosbkjk3o5qjsl3orawojexfook2j7esad.onion/news/Virginia_Records/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

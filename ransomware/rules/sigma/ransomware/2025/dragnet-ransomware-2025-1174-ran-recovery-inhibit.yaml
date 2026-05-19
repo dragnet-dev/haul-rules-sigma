@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1174 — Recovery Inhibition (babuk2)'
+id: b9d134f7-1ce0-58ff-b625-cd31db8597a7
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with babuk2 ransomware.
+  Incident: dragnet-ransomware-2025-1174
+  Ransomware victim claim by babuk2: nhbg.com.co; country: CO; sector: Not Found
+  First observed: 2025-01-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - http:/7dikawx73goypgfi4zyo5fcajxwb7agemmiwqax3p54aey4dwobcvcyd.onion/blog/7e4d2cc0b26635dfe620f21d6729f4cd122f8f73c1a95c65bf38693f4a6f0751/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

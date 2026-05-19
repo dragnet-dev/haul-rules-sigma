@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5170 — Event Log Clearing (medusa)'
+id: dde2e586-65f0-5aa0-91cc-bf1b9e997c3c
+status: experimental
+description: |
+  Detects event log clearing associated with medusa ransomware.
+  Incident: dragnet-ransomware-2024-5170
+  Ransomware victim claim by medusa: US #1364 Federal Credit Union; country: US; sector: Financial Services
+  First observed: 2024-03-06.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://medusaxko7jxtrojdkxo66j7ck4q5tgktf7uqsqyfry4ebnxlcbkccyd.onion/detail?id=be999b97534783eca05bbebeccb6b4af
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

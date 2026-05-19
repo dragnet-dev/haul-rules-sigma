@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2343 — Recovery Inhibition (genesis)'
+id: 0a201909-f4d8-5ea2-9879-91053c2728a6
+status: test
+description: |
+  Detects boot/recovery disabling associated with genesis ransomware.
+  Incident: dragnet-ransomware-2026-2343
+  Ransomware victim claim by genesis: Novelty Technology Care Espana (Part of GRUPO NTC); country: ES; sector: Technology
+  First observed: 2026-01-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://genesis6ixpb5mcy4kudybtw5op2wqlrkocfogbnenz3c647ibqixiad.onion/889c157b885c4a13f8e9/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

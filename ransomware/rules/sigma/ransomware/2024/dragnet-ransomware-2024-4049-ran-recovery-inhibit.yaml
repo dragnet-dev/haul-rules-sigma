@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-4049 — Recovery Inhibition (medusa)'
+id: 582a8146-fb24-5d7f-9463-daa303807432
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with medusa ransomware.
+  Incident: dragnet-ransomware-2024-4049
+  Ransomware victim claim by medusa: AA Munro Insurance; country: CA; sector: Financial Services
+  First observed: 2024-07-22.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://medusaxko7jxtrojdkxo66j7ck4q5tgktf7uqsqyfry4ebnxlcbkccyd.onion/detail?id=d2ec185dfa3bd795bf9e19fa4ca44691
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

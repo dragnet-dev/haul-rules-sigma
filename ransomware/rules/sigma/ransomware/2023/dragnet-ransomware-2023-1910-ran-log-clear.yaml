@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1910 — Event Log Clearing (noescape)'
+id: c8c19c23-1dd8-5474-b52b-6ebdb41c8594
+status: experimental
+description: |
+  Detects event log clearing associated with noescape ransomware.
+  Incident: dragnet-ransomware-2023-1910
+  Ransomware victim claim by noescape: BELLSONICA CORPORATION; country: JP; sector: Technology
+  First observed: 2023-09-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://noescapemsqxvizdxyl7f7rmg5cdjwp33pg2wpmiaaibilb4btwzttad.onion/post/9a2d9176-38b1-4e42-a8c7-876d935ba61f
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2754 — Event Log Clearing (embargo)'
+id: 71e0dcfa-093c-5e0a-ae25-57147b73d56b
+status: stable
+description: |
+  Detects event log clearing associated with embargo ransomware.
+  Incident: dragnet-ransomware-2026-2754
+  Ransomware victim claim by embargo: seclore.com; country: IN; sector: Technology
+  First observed: 2026-03-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://embargobe3n5okxyzqphpmk3moinoap2snz5k6765mvtkk7hhi544jid.onion/#/post/3de1159c-7576-404f-8ad6-36c9f98cb860
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

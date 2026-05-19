@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2026-3119 — Ransomware C2 Communication'
+id: aeaf5ac6-de6b-5ad5-ab37-1764caf4df3f
+status: stable
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2026-3119
+  Ransomware victim claim by sinobi: Neurotrials Research Inc; country: US; sector: Healthcare
+  First observed: 2026-05-05.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://sinobi23i75c3znmqqxxyuzqvhxnjsar7actgvc4nqeuhgcn5yvz3zqd.onion/leaks/69fa4cb08280ceeb9ae1ae05
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://sinobi23i75c3znmqqxxyuzqvhxnjsar7actgvc4nqeuhgcn5yvz3zqd.onion/leaks/69fa4cb08280ceeb9ae1ae05'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-0866 — Recovery Inhibition (thegentlemen)'
+id: 1c80ce64-0f87-5264-a735-3c2db44f0151
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with thegentlemen ransomware.
+  Incident: dragnet-ransomware-2026-0866
+  Ransomware victim claim by thegentlemen: VeriCon; country: NL; sector: Not Found
+  First observed: 2026-05-08.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-3027 — Recovery Inhibition (hive)'
+id: 7d20ef5f-54fa-5d29-ba6f-c5941145bc23
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with hive ransomware.
+  Incident: dragnet-ransomware-2022-3027
+  Ransomware victim claim by hive: Drake & Scull International PJSC; sector: Construction
+  First observed: 2022-02-25.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

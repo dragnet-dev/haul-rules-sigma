@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4674 — Recovery Inhibition (lockbit3)'
+id: bc1c2ad7-bf64-5348-9f5a-e0a2beb73563
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with lockbit3 ransomware.
+  Incident: dragnet-ransomware-2025-4674
+  Ransomware victim claim by lockbit3: hennessyfunds.com; country: US; sector: Financial Services
+  First observed: 2025-03-30.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lockbit435xk3ki62yun7z5nhwz6jyjdp2c64j5vge536if2eny3gtid.onion/post/w6g1L0OoFFe7gg6n681dd79919a5b
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

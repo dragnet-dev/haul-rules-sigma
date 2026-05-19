@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-3566 — Ransomware C2 Communication'
+id: 5c037621-03d7-5e5b-91c5-8e64e7035fa0
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-3566
+  Ransomware victim claim by ransomhub: www.vbrlogistica.com.br; country: BR; sector: Transportation/Logistics
+  First observed: 2024-09-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ransomxifxwc5eteopdobynonjctkxxvap77yqifu2emfbecgbqdw6qd.onion/d25d6a34-b9f1-4d47-a02f-7ddf2f8d0b26/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://ransomxifxwc5eteopdobynonjctkxxvap77yqifu2emfbecgbqdw6qd.onion/d25d6a34-b9f1-4d47-a02f-7ddf2f8d0b26/'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

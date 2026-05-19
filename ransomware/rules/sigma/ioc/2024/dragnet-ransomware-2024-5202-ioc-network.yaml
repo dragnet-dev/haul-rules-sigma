@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-5202 — Ransomware C2 Communication'
+id: 738f2dbd-c616-5913-86d0-4e7ac4ff452f
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-5202
+  Ransomware victim claim by dAn0n: pedsurology.com; country: US; sector: Healthcare
+  First observed: 2024-03-26.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://2c7nd54guzi6xhjyqrj5kdkrq2ngm2u3e6oy4nfhn3wm3r54ul2utiqd.onion/7FPb9gyLfOaBUENptarBz7ynsZGa4YWw7hH-yWjIB1c/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://2c7nd54guzi6xhjyqrj5kdkrq2ngm2u3e6oy4nfhn3wm3r54ul2utiqd.onion/7FPb9gyLfOaBUENptarBz7ynsZGa4YWw7hH-yWjIB1c/'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

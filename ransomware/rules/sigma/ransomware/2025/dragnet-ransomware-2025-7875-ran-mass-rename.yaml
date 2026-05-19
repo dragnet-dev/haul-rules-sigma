@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7875 — Mass File Rename (nitrogen)'
+id: c936b64f-c145-5734-927d-58025e5145f7
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by nitrogen.
+  Incident: dragnet-ransomware-2025-7875
+  Ransomware victim claim by nitrogen: SIRIUS S.R.L.; country: IT; sector: Energy
+  First observed: 2025-01-30.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nitrogenczslprh3xyw6lh5xyjvmsz7ciljoqxxknd7uymkfetfhgvqd.onion/posts/67d069b30a8353201efe6911
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

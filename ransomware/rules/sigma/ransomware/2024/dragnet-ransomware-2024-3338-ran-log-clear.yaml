@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3338 — Event Log Clearing (underground)'
+id: 6e3acbb3-a3b0-5abd-9646-5a9ff22da22a
+status: experimental
+description: |
+  Detects event log clearing associated with underground ransomware.
+  Incident: dragnet-ransomware-2024-3338
+  Ransomware victim claim by underground: Skender Construction; country: US; sector: Business Services
+  First observed: 2024-03-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://47glxkuxyayqrvugfumgsblrdagvrah7gttfscgzn56eyss5wg3uvmqd.onion/packages/dbfdb86f-29e6-42e1-9e96-d3958bbecdda
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

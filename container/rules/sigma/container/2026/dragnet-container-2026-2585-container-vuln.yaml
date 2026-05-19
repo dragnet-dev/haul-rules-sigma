@@ -1,0 +1,32 @@
+title: 'Dragnet [Container]: dragnet-container-2026-2585 — Vulnerable Base Image Pull'
+id: bfa8d15f-dfc7-5e6b-b753-f1883f7a7dab
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-2585 (Tier 2, CVSS 10)
+  The network-play implementation in Mednafen before 0.8.D might allow remote servers to execute arbitrary code via unspecified vectors, related to "stack manipulation" issues.
+  First observed: 2026-04-29.
+references:
+  - http://sourceforge.net/news/?group_id=150840&id=287363
+  - http://www.openwall.com/lists/oss-security/2010/09/09/8
+  - http://www.openwall.com/lists/oss-security/2010/09/11/3
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

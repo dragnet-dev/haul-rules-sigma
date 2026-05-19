@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-2651 — Recovery Inhibition (alphv)'
+id: 1fc2bf0c-2362-58ee-bfe3-273638bfb94f
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with alphv ransomware.
+  Incident: dragnet-ransomware-2023-2651
+  Ransomware victim claim by alphv: Global Polymers was haked A massive amount of confidential information was stolen; country: US; sector: Agriculture and Food Production
+  First observed: 2023-04-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://alphvmmm27o3abo3r2mlmjrpdmzle3rykajqc5xsj7j7ejksbpsa36ad.onion/784a12bb-6ec5-439d-8b96-ff6d05199ce2
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

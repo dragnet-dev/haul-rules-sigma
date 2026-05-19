@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-4650 — Ransomware C2 Communication'
+id: 46e64d2c-460b-5493-86cd-aa22eb11222a
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-4650
+  Ransomware victim claim by knight: Lopez & Associates Inc; sector: Business Services
+  First observed: 2023-09-18.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://knight3xppu263m7g4ag3xlit2qxpryjwueobh7vjdc3zrscqlfu3pqd.onion/blogs/4c6f5bab-7365-43c8-ae9f-60391a1b0f77/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://knight3xppu263m7g4ag3xlit2qxpryjwueobh7vjdc3zrscqlfu3pqd.onion/blogs/4c6f5bab-7365-43c8-ae9f-60391a1b0f77/'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

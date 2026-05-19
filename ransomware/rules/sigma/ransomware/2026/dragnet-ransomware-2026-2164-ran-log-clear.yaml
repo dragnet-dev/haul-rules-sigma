@@ -1,0 +1,36 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2164 — Event Log Clearing (play)'
+id: 1425095e-9b70-537b-bfe4-07b8ba0a963f
+status: stable
+description: |
+  Detects event log clearing associated with play ransomware.
+  Incident: dragnet-ransomware-2026-2164
+  Associated with Play.
+  Ransomware victim claim by play: Ampex Data Systems; country: US; sector: Technology
+  First observed: 2026-03-30.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://mbrlkbtq5jonaqkurjwmxftytyn2ethqvbxfu4rgjbkkknndqwae6byd.onion/index.php?page=1/topic.php?id=gbe9Mm1TVAZmmU
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+  - dragnet.actor.play
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

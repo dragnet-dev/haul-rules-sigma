@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-0609 — Ransomware C2 Communication'
+id: 9e26cae0-1e70-5215-9395-5b7a164a1f75
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-0609
+  Ransomware victim claim by apos: ACMARK; country: ??; sector: Business Services
+  First observed: 2025-06-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://yrz6bayqwhleymbeviter7ejccxm64sv2ppgqgderzgdhutozcbbhpqd.onion/blog/c33fca04-0eef-4fd0-8eef-8585fe239ede
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://yrz6bayqwhleymbeviter7ejccxm64sv2ppgqgderzgdhutozcbbhpqd.onion/blog/c33fca04-0eef-4fd0-8eef-8585fe239ede'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

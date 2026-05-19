@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-4658 — Mass File Rename (everest)'
+id: 90fbe9bd-8327-56a2-82b7-79dcc0cb1797
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by everest.
+  Incident: dragnet-ransomware-2024-4658
+  Ransomware victim claim by everest: Country Inn & Suites by Radisson; country: US; sector: Hospitality and Tourism
+  First observed: 2024-10-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ransomocmou6mnbquqz44ewosbkjk3o5qjsl3orawojexfook2j7esad.onion/country-inn-suites-by-radisson/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-0027 — Ransomware C2 Communication'
+id: 8c36524e-8a95-5df6-81ad-9e8dc07b522d
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-0027
+  Ransomware victim claim by killsec: Langford Tool And Drill Co; country: US; sector: Manufacturing
+  First observed: 2024-12-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ks5424y3wpr5zlug5c7i6svvxweinhbdcqcfnptkfcutrncfazzgz5id.onion/posts.php?pid=Gc0U1PWZQKz2aVN85IkgFedP
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://ks5424y3wpr5zlug5c7i6svvxweinhbdcqcfnptkfcutrncfazzgz5id.onion/posts.php?pid=Gc0U1PWZQKz2aVN85IkgFedP'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

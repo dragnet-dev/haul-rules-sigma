@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2440 — Recovery Inhibition (thegentlemen)'
+id: 35ba6cdc-6dec-5848-aa17-69b37a3934c7
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with thegentlemen ransomware.
+  Incident: dragnet-ransomware-2025-2440
+  Ransomware victim claim by thegentlemen: Astra Otoparts / PT. Inti Ganda Perdana; country: ID; sector: Manufacturing
+  First observed: 2025-10-03.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://tezwsse5czllksjb7cwp65rvnk4oobmzti2znn42i43bjdfd2prqqkad.onion
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

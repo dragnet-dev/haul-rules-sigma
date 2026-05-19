@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2849 — Recovery Inhibition (alphv)'
+id: 51e4bdde-695e-50be-a781-337823eee88a
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with alphv ransomware.
+  Incident: dragnet-ransomware-2022-2849
+  Ransomware victim claim by alphv: Duda Farm Fresh Foods A Duda & Sons , Inc Duda A Duda & Sons Duda Farm Fresh Foods Inc; sector: Agriculture and Food Production
+  First observed: 2022-07-14.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://alphvmmm27o3abo3r2mlmjrpdmzle3rykajqc5xsj7j7ejksbpsa36ad.onion/cdeba5c8-058c-4c4d-8996-e0b5130947d1
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2291 — Recovery Inhibition (karakurt)'
+id: c7aa0d29-2138-5b21-8652-ecf5964a83e5
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with karakurt ransomware.
+  Incident: dragnet-ransomware-2022-2291
+  Ransomware victim claim by karakurt: Trantor; sector: Transportation/Logistics
+  First observed: 2022-12-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://3f7nxkjway3d223j27lyad7v5cgmyaifesycvmwq7i7cbs23lb6llryd.onion/companies/0c1ca1c7-2876-49f8-8d1a-cd31013525cd
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

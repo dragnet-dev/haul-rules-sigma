@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2013 — Recovery Inhibition (ransomhub)'
+id: a3293475-74a5-5401-83c9-980f0e39b889
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with ransomhub ransomware.
+  Incident: dragnet-ransomware-2024-2013
+  Ransomware victim claim by ransomhub: pierrediamonds.com.au; country: AU; sector: Business Services
+  First observed: 2024-08-06.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ransomxifxwc5eteopdobynonjctkxxvap77yqifu2emfbecgbqdw6qd.onion/4815f217-d183-49f7-ba75-7a44507aef01/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

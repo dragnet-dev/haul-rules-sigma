@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-3669 — Recovery Inhibition (cyclops)'
+id: 2da8eb82-d432-5baa-8c2d-0af9a6dc7eb1
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with cyclops ransomware.
+  Incident: dragnet-ransomware-2023-3669
+  Ransomware victim claim by cyclops: Cvlan; country: IT; sector: Technology
+  First observed: 2023-07-20.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

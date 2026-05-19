@@ -1,0 +1,30 @@
+title: 'Dragnet [Container]: dragnet-container-2024-0799 — Vulnerable Base Image Pull'
+id: 5b139b72-8fa2-5147-a500-6800ca3cccbc
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-0799 (Tier 2, CVSS 9.8)
+  OTFCC v0.10.4 was discovered to contain a heap buffer overflow after free via otfccbuild.c.
+  First observed: 2024-11-21.
+references:
+  - http://otfcc.com
+  - https://drive.google.com/file/d/1g3MQajVLZAaZMRfIQHSLT6XRw-B4Dmz8/view?usp=sharing
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

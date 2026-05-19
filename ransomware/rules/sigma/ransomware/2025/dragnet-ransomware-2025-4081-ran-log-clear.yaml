@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4081 — Event Log Clearing (J)'
+id: 514a4497-3c59-51f3-8d57-816c8994cfd2
+status: experimental
+description: |
+  Detects event log clearing associated with J ransomware.
+  Incident: dragnet-ransomware-2025-4081
+  Ransomware victim claim by J: bridgerecruit.co.uk; country: GB; sector: Business Services
+  First observed: 2025-07-30.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://twniiyed6mydtbe64i5mdl56nihl7atfaqtpww6gqyaiohgc75apzpad.onion/posts/688a141715ecd643bc29f6e7/688a141715ecd643bc29f6e7/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

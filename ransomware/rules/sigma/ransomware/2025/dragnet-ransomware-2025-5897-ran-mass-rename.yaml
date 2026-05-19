@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5897 — Mass File Rename (ciphbit)'
+id: eb1b7b30-e9f6-5b80-a98d-19c0d3793f74
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by ciphbit.
+  Incident: dragnet-ransomware-2025-5897
+  Ransomware victim claim by ciphbit: Corneilhan; country: FR; sector: Agriculture and Food Production
+  First observed: 2025-10-20.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

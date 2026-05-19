@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5947 — Recovery Inhibition (bert)'
+id: df33fd6f-0901-5bb0-8aa0-66eb8543e24e
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with bert ransomware.
+  Incident: dragnet-ransomware-2025-5947
+  Ransomware victim claim by bert: Columbia TI; country: CO; sector: Technology
+  First observed: 2025-06-05.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://bertblogsoqmm4ow7nqyh5ik7etsmefdbf25stauecytvwy7tkgizhad.onion/post/9277F1ABA3E9491292FE6392FE89159C
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

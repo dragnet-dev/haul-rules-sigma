@@ -1,0 +1,31 @@
+title: 'Dragnet [Container]: dragnet-container-2026-2636 — Vulnerable Base Image Pull'
+id: 329752ec-bb73-5918-8fec-95e6228f42f5
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-2636 (Tier 2, CVSS 10)
+  Unspecified vulnerability in the process_cmdent function in command.cpp in TinyMUX before 2.4 has unknown impact and attack vectors, related to lack of the "'other half' of buffer overflow protection."
+  First observed: 2026-04-23.
+references:
+  - http://www.tinymux.org/changes.txt
+  - http://www.vupen.com/english/advisories/2007/1213
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

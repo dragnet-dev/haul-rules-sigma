@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4265 — Mass File Rename (medusa)'
+id: ae8603f5-2b75-56ad-8bdb-44e77e065a83
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by medusa.
+  Incident: dragnet-ransomware-2025-4265
+  Ransomware victim claim by medusa: Leprohon; country: CA; sector: Construction
+  First observed: 2025-10-03.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://xfv4jzckytb4g3ckwemcny3ihv4i5p4lqzdpi624cxisu35my5fwi5qd.onion/detail?id=a44b48ea7682367a53ae6ace8c7762e5
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

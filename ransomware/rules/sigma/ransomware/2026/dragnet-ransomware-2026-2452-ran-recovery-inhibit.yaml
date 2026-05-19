@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2452 — Recovery Inhibition (devman)'
+id: e09cb5b0-b53f-5cf5-9028-dfb4527c571a
+status: test
+description: |
+  Detects boot/recovery disabling associated with devman ransomware.
+  Incident: dragnet-ransomware-2026-2452
+  Ransomware victim claim by devman: www.saundersandsaunders.com; country: US; sector: Not Found
+  First observed: 2026-01-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://devmanblggk7ddrtqj3tsocnayow3bwnozab2s4yhv4shpv6ueitjzid.onion
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

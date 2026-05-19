@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0181 — Recovery Inhibition (royal)'
+id: fc0f055f-722b-5308-8b35-460a76e28d67
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with royal ransomware.
+  Incident: dragnet-ransomware-2023-0181
+  Ransomware victim claim by royal: Westsächsische Hochschule Zwickau; country: DE; sector: Education
+  First observed: 2023-01-16.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

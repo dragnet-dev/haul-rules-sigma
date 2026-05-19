@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5739 — Recovery Inhibition (nightspire)'
+id: 7a7673d8-54be-5781-bc02-3f7ac1c59c04
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with nightspire ransomware.
+  Incident: dragnet-ransomware-2025-5739
+  Ransomware victim claim by nightspire: Balkrishna Paper Mills LTD, India; country: IN; sector: Manufacturing
+  First observed: 2025-11-15.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

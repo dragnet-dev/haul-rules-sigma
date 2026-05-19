@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6687 — Event Log Clearing (monti)'
+id: 94891d42-bc3c-51be-b81a-dcda698b2cfa
+status: experimental
+description: |
+  Detects event log clearing associated with monti ransomware.
+  Incident: dragnet-ransomware-2025-6687
+  Ransomware victim claim by monti: American Eagle Logistics; country: US; sector: Transportation/Logistics
+  First observed: 2025-05-03.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://mblogci3rudehaagbryjznltdp33ojwzkq6hn2pckvjq33rycmzczpid.onion/blog/635ce28baae8183bfa21b23d8ae8c2706d6b628c0273373b801ec70eb871a2b3/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

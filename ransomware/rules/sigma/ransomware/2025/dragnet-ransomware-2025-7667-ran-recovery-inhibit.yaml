@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7667 — Recovery Inhibition (BrainCipher)'
+id: 1515786a-d3af-59c2-9527-3de676f81111
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with BrainCipher ransomware.
+  Incident: dragnet-ransomware-2025-7667
+  Ransomware victim claim by BrainCipher: neatem.fr; country: FR; sector: Business Services
+  First observed: 2025-02-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://vkvsgl7lhipjirmz6j5ubp3w3bwvxgcdbpi3fsbqngfynetqtw4w5hyd.onion/s/DpQHsHlEgOmxXbKNk0Okbg+Vs+QDYj8EdTUBzy+193ZGjB5SZbGQafopFB6lqF6qcOJiNVa99r808SaOTKW6kWt2REEyQWhP
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

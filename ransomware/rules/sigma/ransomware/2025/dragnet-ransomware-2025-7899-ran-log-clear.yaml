@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7899 — Event Log Clearing (anubis)'
+id: ee127d1f-95ca-587d-8a4a-ae8345e7ba3a
+status: experimental
+description: |
+  Detects event log clearing associated with anubis ransomware.
+  Incident: dragnet-ransomware-2025-7899
+  Ransomware victim claim by anubis: Parkway Construction LLC; country: US; sector: Construction
+  First observed: 2025-06-10.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://om6q4a6cyipxvt7ioudxt24cw4oqu4yodmqzl25mqd2hgllymrgu4aqd.onion/r/khZlNrERqYZDupMc52R2uSAstx8bFZ3VJpGRsv16CbUzH7UYInDoRt7sHol6uWUWSVZmZ6bGA+KNocBZGrbpEpWcm14UkJ2
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

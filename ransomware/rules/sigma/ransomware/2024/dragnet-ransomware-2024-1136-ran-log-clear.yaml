@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-1136 — Event Log Clearing (BrainCipher)'
+id: f1cbfc13-3db7-5613-b125-8b158140c09d
+status: experimental
+description: |
+  Detects event log clearing associated with BrainCipher ransomware.
+  Incident: dragnet-ransomware-2024-1136
+  Ransomware victim claim by BrainCipher: beinlaw.co.il - Prof. Bein & Co.; country: IL; sector: Business Services
+  First observed: 2024-08-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://vkvsgl7lhipjirmz6j5ubp3w3bwvxgcdbpi3fsbqngfynetqtw4w5hyd.onion/r/3fyibIj285TGLB031Y9jn4AES0yG+i2ydMBqWuDCZnMStHjJYwVcLm4Uw311dIuwgx39L1MOBceqJ0YCo32hndRWjB5REFZ
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

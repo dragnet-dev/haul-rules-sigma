@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0113 — Recovery Inhibition (doppelpaymer)'
+id: 337fc107-464a-530b-8f0e-0499f0c25483
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with doppelpaymer ransomware.
+  Incident: dragnet-ransomware-2020-0113
+  Ransomware victim claim by doppelpaymer: 4 Canadian courier divisions of TFI International's Canpar Express; country: CA; sector: Transportation/Logistics
+  First observed: 2020-08-19.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

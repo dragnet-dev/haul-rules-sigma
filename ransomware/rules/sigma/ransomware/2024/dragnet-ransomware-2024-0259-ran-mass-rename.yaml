@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0259 — Mass File Rename (rhysida)'
+id: 12bda1b4-d8df-5b1c-9808-1d322968b20b
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by rhysida.
+  Incident: dragnet-ransomware-2024-0259
+  Ransomware victim claim by rhysida: Ann & Robert H. Lurie Children's Hospital of Chicago; country: US; sector: Healthcare
+  First observed: 2024-02-27.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

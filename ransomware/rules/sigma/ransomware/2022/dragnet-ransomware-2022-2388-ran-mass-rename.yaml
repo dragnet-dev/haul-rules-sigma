@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2388 — Mass File Rename (quantum)'
+id: d3a2b224-08d9-5047-996c-1021669f47bd
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by quantum.
+  Incident: dragnet-ransomware-2022-2388
+  Ransomware victim claim by quantum: MCV Holding Company LLC; sector: Business Services
+  First observed: 2022-11-02.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

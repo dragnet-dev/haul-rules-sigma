@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-3371 — Mass File Rename (direwolf)'
+id: 8b3f90cc-58f7-5882-ae41-f66243d41499
+status: test
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by direwolf.
+  Incident: dragnet-ransomware-2026-3371
+  Ransomware victim claim by direwolf: PernelMedia; country: FR; sector: Consumer Services
+  First observed: 2026-01-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://direwolfcdkv5whaz2spehizdg22jsuf5aeje4asmetpbt6ri4jnd4qd.onion/api/public/articles/55
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

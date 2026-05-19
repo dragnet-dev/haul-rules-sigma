@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-4280 — Event Log Clearing (sarcoma)'
+id: 277f5a95-4a6f-5702-a5e9-6348041950e3
+status: deprecated
+description: |
+  Detects event log clearing associated with sarcoma ransomware.
+  Incident: dragnet-ransomware-2024-4280
+  Ransomware victim claim by sarcoma: Kelowna Springs; country: CA; sector: Hospitality and Tourism
+  First observed: 2024-11-14.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

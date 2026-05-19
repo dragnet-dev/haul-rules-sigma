@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0200 — Recovery Inhibition (ryuk)'
+id: 81e9e5d5-6550-583b-b7f2-ec903c7d34cf
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with ryuk ransomware.
+  Incident: dragnet-ransomware-2020-0200
+  Ransomware victim claim by ryuk: Havre Public Schools; country: US; sector: Education
+  First observed: 2020-02-04.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

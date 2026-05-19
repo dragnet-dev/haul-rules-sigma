@@ -1,0 +1,31 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2334 — Recovery Inhibition (worldleaks)'
+id: 6d77411b-5298-53f5-ad83-635d4d676700
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with worldleaks ransomware.
+  Incident: dragnet-ransomware-2025-2334
+  Associated with PLATINUM.
+  Ransomware victim claim by worldleaks: Eastern Platinum Limited; country: CA; sector: Manufacturing
+  First observed: 2025-05-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://worldleaksartrjm3c6vasllvgacbi5u3mgzkluehrzhk2jz4taufuid.onion/companies/1012417747
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+  - dragnet.actor.platinum
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

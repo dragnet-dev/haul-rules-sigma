@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0262 — Recovery Inhibition (revil)'
+id: 72eea0b1-8e7d-591b-a4ef-53adf1ef30f1
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with revil ransomware.
+  Incident: dragnet-ransomware-2020-0262
+  Ransomware victim claim by revil: Actuaries and Associates (retirement specialist); country: US; sector: Financial Services
+  First observed: 2020-07-01.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

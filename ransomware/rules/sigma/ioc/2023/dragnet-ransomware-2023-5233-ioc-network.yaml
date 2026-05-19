@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-5233 — Ransomware C2 Communication'
+id: 0ce5aa2f-a05e-5acf-a0dc-1a2f9f29b89e
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-5233
+  Ransomware victim claim by lockbit3: islandinsurance.ca; country: CA; sector: Financial Services
+  First observed: 2023-03-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lockbitapt6vx57t3eeqjofwgcglmutr3a35nygvokja5uuccip4ykyd.onion/post/lko6hkuoq5fBky2o64219a584b8b0
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lockbitapt6vx57t3eeqjofwgcglmutr3a35nygvokja5uuccip4ykyd.onion/post/lko6hkuoq5fBky2o64219a584b8b0'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

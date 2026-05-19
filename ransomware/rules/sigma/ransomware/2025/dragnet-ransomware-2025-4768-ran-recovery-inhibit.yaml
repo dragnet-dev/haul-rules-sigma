@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4768 — Recovery Inhibition (ransomhub)'
+id: 15c2cadb-4ddd-5d3c-8c44-ca81e49cc9c4
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with ransomhub ransomware.
+  Incident: dragnet-ransomware-2025-4768
+  Ransomware victim claim by ransomhub: www.aymcdonald.com; country: US; sector: Manufacturing
+  First observed: 2025-02-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ransomxifxwc5eteopdobynonjctkxxvap77yqifu2emfbecgbqdw6qd.onion/270ca07d-3ce6-4e04-9adf-9c66542aacf1/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

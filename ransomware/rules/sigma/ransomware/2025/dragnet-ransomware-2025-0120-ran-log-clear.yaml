@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0120 — Event Log Clearing (sinobi)'
+id: 9a65a154-801f-51a3-aac8-ce5cf4e76a35
+status: test
+description: |
+  Detects event log clearing associated with sinobi ransomware.
+  Incident: dragnet-ransomware-2025-0120
+  Ransomware victim claim by sinobi: GV Service; country: IT; sector: Manufacturing
+  First observed: 2025-12-02.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://sinobi6ftrg27d6g4sjdt65malds6cfptlnjyw52rskakqjda6uvb7yd.onion/leaks/692f29d988b6823fa2301a83
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-2258 — Ransomware C2 Communication'
+id: 27f4864e-e239-5543-aa97-cf47a49283e5
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-2258
+  Ransomware victim claim by lockbit3: aluminumsandcastingsfoundry.com; sector: Manufacturing
+  First observed: 2023-06-07.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lockbitapt72iw55njgnqpymggskg5yp75ry7rirtdg4m7i42artsbqd.onion/post/qR5JkbiFvq9uOUYP64805bd0db5c0
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lockbitapt72iw55njgnqpymggskg5yp75ry7rirtdg4m7i42artsbqd.onion/post/qR5JkbiFvq9uOUYP64805bd0db5c0'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

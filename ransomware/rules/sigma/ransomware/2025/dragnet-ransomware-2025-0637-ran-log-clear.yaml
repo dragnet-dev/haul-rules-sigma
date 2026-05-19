@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0637 — Event Log Clearing (ransomhub)'
+id: eec8c98b-d0f8-5229-a1f2-a2615f3757ca
+status: experimental
+description: |
+  Detects event log clearing associated with ransomhub ransomware.
+  Incident: dragnet-ransomware-2025-0637
+  Ransomware victim claim by ransomhub: intellioan.com; country: US; sector: Not Found
+  First observed: 2025-03-30.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ransomxifxwc5eteopdobynonjctkxxvap77yqifu2emfbecgbqdw6qd.onion/11aec96c-018f-4503-baef-341f2d086b61/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

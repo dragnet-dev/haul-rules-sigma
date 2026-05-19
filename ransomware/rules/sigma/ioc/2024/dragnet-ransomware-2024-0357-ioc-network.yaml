@@ -1,0 +1,31 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-0357 — Ransomware C2 Communication'
+id: 61e22c8b-3d70-549c-b286-90ae457a838f
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-0357
+  Associated with menuPass.
+  Ransomware victim claim by cicada3301: BLVD Residential INC; country: CA; sector: Business Services
+  First observed: 2024-08-31.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://cicadabv7vicyvgz5khl7v2x5yygcgow7ryy6yppwmxii4eoobdaztqd.onion/e6n9dzcvt6gp7npk2upyb4pemb9q3fa4
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+  - dragnet.actor.menupass
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://cicadabv7vicyvgz5khl7v2x5yygcgow7ryy6yppwmxii4eoobdaztqd.onion/e6n9dzcvt6gp7npk2upyb4pemb9q3fa4'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

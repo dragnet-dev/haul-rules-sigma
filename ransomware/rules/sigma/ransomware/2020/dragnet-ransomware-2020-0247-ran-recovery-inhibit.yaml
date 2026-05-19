@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0247 — Recovery Inhibition (netwalker)'
+id: 81fa7cb4-e583-5902-ac4d-97d9455b44f7
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with netwalker ransomware.
+  Incident: dragnet-ransomware-2020-0247
+  Ransomware victim claim by netwalker: Direccion Nacional de Migraciones (Argentina's official immigration agency); country: AR; sector: Public Sector
+  First observed: 2020-08-27.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

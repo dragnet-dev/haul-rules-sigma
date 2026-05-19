@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-3696 — Recovery Inhibition (blacksuit)'
+id: ec2b1ed7-ef68-5896-ac59-01071b6aaebe
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with blacksuit ransomware.
+  Incident: dragnet-ransomware-2023-3696
+  Ransomware victim claim by blacksuit: IT Luggage; country: CN; sector: Consumer Services
+  First observed: 2023-07-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?id=vbNPTeGynBUxeIg7
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

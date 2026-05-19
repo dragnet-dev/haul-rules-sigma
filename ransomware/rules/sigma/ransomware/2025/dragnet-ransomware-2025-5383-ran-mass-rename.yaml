@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5383 — Mass File Rename (play)'
+id: 0cb9ed8a-9d4a-5152-afd2-d2f502e87da9
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by play.
+  Incident: dragnet-ransomware-2025-5383
+  Associated with Play.
+  Ransomware victim claim by play: CFI Tire Service; country: US; sector: Manufacturing
+  First observed: 2025-08-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://k7kg3jqxang3wh7hnmaiokchk7qoebupfgoik6rha6mjpzwupwtj25yd.onion/topic.php?id=GlOA4swyFHMRe7
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+  - dragnet.actor.play
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

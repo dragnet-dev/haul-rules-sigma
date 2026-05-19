@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-1503 — Ransomware C2 Communication'
+id: f6794fc3-6595-5860-a703-b226edda3ade
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-1503
+  Ransomware victim claim by lockbit3: rehab.ie; country: IE; sector: Healthcare
+  First observed: 2024-04-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lockbit3olp7oetlc4tl5zydnoluphh7fvdt5oa6arcp2757r7xkutid.onion/post/r8VSf9lhRa5S7pYF661f1894b0ccb
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lockbit3olp7oetlc4tl5zydnoluphh7fvdt5oa6arcp2757r7xkutid.onion/post/r8VSf9lhRa5S7pYF661f1894b0ccb'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-5193 — Ransomware C2 Communication'
+id: bd382387-e743-543f-a56a-4c7c37cf592a
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-5193
+  Ransomware victim claim by darkvault: lenmed.co.za; country: ZA; sector: Healthcare
+  First observed: 2024-08-13.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://mdhby62yvvg6sd5jmx5gsyucs7ynb5j45lvvdh4dsymg43puitu7tfid.onion//post/ODMwOGY1YzRjNGFiODBlMjAzMmM5MW
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://mdhby62yvvg6sd5jmx5gsyucs7ynb5j45lvvdh4dsymg43puitu7tfid.onion//post/ODMwOGY1YzRjNGFiODBlMjAzMmM5MW'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

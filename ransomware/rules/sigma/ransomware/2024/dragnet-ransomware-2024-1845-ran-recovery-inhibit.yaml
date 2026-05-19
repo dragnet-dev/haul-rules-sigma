@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-1845 — Recovery Inhibition (qiulong)'
+id: 1eb05ac5-ca75-5db8-8f42-2a17aa17f1ca
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with qiulong ransomware.
+  Incident: dragnet-ransomware-2024-1845
+  Ransomware victim claim by qiulong: www.concisa.eng.br; country: BR; sector: Business Services
+  First observed: 2024-06-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://62brsjf2w77ihz5paods33cdgqnon54gjns5nmag3hmqv6fcwamtkmad.onion/?p=184
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

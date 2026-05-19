@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0034 — Recovery Inhibition (global)'
+id: ef2f77a0-db9a-599f-b9e5-1169ac4b2638
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with global ransomware.
+  Incident: dragnet-ransomware-2025-0034
+  Ransomware victim claim by global: hmsaojose.com; country: BR; sector: Healthcare
+  First observed: 2025-08-20.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

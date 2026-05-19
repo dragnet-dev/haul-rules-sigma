@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4542 — Recovery Inhibition (8base)'
+id: 987b048f-4d4c-51e2-8aff-d24de0b8fa86
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with 8base ransomware.
+  Incident: dragnet-ransomware-2023-4542
+  Ransomware victim claim by 8base: SatCom Marketing; sector: Business Services
+  First observed: 2023-08-06.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://basemmnnqwxevlymli5bs36o5ynti55xojzvn246spahniugwkff2pad.onion/company/7890204
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

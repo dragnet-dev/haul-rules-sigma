@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-1977 — Recovery Inhibition (onyx)'
+id: 4ef10dfd-8ba0-5312-bafa-be5b17062976
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with onyx ransomware.
+  Incident: dragnet-ransomware-2022-1977
+  Ransomware victim claim by onyx: Baltholding OÃ; sector: Not Found
+  First observed: 2022-07-26.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

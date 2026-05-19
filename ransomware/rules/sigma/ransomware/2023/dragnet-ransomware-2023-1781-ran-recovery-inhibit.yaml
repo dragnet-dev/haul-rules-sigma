@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1781 — Recovery Inhibition (medusa)'
+id: a834806e-1298-5327-b1d5-ba1ffb388398
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with medusa ransomware.
+  Incident: dragnet-ransomware-2023-1781
+  Ransomware victim claim by medusa: Wallick Communities; sector: Construction
+  First observed: 2023-05-12.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://medusaxko7jxtrojdkxo66j7ck4q5tgktf7uqsqyfry4ebnxlcbkccyd.onion/detail?id=8ce21e9503b3660b09d75438ada5f253
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

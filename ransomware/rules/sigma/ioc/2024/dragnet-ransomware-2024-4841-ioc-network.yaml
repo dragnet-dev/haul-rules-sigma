@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-4841 — Ransomware C2 Communication'
+id: 1957d1ff-e3ce-5fd6-a4fc-36aa37729d27
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-4841
+  Ransomware victim claim by killsec: notariusze.waw.pl; country: PL; sector: Business Services
+  First observed: 2024-08-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://kill432ltnkqvaqntbalnsgojqqs2wz4lhnamrqjg66tq6fuvcztilyd.onion/post/vwOx3lJM71DTDBE50Wb0R9MDJ.php
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://kill432ltnkqvaqntbalnsgojqqs2wz4lhnamrqjg66tq6fuvcztilyd.onion/post/vwOx3lJM71DTDBE50Wb0R9MDJ.php'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

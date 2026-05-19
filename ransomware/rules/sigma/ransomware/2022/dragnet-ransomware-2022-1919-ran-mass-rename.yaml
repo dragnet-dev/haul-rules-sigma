@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-1919 — Mass File Rename (lockbit2)'
+id: 74c9c979-0d2a-58df-9087-13325a390d9c
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by lockbit2.
+  Incident: dragnet-ransomware-2022-1919
+  Ransomware victim claim by lockbit2: rhenus.group; sector: Transportation/Logistics
+  First observed: 2022-06-20.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

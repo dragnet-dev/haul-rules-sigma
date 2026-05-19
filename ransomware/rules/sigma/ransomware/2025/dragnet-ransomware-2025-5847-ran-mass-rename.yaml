@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5847 — Mass File Rename (gunra)'
+id: 88b19e10-b32d-50e6-a68f-fff9e1b5ba20
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by gunra.
+  Incident: dragnet-ransomware-2025-5847
+  Ransomware victim claim by gunra: Olho D'Água Distribuidora; country: BR; sector: Transportation/Logistics
+  First observed: 2025-05-26.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://gunrabxbig445sjqa535uaymzerj6fp4nwc6ngc2xughf2pedjdhk4ad.onion
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

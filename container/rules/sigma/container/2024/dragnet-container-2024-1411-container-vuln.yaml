@@ -1,0 +1,44 @@
+title: 'Dragnet [Container]: dragnet-container-2024-1411 — Vulnerable Base Image Pull'
+id: 249f9912-f0eb-52dd-a6c3-17756cd3333e
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-1411 (Tier 2, CVSS 9.6)
+  In radare2 before version 4.5.0, malformed PDB file names in the PDB server path cause shell injection. To trigger the problem it's required to open the executable in radare2 and run idpd to trigger the download. The shell code will execute, and will create a file called pwned in the current directory.
+  First observed: 2024-11-21.
+references:
+  - https://github.com/radareorg/radare2/commit/04edfa82c1f3fa2bc3621ccdad2f93bdbf00e4f9
+  - https://github.com/radareorg/radare2/issues/16945
+  - https://github.com/radareorg/radare2/pull/16966
+  - https://github.com/radareorg/radare2/security/advisories/GHSA-r552-vp94-9358
+  - https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/MWC7KNBETYE5MK6VIUU26LUIISIFGSBZ/
+  - https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/YE77P5RSE2T7JHEKMWF2ARTSJGMPXCFY/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'alpine:3.12'
+      - 'alpine:3.13'
+      - 'alpine:3.14'
+      - 'alpine:3.15'
+      - 'alpine:3.16'
+      - 'alpine:3.17'
+      - 'alpine:3.18'
+      - 'alpine:3.19'
+      - 'alpine:3.20'
+      - 'alpine:3.21'
+      - 'alpine:3.22'
+      - 'alpine:3.23'
+      - 'alpine edge:'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

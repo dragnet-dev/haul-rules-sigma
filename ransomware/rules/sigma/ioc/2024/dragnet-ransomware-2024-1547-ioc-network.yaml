@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-1547 — Ransomware C2 Communication'
+id: 5157a664-9701-5ffd-b120-cdb44d37505c
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-1547
+  Ransomware victim claim by alphv: Angeles Medical Centers; country: US; sector: Healthcare
+  First observed: 2024-02-26.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://alphvuzxyxv6ylumd2ngp46xzq3pw6zflomrghvxeuks6kklberrbmyd.onion/9375e9ed-523a-404e-a291-70e7230eb68b
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://alphvuzxyxv6ylumd2ngp46xzq3pw6zflomrghvxeuks6kklberrbmyd.onion/9375e9ed-523a-404e-a291-70e7230eb68b'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

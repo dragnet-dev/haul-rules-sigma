@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0539 — Recovery Inhibition (conti)'
+id: ab1e03c7-7e94-5909-84f5-8a25c6f06d13
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with conti ransomware.
+  Incident: dragnet-ransomware-2021-0539
+  Ransomware victim claim by conti: Porto Seguro; sector: Financial Services
+  First observed: 2021-10-23.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

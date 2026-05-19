@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0575 — Mass File Rename (midas)'
+id: b1902c7d-9ffe-5a09-832b-7412b3645696
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by midas.
+  Incident: dragnet-ransomware-2021-0575
+  Ransomware victim claim by midas: HAMTACO; sector: Consumer Services
+  First observed: 2021-11-29.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

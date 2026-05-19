@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6989 — Shadow Copy Deletion (qilin)'
+id: 5ffa77cb-2c9d-5f58-aed2-a79e09b29268
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with qilin ransomware.
+  Incident: dragnet-ransomware-2025-6989
+  Ransomware victim claim by qilin: Berko İlaç Ve Ki̇mya San Aş; country: TR; sector: Manufacturing
+  First observed: 2025-05-22.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/view?uuid=a76fbf28-d0df-31a7-82d6-2f5cce592ca7
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

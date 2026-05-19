@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-4846 — Ransomware C2 Communication'
+id: 55f1103b-e865-5767-b9d3-ebea47348a66
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-4846
+  Ransomware victim claim by darkvault: comoferta.com; country: BR; sector: Business Services
+  First observed: 2024-08-08.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://mdhby62yvvg6sd5jmx5gsyucs7ynb5j45lvvdh4dsymg43puitu7tfid.onion//post/ZDczYjhiMTFjYWMwZTczZTY1NGRmMD
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://mdhby62yvvg6sd5jmx5gsyucs7ynb5j45lvvdh4dsymg43puitu7tfid.onion//post/ZDczYjhiMTFjYWMwZTczZTY1NGRmMD'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

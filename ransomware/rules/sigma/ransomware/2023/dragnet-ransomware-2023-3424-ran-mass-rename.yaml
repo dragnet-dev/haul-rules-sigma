@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-3424 — Mass File Rename (daixin)'
+id: 1adaef77-3524-56ea-8e63-9529c879ae0e
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by daixin.
+  Incident: dragnet-ransomware-2023-3424
+  Ransomware victim claim by daixin: B&G Foods; country: US; sector: Agriculture and Food Production
+  First observed: 2023-02-11.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

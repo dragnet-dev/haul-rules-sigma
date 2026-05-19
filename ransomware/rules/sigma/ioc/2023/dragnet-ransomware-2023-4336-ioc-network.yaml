@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-4336 — Ransomware C2 Communication'
+id: 3bf8e80e-4201-57cc-a9f5-835ce91456fa
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-4336
+  Ransomware victim claim by royal: Liberty Lines; sector: Transportation/Logistics
+  First observed: 2023-03-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://royal4ezp7xrbakkus3oofjw6gszrohpodmdnfbe5e4w3og5sm7vb3qd.onion/5X6gzUMENrJhcJMjkIchvHj2WsehoSKn
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://royal4ezp7xrbakkus3oofjw6gszrohpodmdnfbe5e4w3og5sm7vb3qd.onion/5X6gzUMENrJhcJMjkIchvHj2WsehoSKn'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

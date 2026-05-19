@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0003 — Recovery Inhibition (fog)'
+id: 907d4aa0-6a48-507e-86b0-96fef43fd569
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with fog ransomware.
+  Incident: dragnet-ransomware-2025-0003
+  Ransomware victim claim by fog: eConceptions; country: PK; sector: Not Found
+  First observed: 2025-02-06.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7476 — Mass File Rename (darkvault)'
+id: 8f7e942b-2de6-593e-8f64-7914fd60b7d8
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by darkvault.
+  Incident: dragnet-ransomware-2025-7476
+  Ransomware victim claim by darkvault: yoniot.cn; country: CN; sector: Technology
+  First observed: 2025-01-06.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://mdhby62yvvg6sd5jmx5gsyucs7ynb5j45lvvdh4dsymg43puitu7tfid.onion//post/NzdhZDA1YWY0NTcwYTE4Yzk2ZWU3NT
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-6963 — Ransomware C2 Communication'
+id: b30af6b1-bbcf-51df-96d5-83ffd21bd48e
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-6963
+  Ransomware victim claim by lynx: Hunter Taubman Fischer & Li; country: US; sector: Business Services
+  First observed: 2025-01-05.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lynxblog.net/leaks/677a806905a779c3d39a1d3c
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lynxblog.net/leaks/677a806905a779c3d39a1d3c'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

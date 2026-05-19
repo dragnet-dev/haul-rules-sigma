@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0762 — Mass File Rename (medusalocker)'
+id: 89d5937c-09d2-50b6-b14b-603f0031280d
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by medusalocker.
+  Incident: dragnet-ransomware-2023-0762
+  Ransomware victim claim by medusalocker: SELL DATA(qtox); sector: Not Found
+  First observed: 2023-06-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://z6wkgghtoawog5noty5nxulmmt2zs7c3yvwr22v4czbffdoly2kl4uad.onion/?p=275
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

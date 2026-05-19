@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2139 — Mass File Rename (ransomhub)'
+id: 86438dc9-36af-54ef-ae94-509aaed6c6ef
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by ransomhub.
+  Incident: dragnet-ransomware-2024-2139
+  Ransomware victim claim by ransomhub: capecodacademy.org; country: US; sector: Education
+  First observed: 2024-08-30.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ransomxifxwc5eteopdobynonjctkxxvap77yqifu2emfbecgbqdw6qd.onion/5fcd4631-6493-4131-9192-aee7afda3ef1/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4687 — Event Log Clearing (incransom)'
+id: e557aa4b-dd27-50a5-b9ad-ec8716275589
+status: experimental
+description: |
+  Detects event log clearing associated with incransom ransomware.
+  Incident: dragnet-ransomware-2025-4687
+  Ransomware victim claim by incransom: Quadrangle Imaging Center; country: PR; sector: Healthcare
+  First observed: 2025-08-22.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://incblog6qu4y4mm4zvw5nrmue6qbwtgjsxpw6b7ixzssu36tsajldoad.onion/blog/disclosures/68a8bc0ec7b82dfe0b7ece16
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

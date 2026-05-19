@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5490 — Recovery Inhibition (abyss)'
+id: 64d3dd45-bc81-5a5d-b113-2b2e27c76f5a
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with abyss ransomware.
+  Incident: dragnet-ransomware-2024-5490
+  Ransomware victim claim by abyss: victrongroup.com; country: VN; sector: Business Services
+  First observed: 2024-10-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-0728 — Mass File Rename (alphv)'
+id: 6a03aff3-0f9b-506b-a447-dcae7a2e6a8c
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by alphv.
+  Incident: dragnet-ransomware-2022-0728
+  Ransomware victim claim by alphv: Jam Filled Entertainment; sector: Technology
+  First observed: 2022-10-13.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://alphvmmm27o3abo3r2mlmjrpdmzle3rykajqc5xsj7j7ejksbpsa36ad.onion/a808e46a-3406-4313-9f1d-939c3294058e
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

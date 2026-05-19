@@ -1,0 +1,30 @@
+title: 'Dragnet [Container]: dragnet-container-2024-1230 — Vulnerable Base Image Pull'
+id: 4cb004ac-7115-5327-abb0-7cc70e89a6f6
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-1230 (Tier 2, CVSS 9.8)
+  In wolfSSL through 4.1.0, there is a missing sanity check of memory accesses in parsing ASN.1 certificate data while handshaking. Specifically, there is a one-byte heap-based buffer over-read in CheckCertSignature_ex in wolfcrypt/src/asn.c.
+  First observed: 2024-11-21.
+references:
+  - https://github.com/wolfSSL/wolfssl/issues/2459
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

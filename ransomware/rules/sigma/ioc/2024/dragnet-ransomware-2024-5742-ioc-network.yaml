@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-5742 — Ransomware C2 Communication'
+id: 52d2a820-37e6-5366-ad0c-a3584e9d3b76
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-5742
+  Ransomware victim claim by everest: A Sensitive Touch Home Health;Alphastar Home Health Care;Heart of Texas Home Healthcare Se; country: US; sector: Healthcare
+  First observed: 2024-11-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ransomocmou6mnbquqz44ewosbkjk3o5qjsl3orawojexfook2j7esad.onion/a-sensitive-touch-home-healthalphastar-home-health-careheart-of-texas-home-healthcare-services-inc/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://ransomocmou6mnbquqz44ewosbkjk3o5qjsl3orawojexfook2j7esad.onion/a-sensitive-touch-home-healthalphastar-home-health-careheart-of-texas-home-healthcare-services-inc/'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

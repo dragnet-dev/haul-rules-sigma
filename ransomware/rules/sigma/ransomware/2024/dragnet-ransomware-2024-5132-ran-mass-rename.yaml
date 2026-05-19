@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5132 — Mass File Rename (ransomhub)'
+id: d7618c94-5325-52ac-9bc3-f39245004608
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by ransomhub.
+  Incident: dragnet-ransomware-2024-5132
+  Ransomware victim claim by ransomhub: kempe.com.au; country: AU; sector: Manufacturing
+  First observed: 2024-06-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ransomxifxwc5eteopdobynonjctkxxvap77yqifu2emfbecgbqdw6qd.onion/36031375-c864-4407-9b9d-e3e6aeb00d9c/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

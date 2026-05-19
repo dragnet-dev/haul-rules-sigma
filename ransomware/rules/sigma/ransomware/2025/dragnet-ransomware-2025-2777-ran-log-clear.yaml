@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2777 — Event Log Clearing (dragonforce)'
+id: 0e5b9b2b-43ef-5156-b302-60c55ea5d3e5
+status: test
+description: |
+  Detects event log clearing associated with dragonforce ransomware.
+  Incident: dragnet-ransomware-2025-2777
+  Ransomware victim claim by dragonforce: Smith Roberts Baldischwiler, LLC | OKC Engineering Firm; country: US; sector: Business Services
+  First observed: 2025-12-08.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://z3wqggtxft7id3ibr7srivv5gjof5fwg76slewnzwwakjuf3nlhukdid.onion/blog/?post_uuid=c7000ac0-ee16-47fb-afb0-05f0c7ea487d
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

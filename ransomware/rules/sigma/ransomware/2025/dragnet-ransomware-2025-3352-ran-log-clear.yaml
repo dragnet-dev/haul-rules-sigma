@@ -1,0 +1,36 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3352 — Event Log Clearing (play)'
+id: 650dc199-31ad-5242-9249-d57a3b66d0e9
+status: experimental
+description: |
+  Detects event log clearing associated with play ransomware.
+  Incident: dragnet-ransomware-2025-3352
+  Associated with Play.
+  Ransomware victim claim by play: International Process Plants; country: US; sector: Manufacturing
+  First observed: 2025-02-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://mbrlkbtq5jonaqkurjwmxftytyn2ethqvbxfu4rgjbkkknndqwae6byd.onion/index.php?page=1topic.php?id=usqhGVhV6vl9hm
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+  - dragnet.actor.play
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

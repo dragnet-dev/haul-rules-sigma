@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4069 — Recovery Inhibition (cactus)'
+id: b37b87da-8679-53a2-a542-a9eb1aad2f91
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with cactus ransomware.
+  Incident: dragnet-ransomware-2023-4069
+  Ransomware victim claim by cactus: Wardlaw Claims Service; sector: Business Services
+  First observed: 2023-09-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://cactusbloguuodvqjmnzlwetjlpj6aggc6iocwhuupb47laukux7ckid.onion/posts/WARDLAW
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

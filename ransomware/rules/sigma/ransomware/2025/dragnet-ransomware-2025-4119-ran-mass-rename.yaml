@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4119 — Mass File Rename (hunters)'
+id: 59f5036e-ea1b-5987-83f5-8dc44764434d
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by hunters.
+  Incident: dragnet-ransomware-2025-4119
+  Ransomware victim claim by hunters: Cargills Bank; country: LK; sector: Financial Services
+  First observed: 2025-03-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://hunters55rdxciehoqzwv7vgyv6nt37tbwax2reroyzxhou7my5ejyid.onion/companies/9192254142
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

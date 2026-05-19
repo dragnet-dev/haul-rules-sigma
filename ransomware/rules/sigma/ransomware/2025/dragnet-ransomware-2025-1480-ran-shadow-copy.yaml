@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1480 — Shadow Copy Deletion (threeam)'
+id: bf21cd9b-0243-55c0-a048-1db3b9e860ce
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with threeam ransomware.
+  Incident: dragnet-ransomware-2025-1480
+  Ransomware victim claim by threeam: vazirilaw.com; country: US; sector: Business Services
+  First observed: 2025-05-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://threeamkelxicjsaf2czjyz2lc4q3ngqkxhhlexyfcp2o6raw4rphyad.onion/detail/e55gjake2mpvpex4bsp3v850t2wavd
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

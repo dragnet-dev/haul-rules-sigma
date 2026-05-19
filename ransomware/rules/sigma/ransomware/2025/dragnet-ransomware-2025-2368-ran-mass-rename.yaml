@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2368 — Mass File Rename (satanlockv2)'
+id: b0b1428a-6f12-58d4-92ba-a19d9fa5b1c8
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by satanlockv2.
+  Incident: dragnet-ransomware-2025-2368
+  Ransomware victim claim by satanlockv2: Satanlock project will be shut down; sector: Not Found
+  First observed: 2025-07-07.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://tzhwmgguyxrg6q3tu4q3gvopcjynrhw6ryx2bdl5ghisdkyunfua5xyd.onion/blog/0f09749244704dd7eda6e563ddd286eb4bd7ab0138dfefbc93a237c6179c0b21/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

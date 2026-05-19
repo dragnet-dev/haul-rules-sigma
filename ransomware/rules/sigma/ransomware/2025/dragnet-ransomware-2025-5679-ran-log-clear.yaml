@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5679 — Event Log Clearing (safepay)'
+id: 1512e385-6c0f-54a5-913d-6ac75fab8493
+status: experimental
+description: |
+  Detects event log clearing associated with safepay ransomware.
+  Incident: dragnet-ransomware-2025-5679
+  Ransomware victim claim by safepay: halbarstainless.com; country: CA; sector: Manufacturing
+  First observed: 2025-09-05.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://safepaypfxntwixwjrlcscft433ggemlhgkkdupi2ynhtcmvdgubmoyd.onion/blog/post/halbarstainlesscom/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

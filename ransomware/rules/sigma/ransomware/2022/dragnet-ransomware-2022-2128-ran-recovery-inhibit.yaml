@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2128 — Recovery Inhibition (lockbit2)'
+id: b8ad427c-3ab3-566c-b07d-0d031c6d943f
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with lockbit2 ransomware.
+  Incident: dragnet-ransomware-2022-2128
+  Ransomware victim claim by lockbit2: gymund.dk; country: DK; sector: Not Found
+  First observed: 2022-05-19.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

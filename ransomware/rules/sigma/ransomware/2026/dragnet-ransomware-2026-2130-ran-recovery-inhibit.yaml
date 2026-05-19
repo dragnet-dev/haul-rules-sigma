@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2130 — Recovery Inhibition (pear)'
+id: 375a958e-bd75-5e37-bf1d-6bdae74ae865
+status: test
+description: |
+  Detects boot/recovery disabling associated with pear ransomware.
+  Incident: dragnet-ransomware-2026-2130
+  Ransomware victim claim by pear: San Diego Eye Bank; country: US; sector: Healthcare
+  First observed: 2026-02-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://peargxn3oki34c4savcbcfqofjjwjnnyrlrbszfv6ujlx36mhrh57did.onion/Companies/sdeb
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

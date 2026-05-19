@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0604 — Recovery Inhibition (crypto24)'
+id: 49c41358-0715-5000-aec2-ee5c68845946
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with crypto24 ransomware.
+  Incident: dragnet-ransomware-2025-0604
+  Ransomware victim claim by crypto24: AsahiKASEI MICRODEVICES; country: US; sector: Technology
+  First observed: 2025-11-12.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

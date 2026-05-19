@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6930 — Shadow Copy Deletion (kraken)'
+id: 9c2da79e-71f7-522c-9ed7-3d020ddc17c1
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with kraken ransomware.
+  Incident: dragnet-ransomware-2025-6930
+  Ransomware victim claim by kraken: www.humac.dk; country: DK; sector: Technology
+  First observed: 2025-04-02.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://krakenccj3wr23452a4ibkbkuph4d6soyx2xgjoogtuamc3m7u7wemad.onion/news/3b5ad327394e69a407c67ecfaa06de75
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

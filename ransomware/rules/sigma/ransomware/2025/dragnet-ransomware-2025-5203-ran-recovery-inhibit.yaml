@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5203 — Recovery Inhibition (dragonforce)'
+id: 48afb54c-0142-5914-a1a3-8f629029583d
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with dragonforce ransomware.
+  Incident: dragnet-ransomware-2025-5203
+  Ransomware victim claim by dragonforce: Hilliard Enterprises; country: US; sector: Transportation/Logistics
+  First observed: 2025-06-23.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://z3wqggtxft7id3ibr7srivv5gjof5fwg76slewnzwwakjuf3nlhukdid.onion/blog/?post_uuid=63c3e10c-955c-4d19-b5ae-e7fbb8c7c44a
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

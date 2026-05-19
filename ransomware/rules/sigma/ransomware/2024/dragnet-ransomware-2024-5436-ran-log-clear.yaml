@@ -1,0 +1,36 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5436 — Event Log Clearing (play)'
+id: c7b97862-cc12-5e02-8bd8-844ac5ec06d4
+status: experimental
+description: |
+  Detects event log clearing associated with play ransomware.
+  Incident: dragnet-ransomware-2024-5436
+  Associated with Play.
+  Ransomware victim claim by play: Ab Monsteras Metall; country: SE; sector: Manufacturing
+  First observed: 2024-05-07.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://k7kg3jqxang3wh7hnmaiokchk7qoebupfgoik6rha6mjpzwupwtj25yd.onion/topic.php?id=CsFPaDp6kNX0x8
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+  - dragnet.actor.play
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

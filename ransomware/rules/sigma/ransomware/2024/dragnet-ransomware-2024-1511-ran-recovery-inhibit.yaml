@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-1511 — Recovery Inhibition (SilentRansomGroup)'
+id: 40c4bf63-60fd-5457-a793-5f94e9ee0d58
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with SilentRansomGroup ransomware.
+  Incident: dragnet-ransomware-2024-1511
+  Ransomware victim claim by SilentRansomGroup: Marriott International Inc; country: US; sector: Hospitality and Tourism
+  First observed: 2024-12-13.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

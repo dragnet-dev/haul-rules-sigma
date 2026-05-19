@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0639 — Recovery Inhibition (ransomed)'
+id: 3e7393ac-4775-5354-8e71-23b0b4003742
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with ransomed ransomware.
+  Incident: dragnet-ransomware-2023-0639
+  Ransomware victim claim by ransomed: Ransomedvc Pentest Services!; sector: Not Found
+  First observed: 2023-10-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://f6amq3izzsgtna4vw24rpyhy3ofwazlgex2zqdssavevvkklmtudxjad.onion/?p=146
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,37 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-0827 — Shadow Copy Deletion (kelvinsecurity)'
+id: 8be3de32-98ab-5e27-bff2-a886a06abe29
+status: deprecated
+description: |
+  Detects shadow copy deletion commands associated with kelvinsecurity ransomware.
+  Incident: dragnet-ransomware-2022-0827
+  Ransomware victim claim by kelvinsecurity: Equicom SAVINGS BANK; sector: Financial Services
+  First observed: 2022-04-01.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

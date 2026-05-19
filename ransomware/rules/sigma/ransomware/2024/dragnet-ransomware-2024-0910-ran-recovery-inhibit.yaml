@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0910 — Recovery Inhibition (ransomhouse)'
+id: 279bb991-f8aa-571b-9d30-bf662e739095
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with ransomhouse ransomware.
+  Incident: dragnet-ransomware-2024-0910
+  Ransomware victim claim by ransomhouse: Al-Karam Textile Mills Pvt; country: PK; sector: Manufacturing
+  First observed: 2024-05-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://zohlm7ahjwegcedoz7lrdrti7bvpofymcayotp744qhx6gjmxbuo2yid.onion/r/412c5638082495e55a81102ba3dfd7697ef90ff4
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0941 — Recovery Inhibition (babuk2)'
+id: c28c1726-d293-595c-9452-0075918172ba
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with babuk2 ransomware.
+  Incident: dragnet-ransomware-2025-0941
+  Ransomware victim claim by babuk2: Access to Indian Ministry of Defence and Military Secret (DRDO) documents By Babuk Locker ...; country: IN; sector: Public Sector
+  First observed: 2025-03-10.
+  Confidence: 90% (ransomware_live).
+references:
+  - http:/bxwu33iefqfc3rxigynn3ghvq4gdw3gxgxna5m4aa3o4vscdeeqhiqad.onion/blog/5bce46da119b73d1ba3d82909cd88d658342a1fee85f82c5c5e2be35e2bd2494/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

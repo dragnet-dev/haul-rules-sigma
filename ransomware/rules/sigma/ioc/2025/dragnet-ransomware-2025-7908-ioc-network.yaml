@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-7908 — Ransomware C2 Communication'
+id: f65043bd-7889-5d27-9421-02f079a907e2
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-7908
+  Ransomware victim claim by BrainCipher: fsbgroup.ca; country: CA; sector: Financial Services
+  First observed: 2025-10-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://vkvsgl7lhipjirmz6j5ubp3w3bwvxgcdbpi3fsbqngfynetqtw4w5hyd.onion/s/FOZZeQMuNKEZbGKbHFwXcIdfAsbXFXEsrn35NxL0EEpxomDzFR8pmdYX5iTibe76c21dKwJ76QV+8lSF2h2zHBnZUViTmo3
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://vkvsgl7lhipjirmz6j5ubp3w3bwvxgcdbpi3fsbqngfynetqtw4w5hyd.onion/s/FOZZeQMuNKEZbGKbHFwXcIdfAsbXFXEsrn35NxL0EEpxomDzFR8pmdYX5iTibe76c21dKwJ76QV+8lSF2h2zHBnZUViTmo3'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

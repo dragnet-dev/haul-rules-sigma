@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-0264 — Recovery Inhibition (rhysida)'
+id: 51055d64-2cb8-5cdf-b071-a610f73ce1f4
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with rhysida ransomware.
+  Incident: dragnet-ransomware-2026-0264
+  Ransomware victim claim by rhysida: Phoenix Art Museum; country: US; sector: Education
+  First observed: 2026-02-12.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,28 @@
+title: 'Dragnet [Container]: dragnet-container-2026-2708 — Vulnerable Base Image Pull'
+id: aca3dac8-46a8-53c9-9f98-011392e782b5
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-2708 (Tier 2, CVSS 9.3)
+  The decode_frame function in libavcodec/eamad.c in FFmpeg before 1.1 allows remote attackers to have an unspecified impact via crafted Electronic Arts Madcow video data, which triggers an out-of-bounds array access.
+  First observed: 2026-04-29.
+references:
+  - http://git.videolan.org/?p=ffmpeg.git%3Ba=commitdiff%3Bh=63ac64864c6e0e84355aa3caa5b92208997a9a8d
+  - http://www.ffmpeg.org/security.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:7'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

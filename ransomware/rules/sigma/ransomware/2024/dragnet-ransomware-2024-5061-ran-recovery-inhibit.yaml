@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5061 — Recovery Inhibition (lockbit3)'
+id: d71ff71d-f698-58c4-95c8-51e8cb63c8ce
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with lockbit3 ransomware.
+  Incident: dragnet-ransomware-2024-5061
+  Ransomware victim claim by lockbit3: brockington.leisc.sch.uk; country: GB; sector: Education
+  First observed: 2024-08-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lbb6ud2vyf23z4hw6fzskr5gru7eftbjfbd6yzra3hzuqqvjy63blqqd.onion//post/6T9r7nbRRTgxCibt66b89fc071d04
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

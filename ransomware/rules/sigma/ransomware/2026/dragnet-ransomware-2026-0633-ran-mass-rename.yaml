@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-0633 — Mass File Rename (dragonforce)'
+id: 9945b844-0958-5dc4-82c2-2df7a1b97f5c
+status: test
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by dragonforce.
+  Incident: dragnet-ransomware-2026-0633
+  Ransomware victim claim by dragonforce: wiproferretto.com; country: IT; sector: Manufacturing
+  First observed: 2026-02-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://z3wqggtxft7id3ibr7srivv5gjof5fwg76slewnzwwakjuf3nlhukdid.onion/blog/?post_uuid=2e34ddb0-f34d-4565-bd63-ba3dc3c85282
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

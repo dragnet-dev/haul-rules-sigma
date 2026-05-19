@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-1335 — Recovery Inhibition (dragonforce)'
+id: d6fb3154-cce3-5961-bef2-75e8822dd283
+status: stable
+description: |
+  Detects boot/recovery disabling associated with dragonforce ransomware.
+  Incident: dragnet-ransomware-2026-1335
+  Ransomware victim claim by dragonforce: rudolf-med.com; country: DE; sector: Healthcare
+  First observed: 2026-04-13.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://z3wqggtxft7id3ibr7srivv5gjof5fwg76slewnzwwakjuf3nlhukdid.onion/blog/?post_uuid=e7ef8335-38df-4e5b-a03f-0fb95c4e0f74
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4084 — Shadow Copy Deletion (sinobi)'
+id: b71f18cf-9a88-5250-87b3-cc1e6e9b99e0
+status: test
+description: |
+  Detects shadow copy deletion commands associated with sinobi ransomware.
+  Incident: dragnet-ransomware-2025-4084
+  Ransomware victim claim by sinobi: Adept; country: DK; sector: Construction
+  First observed: 2025-11-22.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://sinobi6rlec6f2bgn6rd72xo7hvds4a5ajiu2if4oub2sut7fg3gomqd.onion/leaks/692311e088b6823fa2dbe220
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

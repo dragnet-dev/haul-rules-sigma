@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1584 — Recovery Inhibition (lockdata)'
+id: 70b4ac92-dfd5-5c8d-8f7e-7ab1363466e3
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with lockdata ransomware.
+  Incident: dragnet-ransomware-2021-1584
+  Ransomware victim claim by lockdata: [USA] OrthoCare, 700 Lake Ave, Ste 6, Manchester, New Hampshire, 03103; sector: Healthcare
+  First observed: 2021-09-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

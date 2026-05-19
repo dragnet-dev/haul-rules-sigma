@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-5964 — Ransomware C2 Communication'
+id: e74810ca-fe66-5783-931e-b51c2e586f9d
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-5964
+  Ransomware victim claim by ransomhouse: GCA Nederland; country: NL; sector: Transportation/Logistics
+  First observed: 2024-02-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://zohlm7ahjwegcedoz7lrdrti7bvpofymcayotp744qhx6gjmxbuo2yid.onion/r/a63bf8b0efe78414fbea2f518931dc6551ed6ba8
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://zohlm7ahjwegcedoz7lrdrti7bvpofymcayotp744qhx6gjmxbuo2yid.onion/r/a63bf8b0efe78414fbea2f518931dc6551ed6ba8'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

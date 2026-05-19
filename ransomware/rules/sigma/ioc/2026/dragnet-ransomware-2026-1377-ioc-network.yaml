@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2026-1377 — Ransomware C2 Communication'
+id: cda16560-be87-5099-98da-9f5fb5567b86
+status: stable
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2026-1377
+  Ransomware victim claim by chaos: cstindustries.com; country: US; sector: Manufacturing
+  First observed: 2026-05-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://hptqq2o2qjva7lcaaq67w36jihzivkaitkexorauw7b2yul2z6zozpqd.onion/post/0MTAQq7Ed4lUE8W3ugU98DfljN4VCpIR
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://hptqq2o2qjva7lcaaq67w36jihzivkaitkexorauw7b2yul2z6zozpqd.onion/post/0MTAQq7Ed4lUE8W3ugU98DfljN4VCpIR'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Container]: dragnet-container-2024-0032 — Vulnerable Base Image Pull'
+id: b8a72203-8940-533b-b0bc-d43620e01ecf
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-0032 (Tier 2, CVSS 9.8)
+  A buffer overflow vulnerability exists in the mg_get_http_header function in Cesanta Mongoose 6.18 due to a lack of bounds checking. A crafted HTTP header can exploit this bug. NOTE: a committer has stated "this will not happen in practice.
+  First observed: 2024-11-21.
+references:
+  - https://github.com/cesanta/mongoose/issues/1135
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

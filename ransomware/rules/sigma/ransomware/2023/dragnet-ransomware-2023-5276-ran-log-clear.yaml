@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-5276 — Event Log Clearing (underground)'
+id: 9d031097-be0a-5d9d-a7ed-9cc895f14350
+status: experimental
+description: |
+  Detects event log clearing associated with underground ransomware.
+  Incident: dragnet-ransomware-2023-5276
+  Ransomware victim claim by underground: synology.com; country: DE; sector: Technology
+  First observed: 2023-05-30.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://47glxkuxyayqrvugfumgsblrdagvrah7gttfscgzn56eyss5wg3uvmqd.onion/packages/b99e4189-afb5-4897-9dde-770abbcd8e8a
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

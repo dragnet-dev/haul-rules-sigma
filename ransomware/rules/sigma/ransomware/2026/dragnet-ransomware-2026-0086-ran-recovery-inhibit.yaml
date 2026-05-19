@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-0086 — Recovery Inhibition (rhysida)'
+id: 8a792066-6638-5794-9da4-71fb62e63210
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with rhysida ransomware.
+  Incident: dragnet-ransomware-2026-0086
+  Ransomware victim claim by rhysida: Lakeside Union School District; country: US; sector: Education
+  First observed: 2026-02-04.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

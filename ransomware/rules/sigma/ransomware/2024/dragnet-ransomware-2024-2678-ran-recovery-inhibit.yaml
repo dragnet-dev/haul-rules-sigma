@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2678 — Recovery Inhibition (blackbasta)'
+id: d9fd3eed-d645-5fdd-a138-12e0467f3cd0
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with blackbasta ransomware.
+  Incident: dragnet-ransomware-2024-2678
+  Ransomware victim claim by blackbasta: northernsafety.com_wa; country: US; sector: Business Services
+  First observed: 2024-06-07.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://stniiomyjliimcgkvdszvgen3eaaoz55hreqqx6o77yvmpwt7gklffqd.onion/?id=northernsafety.com
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

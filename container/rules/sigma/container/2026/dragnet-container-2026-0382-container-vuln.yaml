@@ -1,0 +1,38 @@
+title: 'Dragnet [Container]: dragnet-container-2026-0382 — Vulnerable Base Image Pull'
+id: b54aba50-16d2-5352-a46c-e8ee55c1e5ed
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-0382 (Tier 2, CVSS 10)
+  Buffer overflow in the getauthfromURL function in httpget.c in mpg123 pre0.59s and mpg123 0.59r could allow remote attackers or local users to execute arbitrary code via an mp3 file that contains a long string before the @ (at sign) in a URL.
+  First observed: 2026-04-16.
+references:
+  - http://marc.info/?l=bugtraq&m=109834486312407&w=2
+  - http://secunia.com/advisories/12908
+  - http://securitytracker.com/id?1011832
+  - http://www.barrossecurity.com/advisories/mpg123_getauthfromurl_bof_advisory.txt
+  - http://www.debian.org/security/2004/dsa-578
+  - http://www.gentoo.org/security/en/glsa/glsa-200410-27.xml
+  - http://www.osvdb.org/11023
+  - http://www.securityfocus.com/bid/11468
+  - https://exchange.xforce.ibmcloud.com/vulnerabilities/17574
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

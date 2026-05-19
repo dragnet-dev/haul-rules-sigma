@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-1144 — Event Log Clearing (mindware)'
+id: 1c2925f5-a7cd-5955-bd4c-9db10dd9256b
+status: deprecated
+description: |
+  Detects event log clearing associated with mindware ransomware.
+  Incident: dragnet-ransomware-2022-1144
+  Ransomware victim claim by mindware: willsent; sector: Not Found
+  First observed: 2022-05-05.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

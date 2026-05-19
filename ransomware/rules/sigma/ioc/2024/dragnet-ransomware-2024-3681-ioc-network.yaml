@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-3681 — Ransomware C2 Communication'
+id: f882d3bc-0384-543c-9415-406bd33c43b9
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-3681
+  Ransomware victim claim by medusa: Cedar Technologies; country: BR; sector: Technology
+  First observed: 2024-07-08.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://cx5u7zxbvrfyoj6ughw76oa264ucuuizmmzypwum6ear7pct4yc723qd.onion/detail?id=bc515c7759192fb49ba10fb14cac2b32
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://cx5u7zxbvrfyoj6ughw76oa264ucuuizmmzypwum6ear7pct4yc723qd.onion/detail?id=bc515c7759192fb49ba10fb14cac2b32'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

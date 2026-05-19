@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-0229 — Recovery Inhibition (payload)'
+id: 9ccfa129-f7fd-53d9-a254-0360af06a245
+status: stable
+description: |
+  Detects boot/recovery disabling associated with payload ransomware.
+  Incident: dragnet-ransomware-2026-0229
+  Ransomware victim claim by payload: Kabushiki Gaisha Hodozuka Setsubi; country: JP; sector: Manufacturing
+  First observed: 2026-05-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://payloadrz5yw227brtbvdqpnlhq3rdcdekdnn3rgucbcdeawq2v6vuyd.onion/posts/fd10449c-7db5-41f0-8648-5c2b76887f25
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

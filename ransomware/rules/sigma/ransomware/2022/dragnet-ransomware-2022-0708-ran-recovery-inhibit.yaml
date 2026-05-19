@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-0708 — Recovery Inhibition (royal)'
+id: 08162712-389d-51cb-a4c4-92df48ca5de2
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with royal ransomware.
+  Incident: dragnet-ransomware-2022-0708
+  Ransomware victim claim by royal: https://happysapiensdental.com; sector: Healthcare
+  First observed: 2022-11-04.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

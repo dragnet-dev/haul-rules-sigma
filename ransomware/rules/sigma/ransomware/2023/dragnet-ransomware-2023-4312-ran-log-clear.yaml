@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4312 — Event Log Clearing (monti)'
+id: 36e44677-52e7-528c-8de4-68f338a3de26
+status: experimental
+description: |
+  Detects event log clearing associated with monti ransomware.
+  Incident: dragnet-ransomware-2023-4312
+  Ransomware victim claim by monti: Weickert Industries; sector: Manufacturing
+  First observed: 2023-03-23.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://mblogci3rudehaagbryjznltdp33ojwzkq6hn2pckvjq33rycmzczpid.onion/blog/bc5723b509285febe34720381141a5509f50a50f44f48f250c899b37ff117b41/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

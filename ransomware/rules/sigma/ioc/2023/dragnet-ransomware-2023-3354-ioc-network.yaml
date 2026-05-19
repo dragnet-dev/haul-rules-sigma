@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-3354 — Ransomware C2 Communication'
+id: c80bbd49-7f6d-5fa1-bd74-06a93f57b6b9
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-3354
+  Ransomware victim claim by darkpower: northgatesd.net; sector: Not Found
+  First observed: 2023-03-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://powerj7kmpzkdhjg4szvcxxgktgk36ezpjxvtosylrpey7svpmrjyuyd.onion/b22c1ee3685e4198931f5f8b0ffceff5
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://powerj7kmpzkdhjg4szvcxxgktgk36ezpjxvtosylrpey7svpmrjyuyd.onion/b22c1ee3685e4198931f5f8b0ffceff5'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

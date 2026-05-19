@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-5276 — Ransomware C2 Communication'
+id: d61d407c-f7da-5cdb-845a-43725cd5b552
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-5276
+  Ransomware victim claim by underground: synology.com; country: DE; sector: Technology
+  First observed: 2023-05-30.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://47glxkuxyayqrvugfumgsblrdagvrah7gttfscgzn56eyss5wg3uvmqd.onion/packages/b99e4189-afb5-4897-9dde-770abbcd8e8a
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://47glxkuxyayqrvugfumgsblrdagvrah7gttfscgzn56eyss5wg3uvmqd.onion/packages/b99e4189-afb5-4897-9dde-770abbcd8e8a'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

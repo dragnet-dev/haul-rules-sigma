@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-4055 — Ransomware C2 Communication'
+id: 1e36c6c6-88cc-51a7-96c5-7cbacacfade4
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-4055
+  Ransomware victim claim by alphv: Erbilbil Bilgisayar; country: TR; sector: Technology
+  First observed: 2024-01-08.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://alphvuzxyxv6ylumd2ngp46xzq3pw6zflomrghvxeuks6kklberrbmyd.onion/99739cbb-63d1-46d0-b95e-1313102b8806
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://alphvuzxyxv6ylumd2ngp46xzq3pw6zflomrghvxeuks6kklberrbmyd.onion/99739cbb-63d1-46d0-b95e-1313102b8806'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0187 — Mass File Rename (xinglocker)'
+id: aeb9c6f8-93eb-5a20-9833-60453c8c8571
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by xinglocker.
+  Incident: dragnet-ransomware-2021-0187
+  Ransomware victim claim by xinglocker: Positive Promotions, Inc.; sector: Business Services
+  First observed: 2021-06-02.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

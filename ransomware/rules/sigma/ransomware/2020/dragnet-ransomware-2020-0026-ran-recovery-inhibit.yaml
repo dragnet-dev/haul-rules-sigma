@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0026 — Recovery Inhibition (revil)'
+id: 90e45290-4f30-5314-b90c-ad40a89c2199
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with revil ransomware.
+  Incident: dragnet-ransomware-2020-0026
+  Ransomware victim claim by revil: Banco Estado (Public Bank); country: CL; sector: Financial Services
+  First observed: 2020-09-07.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

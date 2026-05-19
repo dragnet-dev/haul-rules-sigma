@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0149 — Event Log Clearing (cactus)'
+id: 681a3a48-0bd4-5498-a9f1-81da3305ca8c
+status: experimental
+description: |
+  Detects event log clearing associated with cactus ransomware.
+  Incident: dragnet-ransomware-2024-0149
+  Ransomware victim claim by cactus: remkes.nl; country: NL; sector: Agriculture and Food Production
+  First observed: 2024-01-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://cactusbloguuodvqjmnzlwetjlpj6aggc6iocwhuupb47laukux7ckid.onion/posts/REMKESBV
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

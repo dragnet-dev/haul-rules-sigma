@@ -1,0 +1,37 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3330 — Shadow Copy Deletion (cloak)'
+id: 8658bc95-2344-5af3-b621-a80f7fb0b6e4
+status: deprecated
+description: |
+  Detects shadow copy deletion commands associated with cloak ransomware.
+  Incident: dragnet-ransomware-2024-3330
+  Ransomware victim claim by cloak: Fmp.gob.pe; country: PE; sector: Public Sector
+  First observed: 2024-12-20.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

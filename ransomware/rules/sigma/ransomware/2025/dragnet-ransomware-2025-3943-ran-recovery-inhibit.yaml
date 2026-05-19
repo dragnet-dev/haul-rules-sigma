@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3943 — Recovery Inhibition (sarcoma)'
+id: a837da1e-5db2-5d6b-9925-0287c3cb9964
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with sarcoma ransomware.
+  Incident: dragnet-ransomware-2025-3943
+  Ransomware victim claim by sarcoma: R&K Drysdales; country: GB; sector: Agriculture and Food Production
+  First observed: 2025-03-26.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4433 — Event Log Clearing (play)'
+id: 985dca08-6278-5483-9b54-002c783d4174
+status: deprecated
+description: |
+  Detects event log clearing associated with play ransomware.
+  Incident: dragnet-ransomware-2023-4433
+  Associated with Play.
+  Ransomware victim claim by play: Tarntank Ship Management; sector: Transportation/Logistics
+  First observed: 2023-01-03.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+  - dragnet.actor.play
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

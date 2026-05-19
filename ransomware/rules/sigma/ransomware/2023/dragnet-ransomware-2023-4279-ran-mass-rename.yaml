@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4279 — Mass File Rename (alphv)'
+id: 338ca1a8-edcd-5be7-9ca3-206096f368a8
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by alphv.
+  Incident: dragnet-ransomware-2023-4279
+  Ransomware victim claim by alphv: V3 Companies; sector: Business Services
+  First observed: 2023-01-31.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://alphvmmm27o3abo3r2mlmjrpdmzle3rykajqc5xsj7j7ejksbpsa36ad.onion/9620295c-9ae4-46cc-8cf5-87ff4d1985fe
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-1303 — Recovery Inhibition (dispossessor)'
+id: 694f2e93-a62f-5713-80e7-f7d8294160a0
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with dispossessor ransomware.
+  Incident: dragnet-ransomware-2022-1303
+  Ransomware victim claim by dispossessor: cognizant.com; country: IE; sector: Technology
+  First observed: 2022-06-01.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://e27z5kd2rjsern2gpgukhcioysqlfquxgf7rxpvcwepxl4lfc736piyd.onion/blogs/227
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

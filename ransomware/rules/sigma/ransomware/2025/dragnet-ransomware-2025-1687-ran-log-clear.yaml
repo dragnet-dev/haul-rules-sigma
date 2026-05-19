@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1687 — Event Log Clearing (teamxxx)'
+id: 70bc43fa-136e-5709-835b-f6b97a30d7e7
+status: experimental
+description: |
+  Detects event log clearing associated with teamxxx ransomware.
+  Incident: dragnet-ransomware-2025-1687
+  Ransomware victim claim by teamxxx: Scania.com; country: SE; sector: Transportation/Logistics
+  First observed: 2025-08-03.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://tp5cwh6d2b5hekcg6jlhoe6mawa7dlwiv47epvnfmzuaaur2dnaa3uid.onion/insurance.Scania/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6713 — Mass File Rename (incransom)'
+id: e5c1a590-e032-5c90-baf4-1399d673203d
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by incransom.
+  Incident: dragnet-ransomware-2025-6713
+  Ransomware victim claim by incransom: Riverina Medical; country: AU; sector: Healthcare
+  First observed: 2025-01-14.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://incblog6qu4y4mm4zvw5nrmue6qbwtgjsxpw6b7ixzssu36tsajldoad.onion/blog/disclosures/6785924a038775d3788f0fbd
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

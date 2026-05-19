@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-1883 — Recovery Inhibition (ransomhouse)'
+id: fe165076-05d0-57d7-81ed-cf1a40b9fd8c
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with ransomhouse ransomware.
+  Incident: dragnet-ransomware-2022-1883
+  Ransomware victim claim by ransomhouse: Keralty; sector: Healthcare
+  First observed: 2022-12-19.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

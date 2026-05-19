@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2989 — Recovery Inhibition (ransomhub)'
+id: 8aa8b1c2-ce41-5eea-8a5c-8c1c1bd4cb11
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with ransomhub ransomware.
+  Incident: dragnet-ransomware-2024-2989
+  Ransomware victim claim by ransomhub: payxpress.co.il; country: IL; sector: Financial Services
+  First observed: 2024-10-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ransomxifxwc5eteopdobynonjctkxxvap77yqifu2emfbecgbqdw6qd.onion/b9011bf7-8f0f-47bd-a5d8-4f525c28f96e/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

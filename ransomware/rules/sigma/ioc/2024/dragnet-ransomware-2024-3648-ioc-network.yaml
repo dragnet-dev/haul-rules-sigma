@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-3648 — Ransomware C2 Communication'
+id: 574efe0a-5802-53d8-83d7-b18c2c1db8ed
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-3648
+  Ransomware victim claim by ransomhouse: Royal Star & Garter; country: GB; sector: Healthcare
+  First observed: 2024-04-03.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://zohlm7ahjwegcedoz7lrdrti7bvpofymcayotp744qhx6gjmxbuo2yid.onion/r/f89e712079773617aac549badcadd5fb66ddc37d
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://zohlm7ahjwegcedoz7lrdrti7bvpofymcayotp744qhx6gjmxbuo2yid.onion/r/f89e712079773617aac549badcadd5fb66ddc37d'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

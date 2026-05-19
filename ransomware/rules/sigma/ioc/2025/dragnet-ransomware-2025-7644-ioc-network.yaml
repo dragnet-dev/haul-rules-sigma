@@ -1,0 +1,31 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-7644 — Ransomware C2 Communication'
+id: ce640618-ad2e-5414-90a6-8a464e30d080
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-7644
+  Associated with menuPass.
+  Ransomware victim claim by cicada3301: Mack Energy Corp; country: US; sector: Energy
+  First observed: 2025-07-09.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://cicadabv7vicyvgz5khl7v2x5yygcgow7ryy6yppwmxii4eoobdaztqd.onion/y4z9ppdg76ai19542lpok54bwe59z0d6
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+  - dragnet.actor.menupass
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://cicadabv7vicyvgz5khl7v2x5yygcgow7ryy6yppwmxii4eoobdaztqd.onion/y4z9ppdg76ai19542lpok54bwe59z0d6'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

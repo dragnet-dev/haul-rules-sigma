@@ -1,0 +1,34 @@
+title: 'Dragnet [Container]: dragnet-container-2026-2873 — Vulnerable Base Image Pull'
+id: 9fc1505a-168f-58bc-8366-acf624dac418
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-2873 (Tier 2, CVSS 10)
+  Multiple buffer overflows in XMLStarlet Command Line XML Toolkit 0.9.3 have unknown impact and attack vectors via (1) xml_elem.c and (2) xml_select.c.
+  First observed: 2026-04-16.
+references:
+  - http://securitytracker.com/id?1011496
+  - http://sourceforge.net/project/shownotes.php?release_id=268962
+  - http://www.osvdb.org/10074
+  - http://www.securityfocus.com/bid/11270
+  - https://exchange.xforce.ibmcloud.com/vulnerabilities/17580
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

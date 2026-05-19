@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3156 — Mass File Rename (beast)'
+id: 997fea5e-9ca0-5a2c-a1c5-4b88e26192b9
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by beast.
+  Incident: dragnet-ransomware-2025-3156
+  Ransomware victim claim by beast: Garro Fabril; country: AR; sector: Manufacturing
+  First observed: 2025-09-23.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://beast6azu4f7fxjakiayhnssybibsgjnmy77a6duufqw5afjzfjhzuqd.onion/card/garro_fabril
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

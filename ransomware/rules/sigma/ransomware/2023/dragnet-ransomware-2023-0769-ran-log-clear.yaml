@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0769 — Event Log Clearing (ransomed)'
+id: aa0fae1f-f102-5d66-98f3-af1e4d0e20a0
+status: experimental
+description: |
+  Detects event log clearing associated with ransomed ransomware.
+  Incident: dragnet-ransomware-2023-0769
+  Ransomware victim claim by ransomed: We Hire Pentesters(5BTC Payout); country: VC; sector: Not Found
+  First observed: 2023-10-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://f6amq3izzsgtna4vw24rpyhy3ofwazlgex2zqdssavevvkklmtudxjad.onion/?p=149
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

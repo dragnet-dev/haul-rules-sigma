@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2527 — Recovery Inhibition (satanlockv2)'
+id: db5fa3e6-8629-57af-9db8-f2a5e44e1889
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with satanlockv2 ransomware.
+  Incident: dragnet-ransomware-2025-2527
+  Ransomware victim claim by satanlockv2: fkk.ac.th; country: TH; sector: Education
+  First observed: 2025-07-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://tzhwmgguyxrg6q3tu4q3gvopcjynrhw6ryx2bdl5ghisdkyunfua5xyd.onion/blog/8e727d2c25e6977f456254dcd8be14b8586951d2816d3ef3d8afb06b1de3f3ad/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

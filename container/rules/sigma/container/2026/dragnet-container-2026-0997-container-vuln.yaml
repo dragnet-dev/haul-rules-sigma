@@ -1,0 +1,34 @@
+title: 'Dragnet [Container]: dragnet-container-2026-0997 — Vulnerable Base Image Pull'
+id: 17dd3fdf-d00b-5d0d-94d0-0aea705f32e2
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-0997 (Tier 2, CVSS 9)
+  Unspecified vulnerability in GONICUS System Administration (GOsa) before 2.5.8 allows remote authenticated users to modify certain settings, including the admin password, via crafted POST requests.
+  First observed: 2026-04-23.
+references:
+  - http://oss.gonicus.de/pipermail/gosa/2007-January/002650.html
+  - http://osvdb.org/32821
+  - http://secunia.com/advisories/23749
+  - http://www.vupen.com/english/advisories/2007/0207
+  - https://exchange.xforce.ibmcloud.com/vulnerabilities/31516
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

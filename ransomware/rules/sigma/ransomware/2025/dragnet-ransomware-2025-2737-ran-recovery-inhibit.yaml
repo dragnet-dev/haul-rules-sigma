@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2737 — Recovery Inhibition (killsec)'
+id: 5f3ec982-e648-5150-b453-ef157749599b
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with killsec ransomware.
+  Incident: dragnet-ransomware-2025-2737
+  Ransomware victim claim by killsec: BusOnlineTicket Thailand; country: TH; sector: Transportation/Logistics
+  First observed: 2025-09-10.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ks5424y3wpr5zlug5c7i6svvxweinhbdcqcfnptkfcutrncfazzgz5id.onion/posts.php/posts.php?pid=6WvMPopi8Kd6HX0GnIkccBmi
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

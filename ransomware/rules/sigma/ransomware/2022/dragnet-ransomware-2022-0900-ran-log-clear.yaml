@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-0900 — Event Log Clearing (everest)'
+id: 778b7b1a-1cbb-5389-a2c4-f510b1df90fd
+status: deprecated
+description: |
+  Detects event log clearing associated with everest ransomware.
+  Incident: dragnet-ransomware-2022-0900
+  Ransomware victim claim by everest: MultiCare pt.2; sector: Healthcare
+  First observed: 2022-10-06.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

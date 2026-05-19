@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-2939 — Ransomware C2 Communication'
+id: 793d6330-bca3-54f2-b83d-a7b86a9a5b61
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-2939
+  Ransomware victim claim by lockbit3: cordish.com; country: US; sector: Hospitality and Tourism
+  First observed: 2024-05-01.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lockbit3753ekiocyo5epmpy6klmejchjtzddoekjlnt6mu3qh4de2id.onion/post/qPb0ZJOuOB8Q4URn6631f3d86d787
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lockbit3753ekiocyo5epmpy6klmejchjtzddoekjlnt6mu3qh4de2id.onion/post/qPb0ZJOuOB8Q4URn6631f3d86d787'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-7196 — Ransomware C2 Communication'
+id: 481e77c0-77b8-5650-a749-1cb6b965c56f
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-7196
+  Ransomware victim claim by desolator: LEVEL; country: US; sector: Financial Services
+  First observed: 2025-08-31.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://po4tq2brx4rgwbdx4mac24fz34uuuf7oigosebp32n2462m2vxl6biqd.onion/victim/6b8dca34-38b5-49ce-9435-b23f07bfab85
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://po4tq2brx4rgwbdx4mac24fz34uuuf7oigosebp32n2462m2vxl6biqd.onion/victim/6b8dca34-38b5-49ce-9435-b23f07bfab85'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

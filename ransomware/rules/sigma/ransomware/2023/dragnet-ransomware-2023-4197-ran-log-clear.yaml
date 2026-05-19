@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4197 — Event Log Clearing (bianlian)'
+id: 4a1cfc2b-8a8d-55b7-9327-37a9e5ff92de
+status: experimental
+description: |
+  Detects event log clearing associated with bianlian ransomware.
+  Incident: dragnet-ransomware-2023-4197
+  Ransomware victim claim by bianlian: G****** **** and *************; sector: Not Found
+  First observed: 2023-03-14.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://bianlianlbc5an4kgnay3opdemgcryg2kpfcbgczopmm3dnbz3uaunad.onion/companies/g__________.com
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

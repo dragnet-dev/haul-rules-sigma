@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-3617 — Recovery Inhibition (toufan)'
+id: 9ea8ec6b-8a62-5f7b-94a4-8ff0b6d8ce25
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with toufan ransomware.
+  Incident: dragnet-ransomware-2023-3617
+  Ransomware victim claim by toufan: bconnect.co.il; country: IL; sector: Not Found
+  First observed: 2023-12-23.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-4845 — Mass File Rename (nitrogen)'
+id: 286d20c5-fba9-50c7-9846-3c9a6cfdf85b
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by nitrogen.
+  Incident: dragnet-ransomware-2024-4845
+  Ransomware victim claim by nitrogen: CW Lighting, LLC; country: US; sector: Manufacturing
+  First observed: 2024-12-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nitrogenczslprh3xyw6lh5xyjvmsz7ciljoqxxknd7uymkfetfhgvqd.onion/posts/6759f4ce271fbb69a4964033
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

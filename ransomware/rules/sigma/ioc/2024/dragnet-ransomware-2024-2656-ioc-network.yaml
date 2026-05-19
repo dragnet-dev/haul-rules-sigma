@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-2656 — Ransomware C2 Communication'
+id: b5ec5365-75e0-511b-b7fa-42aa665e9d40
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-2656
+  Ransomware victim claim by lynx: Equity & Advisory; country: AU; sector: Financial Services
+  First observed: 2024-11-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lynxblog.net/leaks/674ecf52e42beed9ed4c003c
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lynxblog.net/leaks/674ecf52e42beed9ed4c003c'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

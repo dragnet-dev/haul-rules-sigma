@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0156 — Mass File Rename (obscura)'
+id: fed3274e-e4e7-5e9c-b409-9f219e57fe52
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by obscura.
+  Incident: dragnet-ransomware-2025-0156
+  Ransomware victim claim by obscura: Trend Import Export; country: RO; sector: Technology
+  First observed: 2025-12-16.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

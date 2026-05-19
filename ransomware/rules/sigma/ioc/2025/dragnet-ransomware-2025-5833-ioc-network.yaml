@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-5833 — Ransomware C2 Communication'
+id: 8da3f1ea-c0a3-5406-a12d-b7046e90a888
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-5833
+  Ransomware victim claim by blacknevas: CHABAA BANGKOK; country: TH; sector: Hospitality and Tourism
+  First observed: 2025-07-22.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ctyfftrjgtwdjzlgqh4avbd35sqrs6tde4oyam2ufbjch6oqpqtkdtid.onion/publications/details/ef2204b5-05f1-4053-aa16-e7b77586678c
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://ctyfftrjgtwdjzlgqh4avbd35sqrs6tde4oyam2ufbjch6oqpqtkdtid.onion/publications/details/ef2204b5-05f1-4053-aa16-e7b77586678c'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

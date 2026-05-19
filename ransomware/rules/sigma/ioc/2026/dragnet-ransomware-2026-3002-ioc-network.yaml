@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2026-3002 — Ransomware C2 Communication'
+id: 0e3d343c-8b08-53ed-b332-3d17c200b1b0
+status: stable
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2026-3002
+  Ransomware victim claim by handala: Sharjah National Oil Corporation; country: AE; sector: Energy
+  First observed: 2026-03-03.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://handala-hack.to/sharjah-national-oil-corporation-hacked/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'https://handala-hack.to/sharjah-national-oil-corporation-hacked/'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

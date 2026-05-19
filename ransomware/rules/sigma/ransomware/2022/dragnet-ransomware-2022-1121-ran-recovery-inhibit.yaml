@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-1121 — Recovery Inhibition (hive)'
+id: f818b8d4-e3cf-51c2-8bf2-7f4a17469d15
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with hive ransomware.
+  Incident: dragnet-ransomware-2022-1121
+  Ransomware victim claim by hive: Guilford College; sector: Education
+  First observed: 2022-11-25.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

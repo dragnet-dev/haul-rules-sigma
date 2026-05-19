@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4058 — Mass File Rename (hunters)'
+id: ad8f5c61-4ff6-5abb-80c7-6548e9704f25
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by hunters.
+  Incident: dragnet-ransomware-2025-4058
+  Ransomware victim claim by hunters: Edesur Dominicana; country: DO; sector: Energy
+  First observed: 2025-03-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://hunters55rdxciehoqzwv7vgyv6nt37tbwax2reroyzxhou7my5ejyid.onion/companies/3658068474
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

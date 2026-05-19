@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0972 — Event Log Clearing (babuk)'
+id: 5e53089a-7aec-5f5f-bedb-2a978e604642
+status: experimental
+description: |
+  Detects event log clearing associated with babuk ransomware.
+  Incident: dragnet-ransomware-2021-0972
+  Ransomware victim claim by babuk: 4murs.com; country: FR; sector: Construction
+  First observed: 2021-06-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nq4zyac4ukl4tykmidbzgdlvaboqeqsemkp4t35bzvjeve6zm2lqcjid.onion/blog/efcc06636b8343665024cac5fca80b93a04e96c5a54ccf8c4fbe7f3c1986c5c6/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

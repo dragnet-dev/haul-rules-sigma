@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-0023 — Recovery Inhibition (thegentlemen)'
+id: 2c856c64-3b73-5d68-b11f-e7eaf0535723
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with thegentlemen ransomware.
+  Incident: dragnet-ransomware-2026-0023
+  Ransomware victim claim by thegentlemen: Friktimporten Stockholm; country: SE; sector: Consumer Services
+  First observed: 2026-03-26.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

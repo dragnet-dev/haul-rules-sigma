@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-0989 — Recovery Inhibition (kelvinsecurity)'
+id: 268feac7-c6d8-5a89-bf6f-8b8c0bc13395
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with kelvinsecurity ransomware.
+  Incident: dragnet-ransomware-2022-0989
+  Ransomware victim claim by kelvinsecurity: Municipality of Posadas; sector: Public Sector
+  First observed: 2022-05-03.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5710 — Event Log Clearing (medusa)'
+id: 6309ce8a-0e43-5ec9-b851-616987c6133d
+status: experimental
+description: |
+  Detects event log clearing associated with medusa ransomware.
+  Incident: dragnet-ransomware-2024-5710
+  Ransomware victim claim by medusa: ValeCard; country: BR; sector: Financial Services
+  First observed: 2024-07-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://cx5u7zxbvrfyoj6ughw76oa264ucuuizmmzypwum6ear7pct4yc723qd.onion/detail?id=57fbbcab7a036482b7a2be985eb21ce0
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

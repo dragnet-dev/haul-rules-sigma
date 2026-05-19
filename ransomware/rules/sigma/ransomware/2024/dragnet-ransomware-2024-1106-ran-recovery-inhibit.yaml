@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-1106 — Recovery Inhibition (abyss)'
+id: b5b3e6fc-0c1c-56b0-afbd-60e5e7c18df6
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with abyss ransomware.
+  Incident: dragnet-ransomware-2024-1106
+  Ransomware victim claim by abyss: greenlightbiosciences.com; sector: Agriculture and Food Production
+  First observed: 2024-07-15.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

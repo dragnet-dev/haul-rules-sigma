@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2223 — Shadow Copy Deletion (ransomhub)'
+id: 53457d44-3faa-5b78-9af8-d83be0f8dcb1
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with ransomhub ransomware.
+  Incident: dragnet-ransomware-2024-2223
+  Ransomware victim claim by ransomhub: plannedparenthood.org; country: US; sector: Healthcare
+  First observed: 2024-09-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ransomxifxwc5eteopdobynonjctkxxvap77yqifu2emfbecgbqdw6qd.onion/dc296311-6d14-455b-a87e-f3c5ea3ffb65/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

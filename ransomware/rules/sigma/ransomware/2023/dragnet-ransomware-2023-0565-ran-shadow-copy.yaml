@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0565 — Shadow Copy Deletion (karakurt)'
+id: c26943fb-1073-5335-b0d4-99f4fa971658
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with karakurt ransomware.
+  Incident: dragnet-ransomware-2023-0565
+  Ransomware victim claim by karakurt: Medicalodges, Inc; sector: Healthcare
+  First observed: 2023-04-12.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://3f7nxkjway3d223j27lyad7v5cgmyaifesycvmwq7i7cbs23lb6llryd.onion/companies/fc18f80b-f8c4-4848-b11a-f75f78ad4c4e
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7528 — Event Log Clearing (safepay)'
+id: 50db604c-99c0-5431-9f28-2e7741ee5655
+status: test
+description: |
+  Detects event log clearing associated with safepay ransomware.
+  Incident: dragnet-ransomware-2025-7528
+  Ransomware victim claim by safepay: inttrust.gr; country: GR; sector: Technology
+  First observed: 2025-12-14.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://safepaypfxntwixwjrlcscft433ggemlhgkkdupi2ynhtcmvdgubmoyd.onion/blog/post/inttrustgr/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

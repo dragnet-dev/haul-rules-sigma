@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4833 — Mass File Rename (play)'
+id: df5d2827-1817-5e4e-a3d0-dd9858576e2e
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by play.
+  Incident: dragnet-ransomware-2023-4833
+  Associated with Play.
+  Ransomware victim claim by play: Sam Tell Companies; country: US; sector: Manufacturing
+  First observed: 2023-10-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://mbrlkbtq5jonaqkurjwmxftytyn2ethqvbxfu4rgjbkkknndqwae6byd.onion/topic.php?id=wXEazJHG8cTgZy
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+  - dragnet.actor.play
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

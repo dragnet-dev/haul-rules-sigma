@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-2599 — Recovery Inhibition (8base)'
+id: 1c4a7794-eeea-5014-99e9-553735022b46
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with 8base ransomware.
+  Incident: dragnet-ransomware-2023-2599
+  Ransomware victim claim by 8base: Bahamas Medical and Surgical Supplies; country: BS; sector: Business Services
+  First observed: 2023-08-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://basemmnnqwxevlymli5bs36o5ynti55xojzvn246spahniugwkff2pad.onion/company/7890215
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

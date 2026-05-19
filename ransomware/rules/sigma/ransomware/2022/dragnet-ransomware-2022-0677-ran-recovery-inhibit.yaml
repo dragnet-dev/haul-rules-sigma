@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-0677 — Recovery Inhibition (conti)'
+id: 43bd7feb-1ce2-566a-af93-3fa9b2287e0b
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with conti ransomware.
+  Incident: dragnet-ransomware-2022-0677
+  Ransomware victim claim by conti: Alliance Steel; sector: Manufacturing
+  First observed: 2022-06-07.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

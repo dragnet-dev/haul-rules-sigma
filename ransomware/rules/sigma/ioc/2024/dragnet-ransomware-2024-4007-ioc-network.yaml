@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-4007 — Ransomware C2 Communication'
+id: 472dafbb-0f4c-5d40-bc1f-e6155fa7f77a
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-4007
+  Ransomware victim claim by kairos: sunnydayssunshinecenter.com; country: US; sector: Education
+  First observed: 2024-10-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nerqnacjmdy3obvevyol7qhazkwkv57dwqvye5v46k5bcujtfa6sduad.onion/detail?code=sunnydayssunshinecenter-com-usa-395gb
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://nerqnacjmdy3obvevyol7qhazkwkv57dwqvye5v46k5bcujtfa6sduad.onion/detail?code=sunnydayssunshinecenter-com-usa-395gb'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

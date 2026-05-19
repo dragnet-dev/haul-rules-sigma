@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-0014 — Recovery Inhibition (dispossessor)'
+id: f925cb80-1958-51c4-a92f-3a1f64a7db65
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with dispossessor ransomware.
+  Incident: dragnet-ransomware-2022-0014
+  Ransomware victim claim by dispossessor: rkfoodland.com; country: IN; sector: Agriculture and Food Production
+  First observed: 2022-12-12.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://dispossessor.com/blogs/400
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-1621 — Recovery Inhibition (royal)'
+id: 808055b0-efd9-5f7d-9c94-301f8fb3545a
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with royal ransomware.
+  Incident: dragnet-ransomware-2022-1621
+  Ransomware victim claim by royal: http://www.power-soft.com; sector: Technology
+  First observed: 2022-11-04.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

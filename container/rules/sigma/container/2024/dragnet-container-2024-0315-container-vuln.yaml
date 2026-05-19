@@ -1,0 +1,35 @@
+title: 'Dragnet [Container]: dragnet-container-2024-0315 — Vulnerable Base Image Pull'
+id: 5d601282-2cbe-5041-94d7-aa5399c3de16
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-0315 (Tier 2, CVSS 9.8)
+  PlayEnhMetaFileRecord in enhmetafile.c in Wine 3.7 allows attackers to cause a denial of service (heap-based buffer overflow) or possibly have unspecified other impact by triggering a large pAlphaBlend->cbBitsSrc value.
+  First observed: 2024-11-21.
+references:
+  - https://bugs.launchpad.net/ubuntu/+source/wine/+bug/1764719
+  - https://bugs.winehq.org/attachment.cgi?id=61284
+  - https://bugs.winehq.org/show_bug.cgi?id=45105
+  - https://source.winehq.org/git/wine.git/commit/8d2676fd14f130f9e8f06744743423168bf8d18d
+  - https://source.winehq.org/git/wine.git/commit/b6da3547d8990c3c3affc3a5865aefd2a0946949
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:8'
+      - 'debian:9'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

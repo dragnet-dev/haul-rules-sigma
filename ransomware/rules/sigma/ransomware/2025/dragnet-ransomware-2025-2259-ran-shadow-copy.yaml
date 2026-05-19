@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2259 — Shadow Copy Deletion (worldleaks)'
+id: 961c6392-8a83-575e-985d-809b51e6ef91
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with worldleaks ransomware.
+  Incident: dragnet-ransomware-2025-2259
+  Ransomware victim claim by worldleaks: The Gisborne Group; country: CA; sector: Construction
+  First observed: 2025-06-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://worldleaksartrjm3c6vasllvgacbi5u3mgzkluehrzhk2jz4taufuid.onion/companies/0602516211
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

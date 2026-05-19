@@ -1,0 +1,55 @@
+title: 'Dragnet [Container]: dragnet-container-2024-1119 — Vulnerable Base Image Pull'
+id: 8e541ab1-e169-50e9-8d34-a43c78e5eacd
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-1119 (Tier 2, CVSS 9.8)
+  Improper access control in the Intel(R) Ethernet Controller RDMA driver for linux before version 1.9.30 may allow an unauthenticated user to potentially enable escalation of privilege via network access.
+  First observed: 2024-11-21.
+references:
+  - https://nvd.nist.gov/vuln/detail/CVE-2023-25775
+  - http://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00794.html
+  - https://access.redhat.com/errata/RHSA-2024:2394
+  - https://access.redhat.com/security/cve/CVE-2023-25775
+  - https://bugzilla.redhat.com/1918601
+  - https://bugzilla.redhat.com/2049700
+  - https://bugzilla.redhat.com/2133452
+  - https://bugzilla.redhat.com/2151959
+  - https://bugzilla.redhat.com/2177759
+  - https://bugzilla.redhat.com/2185519
+  - https://bugzilla.redhat.com/2188102
+  - https://bugzilla.redhat.com/2210024
+  - https://bugzilla.redhat.com/2213132
+  - https://bugzilla.redhat.com/2218332
+  - https://bugzilla.redhat.com/2219359
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'almalinux:8'
+      - 'almalinux:9'
+      - 'debian:10'
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+      - 'oraclelinux:7'
+      - 'oraclelinux:8'
+      - 'oraclelinux:9'
+      - 'redhat/ubi9:'
+      - 'ubuntu:20.04'
+      - 'ubuntu:20.04-ESM'
+      - 'ubuntu:22.04'
+      - 'ubuntu:23.04'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

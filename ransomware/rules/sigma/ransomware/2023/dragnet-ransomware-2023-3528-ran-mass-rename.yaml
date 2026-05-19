@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-3528 — Mass File Rename (blacksuit)'
+id: f0d05db4-be4f-5253-84b2-50897d439a28
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by blacksuit.
+  Incident: dragnet-ransomware-2023-3528
+  Ransomware victim claim by blacksuit: Multidev Technologies; sector: Technology
+  First observed: 2023-10-13.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?id=b4fvGO0ouAnVnv9X
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

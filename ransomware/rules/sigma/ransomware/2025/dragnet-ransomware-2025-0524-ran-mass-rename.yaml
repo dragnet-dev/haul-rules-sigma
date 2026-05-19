@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0524 — Mass File Rename (ransomhouse)'
+id: 5fa76502-4551-5d24-b894-1c45fb3351f5
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by ransomhouse.
+  Incident: dragnet-ransomware-2025-0524
+  Ransomware victim claim by ransomhouse: Armis Group; country: PT; sector: Business Services
+  First observed: 2025-11-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://zohlm7ahjwegcedoz7lrdrti7bvpofymcayotp744qhx6gjmxbuo2yid.onion/r/5a74c257d2eff7518c2bddc1285b1f7521b82d3f
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

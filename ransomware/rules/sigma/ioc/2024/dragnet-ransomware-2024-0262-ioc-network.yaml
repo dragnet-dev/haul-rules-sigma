@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-0262 — Ransomware C2 Communication'
+id: bb84d473-1db1-559f-ba50-ec0ec2423358
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-0262
+  Ransomware victim claim by lockbit3: energateinc.com; sector: Energy
+  First observed: 2024-07-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lockbit3753ekiocyo5epmpy6klmejchjtzddoekjlnt6mu3qh4de2id.onion//post/hrbZhVm1D92QlMMq6697c97f61a58
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lockbit3753ekiocyo5epmpy6klmejchjtzddoekjlnt6mu3qh4de2id.onion//post/hrbZhVm1D92QlMMq6697c97f61a58'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

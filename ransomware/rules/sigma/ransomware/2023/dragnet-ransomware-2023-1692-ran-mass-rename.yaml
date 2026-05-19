@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1692 — Mass File Rename (noescape)'
+id: 240c273e-29d9-5ec5-a05b-b5ee81609a11
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by noescape.
+  Incident: dragnet-ransomware-2023-1692
+  Ransomware victim claim by noescape: STRUMET; country: PL; sector: Manufacturing
+  First observed: 2023-10-25.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://noescapemsqxvizdxyl7f7rmg5cdjwp33pg2wpmiaaibilb4btwzttad.onion/post/9a747922-5ab7-4e19-b1fa-7a94a0e43fc2
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

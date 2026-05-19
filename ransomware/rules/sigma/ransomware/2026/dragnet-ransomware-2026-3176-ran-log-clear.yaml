@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-3176 — Event Log Clearing (sinobi)'
+id: 798f155c-8efd-51e3-8aba-e0c0852b08f7
+status: stable
+description: |
+  Detects event log clearing associated with sinobi ransomware.
+  Incident: dragnet-ransomware-2026-3176
+  Ransomware victim claim by sinobi: Unre3d; sector: Not Found
+  First observed: 2026-05-05.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://sinobi23i75c3znmqqxxyuzqvhxnjsar7actgvc4nqeuhgcn5yvz3zqd.onion/leaks/69fa49c28280ceeb9ae19779
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

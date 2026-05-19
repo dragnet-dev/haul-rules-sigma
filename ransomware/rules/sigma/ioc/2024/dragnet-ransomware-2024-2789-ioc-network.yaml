@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-2789 — Ransomware C2 Communication'
+id: 033a7d5d-fe74-5347-84e6-7b0de4197b42
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-2789
+  Ransomware victim claim by ElDorado: thunderbirdcc.org; country: US; sector: Healthcare
+  First observed: 2024-06-06.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://dataleakypypu7uwblm5kttv726l3iripago6p336xjnbstkjwrlnlid.onion/posts/thunderbirdcc.org/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://dataleakypypu7uwblm5kttv726l3iripago6p336xjnbstkjwrlnlid.onion/posts/thunderbirdcc.org/'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

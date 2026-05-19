@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-1639 — Event Log Clearing (icefire)'
+id: b8998c3b-3ded-5d37-b60e-936879f18043
+status: deprecated
+description: |
+  Detects event log clearing associated with icefire ransomware.
+  Incident: dragnet-ransomware-2022-1639
+  Ransomware victim claim by icefire: *.feesh.ch; sector: Consumer Services
+  First observed: 2022-08-20.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

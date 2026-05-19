@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1460 — Mass File Rename (babuk2)'
+id: 748272d8-b590-54c2-8cbc-37bcd449dc85
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by babuk2.
+  Incident: dragnet-ransomware-2025-1460
+  Ransomware victim claim by babuk2: rheinmetall.com (Rheinmetall Defence); country: DE; sector: Manufacturing
+  First observed: 2025-04-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http:/bxwu33iefqfc3rxigynn3ghvq4gdw3gxgxna5m4aa3o4vscdeeqhiqad.onion/blog/0ce2ab37e794cc39ccad4d17afe650ff3f8fbb9cc49a0cbf462167a8aa3104f8/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

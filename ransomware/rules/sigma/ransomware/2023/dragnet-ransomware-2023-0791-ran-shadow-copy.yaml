@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0791 — Shadow Copy Deletion (mallox)'
+id: 36b4ec6f-9c1a-5c4d-b5a0-aea17186b011
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with mallox ransomware.
+  Incident: dragnet-ransomware-2023-0791
+  Ransomware victim claim by mallox: CCAA; country: BR; sector: Not Found
+  First observed: 2023-03-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://wtyafjyhwqrgo4a45wdvvwhen3cx4euie73qvlhkhvlrexljoyuklaad.onion/mallox/post?4RZWKGw7frmmTRr
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

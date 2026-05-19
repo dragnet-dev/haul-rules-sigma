@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-0447 — Mass File Rename (alphv)'
+id: 15583590-c2d8-59ab-91a5-b0ea139351da
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by alphv.
+  Incident: dragnet-ransomware-2022-0447
+  Ransomware victim claim by alphv: The University of Pisa; country: IT; sector: Education
+  First observed: 2022-06-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://alphvmmm27o3abo3r2mlmjrpdmzle3rykajqc5xsj7j7ejksbpsa36ad.onion/2ce4c09c-9008-4a56-afb8-b9df790edccf
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

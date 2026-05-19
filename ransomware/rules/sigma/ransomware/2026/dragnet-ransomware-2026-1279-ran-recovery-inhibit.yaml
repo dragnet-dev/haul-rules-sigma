@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-1279 — Recovery Inhibition (genesis)'
+id: a9cc6299-0bda-5449-a070-33f8982b228b
+status: stable
+description: |
+  Detects boot/recovery disabling associated with genesis ransomware.
+  Incident: dragnet-ransomware-2026-1279
+  Ransomware victim claim by genesis: City of Hart; country: US; sector: Public Sector
+  First observed: 2026-03-07.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://genesis6ixpb5mcy4kudybtw5op2wqlrkocfogbnenz3c647ibqixiad.onion/f5ba1939019c35515efe/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3187 — Recovery Inhibition (handala)'
+id: 3d53472e-291a-5692-814c-31c3e09c2fcf
+status: test
+description: |
+  Detects boot/recovery disabling associated with handala ransomware.
+  Incident: dragnet-ransomware-2025-3187
+  Ransomware victim claim by handala: Bibi Gate: The Gatekeeper’s Fall | Tzachi Braverman; country: IL; sector: Public Sector
+  First observed: 2025-12-28.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://vmjfieomxhnfjba57sd6jjws2ogvowjgxhhfglsikqvvrnrajbmpxqqd.onion/?p=589
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

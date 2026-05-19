@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2937 — Recovery Inhibition (blackbasta)'
+id: 048bba33-2add-5385-8d61-db70a23de9e2
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with blackbasta ransomware.
+  Incident: dragnet-ransomware-2022-2937
+  Ransomware victim claim by blackbasta: ITM; sector: Business Services
+  First observed: 2022-11-25.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

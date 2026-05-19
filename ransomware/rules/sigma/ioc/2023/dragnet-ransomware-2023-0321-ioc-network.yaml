@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-0321 — Ransomware C2 Communication'
+id: 75092ee7-dd80-5b2c-97d1-86d35482ff94
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-0321
+  Ransomware victim claim by dispossessor: prlabs.com; sector: Healthcare
+  First observed: 2023-04-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://dispossessor.com/blogs/635
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'https://dispossessor.com/blogs/635'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

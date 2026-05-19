@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2707 — Event Log Clearing (ransomhouse)'
+id: 6968e153-7cf3-5b12-87c7-ad64647b0ded
+status: test
+description: |
+  Detects event log clearing associated with ransomhouse ransomware.
+  Incident: dragnet-ransomware-2025-2707
+  Ransomware victim claim by ransomhouse: [Apple Data]Luxshare Precision Industry Co. Ltd.; country: CN; sector: Technology
+  First observed: 2025-12-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://zohlm7ahjwegcedoz7lrdrti7bvpofymcayotp744qhx6gjmxbuo2yid.onion/r/71e3c79c30915c9a48250c410fff31ed587e6909
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4748 — Recovery Inhibition (blackbasta)'
+id: 63eb242a-3b8f-5c59-bdc2-76fe98d04127
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with blackbasta ransomware.
+  Incident: dragnet-ransomware-2023-4748
+  Ransomware victim claim by blackbasta: Bayou Title; sector: Financial Services
+  First observed: 2023-03-08.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://stniiomyjliimcgkvdszvgen3eaaoz55hreqqx6o77yvmpwt7gklffqd.onion/?id=Bayou Title, Inc
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

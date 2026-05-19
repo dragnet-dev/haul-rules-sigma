@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-1517 — Mass File Rename (everest)'
+id: 3691f28f-35d5-522b-8c2f-27f961e072f3
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by everest.
+  Incident: dragnet-ransomware-2022-1517
+  Ransomware victim claim by everest: Government Brazil; sector: Public Sector
+  First observed: 2022-09-19.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

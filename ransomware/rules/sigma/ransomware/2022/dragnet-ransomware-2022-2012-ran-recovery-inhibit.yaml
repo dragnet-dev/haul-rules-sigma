@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2012 — Recovery Inhibition (lv)'
+id: 4dd1a143-42d2-52f8-b422-06423e5af42b
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with lv ransomware.
+  Incident: dragnet-ransomware-2022-2012
+  Ransomware victim claim by lv: UNITEDAUTO.MX HAVE BEEN HACKED DUE TO MULTIPLE NETWORK VULNERABILITIES. MORE THAN 2TB OF P; sector: Manufacturing
+  First observed: 2022-11-19.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

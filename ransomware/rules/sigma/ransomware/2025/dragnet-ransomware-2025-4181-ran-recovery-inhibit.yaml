@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4181 — Recovery Inhibition (medusa)'
+id: 7f0e539d-1cfb-58e7-af72-60d0853cdfc9
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with medusa ransomware.
+  Incident: dragnet-ransomware-2025-4181
+  Ransomware victim claim by medusa: Kable Product Services; country: US; sector: Transportation/Logistics
+  First observed: 2025-02-26.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://xfv4jzckytb4g3ckwemcny3ihv4i5p4lqzdpi624cxisu35my5fwi5qd.onion/detail?id=d421b68939e10ade44daee53e6ff8e7d
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

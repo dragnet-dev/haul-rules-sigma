@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-1709 — Recovery Inhibition (shinyhunters)'
+id: b6d5cdf5-441f-51fb-9383-ad9ecac5f7fc
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with shinyhunters ransomware.
+  Incident: dragnet-ransomware-2026-1709
+  Ransomware victim claim by shinyhunters: Rockstar Games; country: US; sector: Technology
+  First observed: 2026-04-11.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

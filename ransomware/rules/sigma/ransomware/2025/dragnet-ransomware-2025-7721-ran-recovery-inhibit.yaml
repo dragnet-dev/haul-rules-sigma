@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7721 — Recovery Inhibition (rhysida)'
+id: d9f079a5-5d04-55c8-b5f3-187ae83e1d40
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with rhysida ransomware.
+  Incident: dragnet-ransomware-2025-7721
+  Ransomware victim claim by rhysida: Spindletop Center; country: US; sector: Healthcare
+  First observed: 2025-10-30.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

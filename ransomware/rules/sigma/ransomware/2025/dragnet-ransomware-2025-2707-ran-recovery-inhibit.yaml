@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2707 — Recovery Inhibition (ransomhouse)'
+id: 5c62445b-b124-5671-bf69-89121a71baa8
+status: test
+description: |
+  Detects boot/recovery disabling associated with ransomhouse ransomware.
+  Incident: dragnet-ransomware-2025-2707
+  Ransomware victim claim by ransomhouse: [Apple Data]Luxshare Precision Industry Co. Ltd.; country: CN; sector: Technology
+  First observed: 2025-12-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://zohlm7ahjwegcedoz7lrdrti7bvpofymcayotp744qhx6gjmxbuo2yid.onion/r/71e3c79c30915c9a48250c410fff31ed587e6909
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

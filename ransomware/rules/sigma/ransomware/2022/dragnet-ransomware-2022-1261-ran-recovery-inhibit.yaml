@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-1261 — Recovery Inhibition (conti)'
+id: 7aaafa98-6e41-5dc1-9435-d7ec0281ebc7
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with conti ransomware.
+  Incident: dragnet-ransomware-2022-1261
+  Ransomware victim claim by conti: The Lovett Group; sector: Business Services
+  First observed: 2022-02-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

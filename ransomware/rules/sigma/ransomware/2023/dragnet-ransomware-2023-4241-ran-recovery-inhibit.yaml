@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4241 — Recovery Inhibition (royal)'
+id: 1b9f92a7-b9fa-5bbc-8311-8f6f1a59c948
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with royal ransomware.
+  Incident: dragnet-ransomware-2023-4241
+  Ransomware victim claim by royal: PENNCREST School District; sector: Education
+  First observed: 2023-06-09.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://royal4ezp7xrbakkus3oofjw6gszrohpodmdnfbe5e4w3og5sm7vb3qd.onion/A7ibkPDQHLyD6NQgsDBbIu01doSeXJxv
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

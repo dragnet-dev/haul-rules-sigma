@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4912 — Recovery Inhibition (sinobi)'
+id: 9209fa48-263e-5553-9584-b000c98fffd2
+status: test
+description: |
+  Detects boot/recovery disabling associated with sinobi ransomware.
+  Incident: dragnet-ransomware-2025-4912
+  Ransomware victim claim by sinobi: Lanmark Group; country: US; sector: Construction
+  First observed: 2025-12-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://sinobi6rlec6f2bgn6rd72xo7hvds4a5ajiu2if4oub2sut7fg3gomqd.onion/leaks/6941cfc688b6823fa2b585f7
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

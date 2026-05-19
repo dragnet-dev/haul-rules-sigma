@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0561 — Recovery Inhibition (midas)'
+id: b8b73148-ce92-56b5-9328-e1885f2faf0b
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with midas ransomware.
+  Incident: dragnet-ransomware-2021-0561
+  Ransomware victim claim by midas: Pellisard; sector: Not Found
+  First observed: 2021-11-29.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

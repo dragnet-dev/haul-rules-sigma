@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0245 — Event Log Clearing (nitrogen)'
+id: fbde4397-dc59-5381-b7b5-ff721391b9b5
+status: test
+description: |
+  Detects event log clearing associated with nitrogen ransomware.
+  Incident: dragnet-ransomware-2025-0245
+  Ransomware victim claim by nitrogen: Golden Artist Colors; country: US; sector: Manufacturing
+  First observed: 2025-12-03.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nitrogenczslprh3xyw6lh5xyjvmsz7ciljoqxxknd7uymkfetfhgvqd.onion/posts/69304a2d378c11f36ffe6911
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

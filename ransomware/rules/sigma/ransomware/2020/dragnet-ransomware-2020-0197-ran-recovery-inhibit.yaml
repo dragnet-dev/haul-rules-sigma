@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0197 — Recovery Inhibition (maze)'
+id: 97076180-4356-5a96-9afe-7e6783aa7dcc
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with maze ransomware.
+  Incident: dragnet-ransomware-2020-0197
+  Ransomware victim claim by maze: John Christner Trucking; country: US; sector: Transportation/Logistics
+  First observed: 2020-06-10.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

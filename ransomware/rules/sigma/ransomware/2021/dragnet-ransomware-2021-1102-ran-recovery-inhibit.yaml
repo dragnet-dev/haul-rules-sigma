@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1102 — Recovery Inhibition (nefilim)'
+id: 985542a5-f5ad-58a8-910d-9fd5e0f3a805
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with nefilim ransomware.
+  Incident: dragnet-ransomware-2021-1102
+  Ransomware victim claim by nefilim: Seven Seas. Part 1.; sector: Consumer Services
+  First observed: 2021-09-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

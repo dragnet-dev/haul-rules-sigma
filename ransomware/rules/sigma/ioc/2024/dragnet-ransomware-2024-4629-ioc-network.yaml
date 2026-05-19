@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-4629 — Ransomware C2 Communication'
+id: 3c739a25-2dee-539c-8798-6ad2d273cdf7
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-4629
+  Ransomware victim claim by lynx: Banner Day Camp; country: US; sector: Hospitality and Tourism
+  First observed: 2024-12-12.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lynxch2k5xi35j7hlbmwl7d6u2oz4vp2wqp6qkwol624cod3d6iqiyqd.onion/leaks/675ad0a3e42beed9ed776d01
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lynxch2k5xi35j7hlbmwl7d6u2oz4vp2wqp6qkwol624cod3d6iqiyqd.onion/leaks/675ad0a3e42beed9ed776d01'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

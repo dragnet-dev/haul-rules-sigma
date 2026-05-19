@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-2647 — Recovery Inhibition (darkpower)'
+id: 16c42a7e-f9a5-575a-851e-9fd049c86578
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with darkpower ransomware.
+  Incident: dragnet-ransomware-2023-2647
+  Ransomware victim claim by darkpower: evant.com.tr; country: TR; sector: Business Services
+  First observed: 2023-03-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://powerj7kmpzkdhjg4szvcxxgktgk36ezpjxvtosylrpey7svpmrjyuyd.onion/f38cacfc5bc842069948f9f21614dc8d
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

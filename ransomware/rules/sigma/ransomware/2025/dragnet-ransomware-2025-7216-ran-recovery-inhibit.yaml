@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7216 — Recovery Inhibition (skira)'
+id: 7f1e0ec9-1332-5b6d-a22b-ff9d935db03e
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with skira ransomware.
+  Incident: dragnet-ransomware-2025-7216
+  Ransomware victim claim by skira: INNOVEX HOLDINGS CO., LTD; country: JP; sector: Technology
+  First observed: 2025-11-18.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://mtgc3qvyedjnfu7cen2zsupdppi5ys5g2hm6xwujvoepw25p4dy6huid.onion/news/innovex.co.th.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

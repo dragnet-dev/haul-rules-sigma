@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-4747 — Ransomware C2 Communication'
+id: 622af67e-6cf7-580f-9e36-b5b9f820b5b6
+status: test
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-4747
+  Ransomware victim claim by lockbit5: labayenylaborde.com; country: ES; sector: Manufacturing
+  First observed: 2025-12-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lockbitapt67g6rwzjbcxnww5efpg4qok6vpfeth7wx3okj52ks4wtad.onion/post/b9e8325963578e3e453e8d6b15ccb495
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lockbitapt67g6rwzjbcxnww5efpg4qok6vpfeth7wx3okj52ks4wtad.onion/post/b9e8325963578e3e453e8d6b15ccb495'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

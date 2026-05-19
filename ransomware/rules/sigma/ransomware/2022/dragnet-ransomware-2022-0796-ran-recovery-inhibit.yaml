@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-0796 — Recovery Inhibition (everest)'
+id: e9f9d152-7536-56ad-8a4d-27a456b0c532
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with everest ransomware.
+  Incident: dragnet-ransomware-2022-0796
+  Ransomware victim claim by everest: Standard Building Supplies Ltd; sector: Construction
+  First observed: 2022-04-13.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

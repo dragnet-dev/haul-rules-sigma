@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4564 — Mass File Rename (fog)'
+id: 67e17916-8df9-5a96-a355-d36280d9ad78
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by fog.
+  Incident: dragnet-ransomware-2025-4564
+  Ransomware victim claim by fog: Grupo Baston Aerossol (baston.com.br); country: BR; sector: Manufacturing
+  First observed: 2025-03-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://xbkv2qey6u3gd3qxcojynrt4h5sgrhkar6whuo74wo63hijnn677jnyd.onion/posts/67c7050403e546ad96cc5d88/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

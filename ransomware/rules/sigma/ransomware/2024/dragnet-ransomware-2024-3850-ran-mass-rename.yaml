@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3850 — Mass File Rename (blacksuit)'
+id: e3db93fa-9c5f-5677-a327-ff6f5cd92aca
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by blacksuit.
+  Incident: dragnet-ransomware-2024-3850
+  Ransomware victim claim by blacksuit: KADOKAWA Corporation; country: JP; sector: Consumer Services
+  First observed: 2024-06-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?id=0thvgn6ZCK8naXiW
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

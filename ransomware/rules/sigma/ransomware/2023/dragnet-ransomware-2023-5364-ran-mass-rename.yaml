@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-5364 — Mass File Rename (ransomexx)'
+id: 3dd5231b-f81a-5e48-9d96-10704e32ffc0
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by ransomexx.
+  Incident: dragnet-ransomware-2023-5364
+  Ransomware victim claim by ransomexx: Jacobs Farm / Del Cabo; country: US; sector: Agriculture and Food Production
+  First observed: 2023-06-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://rnsm777cdsjrsdlbs4v5qoeppu3px6sb2igmh53jzrx7ipcrbjz5b2ad.onion/./2023/06/24/jacobs-farm/index.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

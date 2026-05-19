@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3293 — Recovery Inhibition (cactus)'
+id: 6bb71dcf-0d02-54bc-bc8d-43e70e5d5fe8
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with cactus ransomware.
+  Incident: dragnet-ransomware-2024-3293
+  Ransomware victim claim by cactus: dollmar.com; country: IT; sector: Manufacturing
+  First observed: 2024-05-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://cactusbloguuodvqjmnzlwetjlpj6aggc6iocwhuupb47laukux7ckid.onion/posts/CORP.DOLLMAR.COM
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

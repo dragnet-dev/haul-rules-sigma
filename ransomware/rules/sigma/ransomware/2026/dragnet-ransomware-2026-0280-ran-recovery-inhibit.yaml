@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-0280 — Recovery Inhibition (lynx)'
+id: ae86b330-da2a-512e-b2f9-48f94a023f9e
+status: test
+description: |
+  Detects boot/recovery disabling associated with lynx ransomware.
+  Incident: dragnet-ransomware-2026-0280
+  Ransomware victim claim by lynx: www.mscorp.net; country: US; sector: Technology
+  First observed: 2026-01-05.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lynxblogijy4jfoblgix2klxmkbgee4leoeuge7qt4fpfkj4zbi2sjyd.onion/leaks/695bd6209c439c5f45679273
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

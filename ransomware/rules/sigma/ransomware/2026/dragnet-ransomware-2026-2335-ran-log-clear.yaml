@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2335 — Event Log Clearing (aurora)'
+id: 00385b49-e878-5399-9c8d-8583c0ea8b5a
+status: stable
+description: |
+  Detects event log clearing associated with aurora ransomware.
+  Incident: dragnet-ransomware-2026-2335
+  Ransomware victim claim by aurora: Advanta Genetics LLC; country: US; sector: Healthcare
+  First observed: 2026-04-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://u6lieui2dakbctcjea2bz4r4q32r7t36nwljovqbv7mxs6o2smgxixid.onion/blog/rvl-bb52e3c8
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

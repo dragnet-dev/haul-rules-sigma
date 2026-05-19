@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3397 — Recovery Inhibition (mogilevich)'
+id: 3d94b737-86f2-5e51-8b4f-c42311a1f748
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with mogilevich ransomware.
+  Incident: dragnet-ransomware-2024-3397
+  Ransomware victim claim by mogilevich: Ireland's Department of Foreign Affairs; country: IE; sector: Public Sector
+  First observed: 2024-02-27.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

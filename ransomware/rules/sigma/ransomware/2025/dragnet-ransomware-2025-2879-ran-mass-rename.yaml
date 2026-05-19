@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2879 — Mass File Rename (nightspire)'
+id: c2ef0dda-bc04-5ab4-88c6-785023cc8cb8
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by nightspire.
+  Incident: dragnet-ransomware-2025-2879
+  Ransomware victim claim by nightspire: Midkiff, Muncie & Ross, P.C; country: US; sector: Business Services
+  First observed: 2025-12-07.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-6438 — Ransomware C2 Communication'
+id: dedd0034-976f-52bf-987f-33e6eea01890
+status: test
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-6438
+  Ransomware victim claim by anubis: Fun For Less Tours; country: US; sector: Hospitality and Tourism
+  First observed: 2025-12-01.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://om6q4a6cyipxvt7ioudxt24cw4oqu4yodmqzl25mqd2hgllymrgu4aqd.onion/r/caM4jgcJ8ENBHxO2lXxJB5e4aPQ10vdCv0E85iD3M8ZgGyREQCrF3qtQR+ywlhdHYroY45UNG7ERgDTQNRobQ2U5MVhWY09t
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://om6q4a6cyipxvt7ioudxt24cw4oqu4yodmqzl25mqd2hgllymrgu4aqd.onion/r/caM4jgcJ8ENBHxO2lXxJB5e4aPQ10vdCv0E85iD3M8ZgGyREQCrF3qtQR+ywlhdHYroY45UNG7ERgDTQNRobQ2U5MVhWY09t'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

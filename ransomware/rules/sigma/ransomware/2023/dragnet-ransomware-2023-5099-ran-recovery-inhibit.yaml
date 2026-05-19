@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-5099 — Recovery Inhibition (vicesociety)'
+id: e556ccd5-c4e7-5aa5-aa6b-c846aee6a514
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with vicesociety ransomware.
+  Incident: dragnet-ransomware-2023-5099
+  Ransomware victim claim by vicesociety: University of Duisburg-Essen; country: DE; sector: Education
+  First observed: 2023-01-16.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

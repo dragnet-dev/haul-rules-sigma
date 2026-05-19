@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-3774 — Recovery Inhibition (8base)'
+id: c08a3777-2555-5cee-8535-0d50dd69748b
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with 8base ransomware.
+  Incident: dragnet-ransomware-2023-3774
+  Ransomware victim claim by 8base: Schöler Fördertechnik AG; country: DE; sector: Manufacturing
+  First observed: 2023-11-01.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://basemmnnqwxevlymli5bs36o5ynti55xojzvn246spahniugwkff2pad.onion/company/7890279
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

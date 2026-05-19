@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0105 — Recovery Inhibition (avaddon)'
+id: 6d630d12-e89e-53d5-b91d-da74a44d8628
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with avaddon ransomware.
+  Incident: dragnet-ransomware-2021-0105
+  Ransomware victim claim by avaddon: MundoFertil; sector: Agriculture and Food Production
+  First observed: 2021-09-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

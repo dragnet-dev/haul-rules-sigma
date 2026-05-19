@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-0331 — Ransomware C2 Communication'
+id: 897f4b65-b5d4-53f3-b5e9-c2dda52d9e2b
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-0331
+  Ransomware victim claim by lockbit3: divaris.com; country: US; sector: Business Services
+  First observed: 2024-06-01.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lbb6ud2vyf23z4hw6fzskr5gru7eftbjfbd6yzra3hzuqqvjy63blqqd.onion//post/BLsdPZb2gknp3Jjv66b84b289287a
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lbb6ud2vyf23z4hw6fzskr5gru7eftbjfbd6yzra3hzuqqvjy63blqqd.onion//post/BLsdPZb2gknp3Jjv66b84b289287a'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

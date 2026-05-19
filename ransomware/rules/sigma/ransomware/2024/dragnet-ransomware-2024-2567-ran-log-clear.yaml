@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2567 — Event Log Clearing (handala)'
+id: 764b8a0e-0fd6-5e47-b726-162819d7c893
+status: experimental
+description: |
+  Detects event log clearing associated with handala ransomware.
+  Incident: dragnet-ransomware-2024-2567
+  Ransomware victim claim by handala: Amigour Company; country: IL; sector: Construction
+  First observed: 2024-05-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://handala.to/zionists-amigour-company-hacked/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

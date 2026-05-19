@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-1753 — Mass File Rename (RunSomeWares)'
+id: 4d82ba47-def5-5a37-8830-279b6b962dc9
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by RunSomeWares.
+  Incident: dragnet-ransomware-2024-1753
+  Ransomware victim claim by RunSomeWares: Gilbert; country: US; sector: Transportation/Logistics
+  First observed: 2024-06-22.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://oow7rehrxlzpy6vh3hezl2khstkpa6s7wx3iit74tr6xbjibupld5iad.onion/glbrt/gilbert.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

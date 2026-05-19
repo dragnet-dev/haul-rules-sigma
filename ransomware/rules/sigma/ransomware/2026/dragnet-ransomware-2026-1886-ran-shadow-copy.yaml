@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-1886 — Shadow Copy Deletion (safepay)'
+id: dff40a5e-1e2b-532a-9eb4-e66168393563
+status: stable
+description: |
+  Detects shadow copy deletion commands associated with safepay ransomware.
+  Incident: dragnet-ransomware-2026-1886
+  Ransomware victim claim by safepay: dahlgrenscement.se; country: SE; sector: Manufacturing
+  First observed: 2026-05-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://safepaypfxntwixwjrlcscft433ggemlhgkkdupi2ynhtcmvdgubmoyd.onion/blog/post/dahlgrenscementse/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3265 — Mass File Rename (fog)'
+id: 4837985e-3799-511f-89e1-ef8ce0893048
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by fog.
+  Incident: dragnet-ransomware-2024-3265
+  Ransomware victim claim by fog: Waverley Christian College (wcc.vic.edu.au); country: AU; sector: Education
+  First observed: 2024-12-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://xbkv2qey6u3gd3qxcojynrt4h5sgrhkar6whuo74wo63hijnn677jnyd.onion/posts/67603edcffa6d0708588cf41/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

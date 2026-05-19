@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0250 — Recovery Inhibition (rhysida)'
+id: 74164049-09e1-5b01-a3de-90fa92466098
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with rhysida ransomware.
+  Incident: dragnet-ransomware-2025-0250
+  Ransomware victim claim by rhysida: Mediprobe Research; country: CA; sector: Healthcare
+  First observed: 2025-05-05.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://rhysidafohrhyy2aszi7bm32tnjat5xri65fopcxkdfxhi4tidsg7cad.onion/archive.php?company=187
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

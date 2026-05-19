@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0386 — Recovery Inhibition (safepay)'
+id: 30e52609-1801-5413-bbd2-a2712b68dcd1
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with safepay ransomware.
+  Incident: dragnet-ransomware-2024-0386
+  Ransomware victim claim by safepay: piburners.com; country: US; sector: Manufacturing
+  First observed: 2024-10-04.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

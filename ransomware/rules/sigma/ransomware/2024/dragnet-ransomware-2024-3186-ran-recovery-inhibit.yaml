@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3186 — Recovery Inhibition (arcusmedia)'
+id: 41ae1868-0a46-55b6-a1fd-303a06c49edf
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with arcusmedia ransomware.
+  Incident: dragnet-ransomware-2024-3186
+  Ransomware victim claim by arcusmedia: Superior Quality Insurance Agency; country: US; sector: Financial Services
+  First observed: 2024-10-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://arcuufpr5xxbbkin4mlidt7itmr6znlppk63jbtkeguuhszmc5g7qdyd.onion/?p=258
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

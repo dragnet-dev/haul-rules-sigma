@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2587 — Mass File Rename (redransomware)'
+id: d7e85013-5733-5878-8d7b-d4b123b97b9a
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by redransomware.
+  Incident: dragnet-ransomware-2024-2587
+  Ransomware victim claim by redransomware: Kutes.com; country: TR; sector: Construction
+  First observed: 2024-06-11.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

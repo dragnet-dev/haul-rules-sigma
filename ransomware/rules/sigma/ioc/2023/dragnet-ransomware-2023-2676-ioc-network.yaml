@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-2676 — Ransomware C2 Communication'
+id: 88197c19-a291-5b9a-8bfe-676dd2ae64be
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-2676
+  Ransomware victim claim by nokoyawa: Sabin; country: BR; sector: Healthcare
+  First observed: 2023-04-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nokoleakb76znymx443veg4n6fytx6spck6pc7nkr4dvfuygpub6jsid.onion/leak/6441c7a7f675292f2b84f1f1
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://nokoleakb76znymx443veg4n6fytx6spck6pc7nkr4dvfuygpub6jsid.onion/leak/6441c7a7f675292f2b84f1f1'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

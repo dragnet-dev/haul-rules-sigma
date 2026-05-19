@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1870 — Mass File Rename (blackbasta)'
+id: d6b5e7da-7594-5c9a-9ac7-bcb905322d50
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by blackbasta.
+  Incident: dragnet-ransomware-2023-1870
+  Ransomware victim claim by blackbasta: GIAMBELLI; country: IT; sector: Construction
+  First observed: 2023-06-28.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://stniiomyjliimcgkvdszvgen3eaaoz55hreqqx6o77yvmpwt7gklffqd.onion/?id=GIAMBELLISPA_2
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

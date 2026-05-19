@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1775 — Shadow Copy Deletion (J)'
+id: 755aec35-9412-5489-bf13-1f990baccb4b
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with J ransomware.
+  Incident: dragnet-ransomware-2025-1775
+  Ransomware victim claim by J: aym.com.mx; country: MX; sector: Technology
+  First observed: 2025-08-05.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://twniiyed6mydtbe64i5mdl56nihl7atfaqtpww6gqyaiohgc75apzpad.onion/posts/6892067b0b175cbc06955a42/6892067b0b175cbc06955a42/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

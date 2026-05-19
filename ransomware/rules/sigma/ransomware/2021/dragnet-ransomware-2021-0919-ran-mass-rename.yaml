@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0919 — Mass File Rename (lorenz)'
+id: 0373c08a-a1a1-5b63-a99f-31545432a157
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by lorenz.
+  Incident: dragnet-ransomware-2021-0919
+  Ransomware victim claim by lorenz: SCREEN Holdings; sector: Technology
+  First observed: 2021-09-21.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

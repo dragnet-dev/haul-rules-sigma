@@ -1,0 +1,31 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-2415 — Ransomware C2 Communication'
+id: b99768a5-0b94-5f09-a98f-c87f6b27162c
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-2415
+  Associated with menuPass.
+  Ransomware victim claim by cicada3301: T-Space; country: GB; sector: Technology
+  First observed: 2024-10-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://cicadabv7vicyvgz5khl7v2x5yygcgow7ryy6yppwmxii4eoobdaztqd.onion/t62jj5yrphae9dxta8tkvol6mdfr9hfq
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+  - dragnet.actor.menupass
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://cicadabv7vicyvgz5khl7v2x5yygcgow7ryy6yppwmxii4eoobdaztqd.onion/t62jj5yrphae9dxta8tkvol6mdfr9hfq'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2023 — Event Log Clearing (akira)'
+id: 32d44e0e-1be0-5e7d-a4bc-2f20f3f9e4eb
+status: deprecated
+description: |
+  Detects event log clearing associated with akira ransomware.
+  Incident: dragnet-ransomware-2024-2023
+  Associated with Akira.
+  Ransomware victim claim by akira: Fullmer Construction; country: US; sector: Business Services
+  First observed: 2024-12-18.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+  - dragnet.actor.akira
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

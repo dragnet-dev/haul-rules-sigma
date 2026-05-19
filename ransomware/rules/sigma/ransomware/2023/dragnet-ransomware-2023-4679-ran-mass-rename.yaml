@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4679 — Mass File Rename (karakurt)'
+id: 4f34dc8f-d8be-5260-962b-634e5afc751c
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by karakurt.
+  Incident: dragnet-ransomware-2023-4679
+  Ransomware victim claim by karakurt: Peachtree Orthopedics; sector: Healthcare
+  First observed: 2023-05-12.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://3f7nxkjway3d223j27lyad7v5cgmyaifesycvmwq7i7cbs23lb6llryd.onion/companies/f3a3a719-e72c-4bfe-bcf1-aabc18381c16
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

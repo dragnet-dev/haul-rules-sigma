@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2264 — Mass File Rename (gunra)'
+id: 516cc4e4-ee2e-5acb-a53f-921fdbc1e9d5
+status: stable
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by gunra.
+  Incident: dragnet-ransomware-2026-2264
+  Ransomware victim claim by gunra: Thai Petroleum & Trading Co., Ltd.; country: TH; sector: Energy
+  First observed: 2026-04-08.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lgiil72vkmdtbc3qv4tyq6wedyjxqr2qd4ze7xl2cxgerdnymxj7soqd.onion/company/JbmV2IiHMShyMJoIhLjHS
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

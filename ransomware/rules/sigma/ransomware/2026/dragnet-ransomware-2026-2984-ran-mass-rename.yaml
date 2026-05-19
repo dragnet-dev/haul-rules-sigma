@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2984 — Mass File Rename (nightspire)'
+id: 90b57dc6-f814-5205-9a23-112a56f98c49
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by nightspire.
+  Incident: dragnet-ransomware-2026-2984
+  Ransomware victim claim by nightspire: *F* *a**e* G**H & Co. *G; country: DE; sector: Not Found
+  First observed: 2026-02-02.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

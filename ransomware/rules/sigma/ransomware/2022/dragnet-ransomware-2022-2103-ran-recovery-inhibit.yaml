@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2103 — Recovery Inhibition (vicesociety)'
+id: dfb897b2-98b4-52ac-962f-8776ef80d40b
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with vicesociety ransomware.
+  Incident: dragnet-ransomware-2022-2103
+  Ransomware victim claim by vicesociety: Feu Vert; sector: Consumer Services
+  First observed: 2022-12-06.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2573 — Recovery Inhibition (dispossessor)'
+id: f456f874-c779-57ad-92fd-1f8dd3889ccd
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with dispossessor ransomware.
+  Incident: dragnet-ransomware-2024-2573
+  Ransomware victim claim by dispossessor: umbrellaproperties.com; country: US; sector: Business Services
+  First observed: 2024-05-13.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://dispossessor.com/blogs/1365
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

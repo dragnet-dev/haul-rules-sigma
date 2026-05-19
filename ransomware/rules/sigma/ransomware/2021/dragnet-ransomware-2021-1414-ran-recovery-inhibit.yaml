@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1414 — Recovery Inhibition (babuk)'
+id: 4e7fc267-7712-55fe-979f-665f8d84981f
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with babuk ransomware.
+  Incident: dragnet-ransomware-2021-1414
+  Ransomware victim claim by babuk: Washington DC Metropolitan Police Department; country: US; sector: Public Sector
+  First observed: 2021-04-01.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

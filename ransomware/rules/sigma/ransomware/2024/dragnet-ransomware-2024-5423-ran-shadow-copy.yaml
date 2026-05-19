@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5423 — Shadow Copy Deletion (kairos)'
+id: ccd70eba-28a0-54bb-9715-4dece2f6ae57
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with kairos ransomware.
+  Incident: dragnet-ransomware-2024-5423
+  Ransomware victim claim by kairos: formosacpa.com.tw; country: TW; sector: Financial Services
+  First observed: 2024-11-05.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nerqnacjmdy3obvevyol7qhazkwkv57dwqvye5v46k5bcujtfa6sduad.onion/detail?code=formosacpa-com-tw-taiwan-110gb-
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

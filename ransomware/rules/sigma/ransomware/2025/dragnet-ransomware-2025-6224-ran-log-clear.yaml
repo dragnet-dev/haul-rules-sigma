@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6224 — Event Log Clearing (lockbit5)'
+id: 46120305-ad77-590a-a82c-d32282fec529
+status: experimental
+description: |
+  Detects event log clearing associated with lockbit5 ransomware.
+  Incident: dragnet-ransomware-2025-6224
+  Ransomware victim claim by lockbit5: pilgrimpackaging.com; country: US; sector: Manufacturing
+  First observed: 2025-08-12.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lockbitapt67g6rwzjbcxnww5efpg4qok6vpfeth7wx3okj52ks4wtad.onion/post/f5146bebe23dfd7d603ec0c67296c393
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

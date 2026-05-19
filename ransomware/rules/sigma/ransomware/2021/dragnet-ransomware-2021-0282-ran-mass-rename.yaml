@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0282 — Mass File Rename (pysa)'
+id: 5bfc94b9-7bc3-5486-baeb-3e3eb2e0a169
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by pysa.
+  Incident: dragnet-ransomware-2021-0282
+  Ransomware victim claim by pysa: Ciruli Brothers; sector: Agriculture and Food Production
+  First observed: 2021-09-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

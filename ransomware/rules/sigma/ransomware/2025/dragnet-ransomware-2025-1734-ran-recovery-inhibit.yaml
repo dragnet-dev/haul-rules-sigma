@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1734 — Recovery Inhibition (babuk2)'
+id: 459467b3-bb07-5012-850a-50344a47abcb
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with babuk2 ransomware.
+  Incident: dragnet-ransomware-2025-1734
+  Ransomware victim claim by babuk2: petstop.com Company; country: US; sector: Consumer Services
+  First observed: 2025-03-10.
+  Confidence: 90% (ransomware_live).
+references:
+  - http:/bxwu33iefqfc3rxigynn3ghvq4gdw3gxgxna5m4aa3o4vscdeeqhiqad.onion/blog/168d441c086815fb0d0ce67b7bc405626f36a6e6bd85285420c98b85c2db571e/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

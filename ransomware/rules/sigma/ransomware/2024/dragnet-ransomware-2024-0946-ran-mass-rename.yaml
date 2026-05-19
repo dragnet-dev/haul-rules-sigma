@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0946 — Mass File Rename (kairos)'
+id: e7248129-6db4-590f-afa2-a3e76eafe705
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by kairos.
+  Incident: dragnet-ransomware-2024-0946
+  Ransomware victim claim by kairos: pmrcenter.com; country: US; sector: Healthcare
+  First observed: 2024-07-08.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nerqnacjmdy3obvevyol7qhazkwkv57dwqvye5v46k5bcujtfa6sduad.onion/detail?code=pmrcenter-com-usa-53gb-
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

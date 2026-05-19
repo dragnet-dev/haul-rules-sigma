@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1715 — Mass File Rename (hive)'
+id: 96fcbdbd-7979-56f7-a172-698848b0176c
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by hive.
+  Incident: dragnet-ransomware-2021-1715
+  Ransomware victim claim by hive: IBC24 News; sector: Consumer Services
+  First observed: 2021-12-18.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

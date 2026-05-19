@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1608 — Recovery Inhibition (nefilim)'
+id: 29df5a71-a9dd-53d6-8b34-861bbd789772
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with nefilim ransomware.
+  Incident: dragnet-ransomware-2021-1608
+  Ransomware victim claim by nefilim: The MADSACK Media Group. Part 1.; sector: Business Services
+  First observed: 2021-09-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

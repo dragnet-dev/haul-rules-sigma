@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6689 — Event Log Clearing (bianlian)'
+id: 999ecee2-35b5-5c68-99ad-b01fd100c240
+status: experimental
+description: |
+  Detects event log clearing associated with bianlian ransomware.
+  Incident: dragnet-ransomware-2025-6689
+  Ransomware victim claim by bianlian: Legal Aid Society of Salt Lake; country: US; sector: Public Sector
+  First observed: 2025-03-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://bianlivemqbawcco4cx4a672k2fip3guyxudzurfqvdszafam3ofqgqd.onion/companies/legalaidsocietyofsaltlake.org/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

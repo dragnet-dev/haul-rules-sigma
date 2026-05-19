@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-1062 — Mass File Rename (malekteam)'
+id: db431c34-e251-55c4-9c95-2a5b20ccbdb7
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by malekteam.
+  Incident: dragnet-ransomware-2024-1062
+  Ransomware victim claim by malekteam: Doctorim; country: IL; sector: Healthcare
+  First observed: 2024-04-05.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://195.14.123.2/beithandesai.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

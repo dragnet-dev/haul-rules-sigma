@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0077 — Event Log Clearing (pear)'
+id: 03e818b8-8ca4-5698-800c-b99894c38bc3
+status: experimental
+description: |
+  Detects event log clearing associated with pear ransomware.
+  Incident: dragnet-ransomware-2025-0077
+  Ransomware victim claim by pear: Cullen, Haskins, Nicholson & Menchetti; country: US; sector: Business Services
+  First observed: 2025-08-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://pearsmob5sn44ismokiusuld34pnfwi6ctgin3qbvonpoob4lh3rmtqd.onion/Companies/chnm-law
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0748 — Mass File Rename (pear)'
+id: 0eff2490-4429-5670-a889-edae868542a9
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by pear.
+  Incident: dragnet-ransomware-2025-0748
+  Ransomware victim claim by pear: Alt Vision; country: AU; sector: Technology
+  First observed: 2025-07-08.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://peargxn3oki34c4savcbcfqofjjwjnnyrlrbszfv6ujlx36mhrh57did.onion/Companies/altvision
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

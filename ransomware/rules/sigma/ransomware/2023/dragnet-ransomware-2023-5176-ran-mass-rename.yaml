@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-5176 — Mass File Rename (mallox)'
+id: 0fca0e6c-bad2-5d2a-8bf7-2ef9e5200cd6
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by mallox.
+  Incident: dragnet-ransomware-2023-5176
+  Ransomware victim claim by mallox: Young Homes, Inc; country: US; sector: Construction
+  First observed: 2023-06-03.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://wtyafjyhwqrgo4a45wdvvwhen3cx4euie73qvlhkhvlrexljoyuklaad.onion/mallox/post?UAFw6aTSfOmWHFv
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

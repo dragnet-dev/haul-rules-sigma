@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5094 — Recovery Inhibition (cactus)'
+id: 5f49b7e3-50ad-5cb0-be28-92eac40501ce
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with cactus ransomware.
+  Incident: dragnet-ransomware-2024-5094
+  Ransomware victim claim by cactus: spbglobal.com; country: ES; sector: Business Services
+  First observed: 2024-01-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://cactusbloguuodvqjmnzlwetjlpj6aggc6iocwhuupb47laukux7ckid.onion/posts/SPB
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

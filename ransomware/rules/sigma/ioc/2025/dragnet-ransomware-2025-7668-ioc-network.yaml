@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-7668 — Ransomware C2 Communication'
+id: d694243e-54fd-5a58-8bc4-ce00bd92cb82
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-7668
+  Ransomware victim claim by weyhro: Chemtron RiverBend; country: US; sector: Manufacturing
+  First observed: 2025-08-10.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://weyhro.hk//leaks/crbwater
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'https://weyhro.hk//leaks/crbwater'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

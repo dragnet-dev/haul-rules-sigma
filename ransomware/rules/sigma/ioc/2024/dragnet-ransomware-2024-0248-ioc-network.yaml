@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-0248 — Ransomware C2 Communication'
+id: 3be443e0-7780-530d-86b7-d369a24b9090
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-0248
+  Ransomware victim claim by underground: belcherpharma.com; country: US; sector: Healthcare
+  First observed: 2024-05-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://47glxkuxyayqrvugfumgsblrdagvrah7gttfscgzn56eyss5wg3uvmqd.onion/packages/7f032f2b-4821-43f6-aaef-68ab86112cad
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://47glxkuxyayqrvugfumgsblrdagvrah7gttfscgzn56eyss5wg3uvmqd.onion/packages/7f032f2b-4821-43f6-aaef-68ab86112cad'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

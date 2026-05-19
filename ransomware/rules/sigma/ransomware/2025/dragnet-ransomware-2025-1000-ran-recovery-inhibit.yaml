@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1000 — Recovery Inhibition (stormous)'
+id: 97f81541-52ac-551a-a118-21af38c51c8e
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with stormous ransomware.
+  Incident: dragnet-ransomware-2025-1000
+  Ransomware victim claim by stormous: www.atolon-parkhotel.com; country: FR; sector: Hospitality and Tourism
+  First observed: 2025-05-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://6sf5xa7eso3e3vk46i5tpcqhnlayczztj7zjktzaztlotyy75zs6j7qd.onion/atolon-parkhotel.com
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

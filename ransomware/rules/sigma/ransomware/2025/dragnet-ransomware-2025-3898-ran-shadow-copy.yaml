@@ -1,0 +1,41 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3898 — Shadow Copy Deletion (sinobi)'
+id: 37b8db72-8bd2-5fcc-a31f-b0f29f4717e5
+status: test
+description: |
+  Detects shadow copy deletion commands associated with sinobi ransomware.
+  Incident: dragnet-ransomware-2025-3898
+  Associated with MuddyWater.
+  Ransomware victim claim by sinobi: Mercury Wire Products; country: US; sector: Manufacturing
+  First observed: 2025-12-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://sinobi6ftrg27d6g4sjdt65malds6cfptlnjyw52rskakqjda6uvb7yd.onion/leaks/6941cd8788b6823fa2b57a05
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+  - dragnet.actor.muddywater
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

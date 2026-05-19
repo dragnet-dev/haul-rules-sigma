@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0409 — Mass File Rename (playboy)'
+id: 045146c5-3d92-581f-9340-25ef87ed6746
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by playboy.
+  Incident: dragnet-ransomware-2024-0409
+  Ransomware victim claim by playboy: German Chamber of Commerce; country: DE; sector: Business Services
+  First observed: 2024-10-28.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://vlofmq2u3f5amxmnblvxaghy73aedwta74fyceywr6eeguw3cn6h6uad.onion/blog/details.php?id=24
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

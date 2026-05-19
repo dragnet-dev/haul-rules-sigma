@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2022-2938 — Ransomware C2 Communication'
+id: 9eb3c530-f49f-545b-9018-5bf8d1d105c5
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2022-2938
+  Ransomware victim claim by karakurt: Bevolution Group; country: US; sector: Agriculture and Food Production
+  First observed: 2022-12-18.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://3f7nxkjway3d223j27lyad7v5cgmyaifesycvmwq7i7cbs23lb6llryd.onion/companies/5ca45851-af59-46d7-a74c-c384fc980367
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'https://3f7nxkjway3d223j27lyad7v5cgmyaifesycvmwq7i7cbs23lb6llryd.onion/companies/5ca45851-af59-46d7-a74c-c384fc980367'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

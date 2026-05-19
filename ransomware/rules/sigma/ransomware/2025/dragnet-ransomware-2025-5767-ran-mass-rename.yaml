@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5767 — Mass File Rename (genesis)'
+id: 5706f21d-0571-5877-a497-f7c8ad34fcc5
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by genesis.
+  Incident: dragnet-ransomware-2025-5767
+  Ransomware victim claim by genesis: S.B. Conrad, Inc; country: US; sector: Construction
+  First observed: 2025-11-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://genesis6ixpb5mcy4kudybtw5op2wqlrkocfogbnenz3c647ibqixiad.onion/e8e330cd0bc243e8fe62/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

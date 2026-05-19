@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-4035 — Mass File Rename (blacksuit)'
+id: 24495155-5358-5bf6-b596-e3159686d3be
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by blacksuit.
+  Incident: dragnet-ransomware-2024-4035
+  Ransomware victim claim by blacksuit: Homeocan; country: CA; sector: Healthcare
+  First observed: 2024-04-09.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?id=Z5q4Iz61X4oPTXNx
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-0400 — Event Log Clearing (lockbit2)'
+id: 62c2ce36-5e89-5c37-981d-aa3fb0760ecb
+status: deprecated
+description: |
+  Detects event log clearing associated with lockbit2 ransomware.
+  Incident: dragnet-ransomware-2022-0400
+  Ransomware victim claim by lockbit2: khs-wp.de; country: DE; sector: Manufacturing
+  First observed: 2022-05-17.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

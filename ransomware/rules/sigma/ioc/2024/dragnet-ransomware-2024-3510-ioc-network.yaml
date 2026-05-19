@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-3510 — Ransomware C2 Communication'
+id: f3771dca-a35a-5f58-971d-6fa847e89b2e
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-3510
+  Ransomware victim claim by 8base: Volkswagen group; country: DE; sector: Manufacturing
+  First observed: 2024-09-23.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://92.118.36.204/company/7890473
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://92.118.36.204/company/7890473'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

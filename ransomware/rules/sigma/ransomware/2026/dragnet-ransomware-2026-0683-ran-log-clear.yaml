@@ -1,0 +1,36 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-0683 — Event Log Clearing (play)'
+id: 1b77678e-9f8c-5552-8930-db435c57aee6
+status: stable
+description: |
+  Detects event log clearing associated with play ransomware.
+  Incident: dragnet-ransomware-2026-0683
+  Associated with Play.
+  Ransomware victim claim by play: Witt UK Group; country: GB; sector: Manufacturing
+  First observed: 2026-03-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://mbrlkbtq5jonaqkurjwmxftytyn2ethqvbxfu4rgjbkkknndqwae6byd.onion/index.php?page=1/topic.php?id=y5oe2Y9Yn7bIFt
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+  - dragnet.actor.play
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

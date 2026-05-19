@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5697 — Mass File Rename (tridentlocker)'
+id: ee1fe975-abaf-5d33-acbb-5a1a0586b1ea
+status: test
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by tridentlocker.
+  Incident: dragnet-ransomware-2025-5697
+  Ransomware victim claim by tridentlocker: allenprinting; country: US; sector: Business Services
+  First observed: 2025-12-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://tridentfrdy6jydwywfx4vx422vnto7pktao2gyx2qdcwjanogq454ad.onion/article/207a35f0-2fa8-414d-947e-97e09b76cb17
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2933 — Recovery Inhibition (everest)'
+id: d6140219-9eb6-54e9-8fa6-cf99784c5896
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with everest ransomware.
+  Incident: dragnet-ransomware-2025-2933
+  Ransomware victim claim by everest: ITSS; country: CH; sector: Technology
+  First observed: 2025-02-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ransomocmou6mnbquqz44ewosbkjk3o5qjsl3orawojexfook2j7esad.onion/itss/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

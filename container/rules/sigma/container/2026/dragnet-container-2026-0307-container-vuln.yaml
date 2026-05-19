@@ -1,0 +1,36 @@
+title: 'Dragnet [Container]: dragnet-container-2026-0307 — Vulnerable Base Image Pull'
+id: ac627baa-b480-5939-a35f-393dba417922
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-0307 (Tier 2, CVSS 9.8)
+  A double-free condition exists in contrib/shpsort.c of shapelib 1.5.0 and older releases. This issue may allow an attacker to cause a denial of service or have other unspecified impact via control over malloc.
+  First observed: 2026-01-24.
+references:
+  - https://github.com/OSGeo/shapelib/commit/c75b9281a5b9452d92e1682bdfe6019a13ed819f
+  - https://github.com/OSGeo/shapelib/issues/39
+  - https://lists.debian.org/debian-lts-announce/2026/01/msg00023.html
+  - https://nvd.nist.gov/vuln/detail/CVE-2022-0699
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'azure linux:3.0'
+      - 'cbl-mariner:2.0'
+      - 'debian:10'
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

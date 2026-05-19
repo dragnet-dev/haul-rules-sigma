@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0650 — Event Log Clearing (noescape)'
+id: a14ed513-be6c-5990-b63f-13ce6846fe93
+status: experimental
+description: |
+  Detects event log clearing associated with noescape ransomware.
+  Incident: dragnet-ransomware-2023-0650
+  Ransomware victim claim by noescape: OE Federal Credit Union; sector: Financial Services
+  First observed: 2023-10-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://noescapemsqxvizdxyl7f7rmg5cdjwp33pg2wpmiaaibilb4btwzttad.onion/post/9a775d19-d453-4a61-9c6d-3cd8e2f7b155
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

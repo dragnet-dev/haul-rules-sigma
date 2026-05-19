@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0077 — Shadow Copy Deletion (pear)'
+id: b10e071f-5a05-54d2-9996-85d9e04e6dcb
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with pear ransomware.
+  Incident: dragnet-ransomware-2025-0077
+  Ransomware victim claim by pear: Cullen, Haskins, Nicholson & Menchetti; country: US; sector: Business Services
+  First observed: 2025-08-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://pearsmob5sn44ismokiusuld34pnfwi6ctgin3qbvonpoob4lh3rmtqd.onion/Companies/chnm-law
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

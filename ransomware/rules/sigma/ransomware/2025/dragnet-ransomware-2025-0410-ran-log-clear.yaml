@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0410 — Event Log Clearing (monti)'
+id: 6e5bd707-7ca4-5e02-aa65-632da82dbbe7
+status: experimental
+description: |
+  Detects event log clearing associated with monti ransomware.
+  Incident: dragnet-ransomware-2025-0410
+  Ransomware victim claim by monti: FM.GOB.AR; country: AR; sector: Public Sector
+  First observed: 2025-03-02.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://mblogci3rudehaagbryjznltdp33ojwzkq6hn2pckvjq33rycmzczpid.onion/blog/82b3572f2dadeca89f06a17fd17a8f05f10e23aff09bfc7071d7b6d29e6238e5/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

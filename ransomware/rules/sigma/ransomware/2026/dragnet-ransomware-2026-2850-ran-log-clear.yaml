@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2850 — Event Log Clearing (handala)'
+id: 6b0c8f28-0b7b-52bc-95e8-aaae0cff5b36
+status: stable
+description: |
+  Detects event log clearing associated with handala ransomware.
+  Incident: dragnet-ransomware-2026-2850
+  Ransomware victim claim by handala: Architect of Warfare Exposed: Eran Ortal’s Hidden Strategies Now Public; sector: Not Found
+  First observed: 2026-03-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://handala-team.to/architect-of-zionist-warfare-exposed-eran-ortals-hidden-strategies-now-public/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

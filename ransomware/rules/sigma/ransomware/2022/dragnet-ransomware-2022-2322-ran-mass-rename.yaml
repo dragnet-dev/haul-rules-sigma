@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2322 — Mass File Rename (bianlian)'
+id: 946df6f8-a853-5212-9319-ca8af6369e10
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by bianlian.
+  Incident: dragnet-ransomware-2022-2322
+  Ransomware victim claim by bianlian: SEMITEC Corporation; country: VN; sector: Manufacturing
+  First observed: 2022-12-23.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

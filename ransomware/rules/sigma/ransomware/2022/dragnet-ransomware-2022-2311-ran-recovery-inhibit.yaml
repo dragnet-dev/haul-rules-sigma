@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2311 — Recovery Inhibition (lv)'
+id: e7d7ecfe-d1c9-5dff-93d4-ca9a1759e6bf
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with lv ransomware.
+  Incident: dragnet-ransomware-2022-2311
+  Ransomware victim claim by lv: THEW ASSOCIATES HACKED. MORE THEN 50 GB SENSETIVE DATA LEAKED.; sector: Business Services
+  First observed: 2022-11-14.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

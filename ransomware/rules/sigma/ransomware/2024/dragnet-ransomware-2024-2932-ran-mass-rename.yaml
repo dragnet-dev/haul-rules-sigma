@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2932 — Mass File Rename (blacklock)'
+id: 7b846d72-61d7-588e-8272-1e1755256952
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by blacklock.
+  Incident: dragnet-ransomware-2024-2932
+  Ransomware victim claim by blacklock: New River Electrical Corporation; country: US; sector: Construction
+  First observed: 2024-09-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://zdkexsh2e7yihw5uhg5hpsgq3dois2m5je7lzfagij2y6iw5ptl35gyd.onion/Data_Download/NRE
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

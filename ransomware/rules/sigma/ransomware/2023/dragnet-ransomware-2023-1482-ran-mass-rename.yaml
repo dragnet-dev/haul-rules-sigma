@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1482 — Mass File Rename (monti)'
+id: adfc1c66-610d-53f3-86f9-3feeec51b3ca
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by monti.
+  Incident: dragnet-ransomware-2023-1482
+  Ransomware victim claim by monti: Hungarian Investment Promotion Agency; sector: Financial Services
+  First observed: 2023-07-30.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://mblogci3rudehaagbryjznltdp33ojwzkq6hn2pckvjq33rycmzczpid.onion/blog/a65686b4c9633f5c3ca17d911a8f81ad659d2d40515f108eb4fe626ad6e9a147/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

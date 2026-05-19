@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0162 — Mass File Rename (frag)'
+id: 080712b3-4ed3-5247-a988-d9b8a0b2f2e3
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by frag.
+  Incident: dragnet-ransomware-2024-0162
+  Ransomware victim claim by frag: Community Management, Inc.; country: US; sector: Business Services
+  First observed: 2024-10-21.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

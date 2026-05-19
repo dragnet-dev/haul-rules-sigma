@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5380 — Event Log Clearing (funksec)'
+id: a69f240b-7685-5459-9f39-5f0acccd3d0c
+status: experimental
+description: |
+  Detects event log clearing associated with funksec ransomware.
+  Incident: dragnet-ransomware-2024-5380
+  Ransomware victim claim by funksec: sanirent.com.mx; country: MX; sector: Business Services
+  First observed: 2024-09-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://funksec53xh7j5t6ysgwnaidj5vkh3aqajanplix533kwxdz3qrwugid.onion/sanirent.com.mx
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

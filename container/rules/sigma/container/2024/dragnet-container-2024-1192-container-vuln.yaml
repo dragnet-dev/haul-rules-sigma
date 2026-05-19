@@ -1,0 +1,35 @@
+title: 'Dragnet [Container]: dragnet-container-2024-1192 — Vulnerable Base Image Pull'
+id: e1a00f4f-cd3d-5fba-98ba-044251681168
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-1192 (Tier 2, CVSS 9.8)
+  It was discovered, that debian-edu-config, a set of configuration files used for the Debian Edu blend, before 2.12.16 configured insecure permissions for the user web shares (~/public_html), which could result in privilege escalation.
+  First observed: 2024-11-21.
+references:
+  - https://lists.debian.org/debian-lts-announce/2022/02/msg00012.html
+  - https://lists.debian.org/debian-security-announce/2022/msg00039.html
+  - https://salsa.debian.org/debian-edu/debian-edu-config/-/commit/4d39a5888d193567704238f8c035f8d17cfe34e5
+  - https://www.debian.org/security/2022/dsa-5072
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:10'
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+      - 'debian:9'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

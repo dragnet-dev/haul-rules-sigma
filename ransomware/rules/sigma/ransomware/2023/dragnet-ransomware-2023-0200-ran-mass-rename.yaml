@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0200 — Mass File Rename (stormous)'
+id: 640a23bf-1905-5665-aea7-76f4f5bcc93b
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by stormous.
+  Incident: dragnet-ransomware-2023-0200
+  Ransomware victim claim by stormous: KONICA; country: JP; sector: Technology
+  First observed: 2023-03-26.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

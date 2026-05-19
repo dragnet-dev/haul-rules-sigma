@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-1516 — Recovery Inhibition (medusa)'
+id: 9594b4fc-f1d8-5a38-a090-438b98845c6e
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with medusa ransomware.
+  Incident: dragnet-ransomware-2024-1516
+  Ransomware victim claim by medusa: Kadac Australia; country: AU; sector: Agriculture and Food Production
+  First observed: 2024-02-12.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://medusaxko7jxtrojdkxo66j7ck4q5tgktf7uqsqyfry4ebnxlcbkccyd.onion/detail?id=a86a30657ad23ca179c0117b598cc954
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

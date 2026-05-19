@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4160 — Recovery Inhibition (SilentRansomGroup)'
+id: ab3501e7-9819-54e7-a117-db97b0154959
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with SilentRansomGroup ransomware.
+  Incident: dragnet-ransomware-2025-4160
+  Ransomware victim claim by SilentRansomGroup: Roger Keith and Sons Insurance Agency; country: US; sector: Financial Services
+  First observed: 2025-04-05.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

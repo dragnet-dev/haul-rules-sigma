@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4348 — Mass File Rename (everest)'
+id: a4509e18-17d1-5e8a-9f88-14a4a5b806b5
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by everest.
+  Incident: dragnet-ransomware-2025-4348
+  Ransomware victim claim by everest: Mailchimp; country: US; sector: Technology
+  First observed: 2025-07-26.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ransomocmou6mnbquqz44ewosbkjk3o5qjsl3orawojexfook2j7esad.onion/news/Mailchimp
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

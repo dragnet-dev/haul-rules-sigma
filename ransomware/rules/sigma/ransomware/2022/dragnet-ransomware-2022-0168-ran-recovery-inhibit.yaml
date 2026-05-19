@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-0168 — Recovery Inhibition (snatch)'
+id: 4c4695dd-9742-5bcd-8c85-9fff37014c54
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with snatch ransomware.
+  Incident: dragnet-ransomware-2022-0168
+  Ransomware victim claim by snatch: PFEIFER Drako; sector: Manufacturing
+  First observed: 2022-02-19.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

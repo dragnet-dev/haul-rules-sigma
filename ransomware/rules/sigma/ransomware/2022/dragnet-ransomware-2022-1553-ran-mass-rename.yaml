@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-1553 — Mass File Rename (medusalocker)'
+id: d3d9d5ec-7dde-5fc9-9320-053dba66b2bd
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by medusalocker.
+  Incident: dragnet-ransomware-2022-1553
+  Ransomware victim claim by medusalocker: Zelena Laguna Hotel; sector: Hospitality and Tourism
+  First observed: 2022-11-15.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5079 — Event Log Clearing (worldleaks)'
+id: 9721fba9-c85f-58bb-85bb-a20d3c30a87b
+status: experimental
+description: |
+  Detects event log clearing associated with worldleaks ransomware.
+  Incident: dragnet-ransomware-2025-5079
+  Ransomware victim claim by worldleaks: Myrtue Medical Center Hospital; country: US; sector: Healthcare
+  First observed: 2025-03-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://worldleaksartrjm3c6vasllvgacbi5u3mgzkluehrzhk2jz4taufuid.onion/companies/7731149748
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

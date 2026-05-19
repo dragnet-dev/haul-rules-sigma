@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-4757 — Ransomware C2 Communication'
+id: c0113b3a-27ca-56e1-8b2c-784e7f15e1be
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-4757
+  Ransomware victim claim by interlock: City of St Paul; country: US; sector: Public Sector
+  First observed: 2025-08-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://xqcx7b57dd5vrqllokebwuvub4hk3viktn4lsgyt2bg67oujd42xolqd.onion/index.php?p=
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://xqcx7b57dd5vrqllokebwuvub4hk3viktn4lsgyt2bg67oujd42xolqd.onion/index.php?p='
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

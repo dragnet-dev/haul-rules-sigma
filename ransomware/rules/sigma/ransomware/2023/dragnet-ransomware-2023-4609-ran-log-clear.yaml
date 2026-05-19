@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4609 — Event Log Clearing (incransom)'
+id: 27fd7c8b-8858-58c3-b4a9-225a07ea8925
+status: experimental
+description: |
+  Detects event log clearing associated with incransom ransomware.
+  Incident: dragnet-ransomware-2023-4609
+  Ransomware victim claim by incransom: Springfield Area Chamber of Commerce; sector: Business Services
+  First observed: 2023-11-23.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://incblog7vmuq7rktic73r4ha4j757m3ptym37tyvifzp2roedyyzzxid.onion/blog/leak/17F85CB3574C0210
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

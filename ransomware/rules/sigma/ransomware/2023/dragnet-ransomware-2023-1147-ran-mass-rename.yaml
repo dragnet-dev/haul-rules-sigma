@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1147 — Mass File Rename (royal)'
+id: 5a6d5035-2752-5d5a-aeda-ec6548900ae8
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by royal.
+  Incident: dragnet-ransomware-2023-1147
+  Ransomware victim claim by royal: Swanson Group; sector: Manufacturing
+  First observed: 2023-04-13.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://royal4ezp7xrbakkus3oofjw6gszrohpodmdnfbe5e4w3og5sm7vb3qd.onion/YHWVNP0rQoAOsf9wE7F33uTVkQLBigBA
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

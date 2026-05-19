@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2926 — Recovery Inhibition (clop)'
+id: 324202bd-2e50-5803-bd85-5f451897cd6b
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with clop ransomware.
+  Incident: dragnet-ransomware-2022-2926
+  Ransomware victim claim by clop: NEWCOURSECC.COM; sector: Business Services
+  First observed: 2022-12-22.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://santat7kpllt6iyvqbr7q4amdv6dzrh6paatvyrzl7ry3zm72zigf4ad.onion/newcoursecc-com
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

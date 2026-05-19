@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-2505 — Recovery Inhibition (ragnarlocker)'
+id: 3344b8ae-53ad-5047-8501-a78fcd4d637f
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with ragnarlocker ransomware.
+  Incident: dragnet-ransomware-2023-2505
+  Ransomware victim claim by ragnarlocker: Belize Electricity Limited - Leaked; country: BZ; sector: Energy
+  First observed: 2023-07-10.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://rgleaktxuey67yrgspmhvtnrqtgogur35lwdrup4d3igtbm3pupc4lyd.onion/?RTdLqfLIoiE
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

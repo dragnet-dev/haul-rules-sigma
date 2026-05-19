@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3961 — Recovery Inhibition (BrainCipher)'
+id: 8b69e900-7202-5552-9e67-5a9efd34d48e
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with BrainCipher ransomware.
+  Incident: dragnet-ransomware-2024-3961
+  Ransomware victim claim by BrainCipher: cyceron.fr; country: FR; sector: Healthcare
+  First observed: 2024-08-12.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://vkvsgl7lhipjirmz6j5ubp3w3bwvxgcdbpi3fsbqngfynetqtw4w5hyd.onion/r/qCyKv0rJUqLO68fNlB34zje1gogdBFHZSEGdN6+bxuL3H9NYBCk1hUsCHcGMYwiKXyMcOJ++4obG+wrQq2poTTI2Rmha
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

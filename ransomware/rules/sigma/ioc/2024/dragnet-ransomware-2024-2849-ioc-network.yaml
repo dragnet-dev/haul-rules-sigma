@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-2849 — Ransomware C2 Communication'
+id: 0235e8cc-dd70-5ac2-9efb-b5d77fbe0fa8
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-2849
+  Ransomware victim claim by zerotolerance: Banco central argentina; country: AR; sector: Financial Services
+  First observed: 2024-05-05.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://zhuobnfsddn2myfxxdqtpxk367dqnntjf3kq7mrzdgienfxjyllq4rqd.onion/info?id=HjHA9TCVsdg9bS6bglFkWqLNJlstirxr3KnVhTkw5oonEOM--W1S8fYIFt7xwbbTDmiey3X42aMg7oXRueGj6rwCeO38CsDo
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://zhuobnfsddn2myfxxdqtpxk367dqnntjf3kq7mrzdgienfxjyllq4rqd.onion/info?id=HjHA9TCVsdg9bS6bglFkWqLNJlstirxr3KnVhTkw5oonEOM--W1S8fYIFt7xwbbTDmiey3X42aMg7oXRueGj6rwCeO38CsDo'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

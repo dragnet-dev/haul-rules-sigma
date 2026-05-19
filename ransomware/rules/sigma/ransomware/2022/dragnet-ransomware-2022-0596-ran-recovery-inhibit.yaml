@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-0596 — Recovery Inhibition (avoslocker)'
+id: d9260c67-aa0a-5244-9a59-959fbebc18cf
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with avoslocker ransomware.
+  Incident: dragnet-ransomware-2022-0596
+  Ransomware victim claim by avoslocker: Xybion; sector: Technology
+  First observed: 2022-12-26.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

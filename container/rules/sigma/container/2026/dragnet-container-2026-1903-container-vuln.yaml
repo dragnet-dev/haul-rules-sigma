@@ -1,0 +1,32 @@
+title: 'Dragnet [Container]: dragnet-container-2026-1903 — Vulnerable Base Image Pull'
+id: 76659489-39a4-5830-a687-d97a5a8b92d7
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-1903 (Tier 2, CVSS 9.8)
+  Insecure Temporary file vulnerability in /tmp/kamailio_fifo in kamailio 4.0.1.
+  First observed: 2026-05-13.
+references:
+  - http://www.openwall.com/lists/oss-security/2015/02/12/7
+  - http://www.securityfocus.com/bid/100537
+  - https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=712083
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

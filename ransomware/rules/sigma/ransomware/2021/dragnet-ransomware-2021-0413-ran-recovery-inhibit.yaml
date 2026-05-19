@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0413 — Recovery Inhibition (lv)'
+id: 36ab8d5d-9ddf-56e2-a9e3-3a877d98a8d2
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with lv ransomware.
+  Incident: dragnet-ransomware-2021-0413
+  Ransomware victim claim by lv: scotttesting.com - MORE THEN 2.5TB DATA LEAKED; sector: Business Services
+  First observed: 2021-11-23.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

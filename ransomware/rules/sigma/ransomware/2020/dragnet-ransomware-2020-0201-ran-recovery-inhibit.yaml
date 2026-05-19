@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0201 — Recovery Inhibition (ryuk)'
+id: a39f6726-5d3f-597a-a673-fb17150392e9
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with ryuk ransomware.
+  Incident: dragnet-ransomware-2020-0201
+  Ransomware victim claim by ryuk: Dickinson County Health; country: US; sector: Healthcare
+  First observed: 2020-10-17.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

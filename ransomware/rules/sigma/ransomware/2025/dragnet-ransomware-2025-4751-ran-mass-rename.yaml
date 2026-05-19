@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4751 — Mass File Rename (dragonforce)'
+id: e6b22c17-8242-5028-8c4a-6dbb2315a8f0
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by dragonforce.
+  Incident: dragnet-ransomware-2025-4751
+  Ransomware victim claim by dragonforce: DTS -services; country: GB; sector: Consumer Services
+  First observed: 2025-03-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://z3wqggtxft7id3ibr7srivv5gjof5fwg76slewnzwwakjuf3nlhukdid.onion/blog/?post_uuid=b8edf6a4-8eda-4668-89a8-f88afe158493
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0124 — Recovery Inhibition (conti)'
+id: 3d9ecfc8-35f4-532b-a9b2-649e1b6fbcfe
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with conti ransomware.
+  Incident: dragnet-ransomware-2021-0124
+  Ransomware victim claim by conti: DOMICIM Agence; sector: Business Services
+  First observed: 2021-12-13.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

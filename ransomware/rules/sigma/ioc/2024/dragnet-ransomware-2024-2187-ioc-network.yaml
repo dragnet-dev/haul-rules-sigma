@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-2187 — Ransomware C2 Communication'
+id: 428111d1-7a06-5d40-acff-2c2692cfa4c1
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-2187
+  Ransomware victim claim by lockbit3: assih.com; country: EG; sector: Healthcare
+  First observed: 2024-07-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lockbit3753ekiocyo5epmpy6klmejchjtzddoekjlnt6mu3qh4de2id.onion//post/quzDOgfonIVFC7bF66980d152130d
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lockbit3753ekiocyo5epmpy6klmejchjtzddoekjlnt6mu3qh4de2id.onion//post/quzDOgfonIVFC7bF66980d152130d'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

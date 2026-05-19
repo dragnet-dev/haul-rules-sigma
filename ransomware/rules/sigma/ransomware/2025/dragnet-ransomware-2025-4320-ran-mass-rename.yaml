@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4320 — Mass File Rename (SilentRansomGroup)'
+id: 258f828e-ed3e-5d38-bd0e-9469323fc827
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by SilentRansomGroup.
+  Incident: dragnet-ransomware-2025-4320
+  Ransomware victim claim by SilentRansomGroup: McLaughlin & Stern; country: US; sector: Business Services
+  First observed: 2025-04-05.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

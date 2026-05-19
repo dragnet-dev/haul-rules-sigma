@@ -1,0 +1,31 @@
+title: 'Dragnet [Container]: dragnet-container-2024-1157 — Vulnerable Base Image Pull'
+id: 84e925db-7db0-5f1f-a86f-6ff2348b4e81
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-1157 (Tier 2, CVSS 9.8)
+  Use After Free in GitHub repository gpac/gpac prior to v2.1.0-DEV.
+  First observed: 2024-11-21.
+references:
+  - https://github.com/gpac/gpac/commit/c535bad50d5812d27ee5b22b54371bddec411514
+  - https://huntr.dev/bounties/9c312763-41a6-4fc7-827b-269eb86efcbc
+  - https://www.debian.org/security/2023/dsa-5411
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:10'
+      - 'debian:11'
+      - 'debian:9'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

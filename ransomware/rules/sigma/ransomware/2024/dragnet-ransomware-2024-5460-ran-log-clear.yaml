@@ -1,0 +1,36 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5460 — Event Log Clearing (play)'
+id: 67dea5b4-ed7f-57ce-9a9e-981689031d47
+status: experimental
+description: |
+  Detects event log clearing associated with play ransomware.
+  Incident: dragnet-ransomware-2024-5460
+  Associated with Play.
+  Ransomware victim claim by play: Adina Design; country: US; sector: Not Found
+  First observed: 2024-08-07.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://k7kg3jqxang3wh7hnmaiokchk7qoebupfgoik6rha6mjpzwupwtj25yd.onion/topic.php?id=rrn9JQ1NVe0fMM
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+  - dragnet.actor.play
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

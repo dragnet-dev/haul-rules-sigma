@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-4060 — Ransomware C2 Communication'
+id: 7fdbca51-a8fb-5806-aacd-7224ff27e486
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-4060
+  Ransomware victim claim by lynx: Woodport Doors; country: US; sector: Manufacturing
+  First observed: 2024-11-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lynxblog.net/leaks/6786469005a779c3d3d2baf2
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lynxblog.net/leaks/6786469005a779c3d3d2baf2'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

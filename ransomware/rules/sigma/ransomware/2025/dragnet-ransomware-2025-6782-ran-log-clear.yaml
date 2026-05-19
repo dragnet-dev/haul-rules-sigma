@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6782 — Event Log Clearing (interlock)'
+id: ed96fb14-c3bd-54ff-a8b0-01723abfb469
+status: experimental
+description: |
+  Detects event log clearing associated with interlock ransomware.
+  Incident: dragnet-ransomware-2025-6782
+  Ransomware victim claim by interlock: Maki Building Centers; country: US; sector: Construction
+  First observed: 2025-10-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://u2q76zahlrpgvktr3i2j6o2emzcre67et2kvz43kj2gbrhokc2othqyd.onion/index.php?p=
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

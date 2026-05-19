@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3416 — Event Log Clearing (blacklock)'
+id: a526f599-d79a-5435-9691-0b6880bd365c
+status: experimental
+description: |
+  Detects event log clearing associated with blacklock ransomware.
+  Incident: dragnet-ransomware-2024-3416
+  Ransomware victim claim by blacklock: The PHOENIX; country: US; sector: Business Services
+  First observed: 2024-11-18.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://zdkexsh2e7yihw5uhg5hpsgq3dois2m5je7lzfagij2y6iw5ptl35gyd.onion/Data_Download/PHXCMP.com
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

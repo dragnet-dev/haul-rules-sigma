@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2026-2521 — Ransomware C2 Communication'
+id: 37417842-e37e-57d7-9f97-4726eb6807e8
+status: stable
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2026-2521
+  Ransomware victim claim by exitium: Gastroenterology & Hepatology of CNY; country: US; sector: Healthcare
+  First observed: 2026-04-14.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://m3ksukzn2glzfdvlusohril7n3iyk4z4fudf6mm22lwhpbpt5aiee5qd.onion#Gastroenterology%20%26%20Hepatology%20of%20CNY
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://m3ksukzn2glzfdvlusohril7n3iyk4z4fudf6mm22lwhpbpt5aiee5qd.onion#Gastroenterology%20%26%20Hepatology%20of%20CNY'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

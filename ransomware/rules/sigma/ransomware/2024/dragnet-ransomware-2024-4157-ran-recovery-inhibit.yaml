@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-4157 — Recovery Inhibition (werewolves)'
+id: dc2c2a4b-dd8c-50ce-9b8c-fa4baf04ccb4
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with werewolves ransomware.
+  Incident: dragnet-ransomware-2024-4157
+  Ransomware victim claim by werewolves: davidsbridal.com; country: US; sector: Business Services
+  First observed: 2024-02-14.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://weerwolven.biz/en/solve.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-4181 — Event Log Clearing (trinity)'
+id: 1ba2d5a7-9ec8-54c7-b769-885addcca02a
+status: experimental
+description: |
+  Detects event log clearing associated with trinity ransomware.
+  Incident: dragnet-ransomware-2024-4181
+  Ransomware victim claim by trinity: Barnes & Cohen; country: US; sector: Business Services
+  First observed: 2024-10-03.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://txtggyng5euqkyzl2knbejwpm4rlq575jn2egqldu27osbqytrj6ruyd.onion/articles/articles/12
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

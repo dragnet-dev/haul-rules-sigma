@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-1753 — Recovery Inhibition (RunSomeWares)'
+id: bf9bcf9a-f726-5840-afb9-7408ac21a7d8
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with RunSomeWares ransomware.
+  Incident: dragnet-ransomware-2024-1753
+  Ransomware victim claim by RunSomeWares: Gilbert; country: US; sector: Transportation/Logistics
+  First observed: 2024-06-22.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://oow7rehrxlzpy6vh3hezl2khstkpa6s7wx3iit74tr6xbjibupld5iad.onion/glbrt/gilbert.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0740 — Mass File Rename (dispossessor)'
+id: f9ed56e7-ace0-5fb6-b3aa-f5036260558e
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by dispossessor.
+  Incident: dragnet-ransomware-2021-0740
+  Ransomware victim claim by dispossessor: ricohacumen.com; sector: Technology
+  First observed: 2021-08-13.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://dispossessor.com/blogs/217
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

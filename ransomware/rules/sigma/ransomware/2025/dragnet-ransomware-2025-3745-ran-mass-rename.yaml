@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3745 — Mass File Rename (kazu)'
+id: c36f895d-d38c-5db2-941c-0ec140bc8402
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by kazu.
+  Incident: dragnet-ransomware-2025-3745
+  Ransomware victim claim by kazu: National Civil Service Commission of Colombia; country: CO; sector: Public Sector
+  First observed: 2025-11-10.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://6czlbd2jfiy6765fbnbnzuwuqocg57ebvp3tbm35kib425k4qnmiiiqd.onion/ransom.html#National
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

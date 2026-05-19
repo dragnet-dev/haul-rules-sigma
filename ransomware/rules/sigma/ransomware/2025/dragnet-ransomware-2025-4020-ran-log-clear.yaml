@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4020 — Event Log Clearing (akira)'
+id: b49eb499-698f-5970-bd44-1de2153f05f1
+status: deprecated
+description: |
+  Detects event log clearing associated with akira ransomware.
+  Incident: dragnet-ransomware-2025-4020
+  Associated with Akira.
+  Ransomware victim claim by akira: Tufton Capital Management; country: US; sector: Financial Services
+  First observed: 2025-06-16.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+  - dragnet.actor.akira
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

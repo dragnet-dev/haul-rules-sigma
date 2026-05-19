@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2466 — Recovery Inhibition (thegentlemen)'
+id: 40d21247-0c11-5a96-969d-c81a1e118f2b
+status: test
+description: |
+  Detects boot/recovery disabling associated with thegentlemen ransomware.
+  Incident: dragnet-ransomware-2025-2466
+  Ransomware victim claim by thegentlemen: Solus Tecnologia em Sistemas LTDA; country: BR; sector: Technology
+  First observed: 2025-12-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://tezwsse5czllksjb7cwp65rvnk4oobmzti2znn42i43bjdfd2prqqkad.onion
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

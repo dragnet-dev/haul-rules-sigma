@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0059 — Recovery Inhibition (netwalker)'
+id: 7be22d76-c693-5fbc-998a-4d6e9d6f1ce4
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with netwalker ransomware.
+  Incident: dragnet-ransomware-2020-0059
+  Ransomware victim claim by netwalker: Entrust Energy; country: US; sector: Energy
+  First observed: 2020-08-05.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

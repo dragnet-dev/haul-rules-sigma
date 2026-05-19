@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7822 — Recovery Inhibition (nightspire)'
+id: a2987e1d-c395-5510-b668-f46f9c884198
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with nightspire ransomware.
+  Incident: dragnet-ransomware-2025-7822
+  Ransomware victim claim by nightspire: romar industrial company limited; country: HK; sector: Manufacturing
+  First observed: 2025-10-26.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

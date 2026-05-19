@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2818 — Recovery Inhibition (ransomhouse)'
+id: e8f6ef79-ef1e-5642-95d9-aec9fb88edb8
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with ransomhouse ransomware.
+  Incident: dragnet-ransomware-2024-2818
+  Ransomware victim claim by ransomhouse: Hawbaker Engineering; country: US; sector: Business Services
+  First observed: 2024-01-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://zohlm7ahjwegcedoz7lrdrti7bvpofymcayotp744qhx6gjmxbuo2yid.onion/r/fe79a409f5e1b6d12e8d090ce8aea67958930239
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

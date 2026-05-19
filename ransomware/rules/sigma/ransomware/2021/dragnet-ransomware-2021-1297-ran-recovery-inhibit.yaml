@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1297 — Recovery Inhibition (ransomexx)'
+id: 9f98c867-df24-53eb-9002-b905b13cab3b
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with ransomexx ransomware.
+  Incident: dragnet-ransomware-2021-1297
+  Ransomware victim claim by ransomexx: Ruwac; sector: Manufacturing
+  First observed: 2021-12-06.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

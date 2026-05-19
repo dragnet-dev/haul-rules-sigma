@@ -1,0 +1,34 @@
+title: 'Dragnet [Container]: dragnet-container-2026-1772 — Vulnerable Base Image Pull'
+id: 2f4a6c80-c4d4-52e7-8151-b48e52d4dc73
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-1772 (Tier 2, CVSS 9.8)
+  A single byte overflow in catalogue.c in X.Org libXfont 1.3.1 allows remote attackers to have unspecified impact.
+  First observed: 2026-05-13.
+references:
+  - https://access.redhat.com/security/cve/CVE-2007-5199
+  - https://bugzilla.suse.com/show_bug.cgi?id=327854
+  - https://cgit.freedesktop.org/xorg/lib/libXfont/commit/?id=5bf703700ee4a5d6eae20da07cb7a29369667aef
+  - https://nvd.nist.gov/vuln/detail/CVE-2007-5199
+  - https://www.cve.org/CVERecord?id=CVE-2007-5199
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

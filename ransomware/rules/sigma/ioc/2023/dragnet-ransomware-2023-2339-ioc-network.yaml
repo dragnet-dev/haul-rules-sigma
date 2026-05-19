@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-2339 — Ransomware C2 Communication'
+id: 8577344d-8790-5f2e-84fb-a06b8375fcff
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-2339
+  Ransomware victim claim by knight: Pontifica Universidad Católica de Chile; country: CL; sector: Education
+  First observed: 2023-10-31.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://knight3xppu263m7g4ag3xlit2qxpryjwueobh7vjdc3zrscqlfu3pqd.onion/bb4a98da-8376-4e1b-860b-35f9a65eb174/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://knight3xppu263m7g4ag3xlit2qxpryjwueobh7vjdc3zrscqlfu3pqd.onion/bb4a98da-8376-4e1b-860b-35f9a65eb174/'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

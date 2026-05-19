@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0473 — Mass File Rename (suncrypt)'
+id: 47ac059e-85f8-53cd-9fac-5c12b84b41bc
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by suncrypt.
+  Incident: dragnet-ransomware-2021-0473
+  Ransomware victim claim by suncrypt: Glen Dimplex Home Appliances; sector: Manufacturing
+  First observed: 2021-09-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

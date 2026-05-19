@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-2115 — Ransomware C2 Communication'
+id: ebbd8b4b-771a-5bf0-acf9-74f955111dff
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-2115
+  Ransomware victim claim by lockbit3: viseg.com; sector: Manufacturing
+  First observed: 2023-05-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lockbitapt72iw55njgnqpymggskg5yp75ry7rirtdg4m7i42artsbqd.onion/post/KTWm9LYAYXTXy09h645cef25c31ab
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lockbitapt72iw55njgnqpymggskg5yp75ry7rirtdg4m7i42artsbqd.onion/post/KTWm9LYAYXTXy09h645cef25c31ab'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4866 — Mass File Rename (spacebears)'
+id: e32a3e0e-368c-5301-bbd8-1d6855f6a4d7
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by spacebears.
+  Incident: dragnet-ransomware-2025-4866
+  Ransomware victim claim by spacebears: General Digital; country: US; sector: Technology
+  First observed: 2025-01-08.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://5butbkrljkaorg5maepuca25oma7eiwo6a2rlhvkblb4v6mf3ki2ovid.onion/companies/46/general-digital
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

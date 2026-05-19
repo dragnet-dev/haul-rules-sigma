@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4664 — Mass File Rename (donutleaks)'
+id: 1e2f9faa-3730-5667-b714-7c5d83b41ba9
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by donutleaks.
+  Incident: dragnet-ransomware-2023-4664
+  Ransomware victim claim by donutleaks: UnitedLex.com; sector: Business Services
+  First observed: 2023-04-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://sbc2zv2qnz5vubwtx3aobfpkeao6l4igjegm3xx7tk5suqhjkp5jxtqd.onion/unitedlex/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5944 — Recovery Inhibition (blacknevas)'
+id: 37289260-167c-5693-b116-be531e1581b0
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with blacknevas ransomware.
+  Incident: dragnet-ransomware-2025-5944
+  Ransomware victim claim by blacknevas: Trojan Construction & Holding Group; country: AE; sector: Construction
+  First observed: 2025-10-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ctyfftrjgtwdjzlgqh4avbd35sqrs6tde4oyam2ufbjch6oqpqtkdtid.onion/publications/details/ba673946-58b1-4203-a132-9d9f5a234490
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

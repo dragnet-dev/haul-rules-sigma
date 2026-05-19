@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-4606 — Mass File Rename (fog)'
+id: cadc8ac1-9e48-51c6-8ba4-d457e89568fc
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by fog.
+  Incident: dragnet-ransomware-2024-4606
+  Ransomware victim claim by fog: Verweij Elektrotechniek; sector: Business Services
+  First observed: 2024-07-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://xbkv2qey6u3gd3qxcojynrt4h5sgrhkar6whuo74wo63hijnn677jnyd.onion/posts/6686a9537b58c0b6d888847d/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

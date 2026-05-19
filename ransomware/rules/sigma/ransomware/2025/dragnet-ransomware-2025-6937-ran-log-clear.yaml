@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6937 — Event Log Clearing (nitrogen)'
+id: f637a7fd-47e6-5659-bb75-4d9bb04c4c83
+status: experimental
+description: |
+  Detects event log clearing associated with nitrogen ransomware.
+  Incident: dragnet-ransomware-2025-6937
+  Ransomware victim claim by nitrogen: Black Hills Bentonite; country: US; sector: Manufacturing
+  First observed: 2025-11-06.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nitrogenczslprh3xyw6lh5xyjvmsz7ciljoqxxknd7uymkfetfhgvqd.onion/posts/690c9ded13b9b6ae96964033
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

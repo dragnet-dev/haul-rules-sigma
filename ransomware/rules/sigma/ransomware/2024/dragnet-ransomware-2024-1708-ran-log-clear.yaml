@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-1708 — Event Log Clearing (funksec)'
+id: 3c82d5f5-9d85-5f8a-9390-ef4257b36263
+status: experimental
+description: |
+  Detects event log clearing associated with funksec ransomware.
+  Incident: dragnet-ransomware-2024-1708
+  Ransomware victim claim by funksec: dinamalar.com; country: IN; sector: Business Services
+  First observed: 2024-12-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://7ixfdvqb4eaju5lzj4gg76kwlrxg4ugqpuog5oqkkmgfyn33h527oyyd.onion/Breach47.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

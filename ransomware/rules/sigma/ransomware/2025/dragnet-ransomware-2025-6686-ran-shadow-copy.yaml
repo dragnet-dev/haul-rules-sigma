@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6686 — Shadow Copy Deletion (akira)'
+id: 02e93f97-9e1b-55c6-a8ed-1b29cc1df885
+status: deprecated
+description: |
+  Detects shadow copy deletion commands associated with akira ransomware.
+  Incident: dragnet-ransomware-2025-6686
+  Associated with Akira.
+  Ransomware victim claim by akira: Ste Group Key Corp; country: ES; sector: Healthcare
+  First observed: 2025-03-31.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+  - dragnet.actor.akira
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

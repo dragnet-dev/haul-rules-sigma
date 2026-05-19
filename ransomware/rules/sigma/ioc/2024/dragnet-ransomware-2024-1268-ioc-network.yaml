@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-1268 — Ransomware C2 Communication'
+id: b5046226-85c3-5e89-9902-ad006dff05a1
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-1268
+  Ransomware victim claim by sensayq: Vimer Industrie Grafiche Italiane; country: IT; sector: Manufacturing
+  First observed: 2024-06-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://159.69.60.54/r/LOcRx06Vf22jPmXvyIFRkXfJshnaosQPiM5am1qV4uC0CZmMghpcz6r0+5hBZoyQF5IwvZLpFN8st7DQxcxnkxNY0MzcmV5
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://159.69.60.54/r/LOcRx06Vf22jPmXvyIFRkXfJshnaosQPiM5am1qV4uC0CZmMghpcz6r0+5hBZoyQF5IwvZLpFN8st7DQxcxnkxNY0MzcmV5'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

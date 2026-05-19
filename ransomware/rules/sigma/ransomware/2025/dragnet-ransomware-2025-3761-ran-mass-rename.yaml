@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3761 — Mass File Rename (shinyhunters)'
+id: a1e961b3-7ad2-5a53-a2bc-8ae2b0536e38
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by shinyhunters.
+  Incident: dragnet-ransomware-2025-3761
+  Ransomware victim claim by shinyhunters: Republic Services; country: US; sector: Business Services
+  First observed: 2025-06-30.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://breachforums.hn//republicservices.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

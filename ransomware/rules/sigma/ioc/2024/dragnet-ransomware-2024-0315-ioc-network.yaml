@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-0315 — Ransomware C2 Communication'
+id: a5e44851-3855-58e7-9b04-09e96e90b1b1
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-0315
+  Ransomware victim claim by lockbit3: eif.org.na; country: NA; sector: Public Sector
+  First observed: 2024-02-02.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lockbit3g3ohd3katajf6zaehxz4h4cnhmz5t735zpltywhwpc6oy3id.onion/post/Bys0v66RRiUQg0D7663cc63c858e2
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lockbit3g3ohd3katajf6zaehxz4h4cnhmz5t735zpltywhwpc6oy3id.onion/post/Bys0v66RRiUQg0D7663cc63c858e2'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

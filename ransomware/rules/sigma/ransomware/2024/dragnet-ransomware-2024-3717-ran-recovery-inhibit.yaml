@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3717 — Recovery Inhibition (blackout)'
+id: a3b8b470-e33c-5ab9-a2dd-8896be6aeda1
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with blackout ransomware.
+  Incident: dragnet-ransomware-2024-3717
+  Ransomware victim claim by blackout: metal7.com; country: CA; sector: Manufacturing
+  First observed: 2024-02-26.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://black3gnkizshuynieigw6ejgpblb53mpasftzd6pydqpmq2vn2xf6yd.onion/post/c01a10e4-b940-4938-8280-b4adbc2c0697/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1470 — Recovery Inhibition (pysa)'
+id: c24b82e3-5bb0-52ff-8537-58f4b89d99f2
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with pysa ransomware.
+  Incident: dragnet-ransomware-2021-1470
+  Ransomware victim claim by pysa: InfoSync IT Solutions; sector: Technology
+  First observed: 2021-10-18.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

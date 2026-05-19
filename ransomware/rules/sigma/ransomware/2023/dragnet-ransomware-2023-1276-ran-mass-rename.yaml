@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1276 — Mass File Rename (clop)'
+id: 29002802-d2d2-50aa-bd8c-1321f8678373
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by clop.
+  Incident: dragnet-ransomware-2023-1276
+  Ransomware victim claim by clop: THECROSBYGROUP.COM; sector: Construction
+  First observed: 2023-03-23.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://santat7kpllt6iyvqbr7q4amdv6dzrh6paatvyrzl7ry3zm72zigf4ad.onion/thecrosbygroup-com
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

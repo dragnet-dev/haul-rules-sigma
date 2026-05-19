@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6378 — Mass File Rename (nightspire)'
+id: 007626b2-ce0e-5bdb-b8eb-88e3d3607ced
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by nightspire.
+  Incident: dragnet-ransomware-2025-6378
+  Ransomware victim claim by nightspire: Tuna Processors Phillipines, Inc; country: PH; sector: Agriculture and Food Production
+  First observed: 2025-07-06.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

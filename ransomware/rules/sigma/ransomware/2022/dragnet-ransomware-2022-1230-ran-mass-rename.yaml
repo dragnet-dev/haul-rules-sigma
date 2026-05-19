@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-1230 — Mass File Rename (onyx)'
+id: 502c7f8c-0d0c-5310-8652-aa9692791efe
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by onyx.
+  Incident: dragnet-ransomware-2022-1230
+  Ransomware victim claim by onyx: WAYAN NATURAL WEAR; sector: Consumer Services
+  First observed: 2022-07-26.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

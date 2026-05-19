@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5153 — Mass File Rename (blacknevas)'
+id: 03897871-72a2-59f6-8585-1d202c5eaec5
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by blacknevas.
+  Incident: dragnet-ransomware-2025-5153
+  Ransomware victim claim by blacknevas: Quality Data Service, Inc.; country: US; sector: Technology
+  First observed: 2025-05-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ctyfftrjgtwdjzlgqh4avbd35sqrs6tde4oyam2ufbjch6oqpqtkdtid.onion/publications/details/5adc2d41-1a26-4cba-a9e6-8dbd13bd64a4
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

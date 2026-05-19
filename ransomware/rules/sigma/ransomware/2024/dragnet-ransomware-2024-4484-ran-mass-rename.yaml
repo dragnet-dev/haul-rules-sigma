@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-4484 — Mass File Rename (flocker)'
+id: ed58579c-548a-5ddb-aa88-3cf87125df9c
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by flocker.
+  Incident: dragnet-ransomware-2024-4484
+  Ransomware victim claim by flocker: K****S CORP; sector: Business Services
+  First observed: 2024-12-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://flock4cvoeqm4c62gyohvmncx6ck2e7ugvyqgyxqtrumklhd5ptwzpqd.onion/?p=322
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-0679 — Ransomware C2 Communication'
+id: 0c6eed76-ea77-56f8-9d44-d4abd4e73de4
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-0679
+  Ransomware victim claim by nokoyawa: CANAROPA Inc; country: CA; sector: Manufacturing
+  First observed: 2023-07-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nokoleakb76znymx443veg4n6fytx6spck6pc7nkr4dvfuygpub6jsid.onion/leak/64b95e9df6451b16e053bd7c
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://nokoleakb76znymx443veg4n6fytx6spck6pc7nkr4dvfuygpub6jsid.onion/leak/64b95e9df6451b16e053bd7c'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

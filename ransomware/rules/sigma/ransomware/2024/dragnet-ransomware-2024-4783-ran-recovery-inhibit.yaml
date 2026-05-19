@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-4783 — Recovery Inhibition (dragonransomware)'
+id: 8c462d38-4b32-56bf-92e9-d4dc5da0ea1a
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with dragonransomware ransomware.
+  Incident: dragnet-ransomware-2024-4783
+  Ransomware victim claim by dragonransomware: shambhaviayurveda.in; country: IN; sector: Healthcare
+  First observed: 2024-10-31.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://t.me/DragonRansom/360
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

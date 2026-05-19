@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3847 — Event Log Clearing (killsec)'
+id: 7789d4cc-e81b-5f90-b058-ec18919e30f5
+status: experimental
+description: |
+  Detects event log clearing associated with killsec ransomware.
+  Incident: dragnet-ransomware-2024-3847
+  Ransomware victim claim by killsec: nfe.fazenda.gov.br; country: BR; sector: Public Sector
+  First observed: 2024-09-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://kill432ltnkqvaqntbalnsgojqqs2wz4lhnamrqjg66tq6fuvcztilyd.onion/post/4rkKjAfcP0Q8PinmhNcpa0oXL
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

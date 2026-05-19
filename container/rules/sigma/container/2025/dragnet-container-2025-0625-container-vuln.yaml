@@ -1,0 +1,46 @@
+title: 'Dragnet [Container]: dragnet-container-2025-0625 — Vulnerable Base Image Pull'
+id: 35a9c435-e5bf-5eaa-8015-02d6c70d005b
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2025-0625 (Tier 2, CVSS 9.6)
+  Insufficient data validation in Mojo in Google Chrome prior to 105.0.5195.102 allowed a remote attacker who had compromised the renderer process to potentially perform a sandbox escape via a crafted HTML page.
+  First observed: 2025-10-24.
+references:
+  - https://chromereleases.googleblog.com/2022/09/stable-channel-update-for-desktop.html
+  - https://crbug.com/1358134
+  - https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/T4NMJURTG5RO3TGD7ZMIQ6Z4ZZ3SAVYE/
+  - https://security.gentoo.org/glsa/202209-23
+  - https://www.cisa.gov/known-exploited-vulnerabilities-catalog
+  - https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2022-3075
+  - https://www.cve.org/CVERecord?id=CVE-2022-3075
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'alpine:3.16'
+      - 'alpine:3.17'
+      - 'alpine:3.18'
+      - 'alpine:3.19'
+      - 'alpine:3.20'
+      - 'alpine:3.21'
+      - 'alpine:3.22'
+      - 'alpine:3.23'
+      - 'debian:10'
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+      - 'ubuntu:18.04'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

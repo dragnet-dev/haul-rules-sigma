@@ -1,0 +1,36 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0384 — Event Log Clearing (play)'
+id: ed97c07a-1d98-5ba7-a2a1-ccde127104b9
+status: experimental
+description: |
+  Detects event log clearing associated with play ransomware.
+  Incident: dragnet-ransomware-2024-0384
+  Associated with Play.
+  Ransomware victim claim by play: Douglas County Libraries; country: US; sector: Education
+  First observed: 2024-01-03.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://k7kg3jqxang3wh7hnmaiokchk7qoebupfgoik6rha6mjpzwupwtj25yd.onion/topic.php?id=7CWFFVa6aP0FT
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+  - dragnet.actor.play
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

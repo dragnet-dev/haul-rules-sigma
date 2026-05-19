@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4530 — Mass File Rename (mallox)'
+id: a081ea54-e968-5dda-af3c-e3b9e319b852
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by mallox.
+  Incident: dragnet-ransomware-2023-4530
+  Ransomware victim claim by mallox: ADIVA CO. LTD; sector: Not Found
+  First observed: 2023-01-11.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

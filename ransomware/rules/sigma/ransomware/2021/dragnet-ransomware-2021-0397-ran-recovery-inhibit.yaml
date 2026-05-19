@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0397 — Recovery Inhibition (avoslocker)'
+id: f4f78f99-07df-5a9d-9b12-d39ffe5752ae
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with avoslocker ransomware.
+  Incident: dragnet-ransomware-2021-0397
+  Ransomware victim claim by avoslocker: Amphenol Canada; sector: Manufacturing
+  First observed: 2021-09-25.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-0843 — Event Log Clearing (sinobi)'
+id: b079d98e-238a-5eab-9181-4b692ae99422
+status: test
+description: |
+  Detects event log clearing associated with sinobi ransomware.
+  Incident: dragnet-ransomware-2026-0843
+  Ransomware victim claim by sinobi: Youngblood Tyler & Associates; country: US; sector: Construction
+  First observed: 2026-01-03.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://sinobi6ftrg27d6g4sjdt65malds6cfptlnjyw52rskakqjda6uvb7yd.onion/leaks/6959677e6387a4c9a2c342d3
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

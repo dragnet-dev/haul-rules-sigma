@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-3153 — Mass File Rename (pear)'
+id: 6eba9fe6-aa4d-53ee-9fa8-f427dea7b890
+status: stable
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by pear.
+  Incident: dragnet-ransomware-2026-3153
+  Ransomware victim claim by pear: Roger D. Mason II, P.A.; country: US; sector: Business Services
+  First observed: 2026-04-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://pearsmob5sn44ismokiusuld34pnfwi6ctgin3qbvonpoob4lh3rmtqd.onion/Companies/flautolawyer
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

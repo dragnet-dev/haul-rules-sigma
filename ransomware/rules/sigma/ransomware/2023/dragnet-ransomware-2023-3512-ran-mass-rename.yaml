@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-3512 — Mass File Rename (hunters)'
+id: 3c0b2260-2017-54b4-897f-7a0ccf5d2777
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by hunters.
+  Incident: dragnet-ransomware-2023-3512
+  Ransomware victim claim by hunters: DrilMaco; country: SG; sector: Energy
+  First observed: 2023-11-12.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://hunters55rdxciehoqzwv7vgyv6nt37tbwax2reroyzxhou7my5ejyid.onion/companies/8951018297
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

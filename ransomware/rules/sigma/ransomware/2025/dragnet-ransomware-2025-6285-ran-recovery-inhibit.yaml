@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6285 — Recovery Inhibition (tridentlocker)'
+id: 625615e1-39b4-5018-8567-10207d42c5b5
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with tridentlocker ransomware.
+  Incident: dragnet-ransomware-2025-6285
+  Ransomware victim claim by tridentlocker: LMG Holdings; country: US; sector: Manufacturing
+  First observed: 2025-11-10.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://tridentfrdy6jydwywfx4vx422vnto7pktao2gyx2qdcwjanogq454ad.onion/article/56f7928c-c522-4499-9292-4ccf5de6a25f
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

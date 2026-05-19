@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0833 — Mass File Rename (hunters)'
+id: 10c2815e-c10e-5eec-9f98-a924e5c2b217
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by hunters.
+  Incident: dragnet-ransomware-2021-0833
+  Ransomware victim claim by hunters: Rogers; country: CA; sector: Telecommunication
+  First observed: 2021-09-09.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://hunters55rdxciehoqzwv7vgyv6nt37tbwax2reroyzxhou7my5ejyid.onion/companies/3272044465
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

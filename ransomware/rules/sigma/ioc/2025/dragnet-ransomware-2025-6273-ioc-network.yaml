@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-6273 — Ransomware C2 Communication'
+id: 17feb7b5-c35d-50d4-8919-b543125671dd
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-6273
+  Ransomware victim claim by BrainCipher: soundtransit.org; country: US; sector: Transportation/Logistics
+  First observed: 2025-05-05.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://vkvsgl7lhipjirmz6j5ubp3w3bwvxgcdbpi3fsbqngfynetqtw4w5hyd.onion/s/7wrH+9MG3iFQTxjKt86nHCKtQvGxwQ7r9fD4cVH2RT7neqG4RLcprqopU0ovUsF4kVY+gmRz5s64q4ID0ZlZHMjZKbEdX
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://vkvsgl7lhipjirmz6j5ubp3w3bwvxgcdbpi3fsbqngfynetqtw4w5hyd.onion/s/7wrH+9MG3iFQTxjKt86nHCKtQvGxwQ7r9fD4cVH2RT7neqG4RLcprqopU0ovUsF4kVY+gmRz5s64q4ID0ZlZHMjZKbEdX'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

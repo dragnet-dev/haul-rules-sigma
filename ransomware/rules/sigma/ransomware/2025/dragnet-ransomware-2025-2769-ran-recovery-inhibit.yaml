@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2769 — Recovery Inhibition (GDLockerSec)'
+id: fa7bcf61-302e-5a2f-9613-3822d306a986
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with GDLockerSec ransomware.
+  Incident: dragnet-ransomware-2025-2769
+  Ransomware victim claim by GDLockerSec: www.shihka.com.hk; country: HK; sector: Not Found
+  First observed: 2025-01-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://igziys7pres4644kbrtakxfbrwkyld64nxk5prpkgtcexwrrjgtfjzyd.onion/264bddb7-1ae9-48d1-b5d1-370e4a308575/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3460 — Mass File Rename (termite)'
+id: 1531a9b5-c448-5e7f-b149-65f89e687768
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by termite.
+  Incident: dragnet-ransomware-2024-3460
+  Ransomware victim claim by termite: Blue Yonder; country: US; sector: Technology
+  First observed: 2024-12-06.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://termiteuslbumdge2zmfmfcsrvmvsfe4gvyudc5j6cdnisnhtftvokid.onion/post/674650cc80fb264e34eb9f03
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

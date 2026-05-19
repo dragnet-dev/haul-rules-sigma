@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7640 — Event Log Clearing (nova)'
+id: 6bd17db2-bdd5-51a9-9183-41e652d973e9
+status: experimental
+description: |
+  Detects event log clearing associated with nova ransomware.
+  Incident: dragnet-ransomware-2025-7640
+  Ransomware victim claim by nova: AV Services Barcelona; country: ES; sector: Business Services
+  First observed: 2025-09-25.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://novaxtychr6ohlc4zr5its73p6i7unpuhpwoodtzrg2y4w4seytatlid.onion/#
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

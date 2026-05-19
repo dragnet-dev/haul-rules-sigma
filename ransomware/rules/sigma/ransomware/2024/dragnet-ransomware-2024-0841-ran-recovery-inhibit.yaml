@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0841 — Recovery Inhibition (rhysida)'
+id: 96a9d8f3-72c4-5164-9a22-514767e75a87
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with rhysida ransomware.
+  Incident: dragnet-ransomware-2024-0841
+  Ransomware victim claim by rhysida: Oki Golf; country: US; sector: Hospitality and Tourism
+  First observed: 2024-04-12.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

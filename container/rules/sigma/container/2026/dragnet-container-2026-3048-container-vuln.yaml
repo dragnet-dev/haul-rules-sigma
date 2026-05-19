@@ -1,0 +1,54 @@
+title: 'Dragnet [Container]: dragnet-container-2026-3048 — Vulnerable Base Image Pull'
+id: 7eda0b8b-b3e0-55b1-ab46-4945e7400e1d
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-3048 (Tier 2, CVSS 9.8)
+  Arithmetic over induction variables in loops were not correctly checked for underflow or overflow. As a result, the compiler would allow for invalid indexing to occur at runtime, potentially leading to memory corruption.
+  First observed: 2026-04-16.
+references:
+  - https://nvd.nist.gov/vuln/detail/CVE-2026-27143
+  - https://access.redhat.com/security/cve/CVE-2026-27143
+  - https://bugzilla.redhat.com/show_bug.cgi?id=2456336
+  - https://bugzilla.redhat.com/show_bug.cgi?id=2456338
+  - https://bugzilla.redhat.com/show_bug.cgi?id=2456339
+  - https://bugzilla.redhat.com/show_bug.cgi?id=2456340
+  - https://bugzilla.redhat.com/show_bug.cgi?id=2456341
+  - https://bugzilla.redhat.com/show_bug.cgi?id=2456342
+  - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-27140
+  - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-27143
+  - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-27144
+  - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-32280
+  - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-32282
+  - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-32283
+  - https://errata.rockylinux.org/RLSA-2026:10219
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'alpine:3.23'
+      - 'alpine edge:'
+      - 'amazonlinux:2'
+      - 'amazonlinux:2023'
+      - 'chainguard:'
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+      - 'oraclelinux:8'
+      - 'oraclelinux:9'
+      - 'photon os:5.0'
+      - 'redhat/ubi9:'
+      - 'wolfi:'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

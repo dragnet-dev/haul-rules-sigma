@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1753 — Event Log Clearing (hive)'
+id: 10aa7141-4cfb-537c-b506-eb565e58aa99
+status: deprecated
+description: |
+  Detects event log clearing associated with hive ransomware.
+  Incident: dragnet-ransomware-2023-1753
+  Ransomware victim claim by hive: Consulate Health Care; sector: Healthcare
+  First observed: 2023-01-06.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

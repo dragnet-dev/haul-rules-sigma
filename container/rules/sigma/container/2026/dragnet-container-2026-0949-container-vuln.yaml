@@ -1,0 +1,39 @@
+title: 'Dragnet [Container]: dragnet-container-2026-0949 — Vulnerable Base Image Pull'
+id: 9c499c09-d39a-516a-a875-84c600b813e1
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-0949 (Tier 2, CVSS 10)
+  Use-after-free vulnerability in Adobe Flash Player before 13.0.0.244 and 14.x and 15.x before 15.0.0.152 on Windows and OS X and before 11.2.202.406 on Linux, Adobe AIR before 15.0.0.249 on Windows and OS X and before 15.0.0.252 on Android, Adobe AIR SDK before 15.0.0.249, and Adobe AIR SDK & Compiler before 15.0.0.249 allows attackers to execute arbitrary code via unspecified vectors.
+  First observed: 2026-05-06.
+references:
+  - http://helpx.adobe.com/security/products/flash-player/apsb14-21.html
+  - http://lists.opensuse.org/opensuse-security-announce/2014-09/msg00006.html
+  - http://lists.opensuse.org/opensuse-security-announce/2014-09/msg00016.html
+  - http://lists.opensuse.org/opensuse-security-announce/2014-09/msg00021.html
+  - http://secunia.com/advisories/61089
+  - http://security.gentoo.org/glsa/glsa-201409-05.xml
+  - http://www.securityfocus.com/bid/69707
+  - http://www.securitytracker.com/id/1030822
+  - https://access.redhat.com/security/cve/CVE-2014-0553
+  - https://exchange.xforce.ibmcloud.com/vulnerabilities/95823
+  - https://nvd.nist.gov/vuln/detail/CVE-2014-0553
+  - https://www.cve.org/CVERecord?id=CVE-2014-0553
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'ubuntu:12.04'
+      - 'ubuntu:14.04'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

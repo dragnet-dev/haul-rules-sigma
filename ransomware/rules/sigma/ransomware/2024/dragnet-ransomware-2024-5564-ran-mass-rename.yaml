@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5564 — Mass File Rename (blackbasta)'
+id: 449a7ca2-40dc-5f14-b9e5-119f9b973747
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by blackbasta.
+  Incident: dragnet-ransomware-2024-5564
+  Ransomware victim claim by blackbasta: true.co.uk; country: GB; sector: Technology
+  First observed: 2024-02-09.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://stniiomyjliimcgkvdszvgen3eaaoz55hreqqx6o77yvmpwt7gklffqd.onion/?id=true.co.uk
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

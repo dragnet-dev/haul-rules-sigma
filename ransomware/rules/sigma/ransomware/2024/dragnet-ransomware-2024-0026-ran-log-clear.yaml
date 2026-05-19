@@ -1,0 +1,36 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0026 — Event Log Clearing (cicada3301)'
+id: fde74b31-5fc6-5c38-9576-0af87bdfe84b
+status: experimental
+description: |
+  Detects event log clearing associated with cicada3301 ransomware.
+  Incident: dragnet-ransomware-2024-0026
+  Associated with menuPass.
+  Ransomware victim claim by cicada3301: Riley Pope & Laney; country: US; sector: Business Services
+  First observed: 2024-08-14.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://cicadabv7vicyvgz5khl7v2x5yygcgow7ryy6yppwmxii4eoobdaztqd.onion/7e106qyi61nf7uotif1e2hseny4zpwji
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+  - dragnet.actor.menupass
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2229 — Recovery Inhibition (blackbasta)'
+id: 03a7e900-0656-5068-8160-44513a8f4f96
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with blackbasta ransomware.
+  Incident: dragnet-ransomware-2024-2229
+  Ransomware victim claim by blackbasta: thompsoncreek.com; country: CA; sector: Business Services
+  First observed: 2024-06-10.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://stniiomyjliimcgkvdszvgen3eaaoz55hreqqx6o77yvmpwt7gklffqd.onion/?id=thompsoncreek.com
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0526 — Recovery Inhibition (darkleakmarket)'
+id: 89879bfd-2dfb-5db4-915a-7c6215523580
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with darkleakmarket ransomware.
+  Incident: dragnet-ransomware-2021-0526
+  Ransomware victim claim by darkleakmarket: 533 Million facebook Users Data; sector: Technology
+  First observed: 2021-09-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

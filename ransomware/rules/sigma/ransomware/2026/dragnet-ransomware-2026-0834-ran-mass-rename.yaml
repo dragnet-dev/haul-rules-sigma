@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-0834 — Mass File Rename (AiLock)'
+id: d50f5514-eb74-55a1-9ef3-5f78d38b2558
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by AiLock.
+  Incident: dragnet-ransomware-2026-0834
+  Ransomware victim claim by AiLock: Jazz Hipster; country: US; sector: Consumer Services
+  First observed: 2026-05-18.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

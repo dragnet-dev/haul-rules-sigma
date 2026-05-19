@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-0295 — Mass File Rename (onyx)'
+id: 395f8608-e5f3-54b6-9396-d80ce2aa1398
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by onyx.
+  Incident: dragnet-ransomware-2022-0295
+  Ransomware victim claim by onyx: Artistic Stairs & Railings; sector: Construction
+  First observed: 2022-07-26.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

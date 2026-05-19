@@ -1,0 +1,37 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2587 — Shadow Copy Deletion (redransomware)'
+id: 0ed8229e-67ee-5289-81fe-130c63adb882
+status: deprecated
+description: |
+  Detects shadow copy deletion commands associated with redransomware ransomware.
+  Incident: dragnet-ransomware-2024-2587
+  Ransomware victim claim by redransomware: Kutes.com; country: TR; sector: Construction
+  First observed: 2024-06-11.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

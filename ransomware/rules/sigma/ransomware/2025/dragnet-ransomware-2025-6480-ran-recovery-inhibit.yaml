@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6480 — Recovery Inhibition (safepay)'
+id: d2465900-09e3-585f-b14b-501b85c83d52
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with safepay ransomware.
+  Incident: dragnet-ransomware-2025-6480
+  Ransomware victim claim by safepay: constructiondprovost.com; country: CA; sector: Construction
+  First observed: 2025-10-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://safepaypfxntwixwjrlcscft433ggemlhgkkdupi2ynhtcmvdgubmoyd.onion/blog/post/constructiondprovostcom/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

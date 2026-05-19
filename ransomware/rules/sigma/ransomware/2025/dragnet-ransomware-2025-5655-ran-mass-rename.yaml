@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5655 — Mass File Rename (fog)'
+id: e73af077-582d-5b28-9a42-071aa1e79fba
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by fog.
+  Incident: dragnet-ransomware-2025-5655
+  Ransomware victim claim by fog: Buttery (butterycompany.com); country: US; sector: Consumer Services
+  First observed: 2025-01-14.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://xbkv2qey6u3gd3qxcojynrt4h5sgrhkar6whuo74wo63hijnn677jnyd.onion/posts/posts/67863e64e0c186faad4c05c0/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

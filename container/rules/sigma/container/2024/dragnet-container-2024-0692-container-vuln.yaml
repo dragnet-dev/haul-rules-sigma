@@ -1,0 +1,30 @@
+title: 'Dragnet [Container]: dragnet-container-2024-0692 — Vulnerable Base Image Pull'
+id: 66574b9c-f816-58ad-a374-290f15043c08
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-0692 (Tier 2, CVSS 9.8)
+  dpic 2021.04.10 has a use-after-free in thedeletestringbox() function in dpic.y. A different vulnerablility than CVE-2021-32421.
+  First observed: 2024-11-21.
+references:
+  - https://gitlab.com/aplevich/dpic/-/issues/10
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

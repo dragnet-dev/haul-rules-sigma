@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7664 — Recovery Inhibition (apos)'
+id: 928214ab-0602-50dd-8e08-be7194a17775
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with apos ransomware.
+  Incident: dragnet-ransomware-2025-7664
+  Ransomware victim claim by apos: RH; country: GB; sector: Consumer Services
+  First observed: 2025-04-14.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

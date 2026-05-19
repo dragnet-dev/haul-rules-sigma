@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2849 — Recovery Inhibition (zerotolerance)'
+id: 283db70d-f751-5b2a-84af-53d6c06d47f0
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with zerotolerance ransomware.
+  Incident: dragnet-ransomware-2024-2849
+  Ransomware victim claim by zerotolerance: Banco central argentina; country: AR; sector: Financial Services
+  First observed: 2024-05-05.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://zhuobnfsddn2myfxxdqtpxk367dqnntjf3kq7mrzdgienfxjyllq4rqd.onion/info?id=HjHA9TCVsdg9bS6bglFkWqLNJlstirxr3KnVhTkw5oonEOM--W1S8fYIFt7xwbbTDmiey3X42aMg7oXRueGj6rwCeO38CsDo
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

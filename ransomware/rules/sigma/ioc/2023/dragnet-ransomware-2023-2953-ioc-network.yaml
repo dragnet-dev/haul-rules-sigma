@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-2953 — Ransomware C2 Communication'
+id: e6ad446f-3860-5c7b-a8e1-3a2c75a91062
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-2953
+  Ransomware victim claim by rhysida: Fassi Gru S.p.A.; sector: Manufacturing
+  First observed: 2023-06-26.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://rhysidaeoxtkejwuheks3a7htk4zn3dfuynt5mqw6oawlcx6kcxjdeyd.onion/t9y3Z8qK3TAsulIoxxi7x8i0aNKzVGdb/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://rhysidaeoxtkejwuheks3a7htk4zn3dfuynt5mqw6oawlcx6kcxjdeyd.onion/t9y3Z8qK3TAsulIoxxi7x8i0aNKzVGdb/'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

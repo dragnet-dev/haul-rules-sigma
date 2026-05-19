@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-2248 — Ransomware C2 Communication'
+id: 5ad77ba4-3fcf-59e5-ab9d-20c3c9b0e65c
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-2248
+  Ransomware victim claim by snatch: Maldives Ports Limited; country: MV; sector: Transportation/Logistics
+  First observed: 2023-11-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://hl66646wtlp2naoqnhattngigjp5palgqmbwixepcjyq5i534acgqyad.onion/news.php?id=0864efc5-924a-45d3-9080-eb53d89f2be1
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://hl66646wtlp2naoqnhattngigjp5palgqmbwixepcjyq5i534acgqyad.onion/news.php?id=0864efc5-924a-45d3-9080-eb53d89f2be1'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3586 — Mass File Rename (dragonforce)'
+id: 13db1dd6-bc84-545f-a6b6-be326254b1cf
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by dragonforce.
+  Incident: dragnet-ransomware-2025-3586
+  Ransomware victim claim by dragonforce: Banco Guanabara; country: BR; sector: Financial Services
+  First observed: 2025-07-30.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://z3wqggtxft7id3ibr7srivv5gjof5fwg76slewnzwwakjuf3nlhukdid.onion/blog/?post_uuid=38d10bf3-62df-40f8-a8ec-478c57745626
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

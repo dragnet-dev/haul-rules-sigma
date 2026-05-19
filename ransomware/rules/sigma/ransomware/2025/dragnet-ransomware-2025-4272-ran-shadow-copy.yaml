@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4272 — Shadow Copy Deletion (interlock)'
+id: 8e33d745-65b1-5c28-ae99-15b4d69e22a5
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with interlock ransomware.
+  Incident: dragnet-ransomware-2025-4272
+  Ransomware victim claim by interlock: The Salvation Army; country: US; sector: Public Sector
+  First observed: 2025-05-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ihbpu7nworzao2klqeeahnz7wcuavltny3p2cmfkhe5tko3vl3zcowyd.onion/index.php?p=
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

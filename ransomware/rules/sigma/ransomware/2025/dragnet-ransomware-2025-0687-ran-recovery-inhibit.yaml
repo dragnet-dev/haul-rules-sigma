@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0687 — Recovery Inhibition (spacebears)'
+id: 706359ce-9f3f-58d0-86e2-e348ad032720
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with spacebears ransomware.
+  Incident: dragnet-ransomware-2025-0687
+  Ransomware victim claim by spacebears: Anderson Engineering; country: US; sector: Construction
+  First observed: 2025-11-09.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://5butbkrljkaorg5maepuca25oma7eiwo6a2rlhvkblb4v6mf3ki2ovid.onion/companies/106/anderson-engineering
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

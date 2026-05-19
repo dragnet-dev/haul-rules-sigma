@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-3503 — Recovery Inhibition (8base)'
+id: a5825daa-5cdf-5e63-be7f-99dcaceced62
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with 8base ransomware.
+  Incident: dragnet-ransomware-2023-3503
+  Ransomware victim claim by 8base: REUS MOBILITAT I SERVEIS; sector: Transportation/Logistics
+  First observed: 2023-12-13.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://xb6q2aggycmlcrjtbjendcnnwpmmwbosqaugxsqb4nx6cmod3emy7sad.onion/company/7890323
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

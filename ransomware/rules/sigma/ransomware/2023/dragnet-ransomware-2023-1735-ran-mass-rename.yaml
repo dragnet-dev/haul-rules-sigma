@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1735 — Mass File Rename (knight)'
+id: 40dca7c2-1489-55f5-aed0-5f4c277d93d0
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by knight.
+  Incident: dragnet-ransomware-2023-1735
+  Ransomware victim claim by knight: Dreyfuss Williams & Associates Co., LPA; country: US; sector: Business Services
+  First observed: 2023-11-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://knight3xppu263m7g4ag3xlit2qxpryjwueobh7vjdc3zrscqlfu3pqd.onion/69d945d3-99e1-4585-9ac9-60515681d915/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

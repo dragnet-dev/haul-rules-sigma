@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2621 — Recovery Inhibition (clop)'
+id: 5b637673-a303-56b8-b080-e84f54d7b416
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with clop ransomware.
+  Incident: dragnet-ransomware-2025-2621
+  Ransomware victim claim by clop: WERTEX.COM; country: PL; sector: Business Services
+  First observed: 2025-02-27.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

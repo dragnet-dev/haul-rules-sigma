@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2770 — Mass File Rename (0mega)'
+id: 7556f04e-23c4-50df-b6e2-2d5b42d5b46e
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by 0mega.
+  Incident: dragnet-ransomware-2022-2770
+  Ransomware victim claim by 0mega: Maxey Moverley; sector: Business Services
+  First observed: 2022-07-14.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

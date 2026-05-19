@@ -1,0 +1,41 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5330 — Shadow Copy Deletion (play)'
+id: 33d0ed1a-5110-52d0-9e0e-37dae25e7559
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with play ransomware.
+  Incident: dragnet-ransomware-2024-5330
+  Associated with Play.
+  Ransomware victim claim by play: Guy's Floor Service; country: US; sector: Business Services
+  First observed: 2024-03-18.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://k7kg3jqxang3wh7hnmaiokchk7qoebupfgoik6rha6mjpzwupwtj25yd.onion/topic.php?id=TTouXa7IJ7Qwkf
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+  - dragnet.actor.play
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

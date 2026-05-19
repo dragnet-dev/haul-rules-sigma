@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-4272 — Ransomware C2 Communication'
+id: de4f365a-61d7-59fe-85fd-ef103f915a87
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-4272
+  Ransomware victim claim by interlock: The Salvation Army; country: US; sector: Public Sector
+  First observed: 2025-05-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ihbpu7nworzao2klqeeahnz7wcuavltny3p2cmfkhe5tko3vl3zcowyd.onion/index.php?p=
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://ihbpu7nworzao2klqeeahnz7wcuavltny3p2cmfkhe5tko3vl3zcowyd.onion/index.php?p='
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

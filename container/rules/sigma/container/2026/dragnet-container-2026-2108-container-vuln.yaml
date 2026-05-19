@@ -1,0 +1,31 @@
+title: 'Dragnet [Container]: dragnet-container-2026-2108 — Vulnerable Base Image Pull'
+id: 2f827c1e-8422-57ea-93e5-ba387121c850
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-2108 (Tier 2, CVSS 9.3)
+  The VC-1 decoding functionality in FFmpeg before 0.5.4, as used in MPlayer and other products, does not properly restrict read operations, which allows remote attackers to have an unspecified impact via a crafted VC-1 file, a related issue to CVE-2011-0723.
+  First observed: 2026-04-29.
+references:
+  - http://ffmpeg.mplayerhq.hu/
+  - http://www.securityfocus.com/bid/47956
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

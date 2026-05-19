@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0163 — Recovery Inhibition (netwalker)'
+id: 1340dea5-b9a8-5070-8185-bfba19b551e2
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with netwalker ransomware.
+  Incident: dragnet-ransomware-2020-0163
+  Ransomware victim claim by netwalker: CSAT Solutions; sector: Technology
+  First observed: 2020-12-01.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

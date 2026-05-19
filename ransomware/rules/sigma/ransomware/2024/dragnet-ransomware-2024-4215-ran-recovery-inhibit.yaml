@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-4215 — Recovery Inhibition (stormous)'
+id: 68b9743e-2d7c-5ceb-974c-0f765aeda810
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with stormous ransomware.
+  Incident: dragnet-ransomware-2024-4215
+  Ransomware victim claim by stormous: jatelindo; country: ID; sector: Business Services
+  First observed: 2024-09-11.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

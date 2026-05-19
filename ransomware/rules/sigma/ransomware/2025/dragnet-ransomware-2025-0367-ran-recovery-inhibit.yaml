@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0367 — Recovery Inhibition (nova)'
+id: 36b5c869-daa1-5a4e-819b-4c782e023784
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with nova ransomware.
+  Incident: dragnet-ransomware-2025-0367
+  Ransomware victim claim by nova: Eurofins Scientific; country: NL; sector: Healthcare
+  First observed: 2025-07-18.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://leak7y2247fj7dbb35rpfyxuyaqtwbshiwxp6h35ttzlhrxmhvi4fead.onioneurofins
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

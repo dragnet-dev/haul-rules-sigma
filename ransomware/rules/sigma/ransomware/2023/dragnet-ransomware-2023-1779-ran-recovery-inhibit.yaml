@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1779 — Recovery Inhibition (raznatovic)'
+id: 36348c40-eaa0-5ede-8197-65b035a9ae7d
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with raznatovic ransomware.
+  Incident: dragnet-ransomware-2023-1779
+  Ransomware victim claim by raznatovic: TechKids aka MindX; sector: Education
+  First observed: 2023-12-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://ransomed.vc/samo/TechKids.txt
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

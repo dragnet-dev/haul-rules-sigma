@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5180 — Recovery Inhibition (sarcoma)'
+id: 1f4d9b9a-8890-5382-8d61-b010efabfde7
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with sarcoma ransomware.
+  Incident: dragnet-ransomware-2025-5180
+  Ransomware victim claim by sarcoma: APH Svenska; country: SE; sector: Consumer Services
+  First observed: 2025-06-04.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

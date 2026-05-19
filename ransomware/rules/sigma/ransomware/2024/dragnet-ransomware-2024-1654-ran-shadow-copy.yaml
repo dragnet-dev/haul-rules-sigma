@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-1654 — Shadow Copy Deletion (termite)'
+id: 548e462d-6109-5f86-a4c6-ac8abb5ad1e1
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with termite ransomware.
+  Incident: dragnet-ransomware-2024-1654
+  Ransomware victim claim by termite: Conseil scolaire Viamonde; country: CA; sector: Education
+  First observed: 2024-11-14.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://termiteuslbumdge2zmfmfcsrvmvsfe4gvyudc5j6cdnisnhtftvokid.onion/post/673660dc33cbcfa7e47702f6
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

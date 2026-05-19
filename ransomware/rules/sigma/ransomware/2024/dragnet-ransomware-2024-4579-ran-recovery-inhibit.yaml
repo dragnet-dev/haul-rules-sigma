@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-4579 — Recovery Inhibition (hunters)'
+id: 7904483b-4ab0-5793-aaba-e6136a6a55c9
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with hunters ransomware.
+  Incident: dragnet-ransomware-2024-4579
+  Ransomware victim claim by hunters: Wintergreen Learning Materials; country: CA; sector: Education
+  First observed: 2024-11-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://hunters55rdxciehoqzwv7vgyv6nt37tbwax2reroyzxhou7my5ejyid.onion/companies/9852211868
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

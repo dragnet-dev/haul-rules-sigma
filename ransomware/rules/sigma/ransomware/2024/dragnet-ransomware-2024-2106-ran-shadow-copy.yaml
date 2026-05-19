@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2106 — Shadow Copy Deletion (funksec)'
+id: 51cc76a2-39b8-5cd8-957c-82b3f7046d97
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with funksec ransomware.
+  Incident: dragnet-ransomware-2024-2106
+  Ransomware victim claim by funksec: dcd.gov.ae; country: AE; sector: Public Sector
+  First observed: 2024-12-30.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://7ixfdvqb4eaju5lzj4gg76kwlrxg4ugqpuog5oqkkmgfyn33h527oyyd.onion/sell29.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

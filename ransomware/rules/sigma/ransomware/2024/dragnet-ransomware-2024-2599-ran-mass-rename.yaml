@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2599 — Mass File Rename (blacksuit)'
+id: 495fe1d6-1fd5-5fb0-a7d2-c5783e3718b1
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by blacksuit.
+  Incident: dragnet-ransomware-2024-2599
+  Ransomware victim claim by blacksuit: Reward Hospitality from EFC Group; country: AU; sector: Hospitality and Tourism
+  First observed: 2024-07-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?id=y3jJXKOVLYIRfNIb
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

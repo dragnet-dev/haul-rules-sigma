@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-0073 — Recovery Inhibition (vicesociety)'
+id: e6678c7b-b562-51ba-8736-14627cac4ec1
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with vicesociety ransomware.
+  Incident: dragnet-ransomware-2022-0073
+  Ransomware victim claim by vicesociety: San Luis Coastal Unified; sector: Education
+  First observed: 2022-07-19.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

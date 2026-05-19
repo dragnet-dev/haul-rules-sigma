@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0121 — Recovery Inhibition (egregor)'
+id: 34a365d4-8522-525b-8e66-27925e7f53a5
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with egregor ransomware.
+  Incident: dragnet-ransomware-2020-0121
+  Ransomware victim claim by egregor: TransLink (Metro Vancouver transit system); country: CA; sector: Transportation/Logistics
+  First observed: 2020-12-01.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

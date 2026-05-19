@@ -1,0 +1,33 @@
+title: 'Dragnet [Container]: dragnet-container-2026-0207 — Vulnerable Base Image Pull'
+id: 9eb9c6b9-c704-5dbf-9e1e-16710db35678
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-0207 (Tier 2, CVSS 10)
+  Multiple buffer overflows in Advanced Maryland Automatic Network Disk Archiver (AMANDA) 2.3.0.4 allow (1) remote attackers to execute arbitrary code via long commands to the amindexd daemon, or certain local users to execute arbitrary code via long command line arguments to the programs (2) amcheck, (3) amgetidx, (4) amtrmidx, (5) createindex-dump, or (6) createindex-gnutar.
+  First observed: 2026-04-16.
+references:
+  - http://online.securityfocus.com/archive/1/274215
+  - http://www.iss.net/security_center/static/9181.php
+  - http://www.iss.net/security_center/static/9182.php
+  - http://www.securityfocus.com/bid/4836
+  - http://www.securityfocus.com/bid/4840
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

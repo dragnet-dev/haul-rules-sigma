@@ -1,0 +1,36 @@
+title: 'Dragnet [Container]: dragnet-container-2026-0397 — Vulnerable Base Image Pull'
+id: c8ad9aea-37a1-5ea9-9c8c-a5927ef9461f
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-0397 (Tier 2, CVSS 9.8)
+  Associated with Earth Lusca.
+  Google gRPC before 2017-02-22 has an out-of-bounds write related to the gpr_free function in core/lib/support/alloc.c.
+  First observed: 2026-05-13.
+references:
+  - http://www.securityfocus.com/bid/97694
+  - https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=655
+  - https://github.com/grpc/grpc/pull/9833
+  - https://www.cve.org/CVERecord?id=CVE-2017-7861
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+  - dragnet.actor.earth-lusca
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+      - 'ubuntu:16.04-ESM'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

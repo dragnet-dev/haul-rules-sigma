@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2676 — Mass File Rename (lockbit3)'
+id: cfbbd6db-cb52-582b-bb59-5ceab17b2caf
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by lockbit3.
+  Incident: dragnet-ransomware-2024-2676
+  Ransomware victim claim by lockbit3: federalreserve.gov; country: US; sector: Financial Services
+  First observed: 2024-04-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ofj3oaltwaf67qtd7oafk5r44upm6wkc2jurpsdyih2c7mbrbshuwayd.onion/post/7uTtXnLiP4aeqMqj6678851e3c73e
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3553 — Event Log Clearing (blacksuit)'
+id: c0195964-4321-58ba-a105-0af00fcdc38d
+status: experimental
+description: |
+  Detects event log clearing associated with blacksuit ransomware.
+  Incident: dragnet-ransomware-2024-3553
+  Ransomware victim claim by blacksuit: Biggs Cardosa Associates; country: US; sector: Business Services
+  First observed: 2024-04-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?id=QPijEyAXPyp8gkY1
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

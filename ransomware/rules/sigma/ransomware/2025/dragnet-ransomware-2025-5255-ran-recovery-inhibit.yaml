@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5255 — Recovery Inhibition (akira)'
+id: c8aa64ac-585a-5af5-919a-3afb3ac97e84
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with akira ransomware.
+  Incident: dragnet-ransomware-2025-5255
+  Associated with Akira.
+  Ransomware victim claim by akira: Nickman, DHK Architects, Profondia, Talbot & Associates, Fishbowl Solutions.; country: US; sector: Healthcare
+  First observed: 2025-12-08.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+  - dragnet.actor.akira
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

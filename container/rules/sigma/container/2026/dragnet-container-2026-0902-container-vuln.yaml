@@ -1,0 +1,35 @@
+title: 'Dragnet [Container]: dragnet-container-2026-0902 — Vulnerable Base Image Pull'
+id: 821f0767-e287-5c78-800d-5dd119570dc3
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-0902 (Tier 2, CVSS 10)
+  Unspecified vulnerability in wp-includes/js/swfobject.js in WordPress before 3.3.2 has unknown impact and attack vectors.
+  First observed: 2026-04-29.
+references:
+  - http://core.trac.wordpress.org/changeset/20499/branches/3.3/wp-includes/js/swfobject.js
+  - http://osvdb.org/81460
+  - http://secunia.com/advisories/49138
+  - http://wordpress.org/news/2012/04/wordpress-3-3-2/
+  - http://www.debian.org/security/2012/dsa-2470
+  - http://www.securityfocus.com/bid/53192
+  - https://exchange.xforce.ibmcloud.com/vulnerabilities/75209
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

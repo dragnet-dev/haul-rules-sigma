@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3661 — Recovery Inhibition (embargo)'
+id: 7d4fac7e-420d-55b5-bff4-c180f3601380
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with embargo ransomware.
+  Incident: dragnet-ransomware-2024-3661
+  Ransomware victim claim by embargo: dmedelivers.com; country: US; sector: Healthcare
+  First observed: 2024-06-06.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://embargobe3n5okxyzqphpmk3moinoap2snz5k6765mvtkk7hhi544jid.onion/#/post/20
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

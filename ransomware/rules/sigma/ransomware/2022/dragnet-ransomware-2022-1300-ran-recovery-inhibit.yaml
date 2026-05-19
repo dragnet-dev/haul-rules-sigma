@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-1300 — Recovery Inhibition (conti)'
+id: 56e1d89f-1d40-5f7b-98e2-cceca03643c2
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with conti ransomware.
+  Incident: dragnet-ransomware-2022-1300
+  Ransomware victim claim by conti: Apollo; sector: Not Found
+  First observed: 2022-02-24.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

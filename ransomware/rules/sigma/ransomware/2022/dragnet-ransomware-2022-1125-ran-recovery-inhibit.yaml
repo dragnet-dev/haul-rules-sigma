@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-1125 — Recovery Inhibition (bianlian)'
+id: b3d0b740-ae91-5ad3-b7b2-087a7e129154
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with bianlian ransomware.
+  Incident: dragnet-ransomware-2022-1125
+  Ransomware victim claim by bianlian: Bartelt; sector: Manufacturing
+  First observed: 2022-10-04.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

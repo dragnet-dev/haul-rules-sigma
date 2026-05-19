@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-3535 — Recovery Inhibition (siegedsec)'
+id: d9f35f75-49b6-59d2-8cc7-b867a3863c70
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with siegedsec ransomware.
+  Incident: dragnet-ransomware-2023-3535
+  Ransomware victim claim by siegedsec: NATO Leak - 2; sector: Public Sector
+  First observed: 2023-11-26.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nv5p2mmpctvyqdyyi5zwh4gnifq2uxdx4etvnmaheqlrw6ordrjwxryd.onion/post/3.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

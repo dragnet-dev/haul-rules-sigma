@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-3297 — Recovery Inhibition (blackbyte)'
+id: 1fbb083e-d6bb-5462-85ef-4bcdb5f74e32
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with blackbyte ransomware.
+  Incident: dragnet-ransomware-2023-3297
+  Associated with BlackByte.
+  Ransomware victim claim by blackbyte: Cementos Bio-Bio; country: CL; sector: Manufacturing
+  First observed: 2023-04-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+  - dragnet.actor.blackbyte
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

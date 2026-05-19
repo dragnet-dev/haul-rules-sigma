@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5367 — Recovery Inhibition (killsec)'
+id: 289ac6de-f6b2-5ef2-8bef-426a6a5c842a
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with killsec ransomware.
+  Incident: dragnet-ransomware-2025-5367
+  Ransomware victim claim by killsec: Innovative Surfaces; sector: Not Found
+  First observed: 2025-03-22.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ks5424y3wpr5zlug5c7i6svvxweinhbdcqcfnptkfcutrncfazzgz5id.onion/posts.php?pid=6ogbl8hmgskAZdzd3NGGcTqH
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

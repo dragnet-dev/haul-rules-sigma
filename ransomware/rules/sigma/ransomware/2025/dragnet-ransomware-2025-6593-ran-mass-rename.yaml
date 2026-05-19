@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6593 — Mass File Rename (everest)'
+id: b7bb0f2e-3545-5055-990e-c7ea32e5ee73
+status: test
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by everest.
+  Incident: dragnet-ransomware-2025-6593
+  Ransomware victim claim by everest: ASUS; country: TW; sector: Technology
+  First observed: 2025-12-02.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ransomocmou6mnbquqz44ewosbkjk3o5qjsl3orawojexfook2j7esad.onion/news/asus/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-1436 — Ransomware C2 Communication'
+id: 88c4b713-5d91-530c-827a-536116279d76
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-1436
+  Ransomware victim claim by karakurt: La Red Health Center; sector: Healthcare
+  First observed: 2023-04-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://3f7nxkjway3d223j27lyad7v5cgmyaifesycvmwq7i7cbs23lb6llryd.onion/companies/40f116fc-bf67-4f7d-99b5-f10e848f04cd
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'https://3f7nxkjway3d223j27lyad7v5cgmyaifesycvmwq7i7cbs23lb6llryd.onion/companies/40f116fc-bf67-4f7d-99b5-f10e848f04cd'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

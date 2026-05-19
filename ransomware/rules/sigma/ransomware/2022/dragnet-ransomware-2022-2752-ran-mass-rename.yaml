@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2752 — Mass File Rename (projectrelic)'
+id: 8f147d3c-9a2d-51a2-8c9c-96b7def1924c
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by projectrelic.
+  Incident: dragnet-ransomware-2022-2752
+  Ransomware victim claim by projectrelic: BroadMed Holding; sector: Healthcare
+  First observed: 2022-11-11.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0912 — Mass File Rename (termite)'
+id: db79c9f7-7e8c-5031-86fe-0e2062084fc8
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by termite.
+  Incident: dragnet-ransomware-2024-0912
+  Ransomware victim claim by termite: Oman Oil; country: OM; sector: Energy
+  First observed: 2024-11-12.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://termiteuslbumdge2zmfmfcsrvmvsfe4gvyudc5j6cdnisnhtftvokid.onion/post/6733e9f333cbcfa7e4770287
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

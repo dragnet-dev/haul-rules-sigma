@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2638 — Event Log Clearing (blackbasta)'
+id: 0ed595cb-b8a8-5dbc-bd2d-cf7b8ed68f56
+status: experimental
+description: |
+  Detects event log clearing associated with blackbasta ransomware.
+  Incident: dragnet-ransomware-2024-2638
+  Ransomware victim claim by blackbasta: active-pcb.com; country: GB; sector: Manufacturing
+  First observed: 2024-04-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://stniiomyjliimcgkvdszvgen3eaaoz55hreqqx6o77yvmpwt7gklffqd.onion/?id=active-pcb.com
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-2248 — Mass File Rename (snatch)'
+id: e798ce8e-d0e5-5868-a8a5-a684c2691816
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by snatch.
+  Incident: dragnet-ransomware-2023-2248
+  Ransomware victim claim by snatch: Maldives Ports Limited; country: MV; sector: Transportation/Logistics
+  First observed: 2023-11-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://hl66646wtlp2naoqnhattngigjp5palgqmbwixepcjyq5i534acgqyad.onion/news.php?id=0864efc5-924a-45d3-9080-eb53d89f2be1
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

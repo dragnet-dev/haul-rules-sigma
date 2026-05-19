@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-0716 — Ransomware C2 Communication'
+id: 83533fb1-ea71-5a1f-87b8-a1a5eb49291f
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-0716
+  Ransomware victim claim by lockbit3: omscomponents.it; country: IT; sector: Manufacturing
+  First observed: 2023-04-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lockbitaptbdiajqtplcrigzgdjprwugkkut63nbvy2d5r4w2agyekqd.onion/post/m4XcsEUi7pPQBn7k642c604d8d970
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lockbitaptbdiajqtplcrigzgdjprwugkkut63nbvy2d5r4w2agyekqd.onion/post/m4XcsEUi7pPQBn7k642c604d8d970'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

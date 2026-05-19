@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-3168 — Recovery Inhibition (payoutsking)'
+id: eb322141-d91c-59fc-b147-dae130fe9ad6
+status: test
+description: |
+  Detects boot/recovery disabling associated with payoutsking ransomware.
+  Incident: dragnet-ransomware-2026-3168
+  Ransomware victim claim by payoutsking: Aero-Coating; country: DE; sector: Manufacturing
+  First observed: 2026-01-14.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://payoutsgn7cy6uliwevdqspncjpfxpmzgirwl2au65la7rfs5x3qnbqd.onion/gC9LlM-hj4AU8-6bxwfv-1B8CuO-2ZQ388
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

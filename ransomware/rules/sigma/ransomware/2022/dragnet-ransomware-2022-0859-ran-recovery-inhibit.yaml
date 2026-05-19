@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-0859 — Recovery Inhibition (snatch)'
+id: befc000f-d0bb-590e-9d6d-9e5fa7f68760
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with snatch ransomware.
+  Incident: dragnet-ransomware-2022-0859
+  Ransomware victim claim by snatch: STGi; sector: Business Services
+  First observed: 2022-11-28.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://hl66646wtlp2naoqnhattngigjp5palgqmbwixepcjyq5i534acgqyad.onion/news.php?id=64e36733-1bb9-4553-a7aa-517f64dde09e
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

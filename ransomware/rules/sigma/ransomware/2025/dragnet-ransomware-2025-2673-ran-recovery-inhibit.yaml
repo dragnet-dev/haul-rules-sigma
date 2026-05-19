@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2673 — Recovery Inhibition (chaos)'
+id: ff9e5177-d50c-5dba-94cc-8f3ecc88d8ab
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with chaos ransomware.
+  Incident: dragnet-ransomware-2025-2673
+  Ransomware victim claim by chaos: ntic.com; country: US; sector: Technology
+  First observed: 2025-02-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://hptqq2o2qjva7lcaaq67w36jihzivkaitkexorauw7b2yul2z6zozpqd.onion/post/3VBSgUSfSnPd0lzvRXgD12hsxFD9l2vj
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

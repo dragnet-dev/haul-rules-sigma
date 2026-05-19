@@ -1,0 +1,33 @@
+title: 'Dragnet [Container]: dragnet-container-2026-0197 — Vulnerable Base Image Pull'
+id: 9696024e-1a63-5ea2-bc04-d320ad0cf23a
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-0197 (Tier 2, CVSS 9.8)
+  Deserialization of untrusted data can occur in versions of the Keras framework running versions 3.11.0 up to but not including 3.11.3, enabling a maliciously uploaded Keras file containing a TorchModuleWrapper class to run arbitrary code on an end user’s system when loaded despite safe mode being enabled. The vulnerability can be triggered through both local and remote files.
+  First observed: 2026-04-15.
+references:
+  - https://access.redhat.com/security/cve/CVE-2025-49655
+  - https://github.com/keras-team/keras
+  - https://github.com/keras-team/keras/pull/21575
+  - https://hiddenlayer.com/sai_security_advisor/2025-10-keras
+  - https://hiddenlayer.com/sai_security_advisor/2025-10-keras/
+  - https://nvd.nist.gov/vuln/detail/CVE-2025-49655
+  - https://www.cve.org/CVERecord?id=CVE-2025-49655
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: high

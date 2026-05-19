@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-2447 — Mass File Rename (bianlian)'
+id: cea25081-a8e5-5691-885d-0695ed3ab0e3
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by bianlian.
+  Incident: dragnet-ransomware-2023-2447
+  Ransomware victim claim by bianlian: A; sector: Consumer Services
+  First observed: 2023-01-21.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

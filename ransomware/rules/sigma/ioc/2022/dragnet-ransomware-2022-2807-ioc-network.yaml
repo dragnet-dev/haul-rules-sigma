@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2022-2807 — Ransomware C2 Communication'
+id: 9d95d8e2-5933-514f-9fbb-b0f38ca31384
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2022-2807
+  Ransomware victim claim by ragnarlocker: Leak Announcement - IT company ITonCLOUD; sector: Technology
+  First observed: 2022-11-22.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://rgleaktxuey67yrgspmhvtnrqtgogur35lwdrup4d3igtbm3pupc4lyd.onion/?NHMT95rXSooVUaQ
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://rgleaktxuey67yrgspmhvtnrqtgogur35lwdrup4d3igtbm3pupc4lyd.onion/?NHMT95rXSooVUaQ'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0582 — Event Log Clearing (dispossessor)'
+id: 2f9ff421-2a9f-5c3d-a09b-c5649839cc0e
+status: experimental
+description: |
+  Detects event log clearing associated with dispossessor ransomware.
+  Incident: dragnet-ransomware-2021-0582
+  Ransomware victim claim by dispossessor: uhcsr.com; sector: Healthcare
+  First observed: 2021-07-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://dispossessor.com/blogs/250
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

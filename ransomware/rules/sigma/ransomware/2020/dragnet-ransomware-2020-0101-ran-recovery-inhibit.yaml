@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0101 — Recovery Inhibition (dispossessor)'
+id: 571f40bc-7d51-5a9c-9c2d-3fb788d06636
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with dispossessor ransomware.
+  Incident: dragnet-ransomware-2020-0101
+  Ransomware victim claim by dispossessor: joneslanglasalle.com; country: FR; sector: Business Services
+  First observed: 2020-07-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://dispossessor.com/blogs/53
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

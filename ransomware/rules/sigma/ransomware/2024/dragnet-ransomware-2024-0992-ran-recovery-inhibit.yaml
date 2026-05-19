@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0992 — Recovery Inhibition (8base)'
+id: a24021a7-50e1-51e7-b299-22a080885011
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with 8base ransomware.
+  Incident: dragnet-ransomware-2024-0992
+  Ransomware victim claim by 8base: Evlox; country: ES; sector: Manufacturing
+  First observed: 2024-09-23.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://92.118.36.204/company/7890477
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0566 — Mass File Rename (play)'
+id: 49a62fdb-6c28-589d-b8c3-10dea8d3b071
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by play.
+  Incident: dragnet-ransomware-2024-0566
+  Associated with Play.
+  Ransomware victim claim by play: Eurobulk; country: GR; sector: Transportation/Logistics
+  First observed: 2024-09-09.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://k7kg3jqxang3wh7hnmaiokchk7qoebupfgoik6rha6mjpzwupwtj25yd.onion/topic.php?id=0DYM3UnavdPeCy
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+  - dragnet.actor.play
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

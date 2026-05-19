@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2366 — Recovery Inhibition (everest)'
+id: ed379f53-9f49-58b6-9625-0e3a74ff2116
+status: test
+description: |
+  Detects boot/recovery disabling associated with everest ransomware.
+  Incident: dragnet-ransomware-2026-2366
+  Ransomware victim claim by everest: Chrysler - Database leaked; country: US; sector: Manufacturing
+  First observed: 2026-01-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ransomocmou6mnbquqz44ewosbkjk3o5qjsl3orawojexfook2j7esad.onion/news/Chrysler/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

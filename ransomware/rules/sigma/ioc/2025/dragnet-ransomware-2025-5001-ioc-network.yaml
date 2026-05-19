@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-5001 — Ransomware C2 Communication'
+id: 5a76be81-e95f-56c3-8996-ac9c04e5a334
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-5001
+  Ransomware victim claim by sinobi: heywood.org; country: US; sector: Healthcare
+  First observed: 2025-11-09.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://sinobi57mfegeov2naiufkidlkpze263jtbldokimfjqmk2mye6s4yqd.onion/leaks/6910edb388b6823fa25da952
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://sinobi57mfegeov2naiufkidlkpze263jtbldokimfjqmk2mye6s4yqd.onion/leaks/6910edb388b6823fa25da952'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

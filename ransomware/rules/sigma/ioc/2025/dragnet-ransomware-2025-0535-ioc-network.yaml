@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-0535 — Ransomware C2 Communication'
+id: 7bb4d2ed-a86e-50d4-a468-543a872cf7a8
+status: test
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-0535
+  Ransomware victim claim by interlock: Hunneman; country: US; sector: Business Services
+  First observed: 2025-12-31.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://mpyeixjqjufjki2qg7dutvxk6tjjzv2jf7qc63bljzfqrtbjcdktziqd.onion/index.php?p=
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://mpyeixjqjufjki2qg7dutvxk6tjjzv2jf7qc63bljzfqrtbjcdktziqd.onion/index.php?p='
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

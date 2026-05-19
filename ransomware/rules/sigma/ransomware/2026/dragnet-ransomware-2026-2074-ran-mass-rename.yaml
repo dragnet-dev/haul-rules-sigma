@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2074 — Mass File Rename (payload)'
+id: 365c9282-e151-516c-8bdc-54b95c8909c9
+status: stable
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by payload.
+  Incident: dragnet-ransomware-2026-2074
+  Ransomware victim claim by payload: meditron.com.ve; country: VE; sector: Healthcare
+  First observed: 2026-04-23.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://payloadrz5yw227brtbvdqpnlhq3rdcdekdnn3rgucbcdeawq2v6vuyd.onion/posts/b3bc9c9e-ed72-44f0-a1a3-51b5cf745265
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

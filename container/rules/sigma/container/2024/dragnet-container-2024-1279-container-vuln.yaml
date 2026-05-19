@@ -1,0 +1,33 @@
+title: 'Dragnet [Container]: dragnet-container-2024-1279 — Vulnerable Base Image Pull'
+id: e702763d-7675-54f1-af59-5b92a5315e3e
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-1279 (Tier 2, CVSS 9.8)
+  GNOME OCRFeeder before 0.8.4 allows OS command injection via shell metacharacters in a PDF or image filename.
+  First observed: 2024-11-21.
+references:
+  - https://gitlab.gnome.org/GNOME/ocrfeeder/-/commit/5286120c8bc8b7ba74e0f9b19b5262b509f38cee
+  - https://gitlab.gnome.org/GNOME/ocrfeeder/-/issues/20
+  - https://gitlab.gnome.org/GNOME/ocrfeeder/-/merge_requests/13
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:10'
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:14'
+      - 'debian:9'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

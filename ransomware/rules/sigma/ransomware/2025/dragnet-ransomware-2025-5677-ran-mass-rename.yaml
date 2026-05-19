@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5677 — Mass File Rename (crypto24)'
+id: 1daaf2c4-24f9-5a5f-a3d2-b42f779577ed
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by crypto24.
+  Incident: dragnet-ransomware-2025-5677
+  Ransomware victim claim by crypto24: Artemis Healthcare, Inc; country: US; sector: Healthcare
+  First observed: 2025-06-18.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

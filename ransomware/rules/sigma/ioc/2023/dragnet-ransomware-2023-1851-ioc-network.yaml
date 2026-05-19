@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-1851 — Ransomware C2 Communication'
+id: 00f5e608-ecfa-5e8d-8366-2f04c6038122
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-1851
+  Ransomware victim claim by alphv: FUTURE BUILDINGS WAS HACKED MORE THAN 150GB SENSETIVE DATA LEAKED; country: CA; sector: Construction
+  First observed: 2023-02-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://alphvmmm27o3abo3r2mlmjrpdmzle3rykajqc5xsj7j7ejksbpsa36ad.onion/213085d2-7b6b-48d2-9d9f-bab16cc0045a
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://alphvmmm27o3abo3r2mlmjrpdmzle3rykajqc5xsj7j7ejksbpsa36ad.onion/213085d2-7b6b-48d2-9d9f-bab16cc0045a'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

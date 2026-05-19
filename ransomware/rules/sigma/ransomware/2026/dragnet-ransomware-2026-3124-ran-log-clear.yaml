@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-3124 — Event Log Clearing (handala)'
+id: 7894f367-50d2-5aa7-be46-6f276ce37e51
+status: stable
+description: |
+  Detects event log clearing associated with handala ransomware.
+  Incident: dragnet-ransomware-2026-3124
+  Ransomware victim claim by handala: No Place to Hide: Senior Navy Officers’ Identities Now Public; sector: Not Found
+  First observed: 2026-03-14.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://handala-hack.to/no-place-to-hide-senior-navy-officers-identities-now-public/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

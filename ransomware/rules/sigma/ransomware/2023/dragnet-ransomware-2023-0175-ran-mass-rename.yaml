@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0175 — Mass File Rename (noname)'
+id: 0cd36829-72fd-5aa9-bf63-02ff5fe681a5
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by noname.
+  Incident: dragnet-ransomware-2023-0175
+  Ransomware victim claim by noname: selmi.com.br; country: BR; sector: Agriculture and Food Production
+  First observed: 2023-09-12.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://noname2j6zkgnt7ftxsjju5tfd3s45s4i3egq5bqtl72kgum4ldc6qyd.onion/wp/nerolac-com/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

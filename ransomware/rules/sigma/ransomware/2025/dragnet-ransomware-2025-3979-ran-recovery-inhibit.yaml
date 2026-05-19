@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3979 — Recovery Inhibition (VanHelsing)'
+id: 4f0df409-876e-5307-9cbe-96be308218e2
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with VanHelsing ransomware.
+  Incident: dragnet-ransomware-2025-3979
+  Ransomware victim claim by VanHelsing: compumedics.com.au AND neuromedicalsupplies.com; country: AU; sector: Healthcare
+  First observed: 2025-03-26.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://vanhelwmbf2bwzw7gmseg36qqm4ekc5uuhqbsew4eihzcahyq7sukzad.onion/blog/blog.php?id=41
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

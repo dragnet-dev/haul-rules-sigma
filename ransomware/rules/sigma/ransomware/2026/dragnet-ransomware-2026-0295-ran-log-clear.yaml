@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-0295 — Event Log Clearing (nightspire)'
+id: b58b11db-d08d-5159-b6e3-f3c40caecfc0
+status: deprecated
+description: |
+  Detects event log clearing associated with nightspire ransomware.
+  Incident: dragnet-ransomware-2026-0295
+  Ransomware victim claim by nightspire: Florida Therapy Services; country: US; sector: Healthcare
+  First observed: 2026-03-21.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

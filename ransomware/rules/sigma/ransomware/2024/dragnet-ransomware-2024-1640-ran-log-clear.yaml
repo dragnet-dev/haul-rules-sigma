@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-1640 — Event Log Clearing (killsec)'
+id: ecb6cb7c-dcb4-5517-ac44-29d57ec18f59
+status: experimental
+description: |
+  Detects event log clearing associated with killsec ransomware.
+  Incident: dragnet-ransomware-2024-1640
+  Ransomware victim claim by killsec: betterhalf.ai; country: IN; sector: Technology
+  First observed: 2024-10-05.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://kill432ltnkqvaqntbalnsgojqqs2wz4lhnamrqjg66tq6fuvcztilyd.onion/post/3myg3hnjNB7gdvT8UnUf8ycMt
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

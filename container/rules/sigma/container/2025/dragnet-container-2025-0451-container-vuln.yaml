@@ -1,0 +1,32 @@
+title: 'Dragnet [Container]: dragnet-container-2025-0451 — Vulnerable Base Image Pull'
+id: 2e9f0d14-7bd8-570a-912f-f3f6eefcab2e
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2025-0451 (Tier 2, CVSS 9.8)
+  The component controlla_login function in HotelDruid Hotel Management Software v3.0.3 generates a predictable session token, allowing attackers to bypass authentication via bruteforce attacks.
+  First observed: 2025-06-03.
+references:
+  - https://github.com/dhammon/HotelDruid-CVE-2021-42949
+  - https://github.com/dhammon/Security
+  - https://www.hoteldruid.com/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:10'
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:9'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

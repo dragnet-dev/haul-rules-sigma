@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2574 — Event Log Clearing (medusa)'
+id: 132982c4-63ed-573a-a37f-faba0e6e93ca
+status: experimental
+description: |
+  Detects event log clearing associated with medusa ransomware.
+  Incident: dragnet-ransomware-2024-2574
+  Ransomware victim claim by medusa: Richmond Fellowship Scotland; country: GB; sector: Healthcare
+  First observed: 2024-01-22.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://medusaxko7jxtrojdkxo66j7ck4q5tgktf7uqsqyfry4ebnxlcbkccyd.onion/detail?id=ec45fee46159dbbad5280c8097a685e6
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

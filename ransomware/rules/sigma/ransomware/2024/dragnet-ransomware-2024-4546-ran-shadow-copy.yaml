@@ -1,0 +1,41 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-4546 — Shadow Copy Deletion (play)'
+id: cdc2978b-b876-5317-8db6-f76ecb6a4cb0
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with play ransomware.
+  Incident: dragnet-ransomware-2024-4546
+  Associated with Play.
+  Ransomware victim claim by play: Toolmarts; country: US; sector: Business Services
+  First observed: 2024-04-26.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://mbrlkbtq5jonaqkurjwmxftytyn2ethqvbxfu4rgjbkkknndqwae6byd.onion/topic.php?id=n8v7R1fk9WYxLo
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+  - dragnet.actor.play
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

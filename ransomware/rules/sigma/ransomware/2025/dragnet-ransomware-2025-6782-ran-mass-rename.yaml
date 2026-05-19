@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6782 — Mass File Rename (interlock)'
+id: 868e8522-babf-55fc-af35-0fbe62bcec2b
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by interlock.
+  Incident: dragnet-ransomware-2025-6782
+  Ransomware victim claim by interlock: Maki Building Centers; country: US; sector: Construction
+  First observed: 2025-10-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://u2q76zahlrpgvktr3i2j6o2emzcre67et2kvz43kj2gbrhokc2othqyd.onion/index.php?p=
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

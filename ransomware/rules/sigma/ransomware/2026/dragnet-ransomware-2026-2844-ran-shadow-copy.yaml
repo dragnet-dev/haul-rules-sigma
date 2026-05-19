@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2844 — Shadow Copy Deletion (akira)'
+id: ed33392b-b6b6-5839-b843-7b63f054e363
+status: deprecated
+description: |
+  Detects shadow copy deletion commands associated with akira ransomware.
+  Incident: dragnet-ransomware-2026-2844
+  Associated with Akira.
+  Ransomware victim claim by akira: Swavelle Group, Wearbest Sil-Tex Mills; country: US; sector: Manufacturing
+  First observed: 2026-01-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+  - dragnet.actor.akira
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

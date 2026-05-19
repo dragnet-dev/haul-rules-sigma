@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5712 — Recovery Inhibition (pear)'
+id: 160b9d43-8e03-59a3-9081-a582c4023165
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with pear ransomware.
+  Incident: dragnet-ransomware-2025-5712
+  Ransomware victim claim by pear: Catholic Charities of the Diocese of Albany; country: US; sector: Public Sector
+  First observed: 2025-05-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://pearsmob5sn44ismokiusuld34pnfwi6ctgin3qbvonpoob4lh3rmtqd.onion/Companies/ccrcda
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0311 — Shadow Copy Deletion (handala)'
+id: 36cc72a6-81f8-54a0-b4c6-e2d72c989870
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with handala ransomware.
+  Incident: dragnet-ransomware-2024-0311
+  Ransomware victim claim by handala: Israel Massad Quality; country: IL; sector: Business Services
+  First observed: 2024-04-07.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://handala.to/israel-massad-quality-hacked/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

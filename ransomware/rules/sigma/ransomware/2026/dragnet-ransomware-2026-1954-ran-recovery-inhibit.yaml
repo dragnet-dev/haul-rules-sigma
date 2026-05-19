@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-1954 — Recovery Inhibition (SilentRansomGroup)'
+id: ab2fb1e7-04d5-5371-aeeb-18881cd90252
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with SilentRansomGroup ransomware.
+  Incident: dragnet-ransomware-2026-1954
+  Ransomware victim claim by SilentRansomGroup: Wood Smith Henning & Berman LLP; country: US; sector: Business Services
+  First observed: 2026-03-18.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4741 — Recovery Inhibition (ciphbit)'
+id: 38e39505-373d-5bb9-9e31-bdc42b088c8f
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with ciphbit ransomware.
+  Incident: dragnet-ransomware-2023-4741
+  Ransomware victim claim by ciphbit: Marston Domsel; country: DE; sector: Manufacturing
+  First observed: 2023-09-16.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

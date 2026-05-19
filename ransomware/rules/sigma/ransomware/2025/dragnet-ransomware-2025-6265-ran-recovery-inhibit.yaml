@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6265 — Recovery Inhibition (kazu)'
+id: 9d8c0cd7-805e-587d-89c4-46e8301ed84d
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with kazu ransomware.
+  Incident: dragnet-ransomware-2025-6265
+  Ransomware victim claim by kazu: Doctor Alliance – Streamlined Document and Billing Management for Healthcare Providers; country: US; sector: Healthcare
+  First observed: 2025-11-06.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://6czlbd2jfiy6765fbnbnzuwuqocg57ebvp3tbm35kib425k4qnmiiiqd.onion/ransom.html#Doctor
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

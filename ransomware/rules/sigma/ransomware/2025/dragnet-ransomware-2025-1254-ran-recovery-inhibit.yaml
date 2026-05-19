@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1254 — Recovery Inhibition (lockbit5)'
+id: 29e60b35-9d5b-5cd8-b006-5eff7ad26101
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with lockbit5 ransomware.
+  Incident: dragnet-ransomware-2025-1254
+  Ransomware victim claim by lockbit5: incolease.com; country: US; sector: Financial Services
+  First observed: 2025-09-30.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lockbitapt67g6rwzjbcxnww5efpg4qok6vpfeth7wx3okj52ks4wtad.onion/post/2e17861123abc79d1731d0ca064f5c24
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

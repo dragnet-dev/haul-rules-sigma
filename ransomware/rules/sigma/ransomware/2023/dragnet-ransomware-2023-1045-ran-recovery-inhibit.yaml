@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1045 — Recovery Inhibition (monti)'
+id: 43e3b84b-5a7d-5366-b3b5-dd810b20a232
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with monti ransomware.
+  Incident: dragnet-ransomware-2023-1045
+  Ransomware victim claim by monti: HMW - Press Release; sector: Energy
+  First observed: 2023-12-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

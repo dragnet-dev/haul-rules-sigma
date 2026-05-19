@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1192 — Recovery Inhibition (avaddon)'
+id: c94fba97-aa41-5683-9c58-fca3fc82153d
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with avaddon ransomware.
+  Incident: dragnet-ransomware-2021-1192
+  Ransomware victim claim by avaddon: LE VOLCAN; sector: Hospitality and Tourism
+  First observed: 2021-09-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

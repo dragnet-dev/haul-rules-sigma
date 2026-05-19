@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-0860 — Mass File Rename (blackbyte)'
+id: 38e114fd-a189-588c-8add-40ce10c84f18
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by blackbyte.
+  Incident: dragnet-ransomware-2022-0860
+  Associated with BlackByte.
+  Ransomware victim claim by blackbyte: Venture Machine & Tool, Inc.; sector: Manufacturing
+  First observed: 2022-02-08.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+  - dragnet.actor.blackbyte
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

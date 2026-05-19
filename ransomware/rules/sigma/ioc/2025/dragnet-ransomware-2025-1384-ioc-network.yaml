@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-1384 — Ransomware C2 Communication'
+id: 41ac0155-fd74-5a31-a139-df85d4a2ca1c
+status: test
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-1384
+  Ransomware victim claim by payoutsking: Soapeople; country: BE; sector: Technology
+  First observed: 2025-11-25.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://payoutsgn7cy6uliwevdqspncjpfxpmzgirwl2au65la7rfs5x3qnbqd.onion/EvpZyB0ncIr3rTJes9wZ
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'https://payoutsgn7cy6uliwevdqspncjpfxpmzgirwl2au65la7rfs5x3qnbqd.onion/EvpZyB0ncIr3rTJes9wZ'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

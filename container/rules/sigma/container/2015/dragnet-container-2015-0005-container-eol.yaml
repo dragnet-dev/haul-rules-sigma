@@ -1,0 +1,26 @@
+title: 'Dragnet [Container]: dragnet-container-2015-0005 — End-of-Life Base Image'
+id: 47df5904-dbf8-555c-b73d-9a9988183b26
+status: deprecated
+description: |
+  Detects deployment of a container image based on an end-of-life product cycle.
+  EOL images receive no further security patches regardless of new CVEs.
+  Incident: dragnet-container-2015-0005
+  postgresql 9.0 reached end-of-life on 2015-10-08. All images based on this cycle are permanently unpatched.
+  First observed: 2015-10-08.
+references:
+  - https://endoflife.date/postgresql
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|startswith:
+      - 'postgres:9.0.'
+      - 'postgres:9.0-'
+  condition: selection
+falsepositives:
+  - Internal base images that pin to EOL cycles intentionally
+level: high

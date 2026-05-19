@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2026-2839 — Ransomware C2 Communication'
+id: 694d6247-e126-5848-adb2-46e85dd1080e
+status: stable
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2026-2839
+  Ransomware victim claim by LeakBazaar: Millennium packages; country: US; sector: Transportation/Logistics
+  First observed: 2026-04-22.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://mes4qo4rd6t3biyrm6q4twkquspzd7r4kg7va765nbdfxqgnc2w3pead.onion/company?dataBlobId=312c4039-9ffe-4791-b733-99cc9236d71c
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'https://mes4qo4rd6t3biyrm6q4twkquspzd7r4kg7va765nbdfxqgnc2w3pead.onion/company?dataBlobId=312c4039-9ffe-4791-b733-99cc9236d71c'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

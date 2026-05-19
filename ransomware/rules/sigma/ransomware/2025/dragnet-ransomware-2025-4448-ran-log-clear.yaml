@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4448 — Event Log Clearing (J)'
+id: 52c144dc-54ce-5572-89df-e7069d048f39
+status: experimental
+description: |
+  Detects event log clearing associated with J ransomware.
+  Incident: dragnet-ransomware-2025-4448
+  Ransomware victim claim by J: atp.chaco.gob.ar; country: AR; sector: Public Sector
+  First observed: 2025-03-03.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://twniiyed6mydtbe64i5mdl56nihl7atfaqtpww6gqyaiohgc75apzpad.onion/posts/67dbfae9ca66cae8e574e538/67dbfae9ca66cae8e574e538/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

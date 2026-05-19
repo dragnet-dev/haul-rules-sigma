@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5629 — Recovery Inhibition (spacebears)'
+id: dc843f12-6d99-5a1e-ad68-a7a0185e03b1
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with spacebears ransomware.
+  Incident: dragnet-ransomware-2024-5629
+  Ransomware victim claim by spacebears: Hytera US Inc; country: US; sector: Business Services
+  First observed: 2024-05-25.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://5butbkrljkaorg5maepuca25oma7eiwo6a2rlhvkblb4v6mf3ki2ovid.onion/companies/12/hytera-us-inc
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

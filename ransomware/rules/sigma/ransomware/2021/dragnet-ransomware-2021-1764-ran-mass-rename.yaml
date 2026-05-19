@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1764 — Mass File Rename (atomsilo)'
+id: 29d158be-9f00-56c0-b365-6f735dbc2218
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by atomsilo.
+  Incident: dragnet-ransomware-2021-1764
+  Ransomware victim claim by atomsilo: Eisai Co., Ltd; country: JP; sector: Healthcare
+  First observed: 2021-12-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://npmh5ahrgakbniuntyc7io4adm6ietbdbuejrfonowqtyqn24or556qd.onion/leaks.html/post.html?id=eisai
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

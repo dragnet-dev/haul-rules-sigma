@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-1706 — Event Log Clearing (genesis)'
+id: 02d518ca-3292-5003-9279-3e9352fdf835
+status: test
+description: |
+  Detects event log clearing associated with genesis ransomware.
+  Incident: dragnet-ransomware-2026-1706
+  Ransomware victim claim by genesis: Thunder Mountain Harley-Davidson; country: US; sector: Consumer Services
+  First observed: 2026-01-18.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://genesis6ixpb5mcy4kudybtw5op2wqlrkocfogbnenz3c647ibqixiad.onion/f2e4e88d2bff1711d38a/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

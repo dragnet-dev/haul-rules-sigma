@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4996 — Mass File Rename (royal)'
+id: 8ea33e6b-9b53-5b44-85b2-aaa637f04dfc
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by royal.
+  Incident: dragnet-ransomware-2023-4996
+  Ransomware victim claim by royal: Gottschol Alcuilux; country: LU; sector: Manufacturing
+  First observed: 2023-03-10.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://royal4ezp7xrbakkus3oofjw6gszrohpodmdnfbe5e4w3og5sm7vb3qd.onion/9GpP1EE3AKcshZqt6cxOxBtMCu3eZsUC
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

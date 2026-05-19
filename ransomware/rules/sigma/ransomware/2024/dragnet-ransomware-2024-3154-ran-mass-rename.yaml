@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3154 — Mass File Rename (trinity)'
+id: 4b774c8e-1e2e-5170-a625-29d28ad64dff
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by trinity.
+  Incident: dragnet-ransomware-2024-3154
+  Ransomware victim claim by trinity: Fabrica Industrial Machinery & Equipment; country: AR; sector: Manufacturing
+  First observed: 2024-09-23.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://txtggyng5euqkyzl2knbejwpm4rlq575jn2egqldu27osbqytrj6ruyd.onion/articles/articles/10
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1054 — Recovery Inhibition (snatch)'
+id: 501dd4ba-47c4-5b41-b71b-e9af758ee30e
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with snatch ransomware.
+  Incident: dragnet-ransomware-2021-1054
+  Ransomware victim claim by snatch: Skyxe Saskatoon Airport; country: CA; sector: Hospitality and Tourism
+  First observed: 2021-12-20.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

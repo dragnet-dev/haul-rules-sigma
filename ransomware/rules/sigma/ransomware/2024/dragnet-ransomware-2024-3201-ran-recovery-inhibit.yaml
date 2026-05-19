@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3201 — Recovery Inhibition (handala)'
+id: 6480cee5-9d40-5aa3-bec4-c975c4c41fd9
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with handala ransomware.
+  Incident: dragnet-ransomware-2024-3201
+  Ransomware victim claim by handala: Max Shop; country: IL; sector: Business Services
+  First observed: 2024-10-08.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://vmjfieomxhnfjba57sd6jjws2ogvowjgxhhfglsikqvvrnrajbmpxqqd.onion/?p=246
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

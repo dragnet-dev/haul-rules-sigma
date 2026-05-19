@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4265 — Mass File Rename (dispossessor)'
+id: 4dd9e4e2-13c6-556a-8481-c3b00e92dbfe
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by dispossessor.
+  Incident: dragnet-ransomware-2023-4265
+  Ransomware victim claim by dispossessor: layherna.com; sector: Business Services
+  First observed: 2023-05-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://dispossessor.com/blogs/705
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

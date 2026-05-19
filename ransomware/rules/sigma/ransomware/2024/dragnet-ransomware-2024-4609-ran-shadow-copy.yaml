@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-4609 — Shadow Copy Deletion (blacklock)'
+id: 0db7e686-4b5f-5b75-b3a0-ea7798c4ddc3
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with blacklock ransomware.
+  Incident: dragnet-ransomware-2024-4609
+  Ransomware victim claim by blacklock: Keizer's Collision CSN & Automotive; country: CA; sector: Consumer Services
+  First observed: 2024-11-18.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://zdkexsh2e7yihw5uhg5hpsgq3dois2m5je7lzfagij2y6iw5ptl35gyd.onion/Data_Download/KEIZERS.CA
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

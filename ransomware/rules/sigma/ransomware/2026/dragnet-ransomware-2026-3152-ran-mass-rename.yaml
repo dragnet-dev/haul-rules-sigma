@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-3152 — Mass File Rename (worldleaks)'
+id: ec7199da-525b-5784-bd49-48b4d356638f
+status: stable
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by worldleaks.
+  Incident: dragnet-ransomware-2026-3152
+  Ransomware victim claim by worldleaks: Ceywater Consultants; country: LK; sector: Business Services
+  First observed: 2026-05-01.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://worldleaksartrjm3c6vasllvgacbi5u3mgzkluehrzhk2jz4taufuid.onion/companies/8077134684
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

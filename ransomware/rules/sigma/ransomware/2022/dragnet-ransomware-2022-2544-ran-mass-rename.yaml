@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2544 — Mass File Rename (royal)'
+id: 1ca1dc5a-868f-5556-b747-6789dd45a39a
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by royal.
+  Incident: dragnet-ransomware-2022-2544
+  Ransomware victim claim by royal: https://www.whitneyoilco.com; sector: Energy
+  First observed: 2022-11-04.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

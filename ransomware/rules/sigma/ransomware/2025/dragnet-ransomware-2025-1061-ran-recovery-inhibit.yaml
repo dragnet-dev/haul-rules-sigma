@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1061 — Recovery Inhibition (J)'
+id: e07b2886-fe53-5963-a108-4381fa985fef
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with J ransomware.
+  Incident: dragnet-ransomware-2025-1061
+  Ransomware victim claim by J: ppmrecruit.com; country: GB; sector: Business Services
+  First observed: 2025-08-05.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://twniiyed6mydtbe64i5mdl56nihl7atfaqtpww6gqyaiohgc75apzpad.onion/posts/68920d4f0b175cbc06955b7a/68920d4f0b175cbc06955b7a/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

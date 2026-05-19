@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5278 — Mass File Rename (ransomhouse)'
+id: aebb900d-45af-5932-b7d3-b561c7fa4baa
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by ransomhouse.
+  Incident: dragnet-ransomware-2024-5278
+  Ransomware victim claim by ransomhouse: Shipleys LLP; country: IE; sector: Financial Services
+  First observed: 2024-01-05.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://zohlm7ahjwegcedoz7lrdrti7bvpofymcayotp744qhx6gjmxbuo2yid.onion/r/6e8807b3977726b131709f95d66f0daaabfa008b
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

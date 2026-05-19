@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-1433 — Event Log Clearing (atomsilo)'
+id: 24058e3d-92f8-5dea-9f93-f5776d69ed32
+status: stable
+description: |
+  Detects event log clearing associated with atomsilo ransomware.
+  Incident: dragnet-ransomware-2026-1433
+  Ransomware victim claim by atomsilo: A large bank in Asia; sector: Financial Services
+  First observed: 2026-02-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://npmh5ahrgakbniuntyc7io4adm6ietbdbuejrfonowqtyqn24or556qd.onion/leaks.html/post.html?id=bank
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

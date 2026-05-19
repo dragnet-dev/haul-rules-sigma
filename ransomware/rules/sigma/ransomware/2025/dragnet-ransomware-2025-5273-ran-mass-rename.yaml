@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5273 — Mass File Rename (sinobi)'
+id: b6c4ac47-9846-5556-8e73-d0d49a0b861d
+status: test
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by sinobi.
+  Incident: dragnet-ransomware-2025-5273
+  Ransomware victim claim by sinobi: A Uzzo; country: IT; sector: Financial Services
+  First observed: 2025-12-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://sinobi6ftrg27d6g4sjdt65malds6cfptlnjyw52rskakqjda6uvb7yd.onion/leaks/6941cc8488b6823fa2b56e2f
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

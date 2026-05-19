@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6315 — Recovery Inhibition (fog)'
+id: 9807dddf-00c2-586f-a1f4-66260e1aca5b
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with fog ransomware.
+  Incident: dragnet-ransomware-2025-6315
+  Ransomware victim claim by fog: Top Systems; country: BR; sector: Technology
+  First observed: 2025-02-06.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

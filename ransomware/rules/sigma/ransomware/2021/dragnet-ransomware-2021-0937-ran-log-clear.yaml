@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0937 — Event Log Clearing (payloadbin)'
+id: f7835acc-91a6-5c92-99f1-e3a7ac87974c
+status: deprecated
+description: |
+  Detects event log clearing associated with payloadbin ransomware.
+  Incident: dragnet-ransomware-2021-0937
+  Ransomware victim claim by payloadbin: Reconservices.com; sector: Business Services
+  First observed: 2021-09-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

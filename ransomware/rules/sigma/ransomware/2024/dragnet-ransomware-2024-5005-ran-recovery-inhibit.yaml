@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5005 — Recovery Inhibition (interlock)'
+id: 1e74af04-bb23-5f4e-bb27-4481b88acd44
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with interlock ransomware.
+  Incident: dragnet-ransomware-2024-5005
+  Ransomware victim claim by interlock: Brockton Neighborhood Health Center; country: US; sector: Healthcare
+  First observed: 2024-10-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ebhmkoohccl45qesdbvrjqtyro2hmhkmh6vkyfyjjzfllm3ix72aqaid.onion/leaks.phphttp://65bhkrfbqnfjgcsr7456luzjauw5nikuwxradlysivy5wbttjikdhxid.onion/index.php?p=
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

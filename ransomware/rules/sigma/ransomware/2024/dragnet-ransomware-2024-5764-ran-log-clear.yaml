@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5764 — Event Log Clearing (8base)'
+id: 20db0086-be79-57a7-b82e-4c390ae2c8f1
+status: experimental
+description: |
+  Detects event log clearing associated with 8base ransomware.
+  Incident: dragnet-ransomware-2024-5764
+  Ransomware victim claim by 8base: The Line Up, Inc; country: US; sector: Business Services
+  First observed: 2024-04-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://xb6q2aggycmlcrjtbjendcnnwpmmwbosqaugxsqb4nx6cmod3emy7sad.onion/company/7890437
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

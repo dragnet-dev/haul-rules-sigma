@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-3517 — Event Log Clearing (nitrogen)'
+id: c5142b8e-c848-557a-ab97-fa4614777c0d
+status: stable
+description: |
+  Detects event log clearing associated with nitrogen ransomware.
+  Incident: dragnet-ransomware-2026-3517
+  Ransomware victim claim by nitrogen: FOXCONN; country: TW; sector: Manufacturing
+  First observed: 2026-05-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nitrogenczslprh3xyw6lh5xyjvmsz7ciljoqxxknd7uymkfetfhgvqd.onion/posts/6a01b4e6b11688ac2f8de667
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

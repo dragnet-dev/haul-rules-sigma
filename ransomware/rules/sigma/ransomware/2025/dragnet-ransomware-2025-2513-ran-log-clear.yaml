@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2513 — Event Log Clearing (killsec)'
+id: 5e6e4e22-e0ba-5aae-8bc0-753251dfb6bb
+status: experimental
+description: |
+  Detects event log clearing associated with killsec ransomware.
+  Incident: dragnet-ransomware-2025-2513
+  Ransomware victim claim by killsec: Novi Community School District; country: US; sector: Education
+  First observed: 2025-02-23.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ks5424y3wpr5zlug5c7i6svvxweinhbdcqcfnptkfcutrncfazzgz5id.onion/posts.php?pid=UIUrNK4PJXSMU64IO28u1xJQ
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

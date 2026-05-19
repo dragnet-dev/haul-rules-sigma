@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-4311 — Recovery Inhibition (safepay)'
+id: e33db84c-2161-5488-b980-caea6a4b2d5b
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with safepay ransomware.
+  Incident: dragnet-ransomware-2024-4311
+  Ransomware victim claim by safepay: Richmond Hill Primary Academy; country: GB; sector: Education
+  First observed: 2024-09-20.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

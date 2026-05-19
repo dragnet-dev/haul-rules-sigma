@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3467 — Mass File Rename (chort)'
+id: 4ed59647-b7f4-5819-8a81-7156a68c7494
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by chort.
+  Incident: dragnet-ransomware-2024-3467
+  Ransomware victim claim by chort: Tri-TechElectronics.com; country: US; sector: Technology
+  First observed: 2024-11-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://hgxyonufefcglpekxma55fttev3lcfucrf7jvep2c3j6447cjroadead.onion/comp/Tri-TechElectronics.com/index
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

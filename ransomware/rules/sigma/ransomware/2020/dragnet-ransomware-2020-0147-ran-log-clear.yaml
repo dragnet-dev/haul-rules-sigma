@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0147 — Event Log Clearing (coldlock)'
+id: 1414e5e8-b733-5060-92ba-8c4a2e21aff4
+status: deprecated
+description: |
+  Detects event log clearing associated with coldlock ransomware.
+  Incident: dragnet-ransomware-2020-0147
+  Ransomware victim claim by coldlock: CPC Corp. (Tawain's state-owned energy company); sector: Energy
+  First observed: 2020-05-05.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

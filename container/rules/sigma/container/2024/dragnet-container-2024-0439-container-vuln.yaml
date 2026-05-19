@@ -1,0 +1,36 @@
+title: 'Dragnet [Container]: dragnet-container-2024-0439 — Vulnerable Base Image Pull'
+id: 2f163425-c986-55bc-8525-70194797cbc0
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-0439 (Tier 2, CVSS 9.8)
+  RMySQL through 0.10.19 allows SQL Injection.
+  First observed: 2024-11-21.
+references:
+  - https://github.com/r-dbi/RMySQL/blob/master/NEWS.md
+  - https://www.cve.org/CVERecord?id=CVE-2020-10380
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:10'
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+      - 'debian:8'
+      - 'ubuntu:16.04-ESM'
+      - 'ubuntu:18.04-ESM'
+      - 'ubuntu:20.04-ESM'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

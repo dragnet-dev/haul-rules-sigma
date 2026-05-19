@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-1056 — Mass File Rename (thegentlemen)'
+id: c63a2601-9b42-5c11-9378-776de0498a3e
+status: stable
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by thegentlemen.
+  Incident: dragnet-ransomware-2026-1056
+  Ransomware victim claim by thegentlemen: Boutique Harley-Davidson; country: FR; sector: Consumer Services
+  First observed: 2026-02-25.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://tezwsse5czllksjb7cwp65rvnk4oobmzti2znn42i43bjdfd2prqqkad.onion
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

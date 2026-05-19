@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4698 — Mass File Rename (cactus)'
+id: f72db10d-1a4e-53d2-8311-04a5d0048efb
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by cactus.
+  Incident: dragnet-ransomware-2023-4698
+  Ransomware victim claim by cactus: gdi.com; country: CA; sector: Technology
+  First observed: 2023-12-28.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://cactusbloguuodvqjmnzlwetjlpj6aggc6iocwhuupb47laukux7ckid.onion/posts/GDI
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

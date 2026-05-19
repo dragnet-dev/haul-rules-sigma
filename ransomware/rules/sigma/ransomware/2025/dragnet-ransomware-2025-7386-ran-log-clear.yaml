@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7386 — Event Log Clearing (ransomhouse)'
+id: 9413875a-c75f-5c1d-82e8-8a124c70c64b
+status: experimental
+description: |
+  Detects event log clearing associated with ransomhouse ransomware.
+  Incident: dragnet-ransomware-2025-7386
+  Ransomware victim claim by ransomhouse: DLCOSMETICS O.E.; country: GR; sector: Consumer Services
+  First observed: 2025-08-06.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://zohlm7ahjwegcedoz7lrdrti7bvpofymcayotp744qhx6gjmxbuo2yid.onion/r/9c5a69ed096334385c49dd2ef3f63ae860dd7a40
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

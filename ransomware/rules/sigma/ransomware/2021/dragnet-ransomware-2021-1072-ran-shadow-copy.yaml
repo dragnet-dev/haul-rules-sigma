@@ -1,0 +1,37 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1072 — Shadow Copy Deletion (everest)'
+id: 5ed5147e-9188-5b21-a985-51b884e2b04c
+status: deprecated
+description: |
+  Detects shadow copy deletion commands associated with everest ransomware.
+  Incident: dragnet-ransomware-2021-1072
+  Ransomware victim claim by everest: MINISTRY OF ECONOMY AND FINANCE Peru; sector: Public Sector
+  First observed: 2021-11-20.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2026-1221 — Ransomware C2 Communication'
+id: 2e1469a7-b2c3-560e-9c5a-af08b75ee5d2
+status: stable
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2026-1221
+  Ransomware victim claim by interlock: Uniwersytet Warszawski; country: PL; sector: Education
+  First observed: 2026-04-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://efs3fkrjyvqsk7nugzteelo5i5jxoch5ziqhf37dzmmlmzzlymhawmid.onion/index.php?p=
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://efs3fkrjyvqsk7nugzteelo5i5jxoch5ziqhf37dzmmlmzzlymhawmid.onion/index.php?p='
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

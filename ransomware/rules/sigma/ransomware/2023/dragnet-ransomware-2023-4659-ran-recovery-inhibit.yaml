@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4659 — Recovery Inhibition (vendetta)'
+id: 9018b0c8-9dd6-53ed-8ed2-b0db040392e1
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with vendetta ransomware.
+  Incident: dragnet-ransomware-2023-4659
+  Ransomware victim claim by vendetta: Chowtaifook; sector: Consumer Services
+  First observed: 2023-02-27.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

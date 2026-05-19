@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0238 — Recovery Inhibition (sarcoma)'
+id: 6a9f8485-54c9-5319-84d9-964d14fa8bb5
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with sarcoma ransomware.
+  Incident: dragnet-ransomware-2024-0238
+  Ransomware victim claim by sarcoma: The Plastic Bag; country: AU; sector: Manufacturing
+  First observed: 2024-10-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

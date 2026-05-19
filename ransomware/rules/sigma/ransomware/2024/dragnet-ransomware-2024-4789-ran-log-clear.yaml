@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-4789 — Event Log Clearing (ransomhouse)'
+id: de0e947c-9fe1-50cf-975d-103a3e136298
+status: experimental
+description: |
+  Detects event log clearing associated with ransomhouse ransomware.
+  Incident: dragnet-ransomware-2024-4789
+  Ransomware victim claim by ransomhouse: [File Tree and Full Data Dump]VOP CZ; country: CZ; sector: Public Sector
+  First observed: 2024-08-18.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://zohlm7ahjwegcedoz7lrdrti7bvpofymcayotp744qhx6gjmxbuo2yid.onion/r/60e24a5ec235a0eb9c2b6751c815094ea984a671
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

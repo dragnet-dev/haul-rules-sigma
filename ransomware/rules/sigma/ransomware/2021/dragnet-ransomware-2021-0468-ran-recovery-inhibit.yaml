@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0468 — Recovery Inhibition (groove)'
+id: cd81e991-b17e-5707-a6ad-c8d35d9a3b26
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with groove ransomware.
+  Incident: dragnet-ransomware-2021-0468
+  Ransomware victim claim by groove: ludofact.de 50 GB data stolen; sector: Manufacturing
+  First observed: 2021-09-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

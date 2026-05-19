@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0392 — Recovery Inhibition (dispossessor)'
+id: f5f23164-ae98-5ee8-be84-6cb8532946d9
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with dispossessor ransomware.
+  Incident: dragnet-ransomware-2023-0392
+  Ransomware victim claim by dispossessor: dso.org; sector: Financial Services
+  First observed: 2023-09-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://dispossessor.com/blogs/295
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

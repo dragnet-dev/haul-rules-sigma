@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7038 — Mass File Rename (kairos)'
+id: 41d9ee9e-052a-59ed-bcbb-65e61fdcfdc3
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by kairos.
+  Incident: dragnet-ransomware-2025-7038
+  Ransomware victim claim by kairos: galesburg.org; country: US; sector: Public Sector
+  First observed: 2025-04-07.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nerqnacjmdy3obvevyol7qhazkwkv57dwqvye5v46k5bcujtfa6sduad.onion/detail?code=galesburg-org-usa-80gb-
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

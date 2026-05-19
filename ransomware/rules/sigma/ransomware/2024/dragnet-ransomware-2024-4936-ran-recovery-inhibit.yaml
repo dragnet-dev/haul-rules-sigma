@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-4936 — Recovery Inhibition (incransom)'
+id: 04f7aa9e-f876-5a49-9a21-61b21250e044
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with incransom ransomware.
+  Incident: dragnet-ransomware-2024-4936
+  Ransomware victim claim by incransom: CORBETT EXTERMINATING Inc; country: US; sector: Business Services
+  First observed: 2024-01-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://incapt.blog/blog/leak/6FAD81626FD1F46F
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

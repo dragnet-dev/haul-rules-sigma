@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0293 — Recovery Inhibition (karakurt)'
+id: 09d58412-3eb2-5501-8ddb-5328bbbe6a3d
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with karakurt ransomware.
+  Incident: dragnet-ransomware-2023-0293
+  Ransomware victim claim by karakurt: McAlester Regional Health Center; sector: Healthcare
+  First observed: 2023-07-28.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://3f7nxkjway3d223j27lyad7v5cgmyaifesycvmwq7i7cbs23lb6llryd.onion/companies/bb61ea20-9bd4-4eb2-8848-6d98823c1783
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

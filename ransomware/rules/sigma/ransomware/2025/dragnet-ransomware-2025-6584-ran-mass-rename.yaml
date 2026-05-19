@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6584 — Mass File Rename (safepay)'
+id: 1f006112-dc21-557d-9052-b7c27eb38f9e
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by safepay.
+  Incident: dragnet-ransomware-2025-6584
+  Ransomware victim claim by safepay: clarkmechanicalinc.com; country: US; sector: Construction
+  First observed: 2025-04-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://j3dp6okmaklajrsk6zljl5sfa2vpui7j2w6cwmhmmqhab6frdfbphhid.onion#clarkmechanicalinc
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-3144 — Recovery Inhibition (threeam)'
+id: 03e37057-1ec6-5c4f-b71d-4124934281f7
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with threeam ransomware.
+  Incident: dragnet-ransomware-2023-3144
+  Ransomware victim claim by threeam: neuraxpharm.com; sector: Healthcare
+  First observed: 2023-09-22.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://threeamkelxicjsaf2czjyz2lc4q3ngqkxhhlexyfcp2o6raw4rphyad.onion/cl/clicks.php?uri=NEURAX/index.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

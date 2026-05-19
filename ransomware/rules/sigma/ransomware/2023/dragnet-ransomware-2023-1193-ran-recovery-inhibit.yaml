@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1193 — Recovery Inhibition (knight)'
+id: aa9dd7c2-4fa1-5a16-890b-8a1440e5b4d7
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with knight ransomware.
+  Incident: dragnet-ransomware-2023-1193
+  Ransomware victim claim by knight: Barnett Millworks; sector: Manufacturing
+  First observed: 2023-11-14.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://knight3xppu263m7g4ag3xlit2qxpryjwueobh7vjdc3zrscqlfu3pqd.onion/e7551587-7594-4dfe-b603-f197dd211cc4/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

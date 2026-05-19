@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1395 — Mass File Rename (darkside)'
+id: 619cc8ff-a6a8-5d3c-b9f0-67c59d4382e3
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by darkside.
+  Incident: dragnet-ransomware-2021-1395
+  Ransomware victim claim by darkside: Compucom (MSP); sector: Business Services
+  First observed: 2021-02-27.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

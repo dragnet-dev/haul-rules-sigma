@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0462 — Recovery Inhibition (noescape)'
+id: 63e2d6e0-9eb8-5166-a8b4-914f10c30644
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with noescape ransomware.
+  Incident: dragnet-ransomware-2023-0462
+  Ransomware victim claim by noescape: TALENTUM Temporal SAS; country: CO; sector: Business Services
+  First observed: 2023-11-18.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://noescapemsqxvizdxyl7f7rmg5cdjwp33pg2wpmiaaibilb4btwzttad.onion/post/9aa39651-356b-4027-8533-6d61057f1197
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

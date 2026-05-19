@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4192 — Mass File Rename (chaos)'
+id: 92dbcdef-5519-5562-94df-f83578077e25
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by chaos.
+  Incident: dragnet-ransomware-2025-4192
+  Ransomware victim claim by chaos: polycorp.com; country: GB; sector: Manufacturing
+  First observed: 2025-02-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://hptqq2o2qjva7lcaaq67w36jihzivkaitkexorauw7b2yul2z6zozpqd.onion/post/2zijtvy7oP3XAgLvNM2epNJp7kgesOCF
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0094 — Recovery Inhibition (ragnarlocker)'
+id: 32342b82-b635-5e41-92c1-cdd23130f2bc
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with ragnarlocker ransomware.
+  Incident: dragnet-ransomware-2020-0094
+  Ransomware victim claim by ragnarlocker: LEAK Post Campari Group; sector: Consumer Services
+  First observed: 2020-12-10.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

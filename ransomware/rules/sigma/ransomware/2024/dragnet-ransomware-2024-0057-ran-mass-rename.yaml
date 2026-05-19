@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0057 — Mass File Rename (dragonforce)'
+id: abab4253-eca2-5e73-9c6b-c5b240e71346
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by dragonforce.
+  Incident: dragnet-ransomware-2024-0057
+  Ransomware victim claim by dragonforce: Parrish-McCall Constructors; country: US; sector: Business Services
+  First observed: 2024-06-08.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

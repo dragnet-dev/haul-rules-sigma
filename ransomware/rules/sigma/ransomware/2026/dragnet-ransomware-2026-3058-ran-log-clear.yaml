@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-3058 — Event Log Clearing (tengu)'
+id: 28ecc970-a59c-55b2-b1ca-fd991f708f2a
+status: stable
+description: |
+  Detects event log clearing associated with tengu ransomware.
+  Incident: dragnet-ransomware-2026-3058
+  Ransomware victim claim by tengu: Sileno Companies Inc; country: CH; sector: Hospitality and Tourism
+  First observed: 2026-03-07.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://longcc4fqrfcqt5lzceutylaxir6h66fp6df3oin6mvwvz6pfdbxc6qd.onion/blog/404e2516d4022752f93dc9844fb4712339199312accc129b66a85bcb379cda09/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

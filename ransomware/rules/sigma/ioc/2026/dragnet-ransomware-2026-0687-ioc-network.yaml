@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2026-0687 — Ransomware C2 Communication'
+id: cc28a1bf-cdf1-5339-a8f8-69e36a835634
+status: test
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2026-0687
+  Ransomware victim claim by handala: The Queen’s Secrets: Unveiling the Mysteries Behind Ayelet Shaked; sector: Not Found
+  First observed: 2026-01-03.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://handala-hack.to/the-queens-secrets-unveiling-the-mysteries-behind-ayelet-shaked/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'https://handala-hack.to/the-queens-secrets-unveiling-the-mysteries-behind-ayelet-shaked/'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

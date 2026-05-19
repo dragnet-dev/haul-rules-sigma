@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3179 — Event Log Clearing (nitrogen)'
+id: eef7e7be-a11f-5c4e-8ffd-51c3d1385e82
+status: experimental
+description: |
+  Detects event log clearing associated with nitrogen ransomware.
+  Incident: dragnet-ransomware-2025-3179
+  Ransomware victim claim by nitrogen: Progressive Auto Group; country: US; sector: Consumer Services
+  First observed: 2025-07-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nitrogenczslprh3xyw6lh5xyjvmsz7ciljoqxxknd7uymkfetfhgvqd.onion/posts/68762e1ebe3d6de192964033
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

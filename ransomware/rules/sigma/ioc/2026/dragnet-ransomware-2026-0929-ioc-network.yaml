@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2026-0929 — Ransomware C2 Communication'
+id: a8edeeca-0feb-58e2-bd8b-683055f9faf5
+status: stable
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2026-0929
+  Ransomware victim claim by anubis: Publishers Clearing House; country: US; sector: Consumer Services
+  First observed: 2026-04-01.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://om6q4a6cyipxvt7ioudxt24cw4oqu4yodmqzl25mqd2hgllymrgu4aqd.onion/r/mkP2I4eJZ6ArTLj+PQga6ft0A2OIj29zsLe+fR9VZy7l91bdL0FhNMnNLBaWN8JFITI0ma25IV9KIi0KH39v+mZrd3BMS1FV
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://om6q4a6cyipxvt7ioudxt24cw4oqu4yodmqzl25mqd2hgllymrgu4aqd.onion/r/mkP2I4eJZ6ArTLj+PQga6ft0A2OIj29zsLe+fR9VZy7l91bdL0FhNMnNLBaWN8JFITI0ma25IV9KIi0KH39v+mZrd3BMS1FV'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2708 — Event Log Clearing (genesis)'
+id: 588f08e8-1079-543e-9ac5-d5f645d97403
+status: experimental
+description: |
+  Detects event log clearing associated with genesis ransomware.
+  Incident: dragnet-ransomware-2024-2708
+  Ransomware victim claim by genesis: Southern Specialty and Supply; country: US; sector: Energy
+  First observed: 2024-05-07.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://genesis6ixpb5mcy4kudybtw5op2wqlrkocfogbnenz3c647ibqixiad.onion/b6a7d85979c2f1814571/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

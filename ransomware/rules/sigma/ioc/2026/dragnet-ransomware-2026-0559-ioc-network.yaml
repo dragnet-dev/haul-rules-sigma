@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2026-0559 — Ransomware C2 Communication'
+id: f012e111-bf51-5261-ae0e-41de48d73202
+status: stable
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2026-0559
+  Ransomware victim claim by payoutsking: Englewood Lab; country: US; sector: Healthcare
+  First observed: 2026-03-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://payoutsgn7cy6uliwevdqspncjpfxpmzgirwl2au65la7rfs5x3qnbqd.onion/orGEfQ-kNS7tY-F8e0IW-V3hzga-smnj6W
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://payoutsgn7cy6uliwevdqspncjpfxpmzgirwl2au65la7rfs5x3qnbqd.onion/orGEfQ-kNS7tY-F8e0IW-V3hzga-smnj6W'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

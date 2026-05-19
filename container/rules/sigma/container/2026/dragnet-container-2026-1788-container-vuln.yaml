@@ -1,0 +1,36 @@
+title: 'Dragnet [Container]: dragnet-container-2026-1788 — Vulnerable Base Image Pull'
+id: 6cd9564a-68bd-5769-99ba-999175ecc412
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-1788 (Tier 2, CVSS 9.8)
+  The __skb_flow_dissect function in net/core/flow_dissector.c in the Linux kernel before 4.3 does not ensure that n_proto, ip_proto, and thoff are initialized, which allows remote attackers to cause a denial of service (system crash) or possibly execute arbitrary code via a single crafted MPLS packet.
+  First observed: 2026-05-13.
+references:
+  - http://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=a6e544b0a88b53114bfa5a57e21b7be7a8dfc9d0
+  - http://seclists.org/oss-sec/2017/q3/345
+  - http://www.securityfocus.com/bid/100517
+  - https://access.redhat.com/security/cve/CVE-2017-13715
+  - https://github.com/torvalds/linux/commit/a6e544b0a88b53114bfa5a57e21b7be7a8dfc9d0
+  - https://nvd.nist.gov/vuln/detail/CVE-2017-13715
+  - https://www.cve.org/CVERecord?id=CVE-2017-13715
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

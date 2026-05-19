@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0012 — Recovery Inhibition (maze)'
+id: 311e1921-f8e5-5cc6-8055-5d2935c0fbe7
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with maze ransomware.
+  Incident: dragnet-ransomware-2020-0012
+  Ransomware victim claim by maze: Dakota Carrier Network (DCN); country: US; sector: Technology
+  First observed: 2020-04-26.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

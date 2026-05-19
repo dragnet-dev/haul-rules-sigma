@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2179 — Recovery Inhibition (d4rk4rmy)'
+id: c0a4d157-bb84-5431-b21d-a6fe6e2770a4
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with d4rk4rmy ransomware.
+  Incident: dragnet-ransomware-2025-2179
+  Ransomware victim claim by d4rk4rmy: MIZUHA FINANCIAL GROUP; country: JP; sector: Financial Services
+  First observed: 2025-08-07.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

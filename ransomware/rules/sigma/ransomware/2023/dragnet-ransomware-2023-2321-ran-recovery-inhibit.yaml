@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-2321 — Recovery Inhibition (toufan)'
+id: 83a1dfb4-591f-5d19-9f3c-4b3fca0df21c
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with toufan ransomware.
+  Incident: dragnet-ransomware-2023-2321
+  Ransomware victim claim by toufan: shop.emprecise.com; sector: Manufacturing
+  First observed: 2023-12-19.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

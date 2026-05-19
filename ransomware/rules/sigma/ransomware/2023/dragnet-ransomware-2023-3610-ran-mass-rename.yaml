@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-3610 — Mass File Rename (clop)'
+id: 36bd08b2-0fe0-504e-9a9c-5408b7cb73f9
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by clop.
+  Incident: dragnet-ransomware-2023-3610
+  Ransomware victim claim by clop: SERVICESTREAM.COM.AU; country: AU; sector: Business Services
+  First observed: 2023-03-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://santat7kpllt6iyvqbr7q4amdv6dzrh6paatvyrzl7ry3zm72zigf4ad.onion/servicestream-com-au
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

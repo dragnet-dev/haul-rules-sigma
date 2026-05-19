@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-1933 — Recovery Inhibition (vicesociety)'
+id: b759c6b4-bb73-5979-a37b-33ac59c39066
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with vicesociety ransomware.
+  Incident: dragnet-ransomware-2022-1933
+  Ransomware victim claim by vicesociety: TMShipping; sector: Transportation/Logistics
+  First observed: 2022-10-23.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

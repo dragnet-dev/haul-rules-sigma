@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0679 — Recovery Inhibition (nokoyawa)'
+id: 87e5c8c6-ef95-59cd-b7b9-eb646b3e7f0f
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with nokoyawa ransomware.
+  Incident: dragnet-ransomware-2023-0679
+  Ransomware victim claim by nokoyawa: CANAROPA Inc; country: CA; sector: Manufacturing
+  First observed: 2023-07-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nokoleakb76znymx443veg4n6fytx6spck6pc7nkr4dvfuygpub6jsid.onion/leak/64b95e9df6451b16e053bd7c
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

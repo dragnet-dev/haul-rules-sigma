@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6278 — Recovery Inhibition (beast)'
+id: 4cce2200-22cf-5c61-a4fb-7d6d1e555d2b
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with beast ransomware.
+  Incident: dragnet-ransomware-2025-6278
+  Ransomware victim claim by beast: The Methodist Church of Southern Africa; country: ZA; sector: Not Found
+  First observed: 2025-10-02.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://beast6azu4f7fxjakiayhnssybibsgjnmy77a6duufqw5afjzfjhzuqd.onion/card/the_methodist_church_of_southern_africa
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

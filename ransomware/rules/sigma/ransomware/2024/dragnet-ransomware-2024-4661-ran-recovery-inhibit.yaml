@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-4661 — Recovery Inhibition (stormous)'
+id: 9809c37b-c43e-5f3d-8543-601980ce71d4
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with stormous ransomware.
+  Incident: dragnet-ransomware-2024-4661
+  Ransomware victim claim by stormous: Transak.com; country: GB; sector: Financial Services
+  First observed: 2024-10-31.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

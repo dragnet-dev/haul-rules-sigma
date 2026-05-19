@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2980 — Mass File Rename (apos)'
+id: 269d363d-5c90-5a6b-b727-e770141aad46
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by apos.
+  Incident: dragnet-ransomware-2025-2980
+  Ransomware victim claim by apos: KIU System Solutions; country: AR; sector: Technology
+  First observed: 2025-03-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://yrz6bayqwhleymbeviter7ejccxm64sv2ppgqgderzgdhutozcbbhpqd.onion/data/b5f8e897-1b33-43be-a54c-ad5fe4274ef9
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

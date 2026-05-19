@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-5613 — Ransomware C2 Communication'
+id: bb15d023-d855-5dd3-9b4d-4634a6b3e1ee
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-5613
+  Ransomware victim claim by lynx: u0 Excel Transportation; country: CA; sector: Transportation/Logistics
+  First observed: 2024-12-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lynxblog.net/leaks/677d03c605a779c3d3a61921
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lynxblog.net/leaks/677d03c605a779c3d3a61921'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

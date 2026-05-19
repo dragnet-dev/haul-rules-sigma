@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0895 — Event Log Clearing (pysa)'
+id: 7c8a4930-f2a3-52a3-a844-2f4c14f4c06f
+status: deprecated
+description: |
+  Detects event log clearing associated with pysa ransomware.
+  Incident: dragnet-ransomware-2021-0895
+  Ransomware victim claim by pysa: Jalasoft; sector: Technology
+  First observed: 2021-11-08.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

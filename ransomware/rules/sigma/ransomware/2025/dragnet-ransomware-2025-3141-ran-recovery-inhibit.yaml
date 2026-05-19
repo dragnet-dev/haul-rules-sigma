@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3141 — Recovery Inhibition (anubis)'
+id: 7ea30173-9f30-5e39-b3f5-cdcfcbb462ce
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with anubis ransomware.
+  Incident: dragnet-ransomware-2025-3141
+  Ransomware victim claim by anubis: Pound Road Medical Centre; country: AU; sector: Healthcare
+  First observed: 2025-02-25.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://om6q4a6cyipxvt7ioudxt24cw4oqu4yodmqzl25mqd2hgllymrgu4aqd.onion/r/O755hmP2MzuTIdjCLVhXdL8UAfSKxAZu053x6cJk8G+A6E9CM7p9m33BBB5ByOTPIPEOEiUqk0qfH40fUfxmWV0RHpsYnQ2
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

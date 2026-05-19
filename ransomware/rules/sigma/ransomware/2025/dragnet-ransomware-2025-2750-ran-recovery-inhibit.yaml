@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2750 — Recovery Inhibition (teamxxx)'
+id: 91fbd39a-892b-5714-87e7-f3f29d78395f
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with teamxxx ransomware.
+  Incident: dragnet-ransomware-2025-2750
+  Ransomware victim claim by teamxxx: narvikhavn.no; country: NO; sector: Transportation/Logistics
+  First observed: 2025-03-03.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://tp5cwh6d2b5hekcg6jlhoe6mawa7dlwiv47epvnfmzuaaur2dnaa3uid.onion/Narvikhavn/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

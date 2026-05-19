@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2531 — Recovery Inhibition (ralord)'
+id: 888f1f24-4dd3-57ab-92f0-ef0c1b6fd613
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with ralord ransomware.
+  Incident: dragnet-ransomware-2025-2531
+  Ransomware victim claim by ralord: ​​​​Bio-Clima Service; country: IT; sector: Business Services
+  First observed: 2025-04-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ralordqe33mpufkpsr6zkdatktlu3t2uei4ught3sitxgtzfmqmbsuyd.onion/bioclimaservice
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2026-3155 — Ransomware C2 Communication'
+id: 8c6c5193-e99e-5db6-a28f-7b119a2f1512
+status: stable
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2026-3155
+  Ransomware victim claim by handala: Stryker Hit by Unprecedented 12-Petabyte Data Wipe; country: US; sector: Technology
+  First observed: 2026-03-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://handala-hack.to/stryker-hit-by-unprecedented-12-petabyte-data-wipe/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'https://handala-hack.to/stryker-hit-by-unprecedented-12-petabyte-data-wipe/'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

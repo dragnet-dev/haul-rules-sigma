@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2582 — Recovery Inhibition (arcusmedia)'
+id: a1a7e603-d059-5c8a-b6e9-5bbafbe6c22f
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with arcusmedia ransomware.
+  Incident: dragnet-ransomware-2024-2582
+  Ransomware victim claim by arcusmedia: Clima Lodi; country: IT; sector: Business Services
+  First observed: 2024-06-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://arcuufpr5xxbbkin4mlidt7itmr6znlppk63jbtkeguuhszmc5g7qdyd.onion/?p=194
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

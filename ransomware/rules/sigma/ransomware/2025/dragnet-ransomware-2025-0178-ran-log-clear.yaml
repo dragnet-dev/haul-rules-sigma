@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0178 — Event Log Clearing (kraken)'
+id: 1148f0a0-fb1f-5f85-b5d4-57b4f600d6b8
+status: experimental
+description: |
+  Detects event log clearing associated with kraken ransomware.
+  Incident: dragnet-ransomware-2025-0178
+  Ransomware victim claim by kraken: www.anubis-cosmetics.com; country: ES; sector: Consumer Services
+  First observed: 2025-04-02.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://krakenccj3wr23452a4ibkbkuph4d6soyx2xgjoogtuamc3m7u7wemad.onion/news/faca45600e3c5d12926fbb4a2761ece0
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

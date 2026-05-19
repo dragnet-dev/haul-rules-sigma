@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-3512 — Event Log Clearing (PrinzEugen)'
+id: a6136941-f200-55e6-a4c2-de89a9b843ff
+status: stable
+description: |
+  Detects event log clearing associated with PrinzEugen ransomware.
+  Incident: dragnet-ransomware-2026-3512
+  Ransomware victim claim by PrinzEugen: Standard Bank Group; country: ZA; sector: Financial Services
+  First observed: 2026-02-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://prinzfkbjiazbrur4mjje6mntjc4vydx3iatkkzycufoylqcoo4y7pqd.onion/standard-bank-group
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

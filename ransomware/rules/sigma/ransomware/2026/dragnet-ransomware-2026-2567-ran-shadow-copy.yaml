@@ -1,0 +1,41 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2567 — Shadow Copy Deletion (handala)'
+id: f9166d25-d634-59b4-91a2-e6acd86c5e56
+status: stable
+description: |
+  Detects shadow copy deletion commands associated with handala ransomware.
+  Incident: dragnet-ransomware-2026-2567
+  Associated with VOID MANTICORE.
+  Ransomware victim claim by handala: Handala Hack Strikes 27 Companies for Minab’s Innocents; sector: Not Found
+  First observed: 2026-04-05.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://handala-hack.tw/handala-hack-strikes-27-zionist-companies-for-minabs-innocents/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+  - dragnet.actor.void-manticore
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

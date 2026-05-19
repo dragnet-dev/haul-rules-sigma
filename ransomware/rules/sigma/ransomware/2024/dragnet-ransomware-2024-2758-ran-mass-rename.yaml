@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2758 — Mass File Rename (knight)'
+id: 56105447-2369-51ca-9043-6d37b6e4dfbf
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by knight.
+  Incident: dragnet-ransomware-2024-2758
+  Ransomware victim claim by knight: Agro Baggio LTDA; country: BR; sector: Agriculture and Food Production
+  First observed: 2024-01-07.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://knight3xppu263m7g4ag3xlit2qxpryjwueobh7vjdc3zrscqlfu3pqd.onion/438fbb82-3835-4750-93ff-f33421840cfd/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

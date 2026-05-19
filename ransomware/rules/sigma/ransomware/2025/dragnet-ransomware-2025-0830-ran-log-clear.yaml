@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0830 — Event Log Clearing (blackshrantac)'
+id: 2ca5f704-bbd4-5e3c-bb81-3d10d8024d1c
+status: experimental
+description: |
+  Detects event log clearing associated with blackshrantac ransomware.
+  Incident: dragnet-ransomware-2025-0830
+  Ransomware victim claim by blackshrantac: Cabinets 2000, LLC; country: US; sector: Manufacturing
+  First observed: 2025-10-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://jvkpexgkuaw5toiph7fbgucycvnafaqmfvakymfh5pdxepvahw3xryqd.onion/targets/10
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2576 — Mass File Rename (thegentlemen)'
+id: 9cf9a59e-98bb-5c5b-9a78-754bc0436d7c
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by thegentlemen.
+  Incident: dragnet-ransomware-2026-2576
+  Ransomware victim claim by thegentlemen: Oriental Diamond; country: JP; sector: Manufacturing
+  First observed: 2026-05-12.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

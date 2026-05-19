@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-3757 — Ransomware C2 Communication'
+id: cdfb2470-5570-5071-9217-53a401c0ee25
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-3757
+  Ransomware victim claim by ransomed: I&G Brokers; country: BG; sector: Financial Services
+  First observed: 2023-08-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://ransomed.vc/ig.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'https://ransomed.vc/ig.html'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

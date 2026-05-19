@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-0764 — Ransomware C2 Communication'
+id: 99f6b151-1b45-58b7-b2a8-17b7fd935846
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-0764
+  Ransomware victim claim by kraken: www.prival.com; country: CA; sector: Technology
+  First observed: 2025-02-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://krakenccj3wr23452a4ibkbkuph4d6soyx2xgjoogtuamc3m7u7wemad.onion/news/84693f0074b0ec834c33a0404e76c95c
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://krakenccj3wr23452a4ibkbkuph4d6soyx2xgjoogtuamc3m7u7wemad.onion/news/84693f0074b0ec834c33a0404e76c95c'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

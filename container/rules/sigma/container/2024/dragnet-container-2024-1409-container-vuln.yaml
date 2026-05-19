@@ -1,0 +1,35 @@
+title: 'Dragnet [Container]: dragnet-container-2024-1409 — Vulnerable Base Image Pull'
+id: dc0b2d8e-d3e5-5261-95f3-85bfd96897d8
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-1409 (Tier 2, CVSS 9.8)
+  xterm before 380 supports ReGIS reporting for character-set names even if they have unexpected characters (i.e., neither alphanumeric nor underscore), aka a pointer/overflow issue. This can only occur for xterm installations that are configured at compile time to use a certain experimental feature.
+  First observed: 2024-11-21.
+references:
+  - https://access.redhat.com/security/cve/CVE-2023-40359
+  - https://invisible-island.net/xterm/xterm.log.html#xterm_380
+  - https://nvd.nist.gov/vuln/detail/CVE-2023-40359
+  - https://www.cve.org/CVERecord?id=CVE-2023-40359
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'cbl-mariner:2.0'
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+      - 'redhat/ubi9:'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

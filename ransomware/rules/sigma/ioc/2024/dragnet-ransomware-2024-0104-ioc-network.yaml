@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-0104 — Ransomware C2 Communication'
+id: d7f6aa0e-f2e7-5956-ad2c-0b5858f37e95
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-0104
+  Ransomware victim claim by 8base: Island Grill; country: JM; sector: Hospitality and Tourism
+  First observed: 2024-09-23.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://92.118.36.204/company/7890474
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://92.118.36.204/company/7890474'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

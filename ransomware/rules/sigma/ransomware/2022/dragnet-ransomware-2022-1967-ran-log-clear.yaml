@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-1967 — Event Log Clearing (blackbasta)'
+id: 46d913c4-cc43-5bf2-9848-50be6127cc7e
+status: deprecated
+description: |
+  Detects event log clearing associated with blackbasta ransomware.
+  Incident: dragnet-ransomware-2022-1967
+  Ransomware victim claim by blackbasta: Karl Gemünden GmbH & Co. KG; sector: Manufacturing
+  First observed: 2022-09-30.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

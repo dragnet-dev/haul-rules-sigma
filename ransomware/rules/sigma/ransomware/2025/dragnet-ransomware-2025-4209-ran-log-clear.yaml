@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4209 — Event Log Clearing (stormous)'
+id: b93251bd-fbc7-5c0f-af59-2f2bdc0ff451
+status: experimental
+description: |
+  Detects event log clearing associated with stormous ransomware.
+  Incident: dragnet-ransomware-2025-4209
+  Ransomware victim claim by stormous: www.francetravail.fr; country: FR; sector: Public Sector
+  First observed: 2025-10-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://zib7duoiglvzvnpjs5faly6bio4xhwiby2lupsnxrkjnx46gmwdfyrid.onion/francetravail.fr/README/README.txt
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

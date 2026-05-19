@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-2867 — Event Log Clearing (malas)'
+id: 07d3dd5f-697a-59e3-b3fc-ea6bb8fa06b1
+status: experimental
+description: |
+  Detects event log clearing associated with malas ransomware.
+  Incident: dragnet-ransomware-2023-2867
+  Ransomware victim claim by malas: Pasquetti Sarti & Partners; sector: Business Services
+  First observed: 2023-04-09.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://malas2urovbyyavjzaezkt5ohljvyd5lt7vv7mnsgbf2y4bwlh72doqd.onion/posts/defaulters/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

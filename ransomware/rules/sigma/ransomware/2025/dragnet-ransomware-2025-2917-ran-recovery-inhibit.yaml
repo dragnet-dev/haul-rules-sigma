@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2917 — Recovery Inhibition (nitrogen)'
+id: 69dc4328-d874-5102-942e-d730c44eba81
+status: test
+description: |
+  Detects boot/recovery disabling associated with nitrogen ransomware.
+  Incident: dragnet-ransomware-2025-2917
+  Ransomware victim claim by nitrogen: Walters Group Inc; country: US; sector: Manufacturing
+  First observed: 2025-12-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nitrogenczslprh3xyw6lh5xyjvmsz7ciljoqxxknd7uymkfetfhgvqd.onion/posts/6941539faf852c79a1964033
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

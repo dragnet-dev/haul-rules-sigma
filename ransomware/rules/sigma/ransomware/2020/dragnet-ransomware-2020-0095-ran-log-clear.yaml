@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0095 — Event Log Clearing (ragnarlocker)'
+id: 5fec9887-8f09-52aa-8006-4ac4cc7bfdea
+status: deprecated
+description: |
+  Detects event log clearing associated with ragnarlocker ransomware.
+  Incident: dragnet-ransomware-2020-0095
+  Ransomware victim claim by ragnarlocker: Attention, Dassault Falcon Jet updated; sector: Manufacturing
+  First observed: 2020-12-13.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

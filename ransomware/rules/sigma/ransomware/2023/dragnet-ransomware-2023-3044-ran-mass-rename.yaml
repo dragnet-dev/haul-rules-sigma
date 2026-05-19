@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-3044 — Mass File Rename (bianlian)'
+id: ba53bb47-c78e-5fd2-b67c-a14c64d2dde7
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by bianlian.
+  Incident: dragnet-ransomware-2023-3044
+  Ransomware victim claim by bianlian: Flensburger Schiffbau Gesellschaft mbH and Co. and Nobiskrug Yachts GmbH; sector: Manufacturing
+  First observed: 2023-04-11.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

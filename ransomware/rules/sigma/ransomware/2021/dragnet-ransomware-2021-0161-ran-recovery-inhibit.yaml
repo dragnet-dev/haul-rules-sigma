@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0161 — Recovery Inhibition (blackbyte)'
+id: ac6263c4-86c4-546d-977d-ff9b675f1233
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with blackbyte ransomware.
+  Incident: dragnet-ransomware-2021-0161
+  Associated with BlackByte.
+  Ransomware victim claim by blackbyte: Kangean Energy Indonesia; sector: Energy
+  First observed: 2021-12-19.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+  - dragnet.actor.blackbyte
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

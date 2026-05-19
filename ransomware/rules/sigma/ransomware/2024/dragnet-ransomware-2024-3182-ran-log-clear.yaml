@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3182 — Event Log Clearing (BrainCipher)'
+id: 6766cf6e-d9cc-57f6-a3cb-53e86e0499b1
+status: experimental
+description: |
+  Detects event log clearing associated with BrainCipher ransomware.
+  Incident: dragnet-ransomware-2024-3182
+  Ransomware victim claim by BrainCipher: ghanare.com; country: GH; sector: Consumer Services
+  First observed: 2024-08-28.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://vkvsgl7lhipjirmz6j5ubp3w3bwvxgcdbpi3fsbqngfynetqtw4w5hyd.onion/r/M51w37KqV2S4rYC6pK5DczokzeoJGHZUhG6QAONslOHS2N06ViwAAseBHqT89A+LtJ8u4HRohyn7dHvO0o2fgEtMRlc4aDN3
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

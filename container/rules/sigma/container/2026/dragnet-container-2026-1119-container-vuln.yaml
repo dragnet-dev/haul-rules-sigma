@@ -1,0 +1,44 @@
+title: 'Dragnet [Container]: dragnet-container-2026-1119 — Vulnerable Base Image Pull'
+id: e92f8984-3059-5310-9a6b-d1a93b6e1863
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-1119 (Tier 2, CVSS 9.3)
+  FFmpeg 0.5 allows remote attackers to cause a denial of service and possibly execute arbitrary code via a crafted MOV container with improperly ordered tags that cause (1) mov.c and (2) utils.c to use inconsistent codec types and identifiers, leading to processing of a video-structure pointer by the mp3 decoder, and a stack-based buffer overflow.
+  First observed: 2026-04-29.
+references:
+  - http://scarybeastsecurity.blogspot.com/2009/09/patching-ffmpeg-into-shape.html
+  - http://secunia.com/advisories/36805
+  - http://secunia.com/advisories/38643
+  - http://secunia.com/advisories/39482
+  - http://www.debian.org/security/2010/dsa-2000
+  - http://www.mandriva.com/security/advisories?name=MDVSA-2011:059
+  - http://www.mandriva.com/security/advisories?name=MDVSA-2011:060
+  - http://www.mandriva.com/security/advisories?name=MDVSA-2011:061
+  - http://www.mandriva.com/security/advisories?name=MDVSA-2011:088
+  - http://www.mandriva.com/security/advisories?name=MDVSA-2011:112
+  - http://www.mandriva.com/security/advisories?name=MDVSA-2011:114
+  - http://www.securityfocus.com/bid/36465
+  - http://www.ubuntu.com/usn/USN-931-1
+  - http://www.vupen.com/english/advisories/2010/0935
+  - http://www.vupen.com/english/advisories/2011/1241
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

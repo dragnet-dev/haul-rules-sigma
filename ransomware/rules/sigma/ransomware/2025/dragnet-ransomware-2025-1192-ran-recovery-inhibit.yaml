@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1192 — Recovery Inhibition (termite)'
+id: dd1dccb7-fe08-5854-9a2c-198a43be7dd3
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with termite ransomware.
+  Incident: dragnet-ransomware-2025-1192
+  Ransomware victim claim by termite: Ligentia; country: GB; sector: Transportation/Logistics
+  First observed: 2025-02-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://termiteuslbumdge2zmfmfcsrvmvsfe4gvyudc5j6cdnisnhtftvokid.onion/post/67b667819b91b4933324dc71
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

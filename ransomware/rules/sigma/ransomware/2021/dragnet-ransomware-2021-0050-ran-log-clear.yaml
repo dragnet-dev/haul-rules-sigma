@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0050 — Event Log Clearing (midas)'
+id: 61a17059-2619-5347-b1d0-3d606ffad9f6
+status: deprecated
+description: |
+  Detects event log clearing associated with midas ransomware.
+  Incident: dragnet-ransomware-2021-0050
+  Ransomware victim claim by midas: Capital Distributors (S) Pte Ltd; sector: Business Services
+  First observed: 2021-11-29.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

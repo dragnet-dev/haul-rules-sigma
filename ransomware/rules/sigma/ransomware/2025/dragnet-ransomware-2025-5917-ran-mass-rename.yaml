@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5917 — Mass File Rename (worldleaks)'
+id: 7056de7d-6f5c-5e55-8653-d146928fc658
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by worldleaks.
+  Incident: dragnet-ransomware-2025-5917
+  Ransomware victim claim by worldleaks: Mandom Corporation; country: JP; sector: Consumer Services
+  First observed: 2025-08-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://worldleaksartrjm3c6vasllvgacbi5u3mgzkluehrzhk2jz4taufuid.onion/companies/8160043050
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

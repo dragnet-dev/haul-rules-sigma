@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3438 — Recovery Inhibition (safepay)'
+id: fc3614ff-da4c-526a-baab-52cde6d2c9cd
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with safepay ransomware.
+  Incident: dragnet-ransomware-2025-3438
+  Ransomware victim claim by safepay: ozarkah2o.com; country: US; sector: Consumer Services
+  First observed: 2025-04-30.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://j3dp6okmaklajrsk6zljl5sfa2vpui7j2w6cwmhmmqhab6frdfbphhid.onion#ozarkah2o
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0241 — Recovery Inhibition (mallox)'
+id: 68b8abcd-38b8-54f2-bfdd-1f1509403889
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with mallox ransomware.
+  Incident: dragnet-ransomware-2024-0241
+  Ransomware victim claim by mallox: speditionlangen.de; country: DE; sector: Transportation/Logistics
+  First observed: 2024-04-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

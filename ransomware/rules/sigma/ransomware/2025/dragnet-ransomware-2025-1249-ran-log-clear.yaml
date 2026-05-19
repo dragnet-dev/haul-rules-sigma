@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1249 — Event Log Clearing (kraken)'
+id: fbd61679-4a49-55d9-a145-55c5341882b1
+status: experimental
+description: |
+  Detects event log clearing associated with kraken ransomware.
+  Incident: dragnet-ransomware-2025-1249
+  Ransomware victim claim by kraken: www.georgeallenconstruction.com; sector: Construction
+  First observed: 2025-07-10.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://krakenccj3wr23452a4ibkbkuph4d6soyx2xgjoogtuamc3m7u7wemad.onion/news/35e0ece1520554fa95275bfbba7f6c0e
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

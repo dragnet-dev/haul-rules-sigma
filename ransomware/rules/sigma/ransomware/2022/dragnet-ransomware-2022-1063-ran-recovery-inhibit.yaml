@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-1063 — Recovery Inhibition (stormous)'
+id: 288fdaff-b1c4-5b33-bb51-fc9e56c09c34
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with stormous ransomware.
+  Incident: dragnet-ransomware-2022-1063
+  Ransomware victim claim by stormous: National Rehabilitation Training Center; sector: Healthcare
+  First observed: 2022-04-12.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

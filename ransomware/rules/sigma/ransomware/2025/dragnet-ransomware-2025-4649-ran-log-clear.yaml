@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4649 — Event Log Clearing (lockbit5)'
+id: cd15b3ae-6308-59ad-b5ca-73e2d4e0ba93
+status: experimental
+description: |
+  Detects event log clearing associated with lockbit5 ransomware.
+  Incident: dragnet-ransomware-2025-4649
+  Ransomware victim claim by lockbit5: crystal-d.com; country: DE; sector: Technology
+  First observed: 2025-04-08.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lockbitapt67g6rwzjbcxnww5efpg4qok6vpfeth7wx3okj52ks4wtad.onion/post/ffeb161b487066d9a1adc1b018620d43
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

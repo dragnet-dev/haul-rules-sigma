@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2784 — Shadow Copy Deletion (blackshrantac)'
+id: 5a86d3a2-1e7b-5b75-9580-10516148a276
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with blackshrantac ransomware.
+  Incident: dragnet-ransomware-2025-2784
+  Ransomware victim claim by blackshrantac: Gulf Warranties LLC; country: AE; sector: Consumer Services
+  First observed: 2025-10-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://jvkpexgkuaw5toiph7fbgucycvnafaqmfvakymfh5pdxepvahw3xryqd.onion/targets/5
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

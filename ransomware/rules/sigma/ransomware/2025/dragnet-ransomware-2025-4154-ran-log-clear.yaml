@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4154 — Event Log Clearing (ransomhouse)'
+id: f8c56bfb-bba3-5713-9a22-8f5385eb9693
+status: experimental
+description: |
+  Detects event log clearing associated with ransomhouse ransomware.
+  Incident: dragnet-ransomware-2025-4154
+  Ransomware victim claim by ransomhouse: Public Safety Mutual Benefit Fund; country: PH; sector: Public Sector
+  First observed: 2025-11-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://zohlm7ahjwegcedoz7lrdrti7bvpofymcayotp744qhx6gjmxbuo2yid.onion/r/5e3c3d3356682f21a266efa7196cf00dfa414419
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

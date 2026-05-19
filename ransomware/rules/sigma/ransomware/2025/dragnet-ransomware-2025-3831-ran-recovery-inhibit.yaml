@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3831 — Recovery Inhibition (kazu)'
+id: fa70562c-a254-5eb1-a976-12945fabc126
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with kazu ransomware.
+  Incident: dragnet-ransomware-2025-3831
+  Ransomware victim claim by kazu: Saudi Icon; country: SA; sector: Construction
+  First observed: 2025-12-29.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

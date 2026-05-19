@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-3077 — Mass File Rename (beast)'
+id: 5a88f47c-5cba-52ba-acf3-bf4075f9d27c
+status: test
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by beast.
+  Incident: dragnet-ransomware-2026-3077
+  Ransomware victim claim by beast: Ideal International; country: GB; sector: Transportation/Logistics
+  First observed: 2026-01-07.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://beast6azu4f7fxjakiayhnssybibsgjnmy77a6duufqw5afjzfjhzuqd.onion/card/ideal_international
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

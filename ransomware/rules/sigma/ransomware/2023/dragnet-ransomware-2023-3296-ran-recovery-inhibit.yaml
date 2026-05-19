@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-3296 — Recovery Inhibition (bianlian)'
+id: b1ea0f16-2b66-50b4-ae6b-5c50aaa34cfb
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with bianlian ransomware.
+  Incident: dragnet-ransomware-2023-3296
+  Ransomware victim claim by bianlian: HRL Technology Group; country: AU; sector: Business Services
+  First observed: 2023-01-21.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-4962 — Ransomware C2 Communication'
+id: 807ccde3-3908-5bec-9ac9-39864031acda
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-4962
+  Ransomware victim claim by lockbit3: emotorsdirect.ca; country: CA; sector: Business Services
+  First observed: 2023-03-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lockbitapt6vx57t3eeqjofwgcglmutr3a35nygvokja5uuccip4ykyd.onion/post/aXDjcRK3o73nsUL16410bfed5157b
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lockbitapt6vx57t3eeqjofwgcglmutr3a35nygvokja5uuccip4ykyd.onion/post/aXDjcRK3o73nsUL16410bfed5157b'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

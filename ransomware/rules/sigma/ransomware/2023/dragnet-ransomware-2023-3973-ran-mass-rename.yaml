@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-3973 — Mass File Rename (rhysida)'
+id: 08803cab-5727-5d81-9f41-3ce0f85f1c1e
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by rhysida.
+  Incident: dragnet-ransomware-2023-3973
+  Ransomware victim claim by rhysida: Tcman; sector: Manufacturing
+  First observed: 2023-12-08.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://rhysidaeoxtkejwuheks3a7htk4zn3dfuynt5mqw6oawlcx6kcxjdeyd.onion/gSXro3lHSv0tjeD62hv8103kZ4d9ezmZ/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

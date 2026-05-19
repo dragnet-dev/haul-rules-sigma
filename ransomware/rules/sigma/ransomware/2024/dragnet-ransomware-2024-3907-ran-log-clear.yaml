@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3907 — Event Log Clearing (trisec)'
+id: 96b5c76f-5ddf-5184-8a74-95e28531c7b9
+status: experimental
+description: |
+  Detects event log clearing associated with trisec ransomware.
+  Incident: dragnet-ransomware-2024-3907
+  Ransomware victim claim by trisec: aivi.it; country: IT; sector: Technology
+  First observed: 2024-02-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://orfc3joknhrzscdbuxajypgrvlcawtuagbj7f44ugbosuvavg3dc3zid.onion/aivi.it.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

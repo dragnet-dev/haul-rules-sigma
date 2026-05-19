@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7624 — Recovery Inhibition (weyhro)'
+id: df98b729-e13b-5e47-bdd0-8962874254dc
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with weyhro ransomware.
+  Incident: dragnet-ransomware-2025-7624
+  Ransomware victim claim by weyhro: Terra Caribbean; country: BB; sector: Business Services
+  First observed: 2025-05-30.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://weyhro27ruifvuqkk3hxzcrtxv2lsalntxgkv6q2j3znkhdqudz54rqd.onion//leaks/terracaribbean
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

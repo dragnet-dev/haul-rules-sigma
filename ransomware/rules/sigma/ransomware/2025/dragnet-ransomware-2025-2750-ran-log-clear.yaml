@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2750 — Event Log Clearing (teamxxx)'
+id: 8e946ce3-635e-56c5-95f5-09d9e6e8fa57
+status: experimental
+description: |
+  Detects event log clearing associated with teamxxx ransomware.
+  Incident: dragnet-ransomware-2025-2750
+  Ransomware victim claim by teamxxx: narvikhavn.no; country: NO; sector: Transportation/Logistics
+  First observed: 2025-03-03.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://tp5cwh6d2b5hekcg6jlhoe6mawa7dlwiv47epvnfmzuaaur2dnaa3uid.onion/Narvikhavn/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

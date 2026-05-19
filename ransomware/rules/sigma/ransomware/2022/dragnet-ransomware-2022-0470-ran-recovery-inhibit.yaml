@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-0470 — Recovery Inhibition (vicesociety)'
+id: 9e44d2f5-d8e8-5839-817a-bd744d5e4b9e
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with vicesociety ransomware.
+  Incident: dragnet-ransomware-2022-0470
+  Ransomware victim claim by vicesociety: Barlow Respiratory Hospital; sector: Healthcare
+  First observed: 2022-01-06.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

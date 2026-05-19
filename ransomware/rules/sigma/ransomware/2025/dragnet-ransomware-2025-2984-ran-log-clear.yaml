@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2984 — Event Log Clearing (medusa)'
+id: 5e45c812-8d8d-5d50-99c3-42dbfb18655e
+status: experimental
+description: |
+  Detects event log clearing associated with medusa ransomware.
+  Incident: dragnet-ransomware-2025-2984
+  Ransomware victim claim by medusa: G&S Electric LLC; country: US; sector: Construction
+  First observed: 2025-02-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://xfv4jzckytb4g3ckwemcny3ihv4i5p4lqzdpi624cxisu35my5fwi5qd.onion/detail?id=14a6ea4e411f38e67d89025ef300bbae
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-3434 — Mass File Rename (handala)'
+id: 5779f2d2-d29b-50ac-a08e-ca37579d34ee
+status: stable
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by handala.
+  Incident: dragnet-ransomware-2026-3434
+  Associated with VOID MANTICORE.
+  Ransomware victim claim by handala: Propaganda Chief and Former Mossad Deputy Exposed by Handala Hack; sector: Not Found
+  First observed: 2026-03-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://handala-team.to/zionist-propaganda-chief-and-former-mossad-deputy-exposed-by-handala-hack/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+  - dragnet.actor.void-manticore
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

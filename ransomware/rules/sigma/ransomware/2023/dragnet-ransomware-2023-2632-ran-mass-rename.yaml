@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-2632 — Mass File Rename (ransomhouse)'
+id: 360f3c9a-8e23-512b-9da2-a8cfc5b168fd
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by ransomhouse.
+  Incident: dragnet-ransomware-2023-2632
+  Ransomware victim claim by ransomhouse: Dameron Hospital; sector: Healthcare
+  First observed: 2023-12-13.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://zohlm7ahjwegcedoz7lrdrti7bvpofymcayotp744qhx6gjmxbuo2yid.onion/r/db7053f017952f6be1f3516b28c44596ad44e401
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

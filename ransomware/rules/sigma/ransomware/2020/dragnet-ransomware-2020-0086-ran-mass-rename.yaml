@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0086 — Mass File Rename (dispossessor)'
+id: c0a9f738-c60d-5aa3-ad7d-9c812944d07e
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by dispossessor.
+  Incident: dragnet-ransomware-2020-0086
+  Ransomware victim claim by dispossessor: hornbeckoffshore.com; sector: Transportation/Logistics
+  First observed: 2020-07-12.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://dispossessor.com/blogs/163
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

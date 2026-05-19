@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5541 — Mass File Rename (clop)'
+id: eb8c8d94-b0fe-5f60-85d0-8c70e713685b
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by clop.
+  Incident: dragnet-ransomware-2025-5541
+  Ransomware victim claim by clop: ZANACO.CO.ZM; country: ZM; sector: Financial Services
+  First observed: 2025-11-07.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://santat7kpllt6iyvqbr7q4amdv6dzrh6paatvyrzl7ry3zm72zigf4ad.onion/zanaco-co-zm
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

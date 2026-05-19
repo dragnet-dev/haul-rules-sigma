@@ -1,0 +1,48 @@
+title: 'Dragnet [Container]: dragnet-container-2024-0004 — Vulnerable Base Image Pull'
+id: 12744234-8e66-5c48-b069-c2808f711fd1
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-0004 (Tier 2, CVSS 9.8)
+  HotelDruid before v2.3.1 has SQL Injection via the /visualizza_tabelle.php anno parameter.
+  First observed: 2024-11-21.
+references:
+  - http://www.hoteldruid.com/en/download.html
+  - https://metamorfosec.com/Files/Advisories/METS-2019-007-A_SQL_Injection_in_HotelDruid_before_v2.3.1.txt
+  - https://www.cve.org/CVERecord?id=CVE-2019-9086
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:8'
+      - 'debian:9'
+      - 'ubuntu:16.04-ESM'
+      - 'ubuntu:18.04-ESM'
+      - 'ubuntu:19.10'
+      - 'ubuntu:20.04'
+      - 'ubuntu:20.04-ESM'
+      - 'ubuntu:20.10'
+      - 'ubuntu:21.04'
+      - 'ubuntu:21.10'
+      - 'ubuntu:22.04'
+      - 'ubuntu:22.10'
+      - 'ubuntu:23.04'
+      - 'ubuntu:23.10'
+      - 'ubuntu:24.04'
+      - 'ubuntu:24.10'
+      - 'ubuntu:25.04'
+      - 'ubuntu:25.10'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

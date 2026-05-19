@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0191 — Mass File Rename (lockbit2)'
+id: 54c28a9c-b15c-53ba-a028-1358cbd15f29
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by lockbit2.
+  Incident: dragnet-ransomware-2021-0191
+  Ransomware victim claim by lockbit2: chatrium.com; sector: Hospitality and Tourism
+  First observed: 2021-11-07.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2026-1645 — Ransomware C2 Communication'
+id: ee1b21fc-112a-5001-a3f1-3bfb0da7632a
+status: stable
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2026-1645
+  Ransomware victim claim by tridentlocker: RT Software; country: GB; sector: Technology
+  First observed: 2026-04-26.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://tridentfrdy6jydwywfx4vx422vnto7pktao2gyx2qdcwjanogq454ad.onion/article/2aa40bd7-8408-431d-859f-529cc367e255
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://tridentfrdy6jydwywfx4vx422vnto7pktao2gyx2qdcwjanogq454ad.onion/article/2aa40bd7-8408-431d-859f-529cc367e255'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

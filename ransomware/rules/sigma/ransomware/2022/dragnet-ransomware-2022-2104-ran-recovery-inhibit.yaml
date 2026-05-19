@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2104 — Recovery Inhibition (bianlian)'
+id: 0a780f16-49e5-5e0b-80eb-dd89804fbe68
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with bianlian ransomware.
+  Incident: dragnet-ransomware-2022-2104
+  Ransomware victim claim by bianlian: Anderson Insurance Associates; sector: Financial Services
+  First observed: 2022-07-14.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4543 — Mass File Rename (toufan)'
+id: 81f8c11b-815c-5023-b033-3117886342ce
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by toufan.
+  Incident: dragnet-ransomware-2023-4543
+  Ransomware victim claim by toufan: vehicle.touch-ins.co.il; country: IL; sector: Transportation/Logistics
+  First observed: 2023-12-19.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

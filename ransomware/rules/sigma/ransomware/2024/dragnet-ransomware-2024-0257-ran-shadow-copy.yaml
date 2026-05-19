@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0257 — Shadow Copy Deletion (ransomhub)'
+id: 511cfc0c-570b-5782-b166-603c9f1d7310
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with ransomhub ransomware.
+  Incident: dragnet-ransomware-2024-0257
+  Ransomware victim claim by ransomhub: www.tigre.gob.ar; country: AR; sector: Public Sector
+  First observed: 2024-10-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ransomxifxwc5eteopdobynonjctkxxvap77yqifu2emfbecgbqdw6qd.onion/820d0ffd-b939-4ae2-9a45-925a149c38a7/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

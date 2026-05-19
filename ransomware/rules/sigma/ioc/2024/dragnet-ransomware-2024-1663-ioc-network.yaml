@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-1663 — Ransomware C2 Communication'
+id: 463784f9-2861-58bf-a65f-593e3b1c3fb0
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-1663
+  Ransomware victim claim by lynx: Banco de Fomento Internacional; country: VE; sector: Financial Services
+  First observed: 2024-11-06.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lynxblog.net/leaks/672ad2d8dab69e0ba2c4ab6e
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lynxblog.net/leaks/672ad2d8dab69e0ba2c4ab6e'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

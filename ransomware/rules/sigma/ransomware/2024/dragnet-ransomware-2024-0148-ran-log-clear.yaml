@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0148 — Event Log Clearing (kairos)'
+id: 58c9d9d1-fa7f-526a-9f88-b751d91332e6
+status: experimental
+description: |
+  Detects event log clearing associated with kairos ransomware.
+  Incident: dragnet-ransomware-2024-0148
+  Ransomware victim claim by kairos: eisenhowerlaw.com; country: US; sector: Business Services
+  First observed: 2024-12-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nerqnacjmdy3obvevyol7qhazkwkv57dwqvye5v46k5bcujtfa6sduad.onion/detail?code=eisenhowerlaw-com-usa-1tb-
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

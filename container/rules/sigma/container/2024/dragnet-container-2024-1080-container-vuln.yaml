@@ -1,0 +1,45 @@
+title: 'Dragnet [Container]: dragnet-container-2024-1080 — Vulnerable Base Image Pull'
+id: 7a54aae1-6432-5c51-bdfc-32158c072a6d
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-1080 (Tier 2, CVSS 9.8)
+  An issue was discovered in zlib_decompress_extra in modules/demux/mkv/util.cpp in VideoLAN VLC media player 3.x through 3.0.7. The Matroska demuxer, while parsing a malformed MKV file type, has a double free.
+  First observed: 2024-11-21.
+references:
+  - http://git.videolan.org/?p=vlc.git%3Ba=commit%3Bh=81023659c7de5ac2637b4a879195efef50846102
+  - http://lists.opensuse.org/opensuse-security-announce/2019-08/msg00005.html
+  - http://lists.opensuse.org/opensuse-security-announce/2019-08/msg00037.html
+  - http://lists.opensuse.org/opensuse-security-announce/2019-08/msg00040.html
+  - http://lists.opensuse.org/opensuse-security-announce/2019-08/msg00081.html
+  - http://www.securityfocus.com/bid/108882
+  - https://security.gentoo.org/glsa/201908-23
+  - https://ubuntu.com/security/notices/USN-4074-1
+  - https://usn.ubuntu.com/4074-1/
+  - https://www.cve.org/CVERecord?id=CVE-2019-12874
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+      - 'debian:8'
+      - 'debian:9'
+      - 'ubuntu:16.04-ESM'
+      - 'ubuntu:18.04'
+      - 'ubuntu:18.04-ESM'
+      - 'ubuntu:19.04'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

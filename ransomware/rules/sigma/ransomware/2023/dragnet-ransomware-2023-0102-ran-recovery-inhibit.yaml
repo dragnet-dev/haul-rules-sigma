@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0102 — Recovery Inhibition (meow)'
+id: 3d04d7c1-595a-54d0-b249-baf307b30f14
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with meow ransomware.
+  Incident: dragnet-ransomware-2023-0102
+  Ransomware victim claim by meow: Bladen County Public Library; sector: Education
+  First observed: 2023-12-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://meow6xanhzfci2gbkn3lmbqq7xjjufskkdfocqdngt3ltvzgqpsg5mid.onion/story/bladen-county-public-library
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

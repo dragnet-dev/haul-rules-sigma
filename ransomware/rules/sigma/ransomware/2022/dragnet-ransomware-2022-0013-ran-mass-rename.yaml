@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-0013 — Mass File Rename (lorenz)'
+id: 94254278-fcaf-56fb-9ac5-06eec0b2b23a
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by lorenz.
+  Incident: dragnet-ransomware-2022-0013
+  Ransomware victim claim by lorenz: Hensoldt; sector: Not Found
+  First observed: 2022-01-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://snatchteam.top/news.php?id=5158aeee-a4a2-49d7-94cf-f464f44edbfb
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

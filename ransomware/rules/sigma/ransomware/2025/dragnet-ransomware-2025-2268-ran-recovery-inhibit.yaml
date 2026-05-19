@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2268 — Recovery Inhibition (arcusmedia)'
+id: d7cca6dd-3a7a-5d2c-bbbe-b74b30b5968a
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with arcusmedia ransomware.
+  Incident: dragnet-ransomware-2025-2268
+  Ransomware victim claim by arcusmedia: Road Development Corporation; country: MV; sector: Construction
+  First observed: 2025-05-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://arcuufpr5xxbbkin4mlidt7itmr6znlppk63jbtkeguuhszmc5g7qdyd.onion/?p=480
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

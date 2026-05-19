@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-6427 — Ransomware C2 Communication'
+id: 4ff03f6f-5990-5fc2-85d7-e73d04d2953b
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-6427
+  Ransomware victim claim by lynx: Farmo Res; country: IT; sector: Agriculture and Food Production
+  First observed: 2025-04-23.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lynxblog.net/leaks/68092b45d5daa03fd34b4b9b
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lynxblog.net/leaks/68092b45d5daa03fd34b4b9b'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

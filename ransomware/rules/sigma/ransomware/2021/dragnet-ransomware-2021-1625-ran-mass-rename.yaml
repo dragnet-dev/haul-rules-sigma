@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1625 — Mass File Rename (cuba)'
+id: b65431be-eb62-549a-a387-0a3ba8faddbc
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by cuba.
+  Incident: dragnet-ransomware-2021-1625
+  Ransomware victim claim by cuba: squamish; sector: Not Found
+  First observed: 2021-12-30.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5816 — Recovery Inhibition (handala)'
+id: d88198d5-0bc6-57d1-8caf-0e98f2b1ef0c
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with handala ransomware.
+  Incident: dragnet-ransomware-2024-5816
+  Ransomware victim claim by handala: Zerto Security; sector: Technology
+  First observed: 2024-06-23.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://handala.to/zerto-security-hacked/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

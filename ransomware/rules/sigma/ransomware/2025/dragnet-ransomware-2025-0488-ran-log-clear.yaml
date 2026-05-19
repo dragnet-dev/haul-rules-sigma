@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0488 — Event Log Clearing (pear)'
+id: 270815c0-b5cb-582e-9b89-caf9a41a972c
+status: experimental
+description: |
+  Detects event log clearing associated with pear ransomware.
+  Incident: dragnet-ransomware-2025-0488
+  Ransomware victim claim by pear: Riddell Law Group; country: US; sector: Business Services
+  First observed: 2025-10-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://peargxn3oki34c4savcbcfqofjjwjnnyrlrbszfv6ujlx36mhrh57did.onion/Companies/rlglawfirm
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

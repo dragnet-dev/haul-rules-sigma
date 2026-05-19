@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-1864 — Ransomware C2 Communication'
+id: b7273f47-be69-5435-90a5-08b1e1678c1d
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-1864
+  Ransomware victim claim by lynx: Riverside Resort Hotel and Casino; country: US; sector: Hospitality and Tourism
+  First observed: 2024-07-23.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lynxblogmx3rbiwg3rpj4nds25hjsnrwkpxt5gaznetfikz4gz2csyad.onion/leaks/66aa726ce7861ae72f2245a3
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lynxblogmx3rbiwg3rpj4nds25hjsnrwkpxt5gaznetfikz4gz2csyad.onion/leaks/66aa726ce7861ae72f2245a3'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

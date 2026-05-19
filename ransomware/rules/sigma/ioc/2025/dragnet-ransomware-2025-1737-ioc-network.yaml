@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-1737 — Ransomware C2 Communication'
+id: d064e80e-a4cd-5477-accb-1703c1736ed9
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-1737
+  Ransomware victim claim by BrainCipher: bmsi.org; country: US; sector: Not Found
+  First observed: 2025-09-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://vkvsgl7lhipjirmz6j5ubp3w3bwvxgcdbpi3fsbqngfynetqtw4w5hyd.onion/s/PjoNQ73y8DVTRy6kaTd8NP9CMCiaxEnkjS8ydpKkPc53buBGOMmYxdwrfHn7bBOobjqFWpvN4fUZP9Dpp4733lwblJQQk1t
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://vkvsgl7lhipjirmz6j5ubp3w3bwvxgcdbpi3fsbqngfynetqtw4w5hyd.onion/s/PjoNQ73y8DVTRy6kaTd8NP9CMCiaxEnkjS8ydpKkPc53buBGOMmYxdwrfHn7bBOobjqFWpvN4fUZP9Dpp4733lwblJQQk1t'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

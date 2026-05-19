@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-2110 — Mass File Rename (rhysida)'
+id: a399eb0f-c51d-515c-87f0-cf0314d5e318
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by rhysida.
+  Incident: dragnet-ransomware-2023-2110
+  Ransomware victim claim by rhysida: Camara Municipal de Gondomar; country: PT; sector: Public Sector
+  First observed: 2023-10-06.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://rhysidafc6lm7qa2mkiukbezh7zuth3i4wof4mh2audkymscjm6yegad.onion/archive.php?company=51
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

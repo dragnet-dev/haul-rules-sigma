@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0248 — Recovery Inhibition (cyclops)'
+id: 706c2e93-8378-543b-b052-2d5620bd2c61
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with cyclops ransomware.
+  Incident: dragnet-ransomware-2023-0248
+  Ransomware victim claim by cyclops: Pechexport; country: CN; sector: Agriculture and Food Production
+  First observed: 2023-07-20.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

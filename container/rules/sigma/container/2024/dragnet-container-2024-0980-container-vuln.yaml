@@ -1,0 +1,35 @@
+title: 'Dragnet [Container]: dragnet-container-2024-0980 — Vulnerable Base Image Pull'
+id: 06c92098-7ef6-5bd4-bd53-fa70a2a002e7
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-0980 (Tier 2, CVSS 9.8)
+  duck before 0.10 did not properly handle loading of untrusted code from the current directory.
+  First observed: 2024-11-21.
+references:
+  - https://anonscm.debian.org/cgit/collab-maint/duck.git/commit/?id=b43b5bbf07973c54b8f1c581a941f4facc97177a (0.10)
+  - https://salsa.debian.org/debian/duck/-/commit/b43b5bbf07973c54b8f1c581a941f4facc97177a
+  - https://www.cve.org/CVERecord?id=CVE-2016-1239
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+      - 'debian:8'
+      - 'ubuntu:16.04'
+      - 'ubuntu:16.04-ESM'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3835 — Recovery Inhibition (blackbyte)'
+id: 88b7be7c-6be2-5886-96cf-464fb6445bbc
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with blackbyte ransomware.
+  Incident: dragnet-ransomware-2025-3835
+  Associated with BlackByte.
+  Ransomware victim claim by blackbyte: Cpat Flex; country: BR; sector: Telecommunication
+  First observed: 2025-07-30.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+  - dragnet.actor.blackbyte
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-0813 — Mass File Rename (vicesociety)'
+id: 6f070a6a-9f8f-5ee5-a375-06514c706726
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by vicesociety.
+  Incident: dragnet-ransomware-2022-0813
+  Ransomware victim claim by vicesociety: Plascar Participacoes Industriais; sector: Manufacturing
+  First observed: 2022-11-29.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

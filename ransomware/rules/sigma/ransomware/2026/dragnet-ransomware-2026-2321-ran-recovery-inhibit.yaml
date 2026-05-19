@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2321 — Recovery Inhibition (vect)'
+id: c1abdb7a-cd08-56d9-8579-496ea6666348
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with vect ransomware.
+  Incident: dragnet-ransomware-2026-2321
+  Ransomware victim claim by vect: ApexHospitals; country: IN; sector: Healthcare
+  First observed: 2026-02-19.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

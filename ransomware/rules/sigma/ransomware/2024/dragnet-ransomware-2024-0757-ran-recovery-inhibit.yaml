@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0757 — Recovery Inhibition (blacksuit)'
+id: 4a3a8262-956a-53b5-a790-022ec1e47a04
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with blacksuit ransomware.
+  Incident: dragnet-ransomware-2024-0757
+  Ransomware victim claim by blacksuit: WALKERSANDFORD; country: GB; sector: Business Services
+  First observed: 2024-03-12.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?id=KLcgdMcfUCFoDWAo
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

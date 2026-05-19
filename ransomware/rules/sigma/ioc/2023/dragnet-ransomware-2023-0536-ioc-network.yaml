@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-0536 — Ransomware C2 Communication'
+id: 480754fe-cf79-57eb-ab27-b46ccae5f6fa
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-0536
+  Ransomware victim claim by lockbit3: decrolyamericano.edu.gt; country: GT; sector: Education
+  First observed: 2023-08-22.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lockbitapt6vx57t3eeqjofwgcglmutr3a35nygvokja5uuccip4ykyd.onion/post/FzKVVCdrptPohXqB64e4ac05759c3
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lockbitapt6vx57t3eeqjofwgcglmutr3a35nygvokja5uuccip4ykyd.onion/post/FzKVVCdrptPohXqB64e4ac05759c3'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

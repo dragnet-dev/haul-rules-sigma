@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5491 — Event Log Clearing (helldown)'
+id: 47c36368-c0e3-5010-ad2a-91e523b551dd
+status: experimental
+description: |
+  Detects event log clearing associated with helldown ransomware.
+  Incident: dragnet-ransomware-2024-5491
+  Ransomware victim claim by helldown: children; country: IN; sector: Consumer Services
+  First observed: 2024-10-12.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://onyxcym4mjilrsptk5uo2dhesbwntuban55mvww2olk5ygqafhu3i3yd.onion/a197b1ba.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

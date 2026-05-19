@@ -1,0 +1,36 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5044 — Event Log Clearing (cicada3301)'
+id: af5e740f-8b10-5d72-835d-0cbcdbbac657
+status: experimental
+description: |
+  Detects event log clearing associated with cicada3301 ransomware.
+  Incident: dragnet-ransomware-2024-5044
+  Associated with menuPass.
+  Ransomware victim claim by cicada3301: Bayou DeSiard Country Club; country: US; sector: Hospitality and Tourism
+  First observed: 2024-09-05.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://cicadabv7vicyvgz5khl7v2x5yygcgow7ryy6yppwmxii4eoobdaztqd.onion/vlytj5el7tj8pw5klue1ic9ierz8tn5x
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+  - dragnet.actor.menupass
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

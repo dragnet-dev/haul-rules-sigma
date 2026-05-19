@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7857 — Mass File Rename (clop)'
+id: c4d9de7c-4384-5f1a-bf0d-18b0ec16046e
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by clop.
+  Incident: dragnet-ransomware-2025-7857
+  Ransomware victim claim by clop: CARGLASS.DE; country: DE; sector: Consumer Services
+  First observed: 2025-11-13.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://santat7kpllt6iyvqbr7q4amdv6dzrh6paatvyrzl7ry3zm72zigf4ad.onion/carglass-de
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

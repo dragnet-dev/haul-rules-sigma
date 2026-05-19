@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6446 — Mass File Rename (kairos)'
+id: a0dd2583-3854-5d18-ab9a-7f998c34e6e3
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by kairos.
+  Incident: dragnet-ransomware-2025-6446
+  Ransomware victim claim by kairos: ekonomipoolen.se/Sweden/32/GB; country: SE; sector: Business Services
+  First observed: 2025-09-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nerqnacjmdy3obvevyol7qhazkwkv57dwqvye5v46k5bcujtfa6sduad.onion/detail?code=ekonomipoolen-se-sweden-32-gb
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

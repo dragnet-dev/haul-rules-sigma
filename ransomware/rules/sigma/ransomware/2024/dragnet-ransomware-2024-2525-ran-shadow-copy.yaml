@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2525 — Shadow Copy Deletion (babuk2)'
+id: 1574ce10-e423-5606-a202-e650154e19d9
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with babuk2 ransomware.
+  Incident: dragnet-ransomware-2024-2525
+  Ransomware victim claim by babuk2: kominfo.go.id; country: ID; sector: Public Sector
+  First observed: 2024-07-01.
+  Confidence: 90% (ransomware_live).
+references:
+  - http:/bxwu33iefqfc3rxigynn3ghvq4gdw3gxgxna5m4aa3o4vscdeeqhiqad.onion/blog/ef6c76b6b5b16d083e8d389d65a557f0508753cdf9d6c9587a50f8e6141ffd45/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

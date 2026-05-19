@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7912 — Mass File Rename (embargo)'
+id: 54b09522-a10a-5153-9e93-82e2cd1045d2
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by embargo.
+  Incident: dragnet-ransomware-2025-7912
+  Ransomware victim claim by embargo: Insider Technologies Limited; country: GB; sector: Technology
+  First observed: 2025-02-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://embargobe3n5okxyzqphpmk3moinoap2snz5k6765mvtkk7hhi544jid.onion/#/post/56
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

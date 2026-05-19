@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-4282 — Ransomware C2 Communication'
+id: e208496b-a3d8-5c5d-a5aa-77428a379d5b
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-4282
+  Ransomware victim claim by alphv: The Dufresne Group - DSG - ASHLEY HOMESTORES; country: CA; sector: Consumer Services
+  First observed: 2023-06-18.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://alphvmmm27o3abo3r2mlmjrpdmzle3rykajqc5xsj7j7ejksbpsa36ad.onion/506b0e52-5cfd-4d6d-b9cd-721e9bb93ea4
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://alphvmmm27o3abo3r2mlmjrpdmzle3rykajqc5xsj7j7ejksbpsa36ad.onion/506b0e52-5cfd-4d6d-b9cd-721e9bb93ea4'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

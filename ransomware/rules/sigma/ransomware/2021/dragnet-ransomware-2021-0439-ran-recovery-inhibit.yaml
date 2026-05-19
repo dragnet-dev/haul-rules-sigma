@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0439 — Recovery Inhibition (lapsus$)'
+id: b27c0ada-f450-5b7a-8f94-e92c02c2eb73
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with lapsus$ ransomware.
+  Incident: dragnet-ransomware-2021-0439
+  Associated with LAPSUS$.
+  Ransomware victim claim by lapsus$: Brazilian Ministry of Health; country: BR; sector: Public Sector
+  First observed: 2021-12-10.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+  - dragnet.actor.lapsus
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

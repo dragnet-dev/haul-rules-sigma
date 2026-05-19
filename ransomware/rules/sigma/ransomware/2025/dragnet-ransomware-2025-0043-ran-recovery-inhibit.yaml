@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0043 — Recovery Inhibition (kairos)'
+id: cdd14683-90fd-5de5-a742-356381bbd16c
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with kairos ransomware.
+  Incident: dragnet-ransomware-2025-0043
+  Ransomware victim claim by kairos: toitoiusa.com; country: US; sector: Education
+  First observed: 2025-02-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nerqnacjmdy3obvevyol7qhazkwkv57dwqvye5v46k5bcujtfa6sduad.onion/detail?code=toitoiusa-com-usa-15gb
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

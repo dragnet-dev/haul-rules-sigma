@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2235 — Shadow Copy Deletion (incransom)'
+id: 1d8196dc-7f87-5c63-8690-3d8467a43377
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with incransom ransomware.
+  Incident: dragnet-ransomware-2024-2235
+  Ransomware victim claim by incransom: JFK Financial Inc.; country: US; sector: Financial Services
+  First observed: 2024-04-30.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://incblog7vmuq7rktic73r4ha4j757m3ptym37tyvifzp2roedyyzzxid.onion/blog/leak/4305DFC1669B1B9E
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

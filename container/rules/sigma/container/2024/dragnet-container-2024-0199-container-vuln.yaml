@@ -1,0 +1,32 @@
+title: 'Dragnet [Container]: dragnet-container-2024-0199 — Vulnerable Base Image Pull'
+id: a73a3e38-7d84-56b8-9e6d-ff9509314af4
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-0199 (Tier 2, CVSS 9.8)
+  The htdocs/index.php?mainmenu=home login page in Dolibarr 10.0.6 allows an unlimited rate of failed authentication attempts.
+  First observed: 2024-11-21.
+references:
+  - http://packetstormsecurity.com/files/163541/Dolibarr-ERP-CRM-10.0.6-Login-Brute-Forcer.html
+  - https://github.com/Dolibarr/dolibarr
+  - https://github.com/tufangungor/tufangungor.github.io/blob/master/_posts/2020-01-19-dolibarr-10.0.6-brute-force.md
+  - https://nvd.nist.gov/vuln/detail/CVE-2020-7995
+  - https://tufangungor.github.io/exploit/2020/01/18/dolibarr-10.0.6-brute-force.html
+  - https://www.cve.org/CVERecord?id=CVE-2020-7995
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'ubuntu:16.04-ESM'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

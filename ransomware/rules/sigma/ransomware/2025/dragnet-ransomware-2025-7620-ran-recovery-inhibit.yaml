@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7620 — Recovery Inhibition (frag)'
+id: 181ccc73-6069-5246-b0e6-c68373cc5368
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with frag ransomware.
+  Incident: dragnet-ransomware-2025-7620
+  Ransomware victim claim by frag: Evasa; country: ES; sector: Business Services
+  First observed: 2025-06-11.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

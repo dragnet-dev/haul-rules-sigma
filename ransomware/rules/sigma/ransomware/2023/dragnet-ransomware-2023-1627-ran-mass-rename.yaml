@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1627 — Mass File Rename (ransomexx)'
+id: 2807bff2-3d1b-590c-b1a0-9448f8807ab0
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by ransomexx.
+  Incident: dragnet-ransomware-2023-1627
+  Ransomware victim claim by ransomexx: Telecommunications Services of Trinidad and Tobago (tstt.co.tt); country: TT; sector: Telecommunication
+  First observed: 2023-10-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://rnsm777cdsjrsdlbs4v5qoeppu3px6sb2igmh53jzrx7ipcrbjz5b2ad.onion/1bfbc841708f02a52a9c8c4b0d01ff29117254d1/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2206 — Recovery Inhibition (midas)'
+id: 76d0d3ec-26cd-5466-a55f-a35086ae0541
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with midas ransomware.
+  Incident: dragnet-ransomware-2022-2206
+  Ransomware victim claim by midas: Grcouceiro; sector: Consumer Services
+  First observed: 2022-03-15.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

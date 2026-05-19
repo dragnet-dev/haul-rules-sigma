@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-5187 — Recovery Inhibition (karakurt)'
+id: 463b1f59-9da4-5aa4-a596-04c0a20a1c47
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with karakurt ransomware.
+  Incident: dragnet-ransomware-2023-5187
+  Ransomware victim claim by karakurt: York County School of Technology; sector: Education
+  First observed: 2023-05-15.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

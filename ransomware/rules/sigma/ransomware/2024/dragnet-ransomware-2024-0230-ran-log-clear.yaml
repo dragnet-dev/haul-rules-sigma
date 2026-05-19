@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0230 — Event Log Clearing (redransomware)'
+id: 1740b0f5-e25f-5ae8-9420-d03538b2fb8c
+status: deprecated
+description: |
+  Detects event log clearing associated with redransomware ransomware.
+  Incident: dragnet-ransomware-2024-0230
+  Ransomware victim claim by redransomware: Sullairargentina.com; country: AG; sector: Manufacturing
+  First observed: 2024-05-17.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0169 — Recovery Inhibition (egregor)'
+id: 8f1c5bb6-f66a-568d-925e-0d534496590c
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with egregor ransomware.
+  Incident: dragnet-ransomware-2020-0169
+  Ransomware victim claim by egregor: SN Servicing Corporation; country: US; sector: Financial Services
+  First observed: 2020-10-15.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

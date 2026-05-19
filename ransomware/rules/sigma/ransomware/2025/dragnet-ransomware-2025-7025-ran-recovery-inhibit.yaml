@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7025 — Recovery Inhibition (kairos)'
+id: 3bec8102-656f-52d3-b164-7e08651121f3
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with kairos ransomware.
+  Incident: dragnet-ransomware-2025-7025
+  Ransomware victim claim by kairos: wilsenergy.com/USA/77.1GB; country: US; sector: Energy
+  First observed: 2025-10-02.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nerqnacjmdy3obvevyol7qhazkwkv57dwqvye5v46k5bcujtfa6sduad.onion/detail?code=wilsenergy-com-usa-77-1gb
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

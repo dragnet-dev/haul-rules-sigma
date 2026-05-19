@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5974 — Mass File Rename (cloak)'
+id: fa36cd6c-6873-5ed1-b648-2212c1168fd0
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by cloak.
+  Incident: dragnet-ransomware-2024-5974
+  Ransomware victim claim by cloak: Forgepresion.com; country: US; sector: Manufacturing
+  First observed: 2024-02-12.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

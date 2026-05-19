@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-4289 — Recovery Inhibition (blacksuit)'
+id: b5e95889-52d0-5377-92db-712479626bb1
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with blacksuit ransomware.
+  Incident: dragnet-ransomware-2024-4289
+  Ransomware victim claim by blacksuit: Western Municipal Construction; country: US; sector: Business Services
+  First observed: 2024-02-07.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?id=Cg9aUMYkpBa5QRpP
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

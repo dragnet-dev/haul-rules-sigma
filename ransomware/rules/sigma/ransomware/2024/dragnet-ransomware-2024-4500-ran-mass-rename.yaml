@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-4500 — Mass File Rename (dAn0n)'
+id: ab4a5cd3-39e0-5685-ac8a-65e0df960d49
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by dAn0n.
+  Incident: dragnet-ransomware-2024-4500
+  Ransomware victim claim by dAn0n: Semilab; country: US; sector: Technology
+  First observed: 2024-04-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://2c7nd54guzi6xhjyqrj5kdkrq2ngm2u3e6oy4nfhn3wm3r54ul2utiqd.onion/JMXXNOS_O6l6SlcIXiSnznHlENFKQFqbeLuqT2H0drM/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

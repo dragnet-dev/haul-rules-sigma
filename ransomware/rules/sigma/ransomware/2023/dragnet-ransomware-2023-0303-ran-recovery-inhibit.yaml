@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0303 — Recovery Inhibition (bianlian)'
+id: 6eb9d4e3-a5a7-531a-bf65-342090683ba7
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with bianlian ransomware.
+  Incident: dragnet-ransomware-2023-0303
+  Ransomware victim claim by bianlian: Fibertec; sector: Business Services
+  First observed: 2023-02-17.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

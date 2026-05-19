@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-0579 — Recovery Inhibition (lamashtu)'
+id: 77f44e7a-12ef-5258-8c3a-4c3ed5fef59b
+status: stable
+description: |
+  Detects boot/recovery disabling associated with lamashtu ransomware.
+  Incident: dragnet-ransomware-2026-0579
+  Ransomware victim claim by lamashtu: The Seacare Hotel; country: SG; sector: Hospitality and Tourism
+  First observed: 2026-04-13.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lamashtux5j74mcm7lwwgn5yrvuwtrpxjoyendif3v3hrztjesfoyayd.onion/post/4827194b2b9b26d9a53f62a45e4ddf36
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

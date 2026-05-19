@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7003 — Recovery Inhibition (payoutsking)'
+id: 67c2fd67-287f-5b6a-8d45-e262859d74d3
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with payoutsking ransomware.
+  Incident: dragnet-ransomware-2025-7003
+  Ransomware victim claim by payoutsking: Sofo Foods; country: US; sector: Agriculture and Food Production
+  First observed: 2025-08-05.
+  Confidence: 90% (ransomware_live).
+references:
+  - https:/payoutsgn7cy6uliwevdqspncjpfxpmzgirwl2au65la7rfs5x3qnbqd.onion/detail_post/D4OWGfMsgjgXMcZkj0GM
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

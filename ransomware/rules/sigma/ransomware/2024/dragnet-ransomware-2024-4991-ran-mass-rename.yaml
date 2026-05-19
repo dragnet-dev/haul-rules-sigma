@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-4991 — Mass File Rename (bianlian)'
+id: 59d09dce-d922-5c44-8509-15bf6fa71bcd
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by bianlian.
+  Incident: dragnet-ransomware-2024-4991
+  Ransomware victim claim by bianlian: Azteca Tax Systems; country: US; sector: Business Services
+  First observed: 2024-05-01.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://bianlivemqbawcco4cx4a672k2fip3guyxudzurfqvdszafam3ofqgqd.onion/companies/aztecataxsystems.com
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1434 — Mass File Rename (8base)'
+id: fa8bea3b-db9f-5482-9509-0ba792a27503
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by 8base.
+  Incident: dragnet-ransomware-2025-1434
+  Ransomware victim claim by 8base: CED Solutions Computer IT Training Centers; country: US; sector: Technology
+  First observed: 2025-01-07.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://xfycpauc22t5jsmfjcaz2oydrrrfy75zuk6chr32664bsscq4fgyaaqd.onion/company/7890503
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

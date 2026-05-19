@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1393 — Event Log Clearing (mallox)'
+id: 351ee5d2-168d-52f6-be43-e97ed539420a
+status: deprecated
+description: |
+  Detects event log clearing associated with mallox ransomware.
+  Incident: dragnet-ransomware-2023-1393
+  Ransomware victim claim by mallox: West Cargo; sector: Transportation/Logistics
+  First observed: 2023-07-27.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

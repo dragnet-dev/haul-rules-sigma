@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0506 — Recovery Inhibition (nova)'
+id: b384e0fc-903c-54cb-ba0a-b656d0396a13
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with nova ransomware.
+  Incident: dragnet-ransomware-2025-0506
+  Ransomware victim claim by nova: Élan Sportif Nantes; country: FR; sector: Education
+  First observed: 2025-03-25.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://novavdivko2zvtrvtllnq45lxhba2rfzp76qigb4nrliklem5au7czqd.onion/#
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

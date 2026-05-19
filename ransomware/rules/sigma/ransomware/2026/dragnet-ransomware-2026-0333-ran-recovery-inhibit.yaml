@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-0333 — Recovery Inhibition (vect)'
+id: 2e136b7f-c0ef-5891-8ef5-c248dbc3e355
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with vect ransomware.
+  Incident: dragnet-ransomware-2026-0333
+  Ransomware victim claim by vect: Mutualista Imbabura; country: EC; sector: Financial Services
+  First observed: 2026-02-13.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4981 — Event Log Clearing (werewolves)'
+id: f7de60b8-b25c-5181-ac2d-b486f530287a
+status: experimental
+description: |
+  Detects event log clearing associated with werewolves ransomware.
+  Incident: dragnet-ransomware-2023-4981
+  Ransomware victim claim by werewolves: interfides.de; country: DE; sector: Business Services
+  First observed: 2023-05-25.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://werewolves.pro/en/metalnet-nl.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

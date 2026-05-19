@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1880 — Recovery Inhibition (d4rk4rmy)'
+id: e0ba9017-03ce-529c-9354-705cfb3f2c9e
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with d4rk4rmy ransomware.
+  Incident: dragnet-ransomware-2025-1880
+  Ransomware victim claim by d4rk4rmy: BIG ROCK RESORT; country: US; sector: Hospitality and Tourism
+  First observed: 2025-08-03.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://d4rkd2fybtclo44hss2dpqpw7gmofboxhruax2az3uejw7puxxbpkvqd.onion/?p=263
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

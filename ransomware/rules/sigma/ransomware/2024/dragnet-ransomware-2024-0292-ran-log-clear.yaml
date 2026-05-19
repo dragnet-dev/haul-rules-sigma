@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0292 — Event Log Clearing (sensayq)'
+id: 9ec23166-fc08-532e-b7aa-bcc2989ad2bf
+status: experimental
+description: |
+  Detects event log clearing associated with sensayq ransomware.
+  Incident: dragnet-ransomware-2024-0292
+  Ransomware victim claim by sensayq: Premium Broking House; country: IN; sector: Financial Services
+  First observed: 2024-06-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://159.69.60.54/r/d0GbgAmYUqwQvYnyAfck3b5gqvuiTCpZfAsO9eyFd4xNuYYM2AzNyZ23hINnmQrJbt+hQEMUyP1N6+C08VURjdm81M3lS
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

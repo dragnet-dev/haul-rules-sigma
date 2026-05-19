@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2600 — Recovery Inhibition (kelvinsecurity)'
+id: 1af34d3e-3d2c-55a8-a634-ef61caf1fced
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with kelvinsecurity ransomware.
+  Incident: dragnet-ransomware-2022-2600
+  Ransomware victim claim by kelvinsecurity: Nestle; sector: Agriculture and Food Production
+  First observed: 2022-04-01.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0018 — Recovery Inhibition (darkside)'
+id: e6d22dd5-4e91-503d-9b22-8476a28cbfbd
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with darkside ransomware.
+  Incident: dragnet-ransomware-2021-0018
+  Ransomware victim claim by darkside: Discount Car and Truck Rentals; country: CA; sector: Transportation/Logistics
+  First observed: 2021-02-01.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

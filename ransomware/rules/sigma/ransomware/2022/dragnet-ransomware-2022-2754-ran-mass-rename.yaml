@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2754 — Mass File Rename (karakurt)'
+id: 99b42237-71cd-5973-8ef7-8fc4abfc06c8
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by karakurt.
+  Incident: dragnet-ransomware-2022-2754
+  Ransomware victim claim by karakurt: Cheval Electronic Enclosure; sector: Manufacturing
+  First observed: 2022-12-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://3f7nxkjway3d223j27lyad7v5cgmyaifesycvmwq7i7cbs23lb6llryd.onion/companies/792d8884-86d0-4baa-9317-7661a0517bf0
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

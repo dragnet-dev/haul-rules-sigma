@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2961 — Mass File Rename (mallox)'
+id: 3eea92d3-cd14-5104-ba1a-e716e7ef4bff
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by mallox.
+  Incident: dragnet-ransomware-2024-2961
+  Ransomware victim claim by mallox: integraservices; sector: Business Services
+  First observed: 2024-07-13.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://wtyafjyhwqrgo4a45wdvvwhen3cx4euie73qvlhkhvlrexljoyuklaad.onion/view/IzhD6RipFRMYkHw
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

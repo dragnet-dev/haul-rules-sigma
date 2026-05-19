@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0976 — Recovery Inhibition (lv)'
+id: ef4f43c3-aab8-58ba-af48-d9858f886d7b
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with lv ransomware.
+  Incident: dragnet-ransomware-2021-0976
+  Ransomware victim claim by lv: tt-network.dk; country: DK; sector: Telecommunication
+  First observed: 2021-12-13.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

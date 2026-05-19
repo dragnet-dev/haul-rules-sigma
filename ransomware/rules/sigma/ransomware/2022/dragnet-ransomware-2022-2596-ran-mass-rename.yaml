@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2596 — Mass File Rename (blackbasta)'
+id: 22e6e997-4de4-5be1-bcc4-bb2089f02ce6
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by blackbasta.
+  Incident: dragnet-ransomware-2022-2596
+  Ransomware victim claim by blackbasta: SHI; sector: Technology
+  First observed: 2022-09-07.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

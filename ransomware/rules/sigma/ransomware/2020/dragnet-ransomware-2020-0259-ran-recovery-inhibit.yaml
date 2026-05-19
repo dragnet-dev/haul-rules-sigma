@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0259 — Recovery Inhibition (ragnarlocker)'
+id: 061ab593-b7a5-5e05-a0dd-a131c4f8880a
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with ragnarlocker ransomware.
+  Incident: dragnet-ransomware-2020-0259
+  Ransomware victim claim by ragnarlocker: BIOLOGICAL E. Ltd. (BE) LEAK POST; sector: Agriculture and Food Production
+  First observed: 2020-09-27.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

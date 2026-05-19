@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0963 — Recovery Inhibition (nova)'
+id: 8b9b9e6b-1eba-5cad-9659-5c4c20c3f692
+status: test
+description: |
+  Detects boot/recovery disabling associated with nova ransomware.
+  Incident: dragnet-ransomware-2025-0963
+  Ransomware victim claim by nova: Tele-Fonika Cable Americas; country: US; sector: Telecommunication
+  First observed: 2025-12-09.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://novadmrkp4vbk2padk5t6pbxolndceuc7hrcq4mjaoyed6nxsqiuzyyd.onion/#tele-fonika-cable-americas
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

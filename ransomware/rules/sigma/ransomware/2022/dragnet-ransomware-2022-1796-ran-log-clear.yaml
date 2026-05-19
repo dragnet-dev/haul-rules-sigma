@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-1796 — Event Log Clearing (ragnarlocker)'
+id: 37a7f4eb-646d-562e-821b-02d0659e8cf4
+status: deprecated
+description: |
+  Detects event log clearing associated with ragnarlocker ransomware.
+  Incident: dragnet-ransomware-2022-1796
+  Ransomware victim claim by ragnarlocker: Smith Transport Full Leak; sector: Transportation/Logistics
+  First observed: 2022-03-14.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

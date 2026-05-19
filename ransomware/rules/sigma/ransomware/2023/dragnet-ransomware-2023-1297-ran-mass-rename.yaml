@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1297 — Mass File Rename (ransomhouse)'
+id: 180c29ef-b615-57eb-9189-7fc9c87de426
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by ransomhouse.
+  Incident: dragnet-ransomware-2023-1297
+  Ransomware victim claim by ransomhouse: Banco Promerica de la República Dominicana; country: NI; sector: Financial Services
+  First observed: 2023-12-08.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://zohlm7ahjwegcedoz7lrdrti7bvpofymcayotp744qhx6gjmxbuo2yid.onion/r/f44d557db3f20313a2ee9b4614f60be0eee371f2
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

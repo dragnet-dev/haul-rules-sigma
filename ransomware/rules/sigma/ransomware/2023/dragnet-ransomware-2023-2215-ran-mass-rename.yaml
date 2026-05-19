@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-2215 — Mass File Rename (werewolves)'
+id: 5fcf0c97-4f65-57ef-90a7-40ff34661551
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by werewolves.
+  Incident: dragnet-ransomware-2023-2215
+  Ransomware victim claim by werewolves: metalnet.nl; country: NL; sector: Manufacturing
+  First observed: 2023-05-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://werewolves.pro/en/aek-mk.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

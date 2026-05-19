@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0116 — Event Log Clearing (play)'
+id: dd227d66-53c4-5979-9544-a76162ff45da
+status: deprecated
+description: |
+  Detects event log clearing associated with play ransomware.
+  Incident: dragnet-ransomware-2023-0116
+  Associated with Play.
+  Ransomware victim claim by play: Arnold Clark; sector: Consumer Services
+  First observed: 2023-01-16.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+  - dragnet.actor.play
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

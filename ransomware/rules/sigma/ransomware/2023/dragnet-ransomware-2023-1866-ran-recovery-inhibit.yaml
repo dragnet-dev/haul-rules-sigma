@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1866 — Recovery Inhibition (trigona)'
+id: e3ab7325-885b-5b44-a48a-149b5a3f4d73
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with trigona ransomware.
+  Incident: dragnet-ransomware-2023-1866
+  Ransomware victim claim by trigona: Rolser; sector: Manufacturing
+  First observed: 2023-05-19.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0058 — Recovery Inhibition (lockbit)'
+id: 637026fb-a5d1-5462-91ef-fe07ea667859
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with lockbit ransomware.
+  Incident: dragnet-ransomware-2020-0058
+  Ransomware victim claim by lockbit: Press Trust of India (PTI); country: IN; sector: Technology
+  First observed: 2020-10-21.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

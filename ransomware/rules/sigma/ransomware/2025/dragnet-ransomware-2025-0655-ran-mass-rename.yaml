@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0655 — Mass File Rename (blacklock)'
+id: 83cdf780-d921-5e45-803e-73c156f0ac57
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by blacklock.
+  Incident: dragnet-ransomware-2025-0655
+  Ransomware victim claim by blacklock: Solar City; country: US; sector: Energy
+  First observed: 2025-06-03.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://zdkexsh2e7yihw5uhg5hpsgq3dois2m5je7lzfagij2y6iw5ptl35gyd.onion/Data_Download/xxx
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

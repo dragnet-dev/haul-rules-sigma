@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1936 — Recovery Inhibition (interlock)'
+id: 94c00766-6ec2-5326-8d4b-9520f5fd159d
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with interlock ransomware.
+  Incident: dragnet-ransomware-2025-1936
+  Ransomware victim claim by interlock: Loyola College; country: AU; sector: Education
+  First observed: 2025-08-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ewalffgokvo5x547bygn6c7ne56urhhwrl6q6t34fnryq65qf4oqnoqd.onion/index.php?p=
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

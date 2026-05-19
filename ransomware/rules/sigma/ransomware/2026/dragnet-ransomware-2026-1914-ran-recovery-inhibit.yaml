@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-1914 — Recovery Inhibition (coinbasecartel)'
+id: 2aaab769-2d66-5458-9e65-76c6dfce3e2e
+status: stable
+description: |
+  Detects boot/recovery disabling associated with coinbasecartel ransomware.
+  Incident: dragnet-ransomware-2026-1914
+  Ransomware victim claim by coinbasecartel: Nashua; country: US; sector: Technology
+  First observed: 2026-03-30.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://fjg4zi4opkxkvdz7mvwp7h6goe4tcby3hhkrz43pht4j3vakhy75znyd.onion/companies/nashua
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

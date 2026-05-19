@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5195 — Recovery Inhibition (incransom)'
+id: 61710d5a-b51f-5155-814b-6977260d3779
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with incransom ransomware.
+  Incident: dragnet-ransomware-2024-5195
+  Ransomware victim claim by incransom: North American University; country: US; sector: Education
+  First observed: 2024-01-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://incapt.blog/blog/leak/E204728804744050
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

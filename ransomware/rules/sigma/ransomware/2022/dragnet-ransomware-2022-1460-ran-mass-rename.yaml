@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-1460 — Mass File Rename (kelvinsecurity)'
+id: 14c0c882-4bf9-5296-ad5c-45fee63237cd
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by kelvinsecurity.
+  Incident: dragnet-ransomware-2022-1460
+  Ransomware victim claim by kelvinsecurity: Mansfield Energy; sector: Energy
+  First observed: 2022-05-24.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

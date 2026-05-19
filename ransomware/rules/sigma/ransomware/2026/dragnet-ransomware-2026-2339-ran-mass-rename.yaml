@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2339 — Mass File Rename (handala)'
+id: d62437eb-7415-56bb-ac3e-ff67f90f1c0e
+status: stable
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by handala.
+  Incident: dragnet-ransomware-2026-2339
+  Ransomware victim claim by handala: From Hunter to Hunted: Mossad’s Former Chief Falls into the Trap; country: IL; sector: Not Found
+  First observed: 2026-03-25.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://handala-team.to/from-hunter-to-hunted-mossads-former-chief-falls-into-the-trap/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

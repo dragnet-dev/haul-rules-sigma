@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1793 — Recovery Inhibition (pysa)'
+id: 68e301b0-0e7e-501a-a0ab-47259f2203cc
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with pysa ransomware.
+  Incident: dragnet-ransomware-2021-1793
+  Ransomware victim claim by pysa: Spartanburg & Pelham OB-GYN; sector: Healthcare
+  First observed: 2021-09-13.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

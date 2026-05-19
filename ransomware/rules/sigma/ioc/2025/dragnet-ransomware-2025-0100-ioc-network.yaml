@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-0100 — Ransomware C2 Communication'
+id: ed80936a-d178-5171-b8e3-9cd5f7479957
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-0100
+  Ransomware victim claim by handala: Commemoration of Commander Martyr Reza Awada; sector: Not Found
+  First observed: 2025-10-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://handala-hack.to/commemoration-of-commander-martyr-reza-awada/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'https://handala-hack.to/commemoration-of-commander-martyr-reza-awada/'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

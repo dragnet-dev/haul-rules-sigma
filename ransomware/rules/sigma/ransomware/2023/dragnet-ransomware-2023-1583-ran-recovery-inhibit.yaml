@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1583 — Recovery Inhibition (raworld)'
+id: 7f5d6b4d-84d7-5ee5-9784-f99e9f660fc8
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with raworld ransomware.
+  Incident: dragnet-ransomware-2023-1583
+  Ransomware victim claim by raworld: Target-8; sector: Not Found
+  First observed: 2023-06-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://pa32ymaeu62yo5th5mraikgw5fcvznnsiiwti42carjliarodltmqcqd.onion/posts/target-8/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

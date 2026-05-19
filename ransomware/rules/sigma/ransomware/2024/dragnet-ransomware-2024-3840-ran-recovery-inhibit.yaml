@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3840 — Recovery Inhibition (dragonransomware)'
+id: e7e0fb35-e247-5af3-baf2-fe8c675e0c87
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with dragonransomware ransomware.
+  Incident: dragnet-ransomware-2024-3840
+  Ransomware victim claim by dragonransomware: wahaj-almassa.com; country: SA; sector: Technology
+  First observed: 2024-10-26.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://t.me/DragonRansom/337
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

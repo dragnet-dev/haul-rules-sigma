@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-4594 — Mass File Rename (termite)'
+id: ba6b800f-d143-5d7e-954c-ace55bc934ba
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by termite.
+  Incident: dragnet-ransomware-2024-4594
+  Ransomware victim claim by termite: Lebenshilfe Heinsberg; country: DE; sector: Healthcare
+  First observed: 2024-11-13.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://termiteuslbumdge2zmfmfcsrvmvsfe4gvyudc5j6cdnisnhtftvokid.onion/post/6733ec8333cbcfa7e477029c
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

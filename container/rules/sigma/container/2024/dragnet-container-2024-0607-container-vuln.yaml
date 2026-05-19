@@ -1,0 +1,29 @@
+title: 'Dragnet [Container]: dragnet-container-2024-0607 — Vulnerable Base Image Pull'
+id: a23d3dc9-622e-5d6c-8dc6-fb42723bfc1c
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-0607 (Tier 2, CVSS 9.8)
+  netkit-rcp in rsh-client 0.17-24 allows command injection via filenames because /bin/sh is used by susystem, a related issue to CVE-2006-0225, CVE-2019-7283, and CVE-2020-15778.
+  First observed: 2024-11-21.
+references:
+  - https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1039689
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:10'
+      - 'debian:11'
+      - 'debian:12'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

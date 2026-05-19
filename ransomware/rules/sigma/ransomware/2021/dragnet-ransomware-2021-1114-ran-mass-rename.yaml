@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1114 — Mass File Rename (snatch)'
+id: d977e6f1-1fbd-5995-8d51-f4dd51f7c221
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by snatch.
+  Incident: dragnet-ransomware-2021-1114
+  Ransomware victim claim by snatch: InTown Suites; country: US; sector: Business Services
+  First observed: 2021-12-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://hl66646wtlp2naoqnhattngigjp5palgqmbwixepcjyq5i534acgqyad.onion/news.php?id=9c9a97d1-f0f5-4e09-bcda-a0401bf1129a
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

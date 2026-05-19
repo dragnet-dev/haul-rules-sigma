@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-0461 — Mass File Rename (nitrogen)'
+id: 79253e98-230f-598c-87be-2a2386b0d2e6
+status: test
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by nitrogen.
+  Incident: dragnet-ransomware-2026-0461
+  Ransomware victim claim by nitrogen: QualiChem Metalworking; country: US; sector: Manufacturing
+  First observed: 2026-01-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nitrogenczslprh3xyw6lh5xyjvmsz7ciljoqxxknd7uymkfetfhgvqd.onion/posts/6978df89aa6c2f83ef8de668
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

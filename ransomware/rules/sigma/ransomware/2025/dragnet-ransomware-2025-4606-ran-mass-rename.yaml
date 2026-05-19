@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4606 — Mass File Rename (kairos)'
+id: dcb8d93b-75ae-5994-a9b2-688e6b0c03e5
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by kairos.
+  Incident: dragnet-ransomware-2025-4606
+  Ransomware victim claim by kairos: OCBAR; country: US; sector: Business Services
+  First observed: 2025-10-20.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

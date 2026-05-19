@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-1990 — Event Log Clearing (spacebears)'
+id: b3ec2641-2d10-5d15-9f70-d9465389f4a2
+status: experimental
+description: |
+  Detects event log clearing associated with spacebears ransomware.
+  Incident: dragnet-ransomware-2024-1990
+  Ransomware victim claim by spacebears: Atos (Business Services · France); country: FR; sector: Business Services
+  First observed: 2024-12-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://5butbkrljkaorg5maepuca25oma7eiwo6a2rlhvkblb4v6mf3ki2ovid.onion/companies/45/atos-business-services-france
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

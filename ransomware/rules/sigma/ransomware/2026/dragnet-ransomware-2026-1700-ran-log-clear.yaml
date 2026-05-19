@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-1700 — Event Log Clearing (dragonforce)'
+id: 65531357-298b-53bc-bb86-347a93ca95f1
+status: stable
+description: |
+  Detects event log clearing associated with dragonforce ransomware.
+  Incident: dragnet-ransomware-2026-1700
+  Ransomware victim claim by dragonforce: Apply Capnor; country: NO; sector: Manufacturing
+  First observed: 2026-04-14.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://z3wqggtxft7id3ibr7srivv5gjof5fwg76slewnzwwakjuf3nlhukdid.onion/blog/?post_uuid=698b5229-4f01-4707-a64c-0dc5b42b9a5f
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2731 — Event Log Clearing (karakurt)'
+id: cc7f6176-9c41-5e8f-8653-2ade85181b76
+status: experimental
+description: |
+  Detects event log clearing associated with karakurt ransomware.
+  Incident: dragnet-ransomware-2022-2731
+  Ransomware victim claim by karakurt: Abdullah Al-Othaim Markets; sector: Consumer Services
+  First observed: 2022-12-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://3f7nxkjway3d223j27lyad7v5cgmyaifesycvmwq7i7cbs23lb6llryd.onion/companies/03f2cbe8-82a4-4a6f-97b4-91e665834bbd
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

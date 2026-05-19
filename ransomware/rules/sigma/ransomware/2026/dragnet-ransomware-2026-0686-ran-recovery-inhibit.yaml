@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-0686 — Recovery Inhibition (mnt6)'
+id: c91892c4-d271-58b6-afce-d86026ad2c61
+status: stable
+description: |
+  Detects boot/recovery disabling associated with mnt6 ransomware.
+  Incident: dragnet-ransomware-2026-0686
+  Ransomware victim claim by mnt6: Silfab Solar; country: CA; sector: Energy
+  First observed: 2026-04-30.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ttvbuilv5mf2wggfjgmvin22ndzghpukhsyy6coz3p4wt5nqnxah7tyd.onion/post/7/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

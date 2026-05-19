@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-1558 — Mass File Rename (cicada3301)'
+id: 196fe501-d25f-5662-8880-c3bcd0cb339d
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by cicada3301.
+  Incident: dragnet-ransomware-2024-1558
+  Associated with menuPass.
+  Ransomware victim claim by cicada3301: Tri-Star Display; country: SG; sector: Business Services
+  First observed: 2024-07-25.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://cicadabv7vicyvgz5khl7v2x5yygcgow7ryy6yppwmxii4eoobdaztqd.onion/sqk8s2p5l2c9tnte1945pm4kz4fpbwqx
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+  - dragnet.actor.menupass
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

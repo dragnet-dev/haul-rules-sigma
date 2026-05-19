@@ -1,0 +1,45 @@
+title: 'Dragnet [Container]: dragnet-container-2024-1528 — Vulnerable Base Image Pull'
+id: 42b9640e-366d-5955-837b-50a63682a9f6
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-1528 (Tier 2, CVSS 9.8)
+  PJSIP is a free and open source multimedia communication library written in C. PJSIP versions 2.12 and prior do not parse incoming RTCP feedback RPSI (Reference Picture Selection Indication) packet, but any app that directly uses pjmedia_rtcp_fb_parse_rpsi() will be affected. A patch is available in the `master` branch of the `pjsip/pjproject` GitHub repository. There are currently no known workarounds.
+  First observed: 2024-11-21.
+references:
+  - https://github.com/pjsip/pjproject/commit/11559e49e65bdf00922ad5ae28913ec6a198d508
+  - https://github.com/pjsip/pjproject/security/advisories/GHSA-vhxv-phmx-g52q
+  - https://lists.debian.org/debian-lts-announce/2022/11/msg00021.html
+  - https://security.gentoo.org/glsa/202210-37
+  - https://www.cve.org/CVERecord?id=CVE-2022-24786
+  - https://www.debian.org/security/2022/dsa-5285
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'alpine:3.16'
+      - 'alpine:3.17'
+      - 'alpine:3.18'
+      - 'alpine:3.19'
+      - 'alpine:3.20'
+      - 'alpine:3.21'
+      - 'alpine:3.22'
+      - 'alpine:3.23'
+      - 'alpine edge:'
+      - 'debian:10'
+      - 'debian:11'
+      - 'debian:12'
+      - 'ubuntu:16.04-ESM'
+      - 'ubuntu:18.04-ESM'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

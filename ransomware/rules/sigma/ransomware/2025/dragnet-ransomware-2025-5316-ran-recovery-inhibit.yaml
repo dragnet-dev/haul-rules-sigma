@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5316 — Recovery Inhibition (SilentRansomGroup)'
+id: fc787e13-c8bd-56b2-90e3-605938638be2
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with SilentRansomGroup ransomware.
+  Incident: dragnet-ransomware-2025-5316
+  Ransomware victim claim by SilentRansomGroup: Moore & Van Allen; country: US; sector: Financial Services
+  First observed: 2025-09-03.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

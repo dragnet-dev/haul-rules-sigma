@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0167 — Recovery Inhibition (netwalker)'
+id: 45548a3b-8599-5c87-9ce8-5d79d86d9f6f
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with netwalker ransomware.
+  Incident: dragnet-ransomware-2020-0167
+  Ransomware victim claim by netwalker: Olympia House (Petaluma); country: US; sector: Healthcare
+  First observed: 2020-08-01.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4536 — Recovery Inhibition (killsec)'
+id: e7cf4ed3-d812-5115-a64e-a3ff6f6a059a
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with killsec ransomware.
+  Incident: dragnet-ransomware-2025-4536
+  Ransomware victim claim by killsec: republica federative do brasil; country: BR; sector: Public Sector
+  First observed: 2025-12-15.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

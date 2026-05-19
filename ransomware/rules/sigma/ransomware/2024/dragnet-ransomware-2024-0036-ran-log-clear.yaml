@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0036 — Event Log Clearing (alphalocker)'
+id: 95a13f2c-f49d-5e37-a6e2-6ea4c030ff0a
+status: experimental
+description: |
+  Detects event log clearing associated with alphalocker ransomware.
+  Incident: dragnet-ransomware-2024-0036
+  Ransomware victim claim by alphalocker: https://www.carri.com; country: FR; sector: Transportation/Logistics
+  First observed: 2024-01-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://mydatae2d63il5oaxxangwnid5loq2qmtsol2ozr6vtb7yfm5ypzo6id.onion/blog_1-3
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

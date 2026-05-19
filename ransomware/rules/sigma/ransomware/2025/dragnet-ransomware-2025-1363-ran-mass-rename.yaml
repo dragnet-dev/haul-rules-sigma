@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1363 — Mass File Rename (chaos)'
+id: 5ad6e455-410b-59c5-a6db-9bd539f60d28
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by chaos.
+  Incident: dragnet-ransomware-2025-1363
+  Ransomware victim claim by chaos: farmerbros.com; country: US; sector: Agriculture and Food Production
+  First observed: 2025-02-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://hptqq2o2qjva7lcaaq67w36jihzivkaitkexorauw7b2yul2z6zozpqd.onion/post/LaXUPYIfbMe6UhPQbt8zKwGWBF9HjHVS
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

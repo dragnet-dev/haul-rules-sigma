@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4061 — Mass File Rename (losttrust)'
+id: d4df112a-d411-5292-a528-60c6844c49e2
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by losttrust.
+  Incident: dragnet-ransomware-2023-4061
+  Ransomware victim claim by losttrust: The WorkPlace; sector: Public Sector
+  First observed: 2023-09-26.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

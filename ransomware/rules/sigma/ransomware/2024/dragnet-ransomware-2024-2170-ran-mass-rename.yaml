@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2170 — Mass File Rename (nitrogen)'
+id: ed7f7e86-73cf-542e-9576-5bda53d70a98
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by nitrogen.
+  Incident: dragnet-ransomware-2024-2170
+  Ransomware victim claim by nitrogen: IDEALEASE INC; country: US; sector: Transportation/Logistics
+  First observed: 2024-06-08.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nitrogenczslprh3xyw6lh5xyjvmsz7ciljoqxxknd7uymkfetfhgvqd.onion/posts/66ed6f57ce2ba9c30f964038
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

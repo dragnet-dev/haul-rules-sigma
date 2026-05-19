@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0175 — Event Log Clearing (noname)'
+id: 16e28a5c-b7e0-56d1-ba13-2de932eade8b
+status: experimental
+description: |
+  Detects event log clearing associated with noname ransomware.
+  Incident: dragnet-ransomware-2023-0175
+  Ransomware victim claim by noname: selmi.com.br; country: BR; sector: Agriculture and Food Production
+  First observed: 2023-09-12.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://noname2j6zkgnt7ftxsjju5tfd3s45s4i3egq5bqtl72kgum4ldc6qyd.onion/wp/nerolac-com/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

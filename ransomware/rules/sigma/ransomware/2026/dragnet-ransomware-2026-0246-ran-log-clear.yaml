@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-0246 — Event Log Clearing (chaos)'
+id: e324932b-fd58-5dac-88e2-26d2909f7eb2
+status: stable
+description: |
+  Detects event log clearing associated with chaos ransomware.
+  Incident: dragnet-ransomware-2026-0246
+  Ransomware victim claim by chaos: itc-group.com; country: DE; sector: Business Services
+  First observed: 2026-04-14.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://hptqq2o2qjva7lcaaq67w36jihzivkaitkexorauw7b2yul2z6zozpqd.onion/post/GhKwrjbUfSi9CAxsiPlUSnOSeYeK6DWP
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

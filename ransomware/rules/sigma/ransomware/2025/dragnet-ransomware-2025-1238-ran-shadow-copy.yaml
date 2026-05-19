@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1238 — Shadow Copy Deletion (payoutsking)'
+id: 39467b4a-6309-5843-9de2-e4822b8974c1
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with payoutsking ransomware.
+  Incident: dragnet-ransomware-2025-1238
+  Ransomware victim claim by payoutsking: Time Equities; country: US; sector: Financial Services
+  First observed: 2025-10-22.
+  Confidence: 90% (ransomware_live).
+references:
+  - https:/payoutsgn7cy6uliwevdqspncjpfxpmzgirwl2au65la7rfs5x3qnbqd.onion/post/X7Z1qJAQva5dXYuyPh1L
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

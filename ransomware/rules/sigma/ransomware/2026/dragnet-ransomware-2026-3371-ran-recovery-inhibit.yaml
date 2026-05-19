@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-3371 — Recovery Inhibition (direwolf)'
+id: 0c3ea304-1fab-563f-8fd8-51642bcfe09e
+status: test
+description: |
+  Detects boot/recovery disabling associated with direwolf ransomware.
+  Incident: dragnet-ransomware-2026-3371
+  Ransomware victim claim by direwolf: PernelMedia; country: FR; sector: Consumer Services
+  First observed: 2026-01-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://direwolfcdkv5whaz2spehizdg22jsuf5aeje4asmetpbt6ri4jnd4qd.onion/api/public/articles/55
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0273 — Recovery Inhibition (mallox)'
+id: 2438a6e0-4b0a-5d43-b047-c71df1c57125
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with mallox ransomware.
+  Incident: dragnet-ransomware-2023-0273
+  Ransomware victim claim by mallox: AICHELIN UNITHERM; country: IN; sector: Manufacturing
+  First observed: 2023-03-04.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

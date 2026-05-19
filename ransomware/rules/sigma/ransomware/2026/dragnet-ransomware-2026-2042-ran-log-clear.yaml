@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2042 — Event Log Clearing (blackwater)'
+id: bef78109-f7bc-5d9b-896e-e3bb37495c28
+status: stable
+description: |
+  Detects event log clearing associated with blackwater ransomware.
+  Incident: dragnet-ransomware-2026-2042
+  Ransomware victim claim by blackwater: medical-park; country: TR; sector: Healthcare
+  First observed: 2026-03-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ejzl7cjxmkx7lzhiqwidmrwtfjv45pkczbc4fnyaut3t7gll3yaiq5id.onion/blog?uuid=500eaba7-8a1c-3f42-a247-4be113b72b6e
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2026-1988 — Ransomware C2 Communication'
+id: 74d9c996-a537-5384-a2da-a6b57aa358da
+status: stable
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2026-1988
+  Ransomware victim claim by threeam: townofnorwell.net; country: US; sector: Public Sector
+  First observed: 2026-05-01.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://threeamkelxicjsaf2czjyz2lc4q3ngqkxhhlexyfcp2o6raw4rphyad.onion/detail/x67cardpox7gmgiifpfnkyhuw49g3k
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://threeamkelxicjsaf2czjyz2lc4q3ngqkxhhlexyfcp2o6raw4rphyad.onion/detail/x67cardpox7gmgiifpfnkyhuw49g3k'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

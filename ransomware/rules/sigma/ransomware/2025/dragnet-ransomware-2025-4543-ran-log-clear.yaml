@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4543 — Event Log Clearing (rhysida)'
+id: 5d730e82-580f-547e-b42e-6b842c5d2dab
+status: deprecated
+description: |
+  Detects event log clearing associated with rhysida ransomware.
+  Incident: dragnet-ransomware-2025-4543
+  Ransomware victim claim by rhysida: Sdii Global; country: US; sector: Business Services
+  First observed: 2025-10-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

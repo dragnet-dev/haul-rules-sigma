@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2881 — Recovery Inhibition (payoutsking)'
+id: 4c74ee65-2a79-569d-be0e-c264d18f95eb
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with payoutsking ransomware.
+  Incident: dragnet-ransomware-2025-2881
+  Ransomware victim claim by payoutsking: Institute of Culinary Education; country: US; sector: Education
+  First observed: 2025-05-28.
+  Confidence: 90% (ransomware_live).
+references:
+  - https:/payoutsgn7cy6uliwevdqspncjpfxpmzgirwl2au65la7rfs5x3qnbqd.onion/detail_post/chnYzXRfSeoWiVb49nEg
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

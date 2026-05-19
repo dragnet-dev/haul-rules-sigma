@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1964 — Recovery Inhibition (global)'
+id: 4cd45d5f-aba9-5b4e-b0fb-a887384a2704
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with global ransomware.
+  Incident: dragnet-ransomware-2025-1964
+  Ransomware victim claim by global: Cyme Servicios Médicos; country: MX; sector: Healthcare
+  First observed: 2025-07-26.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

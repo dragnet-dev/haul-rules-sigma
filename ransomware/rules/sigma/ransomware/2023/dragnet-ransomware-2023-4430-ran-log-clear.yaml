@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4430 — Event Log Clearing (rhysida)'
+id: d8c4ce97-25fc-57fb-a186-44cbbda9edaf
+status: experimental
+description: |
+  Detects event log clearing associated with rhysida ransomware.
+  Incident: dragnet-ransomware-2023-4430
+  Ransomware victim claim by rhysida: The Thomas Hardye School; sector: Education
+  First observed: 2023-06-05.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://rhysidaeoxtkejwuheks3a7htk4zn3dfuynt5mqw6oawlcx6kcxjdeyd.onion/E4PFbrkKNlIcwObzySWINmK1OUgp3mHp/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

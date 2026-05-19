@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3067 — Event Log Clearing (interlock)'
+id: 60df0992-bfcc-5835-9df4-cf2350eca7ef
+status: experimental
+description: |
+  Detects event log clearing associated with interlock ransomware.
+  Incident: dragnet-ransomware-2025-3067
+  Ransomware victim claim by interlock: Huntwood Industries; country: US; sector: Manufacturing
+  First observed: 2025-08-25.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ph2ilpfayyumhbetpdu6zovwy4vvm7qz3puh7k4zbre7bsf4e4ym5lqd.onion/index.php?p=
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

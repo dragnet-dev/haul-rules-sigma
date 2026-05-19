@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-2414 — Ransomware C2 Communication'
+id: 94c391fe-aeae-5677-a479-6438f396c9dc
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-2414
+  Ransomware victim claim by lockbit3: bbrook.org; sector: Education
+  First observed: 2023-06-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lockbitaptc2iq4atewz2ise62q63wfktyrl4qtwuk5qax262kgtzjqd.onion/post/cKETQvbOrvPmEq1N6491717a3097a
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lockbitaptc2iq4atewz2ise62q63wfktyrl4qtwuk5qax262kgtzjqd.onion/post/cKETQvbOrvPmEq1N6491717a3097a'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0893 — Mass File Rename (lynx)'
+id: 1ce02e2d-63fd-5c9b-bb52-701852a1e57b
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by lynx.
+  Incident: dragnet-ransomware-2024-0893
+  Ransomware victim claim by lynx: Alvan Blanch Development; country: GB; sector: Agriculture and Food Production
+  First observed: 2024-07-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lynxblog.net/leaks/66b36a7ba3128b53533bdc3d
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

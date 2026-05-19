@@ -1,0 +1,31 @@
+title: 'Dragnet [Container]: dragnet-container-2025-0032 — Vulnerable Base Image Pull'
+id: da496204-7f36-5a13-94f8-de7f57137e11
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2025-0032 (Tier 2, CVSS 9.8)
+  Associated with Earth Lusca.
+  Integer overflow vulnerability in FFmpeg before n6.1, allows remote attackers to execute arbitrary code via the jpegxl_anim_read_packet component in the JPEG XL Animation decoder.
+  First observed: 2025-08-11.
+references:
+  - https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=61991
+  - https://github.com/FFmpeg/FFmpeg/commit/d2e8974699a9e35cc1a926bf74a972300d629cd5
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+  - dragnet.actor.earth-lusca
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

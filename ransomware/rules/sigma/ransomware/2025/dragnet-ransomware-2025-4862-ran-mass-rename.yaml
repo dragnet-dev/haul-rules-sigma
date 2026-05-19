@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4862 — Mass File Rename (handala)'
+id: 143e6a38-a235-5e47-ba8e-c6caf00ab616
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by handala.
+  Incident: dragnet-ransomware-2025-4862
+  Ransomware victim claim by handala: Zuk Group; country: AE; sector: Not Found
+  First observed: 2025-01-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://vmjfieomxhnfjba57sd6jjws2ogvowjgxhhfglsikqvvrnrajbmpxqqd.onion/?p=298
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

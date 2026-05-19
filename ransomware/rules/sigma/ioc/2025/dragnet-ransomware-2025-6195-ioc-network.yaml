@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-6195 — Ransomware C2 Communication'
+id: 257967df-48ec-5253-9aec-6028d4e6e70b
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-6195
+  Ransomware victim claim by lockbit3: abcapital.com.ph; country: PH; sector: Financial Services
+  First observed: 2025-01-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lockbit4lahhluquhoka3t4spqym2m3dhe66d6lr337glmnlgg2nndad.onion/post/DeR63DmGkjJXELPm67aa24e32c65b
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lockbit4lahhluquhoka3t4spqym2m3dhe66d6lr337glmnlgg2nndad.onion/post/DeR63DmGkjJXELPm67aa24e32c65b'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3142 — Recovery Inhibition (radar)'
+id: e87e2a5f-9fb3-5747-b939-f78997df484e
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with radar ransomware.
+  Incident: dragnet-ransomware-2025-3142
+  Ransomware victim claim by radar: ROBERT G. DASHIELL, JR., P.E., INC; country: US; sector: Construction
+  First observed: 2025-09-10.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://3bnusfu2lgk5at43ceu7cdok5yv4gfbono2jv57ho74ucjvc7czirfid.onion/leaked-data/?id=60
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

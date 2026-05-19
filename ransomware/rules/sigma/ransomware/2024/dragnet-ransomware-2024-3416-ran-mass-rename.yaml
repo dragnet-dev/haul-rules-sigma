@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3416 — Mass File Rename (blacklock)'
+id: f54a377d-132b-5630-b68e-18a7f92ae95e
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by blacklock.
+  Incident: dragnet-ransomware-2024-3416
+  Ransomware victim claim by blacklock: The PHOENIX; country: US; sector: Business Services
+  First observed: 2024-11-18.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://zdkexsh2e7yihw5uhg5hpsgq3dois2m5je7lzfagij2y6iw5ptl35gyd.onion/Data_Download/PHXCMP.com
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3924 — Recovery Inhibition (fog)'
+id: cfabda70-f05a-5308-9957-24ff3227cf17
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with fog ransomware.
+  Incident: dragnet-ransomware-2024-3924
+  Ransomware victim claim by fog: Planters Telephone Cooperative (planters.net); country: US; sector: Business Services
+  First observed: 2024-12-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://xbkv2qey6u3gd3qxcojynrt4h5sgrhkar6whuo74wo63hijnn677jnyd.onion/posts/67599f3effa6d0708588cd2a/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

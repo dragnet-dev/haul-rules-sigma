@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0381 — Recovery Inhibition (pysa)'
+id: 45dff73d-a7c1-53b8-903b-700c9661977b
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with pysa ransomware.
+  Incident: dragnet-ransomware-2021-0381
+  Ransomware victim claim by pysa: Jebco Agencies Inc.; sector: Business Services
+  First observed: 2021-09-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

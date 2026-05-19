@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-1628 — Recovery Inhibition (ElDorado)'
+id: 3c3f2bc1-7684-5a45-b39b-e6ef4d23fdb5
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with ElDorado ransomware.
+  Incident: dragnet-ransomware-2024-1628
+  Ransomware victim claim by ElDorado: allianceind.com; country: US; sector: Manufacturing
+  First observed: 2024-02-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

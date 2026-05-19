@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6548 — Event Log Clearing (interlock)'
+id: 86df13d2-5c4e-5cdb-a5a6-3f1e745d8fac
+status: experimental
+description: |
+  Detects event log clearing associated with interlock ransomware.
+  Incident: dragnet-ransomware-2025-6548
+  Ransomware victim claim by interlock: Andretti Indoor Karting & Games; country: US; sector: Hospitality and Tourism
+  First observed: 2025-03-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ebhmkoohccl45qesdbvrjqtyro2hmhkmh6vkyfyjjzfllm3ix72aqaid.onion/leaks.phphttp://z6xr75yrgbry3a7zxc734sac2u6libikshm2j5tsbrh5geq7ilik3nad.onion/index.php?p=
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-1633 — Ransomware C2 Communication'
+id: 2e00db57-58d0-57d3-aad8-2a0adc51c024
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-1633
+  Ransomware victim claim by BrainCipher: ddecor.com; country: IN; sector: Consumer Services
+  First observed: 2025-05-05.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://vkvsgl7lhipjirmz6j5ubp3w3bwvxgcdbpi3fsbqngfynetqtw4w5hyd.onion/s/s4TmxmRCZO4L0XIkg0rrtyH9s1pHjqVPl85WAaW0zFV3biXYOmWbmlOt4vkD9YVduuCLOKqPswmKE5DT9ruWdQeHF2cFRi
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://vkvsgl7lhipjirmz6j5ubp3w3bwvxgcdbpi3fsbqngfynetqtw4w5hyd.onion/s/s4TmxmRCZO4L0XIkg0rrtyH9s1pHjqVPl85WAaW0zFV3biXYOmWbmlOt4vkD9YVduuCLOKqPswmKE5DT9ruWdQeHF2cFRi'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

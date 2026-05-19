@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0092 — Recovery Inhibition (pysa)'
+id: 2cbd5194-1fbe-5bf4-9166-d5235ed4b9da
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with pysa ransomware.
+  Incident: dragnet-ransomware-2021-0092
+  Ransomware victim claim by pysa: Little Elm; sector: Public Sector
+  First observed: 2021-09-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

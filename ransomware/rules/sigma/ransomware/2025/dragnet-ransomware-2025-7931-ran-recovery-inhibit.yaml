@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7931 — Recovery Inhibition (chaos)'
+id: cebe50bd-76c8-5047-b6eb-62f38c0e6ffe
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with chaos ransomware.
+  Incident: dragnet-ransomware-2025-7931
+  Ransomware victim claim by chaos: iconinternational.com; country: US; sector: Financial Services
+  First observed: 2025-11-12.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://hptqq2o2qjva7lcaaq67w36jihzivkaitkexorauw7b2yul2z6zozpqd.onion/post/w07qZVHEzNfp0EAuSw86Pld75x4JKPp2
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

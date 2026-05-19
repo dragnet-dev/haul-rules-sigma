@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1106 — Recovery Inhibition (blackmatter)'
+id: b74f9c93-1847-5d8f-94ca-8b3286022479
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with blackmatter ransomware.
+  Incident: dragnet-ransomware-2021-1106
+  Ransomware victim claim by blackmatter: Citrocasa GmbH; sector: Agriculture and Food Production
+  First observed: 2021-09-20.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

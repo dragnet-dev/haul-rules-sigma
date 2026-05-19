@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4731 — Event Log Clearing (babuk2)'
+id: 6c85d581-5d95-556e-b1dc-9520eee854e1
+status: experimental
+description: |
+  Detects event log clearing associated with babuk2 ransomware.
+  Incident: dragnet-ransomware-2025-4731
+  Ransomware victim claim by babuk2: Hellenic Airforce; country: GR; sector: Public Sector
+  First observed: 2025-04-03.
+  Confidence: 90% (ransomware_live).
+references:
+  - http:/bxwu33iefqfc3rxigynn3ghvq4gdw3gxgxna5m4aa3o4vscdeeqhiqad.onion/blog/f97ccef2d86837e857d474e38711b9a9edf80a009c95b361cc70e175464125cf/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-3312 — Mass File Rename (ransomed)'
+id: 6c8239c0-607d-5fb5-81fb-a326ebe30bed
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by ransomed.
+  Incident: dragnet-ransomware-2023-3312
+  Ransomware victim claim by ransomed: (SALE) District Of Columbia Elections 600k lines VOTERS DATA; sector: Public Sector
+  First observed: 2023-10-05.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://f6amq3izzsgtna4vw24rpyhy3ofwazlgex2zqdssavevvkklmtudxjad.onion/?p=63
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

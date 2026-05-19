@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-3353 — Mass File Rename (AiLock)'
+id: 75257301-1b36-5b66-9584-53e7b0bb6c34
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by AiLock.
+  Incident: dragnet-ransomware-2026-3353
+  Ransomware victim claim by AiLock: Johnson Vollmerhausen & Gates; country: US; sector: Business Services
+  First observed: 2026-03-07.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

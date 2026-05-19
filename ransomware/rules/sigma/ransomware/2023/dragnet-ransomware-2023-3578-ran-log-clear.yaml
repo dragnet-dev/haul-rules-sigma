@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-3578 — Event Log Clearing (noescape)'
+id: bb2921bd-0f10-5257-8941-8c8d1f188536
+status: experimental
+description: |
+  Detects event log clearing associated with noescape ransomware.
+  Incident: dragnet-ransomware-2023-3578
+  Ransomware victim claim by noescape: Innodis Group; country: MU; sector: Agriculture and Food Production
+  First observed: 2023-07-07.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://noescapemsqxvizdxyl7f7rmg5cdjwp33pg2wpmiaaibilb4btwzttad.onion/post/9999a772-d80c-45d1-9141-32fb45a0beab
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

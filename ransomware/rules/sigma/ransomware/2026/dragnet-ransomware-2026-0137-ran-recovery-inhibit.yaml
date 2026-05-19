@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-0137 — Recovery Inhibition (nitrogen)'
+id: 3ca0fd20-52d2-52e8-8908-568f97cae07c
+status: test
+description: |
+  Detects boot/recovery disabling associated with nitrogen ransomware.
+  Incident: dragnet-ransomware-2026-0137
+  Ransomware victim claim by nitrogen: Connor Co; country: US; sector: Business Services
+  First observed: 2026-01-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nitrogenczslprh3xyw6lh5xyjvmsz7ciljoqxxknd7uymkfetfhgvqd.onion/posts/6978b776aa6c2f83ef8de667
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

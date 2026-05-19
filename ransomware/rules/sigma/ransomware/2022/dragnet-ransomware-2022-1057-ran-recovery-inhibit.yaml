@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-1057 — Recovery Inhibition (dispossessor)'
+id: 3fc94bb4-eea2-5b5c-98b1-9131e2827ab7
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with dispossessor ransomware.
+  Incident: dragnet-ransomware-2022-1057
+  Ransomware victim claim by dispossessor: itt.com; sector: Manufacturing
+  First observed: 2022-10-23.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://dispossessor.com/blogs/105
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-2151 — Recovery Inhibition (blackbyte)'
+id: f53885b4-1604-5d51-82c8-96d05ebf5d58
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with blackbyte ransomware.
+  Incident: dragnet-ransomware-2023-2151
+  Associated with BlackByte.
+  Ransomware victim claim by blackbyte: K2 Sports; sector: Consumer Services
+  First observed: 2023-01-14.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+  - dragnet.actor.blackbyte
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

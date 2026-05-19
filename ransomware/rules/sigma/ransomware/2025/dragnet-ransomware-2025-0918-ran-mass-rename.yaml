@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0918 — Mass File Rename (ransomhouse)'
+id: 83d153a7-e55d-5c9e-aff2-dabfcdd04ed1
+status: test
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by ransomhouse.
+  Incident: dragnet-ransomware-2025-0918
+  Ransomware victim claim by ransomhouse: [Internal database pack 2] Warren County Sheriff’s Office; country: US; sector: Public Sector
+  First observed: 2025-12-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://zohlm7ahjwegcedoz7lrdrti7bvpofymcayotp744qhx6gjmxbuo2yid.onion/r/04e1ecc83f66a962233cb148d505d48dd27e8948
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

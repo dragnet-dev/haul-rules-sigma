@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5814 — Shadow Copy Deletion (shinyhunters)'
+id: 0d7ea288-72ba-54e4-b4c6-2da0b388d9cd
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with shinyhunters ransomware.
+  Incident: dragnet-ransomware-2025-5814
+  Ransomware victim claim by shinyhunters: Telstra; country: AU; sector: Telecommunication
+  First observed: 2025-10-08.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://shinypogk4jjniry5qi7247tznop6mxdrdte2k6pdu5cyo43vdzmrwid.onion/telstra.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

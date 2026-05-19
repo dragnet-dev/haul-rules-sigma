@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7430 — Recovery Inhibition (shinyhunters)'
+id: b49d899c-c662-5401-b2e4-f37fb6a707c8
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with shinyhunters ransomware.
+  Incident: dragnet-ransomware-2025-7430
+  Ransomware victim claim by shinyhunters: SoundCloud; country: DE; sector: Technology
+  First observed: 2025-08-10.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

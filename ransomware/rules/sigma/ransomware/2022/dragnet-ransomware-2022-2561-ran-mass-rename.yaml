@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2561 — Mass File Rename (quantum)'
+id: d3bf25ab-3231-51bf-83d2-37f1339a550b
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by quantum.
+  Incident: dragnet-ransomware-2022-2561
+  Ransomware victim claim by quantum: InnPower; sector: Energy
+  First observed: 2022-05-17.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

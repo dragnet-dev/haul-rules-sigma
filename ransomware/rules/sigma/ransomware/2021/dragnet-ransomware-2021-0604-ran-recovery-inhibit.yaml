@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0604 — Recovery Inhibition (pysa)'
+id: 65d2da0e-0520-50c6-a7cb-b9d5888e1cfe
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with pysa ransomware.
+  Incident: dragnet-ransomware-2021-0604
+  Ransomware victim claim by pysa: D.W. Haber & Son; sector: Business Services
+  First observed: 2021-09-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

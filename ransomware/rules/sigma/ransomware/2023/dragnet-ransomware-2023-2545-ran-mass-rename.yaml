@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-2545 — Mass File Rename (ransomed)'
+id: a6e07db0-31f2-5dc8-9238-2ae2cacf371d
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by ransomed.
+  Incident: dragnet-ransomware-2023-2545
+  Ransomware victim claim by ransomed: Metropolitan Club DC; sector: Hospitality and Tourism
+  First observed: 2023-08-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://ransomed.vc/dc.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

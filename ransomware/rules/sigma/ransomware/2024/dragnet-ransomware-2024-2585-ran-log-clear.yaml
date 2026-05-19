@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2585 — Event Log Clearing (0mega)'
+id: e442fa64-6305-5229-85d9-03f3363422ef
+status: experimental
+description: |
+  Detects event log clearing associated with 0mega ransomware.
+  Incident: dragnet-ransomware-2024-2585
+  Ransomware victim claim by 0mega: Four Hands LLC; country: US; sector: Business Services
+  First observed: 2024-01-25.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://0mega.cc/post/6.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

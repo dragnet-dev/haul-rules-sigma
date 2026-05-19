@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0946 — Event Log Clearing (pear)'
+id: 5bf2cfe7-a943-5315-99dd-3901fdd56aa7
+status: experimental
+description: |
+  Detects event log clearing associated with pear ransomware.
+  Incident: dragnet-ransomware-2025-0946
+  Ransomware victim claim by pear: Bromack Manufacturing; country: US; sector: Manufacturing
+  First observed: 2025-06-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://peargxn3oki34c4savcbcfqofjjwjnnyrlrbszfv6ujlx36mhrh57did.onion/Companies/bromack
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

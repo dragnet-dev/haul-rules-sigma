@@ -1,0 +1,36 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0605 — Event Log Clearing (play)'
+id: ddbba6c9-86a6-5527-9025-1a4a185b71f6
+status: experimental
+description: |
+  Detects event log clearing associated with play ransomware.
+  Incident: dragnet-ransomware-2023-0605
+  Associated with Play.
+  Ransomware victim claim by play: Studioline Photography; country: DE; sector: Consumer Services
+  First observed: 2023-05-22.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://mbrlkbtq5jonaqkurjwmxftytyn2ethqvbxfu4rgjbkkknndqwae6byd.onion/topic.php?id=Prd2DmAEBdeSAI
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+  - dragnet.actor.play
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

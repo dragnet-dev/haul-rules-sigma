@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-5244 — Ransomware C2 Communication'
+id: 42aef555-ede5-54b8-baef-6654c87b507f
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-5244
+  Ransomware victim claim by lynx: Future Metals; country: US; sector: Manufacturing
+  First observed: 2024-09-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lynxblog.net/leaks/672c78d8dab69e0ba2c7ef49
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lynxblog.net/leaks/672c78d8dab69e0ba2c7ef49'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5459 — Mass File Rename (nova)'
+id: 1cf2c940-bb54-5ea4-a9f5-54b261cb58af
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by nova.
+  Incident: dragnet-ransomware-2025-5459
+  Ransomware victim claim by nova: Clinical Diagnosis; country: NL; sector: Healthcare
+  First observed: 2025-08-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://leak7y2247fj7dbb35rpfyxuyaqtwbshiwxp6h35ttzlhrxmhvi4fead.onion/eurofins
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

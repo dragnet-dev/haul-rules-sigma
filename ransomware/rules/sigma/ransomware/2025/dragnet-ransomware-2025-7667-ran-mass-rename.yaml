@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7667 — Mass File Rename (BrainCipher)'
+id: 550bfa13-74f4-54ae-8d4b-33e78025ad7b
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by BrainCipher.
+  Incident: dragnet-ransomware-2025-7667
+  Ransomware victim claim by BrainCipher: neatem.fr; country: FR; sector: Business Services
+  First observed: 2025-02-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://vkvsgl7lhipjirmz6j5ubp3w3bwvxgcdbpi3fsbqngfynetqtw4w5hyd.onion/s/DpQHsHlEgOmxXbKNk0Okbg+Vs+QDYj8EdTUBzy+193ZGjB5SZbGQafopFB6lqF6qcOJiNVa99r808SaOTKW6kWt2REEyQWhP
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

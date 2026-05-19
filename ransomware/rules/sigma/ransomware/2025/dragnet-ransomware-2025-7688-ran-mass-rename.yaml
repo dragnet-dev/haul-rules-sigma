@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7688 — Mass File Rename (coinbasecartel)'
+id: d4d90570-c3d5-5cae-8e46-0058f06c59ad
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by coinbasecartel.
+  Incident: dragnet-ransomware-2025-7688
+  Ransomware victim claim by coinbasecartel: NTT Data/Vectorform; country: US; sector: Technology
+  First observed: 2025-09-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://fjg4zi4opkxkvdz7mvwp7h6goe4tcby3hhkrz43pht4j3vakhy75znyd.onion/companies/ntt-data
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

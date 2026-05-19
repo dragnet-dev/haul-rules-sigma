@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-1665 — Ransomware C2 Communication'
+id: acff2c92-b42c-5902-a634-79fb74eda838
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-1665
+  Ransomware victim claim by dispossessor: www.c-v-e.com; country: US; sector: Business Services
+  First observed: 2023-10-02.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://dispossessor.com/blogs/15
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'https://dispossessor.com/blogs/15'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

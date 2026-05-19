@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-2363 — Recovery Inhibition (ransomed)'
+id: 2cf82ba3-2d1b-5110-b6df-f1dd606d0a07
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with ransomed ransomware.
+  Incident: dragnet-ransomware-2023-2363
+  Ransomware victim claim by ransomed: laasr.eu; sector: Technology
+  First observed: 2023-09-04.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

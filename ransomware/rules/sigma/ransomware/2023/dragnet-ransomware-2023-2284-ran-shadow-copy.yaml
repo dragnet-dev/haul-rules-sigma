@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-2284 — Shadow Copy Deletion (alphv)'
+id: 856dec7a-fb61-59ba-af51-083ee1a171ca
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with alphv ransomware.
+  Incident: dragnet-ransomware-2023-2284
+  Ransomware victim claim by alphv: JPW Industries (jpwindustriescom) | Baileigh Industrial (baileighcom) | With SpaceX Data [; sector: Manufacturing
+  First observed: 2023-06-02.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://alphvmmm27o3abo3r2mlmjrpdmzle3rykajqc5xsj7j7ejksbpsa36ad.onion/3557737e-7a24-4ecc-87d7-29249bf69292
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

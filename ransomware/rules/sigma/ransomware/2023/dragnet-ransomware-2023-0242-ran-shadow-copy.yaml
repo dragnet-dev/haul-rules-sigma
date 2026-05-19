@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0242 — Shadow Copy Deletion (ransomhouse)'
+id: 3ba9e99e-0f2a-5d19-b249-26cbe07c9b0b
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with ransomhouse ransomware.
+  Incident: dragnet-ransomware-2023-0242
+  Ransomware victim claim by ransomhouse: [i2p-torrent] Roberto Verino Difusion; country: ES; sector: Business Services
+  First observed: 2023-05-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://zohlm7ahjwegcedoz7lrdrti7bvpofymcayotp744qhx6gjmxbuo2yid.onion/r/387629bd15888cbd52ed0a9e9da2b573e9d59171
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

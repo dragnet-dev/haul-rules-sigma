@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-0292 — Event Log Clearing (medusalocker)'
+id: 853366dd-2173-5394-a0d4-d71fbb45bb16
+status: stable
+description: |
+  Detects event log clearing associated with medusalocker ransomware.
+  Incident: dragnet-ransomware-2026-0292
+  Ransomware victim claim by medusalocker: Palmers Relocations; country: GB; sector: Transportation/Logistics
+  First observed: 2026-05-05.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://t33zoj4qwv455fog7qnb2azi5xcdxkixughmmduzbw2rtdgryqfbh6id.onion/company/palmers-relocations/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

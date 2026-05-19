@@ -1,0 +1,26 @@
+title: 'Dragnet [Container]: dragnet-container-2020-0005 — End-of-Life Base Image'
+id: 300500c2-2ed8-5499-be83-2a1e2df68e0a
+status: deprecated
+description: |
+  Detects deployment of a container image based on an end-of-life product cycle.
+  EOL images receive no further security patches regardless of new CVEs.
+  Incident: dragnet-container-2020-0005
+  ubuntu 19.10 reached end-of-life on 2020-07-06. All images based on this cycle are permanently unpatched.
+  First observed: 2020-07-06.
+references:
+  - https://endoflife.date/ubuntu
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|startswith:
+      - 'ubuntu:19.10.'
+      - 'ubuntu:19.10-'
+  condition: selection
+falsepositives:
+  - Internal base images that pin to EOL cycles intentionally
+level: high

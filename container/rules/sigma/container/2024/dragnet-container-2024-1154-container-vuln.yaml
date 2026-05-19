@@ -1,0 +1,33 @@
+title: 'Dragnet [Container]: dragnet-container-2024-1154 — Vulnerable Base Image Pull'
+id: c546aeb7-3c98-55cf-a901-6166af89a125
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-1154 (Tier 2, CVSS 9.8)
+  fexsrv in F*EX (aka Frams' Fast File EXchange) before fex-20160919_2 allows eval injection (for unauthenticated remote code execution).
+  First observed: 2024-11-21.
+references:
+  - https://cwe.mitre.org/data/definitions/95.html
+  - https://fex.rus.uni-stuttgart.de
+  - https://secfault-security.com/advisories/cve2020-15591.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:10'
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:9'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

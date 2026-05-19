@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2026-2902 — Ransomware C2 Communication'
+id: 70ef04a6-619f-5350-ba13-6e6554396bf5
+status: stable
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2026-2902
+  Ransomware victim claim by handala: 4 Terabytes Wiped—Good Food Store Shut Down After Major Cyberattack; country: US; sector: Consumer Services
+  First observed: 2026-03-28.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://handala-hack.tw/4-terabytes-wiped-good-food-store-shut-down-after-major-cyberattack/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'https://handala-hack.tw/4-terabytes-wiped-good-food-store-shut-down-after-major-cyberattack/'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

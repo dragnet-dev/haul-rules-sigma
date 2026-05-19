@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5508 — Recovery Inhibition (killsec)'
+id: 8680dd22-101a-5b1b-9498-6d76a3eb1b24
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with killsec ransomware.
+  Incident: dragnet-ransomware-2024-5508
+  Ransomware victim claim by killsec: dvv.be; country: BE; sector: Financial Services
+  First observed: 2024-09-05.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://kill432ltnkqvaqntbalnsgojqqs2wz4lhnamrqjg66tq6fuvcztilyd.onion/post/dvv.be.php
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

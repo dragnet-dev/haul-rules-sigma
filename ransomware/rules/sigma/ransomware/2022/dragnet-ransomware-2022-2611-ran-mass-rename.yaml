@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2611 — Mass File Rename (kelvinsecurity)'
+id: 8594180c-4879-54d9-b1f6-b4c162e7ead8
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by kelvinsecurity.
+  Incident: dragnet-ransomware-2022-2611
+  Ransomware victim claim by kelvinsecurity: ICONIC; sector: Not Found
+  First observed: 2022-04-01.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

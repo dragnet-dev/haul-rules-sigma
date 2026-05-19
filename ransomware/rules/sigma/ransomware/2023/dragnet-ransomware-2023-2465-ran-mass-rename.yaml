@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-2465 — Mass File Rename (noescape)'
+id: b7eb6672-0992-5285-81ef-59a341c2971f
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by noescape.
+  Incident: dragnet-ransomware-2023-2465
+  Ransomware victim claim by noescape: Kentie Systeemtechniek BV; country: NL; sector: Manufacturing
+  First observed: 2023-09-25.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://noescapemsqxvizdxyl7f7rmg5cdjwp33pg2wpmiaaibilb4btwzttad.onion/post/9a37e65f-8f5f-460d-9e8a-14a33cceb496
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

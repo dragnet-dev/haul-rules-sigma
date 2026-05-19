@@ -1,0 +1,32 @@
+title: 'Dragnet [Container]: dragnet-container-2024-0168 — Vulnerable Base Image Pull'
+id: bf42f3e8-3d78-59df-a08a-3ec6a5f6f4cd
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-0168 (Tier 2, CVSS 9.8)
+  An issue was discovered in coreboot 4.13 through 4.16. On APs, arbitrary code execution in SMM may occur.
+  First observed: 2024-11-21.
+references:
+  - https://github.com/coreboot/coreboot/commit/afb7a814783cda12f5b72167163b9109ee1d15a7
+  - https://review.coreboot.org/c/coreboot/+/63478
+  - https://www.cve.org/CVERecord?id=CVE-2022-29264
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+      - 'ubuntu:24.04'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

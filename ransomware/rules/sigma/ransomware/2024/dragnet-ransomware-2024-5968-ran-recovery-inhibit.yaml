@@ -1,0 +1,31 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5968 — Recovery Inhibition (cicada3301)'
+id: 80dd7e27-ec47-5ac8-b6dc-981f9e31fa52
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with cicada3301 ransomware.
+  Incident: dragnet-ransomware-2024-5968
+  Associated with menuPass.
+  Ransomware victim claim by cicada3301: Centrillion Technologies; country: US; sector: Technology
+  First observed: 2024-10-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://cicadabv7vicyvgz5khl7v2x5yygcgow7ryy6yppwmxii4eoobdaztqd.onion/d5phl5whwx7ntgtcdbrore46tpqv9laf
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+  - dragnet.actor.menupass
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

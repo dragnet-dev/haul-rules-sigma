@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-5303 — Ransomware C2 Communication'
+id: 13a21da7-a8c4-5bbc-8da3-de53882a2651
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-5303
+  Ransomware victim claim by malekteam: dorimedia; country: CH; sector: Technology
+  First observed: 2023-12-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://195.14.123.2/dori.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://195.14.123.2/dori.html'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

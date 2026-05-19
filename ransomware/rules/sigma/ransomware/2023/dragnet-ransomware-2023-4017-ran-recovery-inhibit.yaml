@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4017 — Recovery Inhibition (underground)'
+id: 7eeedf44-9a9d-5027-a630-d54ada5062ac
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with underground ransomware.
+  Incident: dragnet-ransomware-2023-4017
+  Ransomware victim claim by underground: tpa-group.sk; country: SK; sector: Business Services
+  First observed: 2023-07-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://47glxkuxyayqrvugfumgsblrdagvrah7gttfscgzn56eyss5wg3uvmqd.onion/packages/ebd86cfc-30b9-4ef1-84a3-8ac2aa6bbe45
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

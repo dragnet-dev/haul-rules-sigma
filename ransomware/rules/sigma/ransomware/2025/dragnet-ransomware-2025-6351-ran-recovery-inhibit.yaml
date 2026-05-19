@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6351 — Recovery Inhibition (radiant)'
+id: 51bafe6f-78f0-5bae-9332-0bec9a2bce7a
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with radiant ransomware.
+  Incident: dragnet-ransomware-2025-6351
+  Ransomware victim claim by radiant: Retail Texas; sector: Consumer Services
+  First observed: 2025-10-12.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

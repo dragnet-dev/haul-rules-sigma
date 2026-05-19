@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3388 — Event Log Clearing (cephalus)'
+id: 2a2fe7ed-52bd-5f90-ab1a-af0dc86a6eb6
+status: experimental
+description: |
+  Detects event log clearing associated with cephalus ransomware.
+  Incident: dragnet-ransomware-2025-3388
+  Ransomware victim claim by cephalus: LPL Financial; country: US; sector: Financial Services
+  First observed: 2025-08-26.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://darkforums.st/Thread-Document-LPL-Financial-DATA-LEAK-I-FORGOT-THE-SIZE-BUT-ITS-HUGE
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

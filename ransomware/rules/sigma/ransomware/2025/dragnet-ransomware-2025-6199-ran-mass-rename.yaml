@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6199 — Mass File Rename (interlock)'
+id: f9b01ba5-89d9-540b-a48f-ea15c622be1b
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by interlock.
+  Incident: dragnet-ransomware-2025-6199
+  Ransomware victim claim by interlock: Kearney Public Schools; country: US; sector: Education
+  First observed: 2025-10-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://vecdwhichsjnv3x7t5b4o2hk23iwjurmcp2wrwd25jp3smvsth6e6nid.onion/index.php?p=
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

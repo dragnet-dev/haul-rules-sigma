@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-0731 — Recovery Inhibition (killsec)'
+id: 7ed0fb92-83f9-5c03-9969-790fa1761e3e
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with killsec ransomware.
+  Incident: dragnet-ransomware-2026-0731
+  Ransomware victim claim by killsec: brooklyn group; country: US; sector: Consumer Services
+  First observed: 2026-02-04.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

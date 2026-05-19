@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0333 — Event Log Clearing (ransomexx)'
+id: a2751b57-60f6-5389-a30f-ce955732807b
+status: experimental
+description: |
+  Detects event log clearing associated with ransomexx ransomware.
+  Incident: dragnet-ransomware-2023-0333
+  Ransomware victim claim by ransomexx: Telecommunications Services of Trinidad and Tobago; country: TT; sector: Business Services
+  First observed: 2023-10-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://rnsm777cdsjrsdlbs4v5qoeppu3px6sb2igmh53jzrx7ipcrbjz5b2ad.onion/./2023/10/27/telecommunications-services-of-trinidad-and-tobago/index.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

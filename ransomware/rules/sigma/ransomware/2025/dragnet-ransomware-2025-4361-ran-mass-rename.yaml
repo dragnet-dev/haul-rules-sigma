@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4361 — Mass File Rename (ransomexx)'
+id: de08fcec-8bea-51d3-82d6-7fb101f180d3
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by ransomexx.
+  Incident: dragnet-ransomware-2025-4361
+  Ransomware victim claim by ransomexx: Makesworth Accountants; country: GB; sector: Financial Services
+  First observed: 2025-02-09.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://rnsm777cdsjrsdlbs4v5qoeppu3px6sb2igmh53jzrx7ipcrbjz5b2ad.onion/2025/02/09/makeworth-accountants/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

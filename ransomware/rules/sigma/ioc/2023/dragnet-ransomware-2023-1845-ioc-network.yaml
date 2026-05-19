@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-1845 — Ransomware C2 Communication'
+id: 369e3c10-2d15-518e-9e5f-a49961860df6
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-1845
+  Ransomware victim claim by metaencryptor: BOB Automotive Group; sector: Consumer Services
+  First observed: 2023-08-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://metacrptmytukkj7ajwjovdpjqzd7esg5v3sg344uzhigagpezcqlpyd.onion/0AFC:57a27e95105fcf961dd1898116aebdee/0AFC:6cc827508853c41a80948380a1b47ac870418ffad48d710d1c03581faf63e98c/0AFC:9a4f48903efdf4209f5b27314b570ebf755525e62730275fd8c7fb51a05850f3
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://metacrptmytukkj7ajwjovdpjqzd7esg5v3sg344uzhigagpezcqlpyd.onion/0AFC:57a27e95105fcf961dd1898116aebdee/0AFC:6cc827508853c41a80948380a1b47ac870418ffad48d710d1c03581faf63e98c/0AFC:9a4f48903efdf4209f5b27314b570ebf755525e62730275fd8c7fb51a05850f3'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

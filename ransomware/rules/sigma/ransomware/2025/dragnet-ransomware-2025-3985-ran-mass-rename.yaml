@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3985 — Mass File Rename (kraken)'
+id: 7d340fef-abfe-5f8a-9956-6ea91950951d
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by kraken.
+  Incident: dragnet-ransomware-2025-3985
+  Ransomware victim claim by kraken: www.wheelsauto.com; country: CA; sector: Transportation/Logistics
+  First observed: 2025-07-10.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://krakenccj3wr23452a4ibkbkuph4d6soyx2xgjoogtuamc3m7u7wemad.onion/news/988a6b2df55fa9b26f35b0b156311c8c
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

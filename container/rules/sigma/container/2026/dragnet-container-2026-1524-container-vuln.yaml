@@ -1,0 +1,27 @@
+title: 'Dragnet [Container]: dragnet-container-2026-1524 — Vulnerable Base Image Pull'
+id: 50b95803-85ca-595a-af36-22d38f87a0c9
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-1524 (Tier 2, CVSS 10)
+  Unknown vulnerability in the pam_filter mechanism in pam_ldap before version 162, when LDAP based authentication is being used, allows users to bypass host-based access restrictions and log onto the system.
+  First observed: 2026-04-16.
+references:
+  - http://www.mandriva.com/security/advisories?name=MDKSA-2003:088
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

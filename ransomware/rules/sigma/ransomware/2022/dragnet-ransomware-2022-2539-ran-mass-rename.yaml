@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2539 — Mass File Rename (revil)'
+id: b34c10a9-0213-5713-9e0b-5b55545ca430
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by revil.
+  Incident: dragnet-ransomware-2022-2539
+  Ransomware victim claim by revil: Ludwig Freytag Group; sector: Manufacturing
+  First observed: 2022-05-12.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5032 — Recovery Inhibition (lockbit5)'
+id: 89d08db0-5367-5bb4-987f-b226eafd3487
+status: test
+description: |
+  Detects boot/recovery disabling associated with lockbit5 ransomware.
+  Incident: dragnet-ransomware-2025-5032
+  Ransomware victim claim by lockbit5: occgrouptr.com; country: TR; sector: Business Services
+  First observed: 2025-12-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lockbitapt67g6rwzjbcxnww5efpg4qok6vpfeth7wx3okj52ks4wtad.onion/post/bdda6350de48740716abac4ad03c5c4f
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7360 — Event Log Clearing (safepay)'
+id: 64483e9a-894f-5725-abca-077c5cb3e88a
+status: experimental
+description: |
+  Detects event log clearing associated with safepay ransomware.
+  Incident: dragnet-ransomware-2025-7360
+  Ransomware victim claim by safepay: ultimateclasslimo.com; country: US; sector: Transportation/Logistics
+  First observed: 2025-02-07.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nz4z6ruzcekriti5cjjiiylzvrmysyqwibxztk6voem4trtx7gstpjid.onion#ultimateclasslimo
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

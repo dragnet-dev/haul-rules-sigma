@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-2423 — Recovery Inhibition (medusalocker)'
+id: adcfb778-89fe-5bfc-a4c3-77e547b180e9
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with medusalocker ransomware.
+  Incident: dragnet-ransomware-2023-2423
+  Ransomware victim claim by medusalocker: LETAPE JEUNES; sector: Not Found
+  First observed: 2023-06-02.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://z6wkgghtoawog5noty5nxulmmt2zs7c3yvwr22v4czbffdoly2kl4uad.onion/?p=252
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2026-0969 — Ransomware C2 Communication'
+id: 9d54f941-3b26-5e29-9026-637ab1e0297f
+status: test
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2026-0969
+  Ransomware victim claim by linkc: StrongLink; country: US; sector: Not Found
+  First observed: 2026-02-03.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://iywqjjaf2zioehzzauys3sktbcdmuzm2fsjkqsblnm7dt6axjfpoxwid.onion/article/f6bda96a-5c72-4e90-a32c-5f414e58e9dc
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://iywqjjaf2zioehzzauys3sktbcdmuzm2fsjkqsblnm7dt6axjfpoxwid.onion/article/f6bda96a-5c72-4e90-a32c-5f414e58e9dc'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

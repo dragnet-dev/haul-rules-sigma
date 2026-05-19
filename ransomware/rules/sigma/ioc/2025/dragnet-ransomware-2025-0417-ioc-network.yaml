@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-0417 — Ransomware C2 Communication'
+id: 3101ddcf-3c59-5f56-9d1a-58aaf23ed1a5
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-0417
+  Ransomware victim claim by anubis: Two Kings Casino Resort; country: US; sector: Hospitality and Tourism
+  First observed: 2025-04-23.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://om6q4a6cyipxvt7ioudxt24cw4oqu4yodmqzl25mqd2hgllymrgu4aqd.onion/r/+khRAvxuHPHjd3iSQK+AjFR3puPbzMFkSCrpZuDLzhSh1E5EBxFi9QWWuV9SYwH0gFVOfNY2ph1eQ2lUDNlMxZXExWUxl
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://om6q4a6cyipxvt7ioudxt24cw4oqu4yodmqzl25mqd2hgllymrgu4aqd.onion/r/+khRAvxuHPHjd3iSQK+AjFR3puPbzMFkSCrpZuDLzhSh1E5EBxFi9QWWuV9SYwH0gFVOfNY2ph1eQ2lUDNlMxZXExWUxl'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

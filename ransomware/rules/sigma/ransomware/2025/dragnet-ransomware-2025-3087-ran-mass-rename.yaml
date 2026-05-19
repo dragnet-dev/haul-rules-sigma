@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3087 — Mass File Rename (killsec)'
+id: 17a0c799-4477-5052-a9c9-975f06766073
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by killsec.
+  Incident: dragnet-ransomware-2025-3087
+  Ransomware victim claim by killsec: Logix Corporate Solutions; country: IN; sector: Business Services
+  First observed: 2025-02-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ks5424y3wpr5zlug5c7i6svvxweinhbdcqcfnptkfcutrncfazzgz5id.onion/posts.php?pid=VKAoZQfa7ftc9nq5dboc0pIT
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

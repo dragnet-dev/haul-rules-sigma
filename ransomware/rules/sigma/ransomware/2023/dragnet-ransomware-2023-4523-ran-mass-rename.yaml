@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4523 — Mass File Rename (snatch)'
+id: eace0ebc-6667-5256-bdc6-f5d86201f332
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by snatch.
+  Incident: dragnet-ransomware-2023-4523
+  Ransomware victim claim by snatch: Canadian Psychological Association; country: CA; sector: Business Services
+  First observed: 2023-11-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://hl66646wtlp2naoqnhattngigjp5palgqmbwixepcjyq5i534acgqyad.onion/news.php?id=1a6e2f97-9d6b-4b88-86e4-c16ac81abee1
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

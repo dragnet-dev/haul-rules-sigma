@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3556 — Mass File Rename (funksec)'
+id: 559a983f-9c41-50a8-8ff8-e806f2a43918
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by funksec.
+  Incident: dragnet-ransomware-2025-3556
+  Ransomware victim claim by funksec: rossmanmedia.ae; country: AE; sector: Technology
+  First observed: 2025-02-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://funksec.top/rossmanmedia.ae
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

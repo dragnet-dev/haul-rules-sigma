@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-3362 — Ransomware C2 Communication'
+id: c7b8fb01-87bf-595c-b104-407cdeafd64d
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-3362
+  Ransomware victim claim by lynx: NEBRASKALAND; country: US; sector: Agriculture and Food Production
+  First observed: 2024-10-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lynxblog.net/leaks/672f0ef4dab69e0ba2cdc41b
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lynxblog.net/leaks/672f0ef4dab69e0ba2cdc41b'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

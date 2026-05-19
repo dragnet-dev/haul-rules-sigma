@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0355 — Event Log Clearing (hive)'
+id: acc4460d-664f-54c2-9e00-4397fa0b7dca
+status: deprecated
+description: |
+  Detects event log clearing associated with hive ransomware.
+  Incident: dragnet-ransomware-2021-0355
+  Ransomware victim claim by hive: W.H. Stovall; sector: Not Found
+  First observed: 2021-12-18.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

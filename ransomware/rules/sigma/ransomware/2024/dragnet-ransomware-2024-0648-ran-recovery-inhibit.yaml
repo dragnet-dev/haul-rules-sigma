@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0648 — Recovery Inhibition (dAn0n)'
+id: ce945108-babb-5bfc-92fc-e7b711075e19
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with dAn0n ransomware.
+  Incident: dragnet-ransomware-2024-0648
+  Ransomware victim claim by dAn0n: O'Connell Mahon Architects; country: IE; sector: Business Services
+  First observed: 2024-04-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://2c7nd54guzi6xhjyqrj5kdkrq2ngm2u3e6oy4nfhn3wm3r54ul2utiqd.onion/5HfU4dMuQyrRRrnljDF6zeNkcVoGW1RHV4ZYyAfqeNI/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

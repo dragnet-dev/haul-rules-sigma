@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-0431 — Event Log Clearing (titan)'
+id: 756b9eff-d34d-5aa0-a000-1ef6d4b40b5d
+status: stable
+description: |
+  Detects event log clearing associated with titan ransomware.
+  Incident: dragnet-ransomware-2026-0431
+  Ransomware victim claim by titan: Groupe CRIT SA; country: FR; sector: Business Services
+  First observed: 2026-05-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://titanblog.org/post/all-files-encrypted-critical-data-downloaded-analyzed-k71x92z9uc
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1132 — Mass File Rename (cactus)'
+id: 8478916d-9d4a-5ec5-b8bd-e7f2f1a98ea1
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by cactus.
+  Incident: dragnet-ransomware-2025-1132
+  Ransomware victim claim by cactus: curtisint.com; country: CA; sector: Technology
+  First observed: 2025-01-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://cactusbloguuodvqjmnzlwetjlpj6aggc6iocwhuupb47laukux7ckid.onion/posts/CURTIS
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-1341 — Recovery Inhibition (onyx)'
+id: 12a82088-c8b2-5001-9689-13ad7037342e
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with onyx ransomware.
+  Incident: dragnet-ransomware-2022-1341
+  Ransomware victim claim by onyx: Pacific Maritime Industries Corp.; sector: Manufacturing
+  First observed: 2022-04-29.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

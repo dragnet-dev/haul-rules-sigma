@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-2802 — Mass File Rename (malas)'
+id: 3f94c0f9-3baf-5914-ad36-b8bf4c99bdc0
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by malas.
+  Incident: dragnet-ransomware-2023-2802
+  Ransomware victim claim by malas: IPG Automotive GmbH; sector: Manufacturing
+  First observed: 2023-04-09.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://malas2urovbyyavjzaezkt5ohljvyd5lt7vv7mnsgbf2y4bwlh72doqd.onion/posts/defaulters/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-3898 — Mass File Rename (trigona)'
+id: d98e8349-ab31-5294-a51c-aa23eb0e75b1
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by trigona.
+  Incident: dragnet-ransomware-2023-3898
+  Ransomware victim claim by trigona: Grupo Boreal; sector: Healthcare
+  First observed: 2023-10-01.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://trigonax2zb3fw34rbaap4cqep76zofxs53zakrdgcxzq6xzt24l5lqd.onion/leak/67cfed96
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

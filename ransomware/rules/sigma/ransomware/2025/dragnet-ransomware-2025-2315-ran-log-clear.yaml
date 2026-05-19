@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2315 — Event Log Clearing (abyss)'
+id: 7c1f8c5b-adf1-5632-8147-2b0c4a95f5c1
+status: deprecated
+description: |
+  Detects event log clearing associated with abyss ransomware.
+  Incident: dragnet-ransomware-2025-2315
+  Ransomware victim claim by abyss: moinian.com; country: US; sector: Hospitality and Tourism
+  First observed: 2025-09-11.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

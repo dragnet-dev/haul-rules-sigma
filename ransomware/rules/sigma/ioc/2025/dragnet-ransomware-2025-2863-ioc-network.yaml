@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-2863 — Ransomware C2 Communication'
+id: 6b2211d8-a911-5c10-b6e5-8a502f7c7087
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-2863
+  Ransomware victim claim by GDLockerSec: www.lnrbda.gov.ng; country: NG; sector: Public Sector
+  First observed: 2025-01-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://igziys7pres4644kbrtakxfbrwkyld64nxk5prpkgtcexwrrjgtfjzyd.onion/274bddb7-1ae9-48d1-b5d1-370e4a308575/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://igziys7pres4644kbrtakxfbrwkyld64nxk5prpkgtcexwrrjgtfjzyd.onion/274bddb7-1ae9-48d1-b5d1-370e4a308575/'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5213 — Event Log Clearing (rhysida)'
+id: 0b970f7a-269c-5146-841e-c5f00f59bd8e
+status: experimental
+description: |
+  Detects event log clearing associated with rhysida ransomware.
+  Incident: dragnet-ransomware-2024-5213
+  Ransomware victim claim by rhysida: Vermilion Parish School System; country: US; sector: Education
+  First observed: 2024-11-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://grhysidafc6lm7qa2mkiukbezh7zuth3i4wof4mh2audkymscjm6yegad.onion/archive.php?company=146
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

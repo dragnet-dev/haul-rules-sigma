@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4370 — Recovery Inhibition (worldleaks)'
+id: 8143d25e-0af1-52da-afc9-fd0d0e413688
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with worldleaks ransomware.
+  Incident: dragnet-ransomware-2025-4370
+  Ransomware victim claim by worldleaks: Centers Laboratory; country: US; sector: Healthcare
+  First observed: 2025-08-14.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://worldleaksartrjm3c6vasllvgacbi5u3mgzkluehrzhk2jz4taufuid.onion/companies/4716560680
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4633 — Recovery Inhibition (dispossessor)'
+id: 0af5bed5-ff3a-58c8-964b-57eb2ef1777b
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with dispossessor ransomware.
+  Incident: dragnet-ransomware-2023-4633
+  Ransomware victim claim by dispossessor: sd69.org; sector: Education
+  First observed: 2023-09-08.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://dispossessor.com/blogs/977
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

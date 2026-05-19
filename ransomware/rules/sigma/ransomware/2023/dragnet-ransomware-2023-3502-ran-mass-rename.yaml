@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-3502 — Mass File Rename (cactus)'
+id: aff00e4c-e740-5e25-86ec-53e5ac2eb836
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by cactus.
+  Incident: dragnet-ransomware-2023-3502
+  Ransomware victim claim by cactus: larlyn.com; sector: Not Found
+  First observed: 2023-11-28.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://cactusbloguuodvqjmnzlwetjlpj6aggc6iocwhuupb47laukux7ckid.onion/posts/LARLYN
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

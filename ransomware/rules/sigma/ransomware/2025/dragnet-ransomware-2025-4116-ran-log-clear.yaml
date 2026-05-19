@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4116 — Event Log Clearing (shinyhunters)'
+id: 81161375-a1a3-55b4-9a9f-f40c736937ae
+status: experimental
+description: |
+  Detects event log clearing associated with shinyhunters ransomware.
+  Incident: dragnet-ransomware-2025-4116
+  Ransomware victim claim by shinyhunters: Instacart; country: US; sector: Consumer Services
+  First observed: 2025-05-01.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://breachforums.hn//instacart.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

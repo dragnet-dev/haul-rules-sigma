@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1126 — Event Log Clearing (royal)'
+id: 290cc290-67d5-5da9-8e96-401a84a9e929
+status: experimental
+description: |
+  Detects event log clearing associated with royal ransomware.
+  Incident: dragnet-ransomware-2023-1126
+  Ransomware victim claim by royal: Morris Hospital; sector: Healthcare
+  First observed: 2023-05-22.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://royal4ezp7xrbakkus3oofjw6gszrohpodmdnfbe5e4w3og5sm7vb3qd.onion/l8DUoiAn1hd2seGOEHJoxe1VZ9f4nrNf
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

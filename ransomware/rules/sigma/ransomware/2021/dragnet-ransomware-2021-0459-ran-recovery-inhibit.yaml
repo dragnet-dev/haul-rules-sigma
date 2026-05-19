@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0459 — Recovery Inhibition (blackmatter)'
+id: 2bb18646-95a4-5e1c-be77-ba0d735782a3
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with blackmatter ransomware.
+  Incident: dragnet-ransomware-2021-0459
+  Ransomware victim claim by blackmatter: Actief-Jobmade; sector: Business Services
+  First observed: 2021-09-20.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

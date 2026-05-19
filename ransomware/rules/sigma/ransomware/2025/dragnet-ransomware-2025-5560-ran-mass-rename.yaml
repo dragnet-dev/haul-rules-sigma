@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5560 — Mass File Rename (dunghill)'
+id: 21562465-f45a-56e8-b950-0a9ddf3747f1
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by dunghill.
+  Incident: dragnet-ransomware-2025-5560
+  Ransomware victim claim by dunghill: Linney; country: GB; sector: Business Services
+  First observed: 2025-03-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nsalewdnfclsowcal6kn5csm4ryqmfpijznxwictukhrgvz2vbmjjjyd.onion/lot14.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

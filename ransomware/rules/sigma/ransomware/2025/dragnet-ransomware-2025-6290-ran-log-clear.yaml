@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6290 — Event Log Clearing (babuk2)'
+id: efa0c004-f3c5-5ba0-8126-fc169af93be3
+status: experimental
+description: |
+  Detects event log clearing associated with babuk2 ransomware.
+  Incident: dragnet-ransomware-2025-6290
+  Ransomware victim claim by babuk2: www.hcisystems.net; country: US; sector: Technology
+  First observed: 2025-01-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - http:/7dikawx73goypgfi4zyo5fcajxwb7agemmiwqax3p54aey4dwobcvcyd.onion/blog/cc5adb91cc4cdf96bb0a1236b37f9a9fffc0dabee01e286e779e5de765c2f33a/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

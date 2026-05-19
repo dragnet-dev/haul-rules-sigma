@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-3530 — Recovery Inhibition (ransomed)'
+id: 1427e300-374a-5967-86ea-aab6c65fb3e6
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with ransomed ransomware.
+  Incident: dragnet-ransomware-2023-3530
+  Ransomware victim claim by ransomed: proxy-sale.com; sector: Technology
+  First observed: 2023-09-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

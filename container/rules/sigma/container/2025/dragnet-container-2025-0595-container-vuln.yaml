@@ -1,0 +1,30 @@
+title: 'Dragnet [Container]: dragnet-container-2025-0595 — Vulnerable Base Image Pull'
+id: f83eb205-6152-5dd3-82ff-fd175fb9ce32
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2025-0595 (Tier 2, CVSS 9.8)
+  OpenImageIO v3.1.0.0dev was discovered to contain a segmentation violation via the component /OpenImageIO/string_view.h.
+  First observed: 2025-01-29.
+references:
+  - https://github.com/AcademySoftwareFoundation/OpenImageIO/issues/4551
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

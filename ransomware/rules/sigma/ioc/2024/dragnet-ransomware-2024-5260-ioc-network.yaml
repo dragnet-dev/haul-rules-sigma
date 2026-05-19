@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-5260 — Ransomware C2 Communication'
+id: e59cbbb6-4c92-5403-8bd4-ca1eb540ba13
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-5260
+  Ransomware victim claim by orca: Transtec SAS; country: CO; sector: Technology
+  First observed: 2024-10-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://orca66hwnpciepupe5626k2ib6dds6zizjwuuashz67usjps2wehz4id.onion/r/+nXDma6807qQGak1FpQWiTRQFD0soiLthrOF9Gm4SUCgg992wBbuLDZP+LaYcDBRpnhDnw43CtzwbkATTSuN4XNoUXFGZFBz/1
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://orca66hwnpciepupe5626k2ib6dds6zizjwuuashz67usjps2wehz4id.onion/r/+nXDma6807qQGak1FpQWiTRQFD0soiLthrOF9Gm4SUCgg992wBbuLDZP+LaYcDBRpnhDnw43CtzwbkATTSuN4XNoUXFGZFBz/1'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

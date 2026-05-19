@@ -1,0 +1,33 @@
+title: 'Dragnet [Container]: dragnet-container-2025-0357 — Vulnerable Base Image Pull'
+id: 41098af5-43c6-5618-a030-9a2f90f4fca5
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2025-0357 (Tier 2, CVSS 9.7)
+  An arbitrary script execution vulnerability exists in the MPV functionality of Ankitects Anki 24.04. A specially crafted flashcard can lead to a arbitrary code execution. An attacker can send malicious flashcard to trigger this vulnerability.
+  First observed: 2025-11-04.
+references:
+  - https://github.com/ankitects/anki
+  - https://github.com/ankitects/anki/commit/8d2e8b1e4fa3757581f224b1a57057d0455352ce
+  - https://nvd.nist.gov/vuln/detail/CVE-2024-26020
+  - https://skerritt.blog/anki-0day
+  - https://skii.dev/anki-0day
+  - https://talosintelligence.com/vulnerability_reports/TALOS-2024-1993
+  - https://www.talosintelligence.com/vulnerability_reports/TALOS-2024-1993
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: high

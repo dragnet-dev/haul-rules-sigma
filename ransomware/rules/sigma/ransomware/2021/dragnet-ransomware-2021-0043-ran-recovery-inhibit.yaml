@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0043 — Recovery Inhibition (dispossessor)'
+id: 9ae09c5f-5795-5fc5-bd9c-290bce6bc98f
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with dispossessor ransomware.
+  Incident: dragnet-ransomware-2021-0043
+  Ransomware victim claim by dispossessor: chevronfcu.org; country: US; sector: Financial Services
+  First observed: 2021-11-26.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://dispossessor.com/blogs/48
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

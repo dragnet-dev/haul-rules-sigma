@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2026-3167 — Ransomware C2 Communication'
+id: 6765adf4-7f7b-5f5c-aab3-184eb7aee4eb
+status: stable
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2026-3167
+  Ransomware victim claim by bravox: Soreco; country: CH; sector: Business Services
+  First observed: 2026-03-02.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://bravoxxwcfz5qk43ychgveprpd5mw5hvxfs4a2uz2okx7mumiht4fzyd.onion/blog/9926540e-a358-42a4-9526-87f6e075ee34
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://bravoxxwcfz5qk43ychgveprpd5mw5hvxfs4a2uz2okx7mumiht4fzyd.onion/blog/9926540e-a358-42a4-9526-87f6e075ee34'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

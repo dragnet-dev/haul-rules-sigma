@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2309 — Recovery Inhibition (termite)'
+id: ff6f36a3-8666-506a-bac9-ae111a440351
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with termite ransomware.
+  Incident: dragnet-ransomware-2025-2309
+  Ransomware victim claim by termite: Insight Hospital and Medical Center Chicago; country: US; sector: Healthcare
+  First observed: 2025-09-02.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://termiteuslbumdge2zmfmfcsrvmvsfe4gvyudc5j6cdnisnhtftvokid.onion/post/69792ffffeb604ea6ee573d8
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

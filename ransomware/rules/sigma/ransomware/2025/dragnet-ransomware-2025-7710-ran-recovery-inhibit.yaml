@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7710 — Recovery Inhibition (ralord)'
+id: a6305cf9-035e-543b-8a4b-0b853a7a5263
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with ralord ransomware.
+  Incident: dragnet-ransomware-2025-7710
+  Ransomware victim claim by ralord: tomioingenieria.com.ar; country: AR; sector: Manufacturing
+  First observed: 2025-03-22.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ralordqe33mpufkpsr6zkdatktlu3t2uei4ught3sitxgtzfmqmbsuyd.onion/tomioingenieria.com.ar
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,33 @@
+title: 'Dragnet [Container]: dragnet-container-2024-1321 — Vulnerable Base Image Pull'
+id: 443609d8-26e5-5977-8522-4d52a3eca847
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-1321 (Tier 2, CVSS 9.8)
+  lib/libc/stdlib/random.c in OpenBSD returns 0 when seeded with 0.
+  First observed: 2024-11-21.
+references:
+  - http://cvsweb.openbsd.org/cgi-bin/cvsweb/src/lib/libc/stdlib/random.c#rev1.16
+  - http://www.openwall.com/lists/oss-security/2012/03/23/14
+  - https://github.com/ensc/dietlibc/blob/master/CHANGES
+  - https://security-tracker.debian.org/tracker/CVE-2012-1577
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

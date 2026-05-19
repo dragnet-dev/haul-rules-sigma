@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-3021 — Shadow Copy Deletion (ragnarlocker)'
+id: d513fa6a-4ef8-53de-98d0-98024a93a5fb
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with ragnarlocker ransomware.
+  Incident: dragnet-ransomware-2023-3021
+  Ransomware victim claim by ragnarlocker: Announcement: COMECA Group going to be Leaked; sector: Not Found
+  First observed: 2023-09-22.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://rgleaktxuey67yrgspmhvtnrqtgogur35lwdrup4d3igtbm3pupc4lyd.onion/?HIey0fFOvsK
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

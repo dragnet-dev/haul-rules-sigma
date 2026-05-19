@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2618 — Event Log Clearing (8base)'
+id: 6ed436f8-b5f6-5ea2-bee1-033e2f6e4322
+status: experimental
+description: |
+  Detects event log clearing associated with 8base ransomware.
+  Incident: dragnet-ransomware-2022-2618
+  Ransomware victim claim by 8base: Grupo 2MGA; sector: Business Services
+  First observed: 2022-07-30.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://basemmnnqwxevlymli5bs36o5ynti55xojzvn246spahniugwkff2pad.onion/company/7890107
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

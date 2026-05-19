@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-4594 — Event Log Clearing (termite)'
+id: bfd34523-3773-5dd5-94f5-069ec1c37423
+status: experimental
+description: |
+  Detects event log clearing associated with termite ransomware.
+  Incident: dragnet-ransomware-2024-4594
+  Ransomware victim claim by termite: Lebenshilfe Heinsberg; country: DE; sector: Healthcare
+  First observed: 2024-11-13.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://termiteuslbumdge2zmfmfcsrvmvsfe4gvyudc5j6cdnisnhtftvokid.onion/post/6733ec8333cbcfa7e477029c
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

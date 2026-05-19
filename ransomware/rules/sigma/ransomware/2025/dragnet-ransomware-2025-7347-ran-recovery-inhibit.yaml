@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7347 — Recovery Inhibition (lynx)'
+id: b1869cce-9514-5c6e-8d20-fc93147db96c
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with lynx ransomware.
+  Incident: dragnet-ransomware-2025-7347
+  Ransomware victim claim by lynx: Tugwell Pump & Supply; country: US; sector: Manufacturing
+  First observed: 2025-02-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lynxblog.net/leaks/67c9dab744fac8dca1adbeee
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

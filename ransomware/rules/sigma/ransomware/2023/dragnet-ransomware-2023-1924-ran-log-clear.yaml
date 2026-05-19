@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1924 — Event Log Clearing (snatch)'
+id: 8c50db4e-7cbb-560e-abcb-ea036d881197
+status: experimental
+description: |
+  Detects event log clearing associated with snatch ransomware.
+  Incident: dragnet-ransomware-2023-1924
+  Ransomware victim claim by snatch: Knight Barry Title; sector: Financial Services
+  First observed: 2023-09-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://hl66646wtlp2naoqnhattngigjp5palgqmbwixepcjyq5i534acgqyad.onion/news.php?id=1e82f3c0-b5e4-4d10-9968-9ec292a941cd
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

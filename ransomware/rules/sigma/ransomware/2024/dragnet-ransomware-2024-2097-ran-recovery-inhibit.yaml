@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2097 — Recovery Inhibition (raworld)'
+id: 8674ea29-3a21-50b3-af2f-aaad5200cfe2
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with raworld ransomware.
+  Incident: dragnet-ransomware-2024-2097
+  Ransomware victim claim by raworld: Rockford Gastroenterology Associates; country: US; sector: Healthcare
+  First observed: 2024-03-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://raworldw32b2qxevn3gp63pvibgixr4v75z62etlptg3u3pmajwra4ad.onion/post/587459.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

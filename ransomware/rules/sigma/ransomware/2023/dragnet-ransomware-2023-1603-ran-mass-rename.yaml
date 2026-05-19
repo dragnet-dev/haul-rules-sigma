@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1603 — Mass File Rename (trigona)'
+id: 6baafdde-baf8-5e9c-b44a-2c1655114596
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by trigona.
+  Incident: dragnet-ransomware-2023-1603
+  Ransomware victim claim by trigona: Alconex Specialty Products; sector: Not Found
+  First observed: 2023-10-13.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://trigonax2zb3fw34rbaap4cqep76zofxs53zakrdgcxzq6xzt24l5lqd.onion/leak/29abd838
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

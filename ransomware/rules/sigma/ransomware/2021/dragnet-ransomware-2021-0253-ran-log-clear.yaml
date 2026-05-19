@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0253 — Event Log Clearing (conti)'
+id: 85d8c94b-dbb2-5b81-80b0-6c3e86010177
+status: deprecated
+description: |
+  Detects event log clearing associated with conti ransomware.
+  Incident: dragnet-ransomware-2021-0253
+  Ransomware victim claim by conti: SPF Precut Lumber; sector: Construction
+  First observed: 2021-10-24.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5468 — Recovery Inhibition (fog)'
+id: 9d0d3758-5095-5f0f-8390-a62e27ba9541
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with fog ransomware.
+  Incident: dragnet-ransomware-2024-5468
+  Ransomware victim claim by fog: Aroma Housewares Co (Aromaco.com); country: US; sector: Business Services
+  First observed: 2024-12-25.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://xbkv2qey6u3gd3qxcojynrt4h5sgrhkar6whuo74wo63hijnn677jnyd.onion/posts/676c290de0c186faad4bfdad/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

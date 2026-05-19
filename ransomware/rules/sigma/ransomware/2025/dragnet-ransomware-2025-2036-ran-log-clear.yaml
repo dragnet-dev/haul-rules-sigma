@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2036 — Event Log Clearing (kairos)'
+id: 7521fd66-34b6-576e-93b4-d3734e6d87e3
+status: experimental
+description: |
+  Detects event log clearing associated with kairos ransomware.
+  Incident: dragnet-ransomware-2025-2036
+  Ransomware victim claim by kairos: fredsalvuccicorp.com; country: US; sector: Construction
+  First observed: 2025-03-10.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nerqnacjmdy3obvevyol7qhazkwkv57dwqvye5v46k5bcujtfa6sduad.onion/detail?code=fredsalvuccicorp-com-usa-12-2gb
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

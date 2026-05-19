@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0241 — Recovery Inhibition (nefilim)'
+id: f2087c80-062b-5379-a43b-991b9ec85ea5
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with nefilim ransomware.
+  Incident: dragnet-ransomware-2020-0241
+  Ransomware victim claim by nefilim: Orange (mobile operator); country: FR; sector: Telecommunication
+  First observed: 2020-07-04.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

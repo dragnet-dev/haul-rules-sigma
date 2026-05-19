@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-0248 — Event Log Clearing (everest)'
+id: 450e4aca-7df8-5892-92f0-b4dd77c3e49a
+status: test
+description: |
+  Detects event log clearing associated with everest ransomware.
+  Incident: dragnet-ransomware-2026-0248
+  Ransomware victim claim by everest: Warning about the negotiator: All4you; sector: Not Found
+  First observed: 2026-01-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ransomocmou6mnbquqz44ewosbkjk3o5qjsl3orawojexfook2j7esad.onion/news/Warning_about_the_negotiator__All4you/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

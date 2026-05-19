@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1127 — Event Log Clearing (threeam)'
+id: 5215dc29-642f-5bfc-9779-c681b9fcccef
+status: experimental
+description: |
+  Detects event log clearing associated with threeam ransomware.
+  Incident: dragnet-ransomware-2025-1127
+  Ransomware victim claim by threeam: icgad.com; country: US; sector: Construction
+  First observed: 2025-02-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://threeamkelxicjsaf2czjyz2lc4q3ngqkxhhlexyfcp2o6raw4rphyad.onion/detail/7vz9hez040mavwabu98cw0adzgdih9
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

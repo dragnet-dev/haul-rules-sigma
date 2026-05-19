@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2026-2035 — Ransomware C2 Communication'
+id: 6f27de7f-41d0-5a9e-9ed2-b2e28d7dee69
+status: stable
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2026-2035
+  Ransomware victim claim by handala: Israel Institute for National Security Studies (INSS); country: IL; sector: Public Sector
+  First observed: 2026-03-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://handala-hack.to/israel-institute-for-national-security-studies-inss-hacked/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'https://handala-hack.to/israel-institute-for-national-security-studies-inss-hacked/'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2815 — Event Log Clearing (blacknevas)'
+id: 59c7c38c-4247-5fe6-9847-e288cfaaa6b7
+status: stable
+description: |
+  Detects event log clearing associated with blacknevas ransomware.
+  Incident: dragnet-ransomware-2026-2815
+  Ransomware victim claim by blacknevas: The company MST (Sanko Makina and ASKO Holding); country: TR; sector: Manufacturing
+  First observed: 2026-03-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ctyfftrjgtwdjzlgqh4avbd35sqrs6tde4oyam2ufbjch6oqpqtkdtid.onion/b0d5c3ac-d2f9-4e6c-97d0-a49255c54de0
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

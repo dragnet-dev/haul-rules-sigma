@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-1568 — Mass File Rename (lockbit2)'
+id: 448520ac-0f4e-54ff-8733-fc6ad12c2164
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by lockbit2.
+  Incident: dragnet-ransomware-2022-1568
+  Ransomware victim claim by lockbit2: www.wania.at; country: AT; sector: Construction
+  First observed: 2022-04-06.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

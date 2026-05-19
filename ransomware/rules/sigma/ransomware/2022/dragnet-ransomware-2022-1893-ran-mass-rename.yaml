@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-1893 — Mass File Rename (ransomexx)'
+id: 84b6783c-3685-5920-80c8-f193892a5be0
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by ransomexx.
+  Incident: dragnet-ransomware-2022-1893
+  Ransomware victim claim by ransomexx: Fundo Nacional de Desenvolvimento da Educação; country: BR; sector: Education
+  First observed: 2022-09-03.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://rnsm777cdsjrsdlbs4v5qoeppu3px6sb2igmh53jzrx7ipcrbjz5b2ad.onion/e0739189370cb967d7320f00a835411681448e47/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

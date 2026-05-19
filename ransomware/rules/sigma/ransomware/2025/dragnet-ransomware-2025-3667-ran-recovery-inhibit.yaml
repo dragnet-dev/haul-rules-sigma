@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3667 — Recovery Inhibition (sinobi)'
+id: 2dd488b0-df23-501f-b700-8c9ae3b1ba9f
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with sinobi ransomware.
+  Incident: dragnet-ransomware-2025-3667
+  Ransomware victim claim by sinobi: Crown Automotive Sales; country: US; sector: Manufacturing
+  First observed: 2025-10-28.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://sinobi6ftrg27d6g4sjdt65malds6cfptlnjyw52rskakqjda6uvb7yd.onion/leaks/69013ab188b6823fa2fa3823
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

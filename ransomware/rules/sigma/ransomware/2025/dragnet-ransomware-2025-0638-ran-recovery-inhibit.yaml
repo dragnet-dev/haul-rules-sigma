@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0638 — Recovery Inhibition (kairos)'
+id: d895e72f-5683-5402-b818-8dacc95eb1c3
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with kairos ransomware.
+  Incident: dragnet-ransomware-2025-0638
+  Ransomware victim claim by kairos: ndsohio.org; country: US; sector: Public Sector
+  First observed: 2025-05-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nerqnacjmdy3obvevyol7qhazkwkv57dwqvye5v46k5bcujtfa6sduad.onion/detail?code=ndsohio-org-usa-228gb
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

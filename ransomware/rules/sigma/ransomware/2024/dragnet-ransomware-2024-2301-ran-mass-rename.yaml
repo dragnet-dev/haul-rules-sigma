@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2301 — Mass File Rename (handala)'
+id: 6fd121c9-265c-53fc-9cf8-0ece34b89eed
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by handala.
+  Incident: dragnet-ransomware-2024-2301
+  Ransomware victim claim by handala: Israel Prime Minister Emails; country: IL; sector: Public Sector
+  First observed: 2024-10-02.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://vmjfieomxhnfjba57sd6jjws2ogvowjgxhhfglsikqvvrnrajbmpxqqd.onion/?p=233
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3252 — Mass File Rename (safepay)'
+id: 129c2870-e3de-547d-b9b6-b6d81c0c8621
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by safepay.
+  Incident: dragnet-ransomware-2024-3252
+  Ransomware victim claim by safepay: semesco.com; country: CY; sector: Consumer Services
+  First observed: 2024-12-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nz4z6ruzcekriti5cjjiiylzvrmysyqwibxztk6voem4trtx7gstpjid.onion#semesco
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

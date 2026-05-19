@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2159 — Event Log Clearing (hive)'
+id: d152c9f1-c58b-5812-9cbc-695fd718d1b0
+status: deprecated
+description: |
+  Detects event log clearing associated with hive ransomware.
+  Incident: dragnet-ransomware-2022-2159
+  Ransomware victim claim by hive: Eurocell; country: GB; sector: Manufacturing
+  First observed: 2022-09-02.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

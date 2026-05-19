@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-0130 — Ransomware C2 Communication'
+id: 1864f546-01e8-5611-9348-2c8a4fc83ccd
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-0130
+  Ransomware victim claim by lynx: McElwee Firm; country: US; sector: Business Services
+  First observed: 2025-04-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lynxblog.net/leaks/67fed90ece8dcc3b0d917e53
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lynxblog.net/leaks/67fed90ece8dcc3b0d917e53'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

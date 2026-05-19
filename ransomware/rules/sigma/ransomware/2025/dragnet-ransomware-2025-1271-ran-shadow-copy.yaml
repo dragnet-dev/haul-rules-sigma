@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1271 — Shadow Copy Deletion (worldleaks)'
+id: 6c692b6e-dbd6-57f5-989b-037d5ae02566
+status: test
+description: |
+  Detects shadow copy deletion commands associated with worldleaks ransomware.
+  Incident: dragnet-ransomware-2025-1271
+  Ransomware victim claim by worldleaks: Granjas 4 Irmãos SA - Agropecuária, Indústria e Comércio; country: BR; sector: Agriculture and Food Production
+  First observed: 2025-12-08.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://worldleaksartrjm3c6vasllvgacbi5u3mgzkluehrzhk2jz4taufuid.onion/companies/5809412419
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

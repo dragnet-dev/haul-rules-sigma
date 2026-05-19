@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4093 — Recovery Inhibition (d4rk4rmy)'
+id: 3592208d-2818-5378-92d4-35f02eb41e01
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with d4rk4rmy ransomware.
+  Incident: dragnet-ransomware-2025-4093
+  Ransomware victim claim by d4rk4rmy: BIG SILVER; country: TH; sector: Manufacturing
+  First observed: 2025-07-08.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1006 — Recovery Inhibition (mosesstaff)'
+id: 54e1978a-f2a3-5533-a3df-f1af39cf9d1a
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with mosesstaff ransomware.
+  Incident: dragnet-ransomware-2021-1006
+  Ransomware victim claim by mosesstaff: David Engineers; sector: Manufacturing
+  First observed: 2021-12-18.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

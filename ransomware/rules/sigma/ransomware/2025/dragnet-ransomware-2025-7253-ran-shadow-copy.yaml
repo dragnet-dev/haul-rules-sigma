@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7253 — Shadow Copy Deletion (J)'
+id: 69a64328-63c2-573b-a6fe-ed2123d73d05
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with J ransomware.
+  Incident: dragnet-ransomware-2025-7253
+  Ransomware victim claim by J: FAI Aviation Group (fai.ag) - The biggest leak ever; country: DE; sector: Transportation/Logistics
+  First observed: 2025-09-23.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://twniiyed6mydtbe64i5mdl56nihl7atfaqtpww6gqyaiohgc75apzpad.onion/posts/68d2f944f0cd632fbb8953ce/68d2f944f0cd632fbb8953ce/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1802 — Mass File Rename (payloadbin)'
+id: 0763d500-50a0-5cea-b853-0f02bd4423ab
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by payloadbin.
+  Incident: dragnet-ransomware-2021-1802
+  Ransomware victim claim by payloadbin: www.emmawillard.org; sector: Education
+  First observed: 2021-09-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

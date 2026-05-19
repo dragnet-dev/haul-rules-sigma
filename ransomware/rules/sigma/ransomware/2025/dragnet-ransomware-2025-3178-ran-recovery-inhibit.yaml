@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3178 — Recovery Inhibition (worldleaks)'
+id: 7489b73c-ea7b-5de1-83c8-dab492359941
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with worldleaks ransomware.
+  Incident: dragnet-ransomware-2025-3178
+  Ransomware victim claim by worldleaks: Nicke; country: JP; sector: Not Found
+  First observed: 2025-08-02.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://worldleaksartrjm3c6vasllvgacbi5u3mgzkluehrzhk2jz4taufuid.onion/companies/6594456813
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6257 — Mass File Rename (weyhro)'
+id: a684ca41-8442-5668-906c-d76e355aacd1
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by weyhro.
+  Incident: dragnet-ransomware-2025-6257
+  Ransomware victim claim by weyhro: Community Services of Missouri; country: US; sector: Public Sector
+  First observed: 2025-08-10.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://weyhro.hk//leaks/dwiprograms
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

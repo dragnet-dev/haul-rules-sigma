@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0121 — Mass File Rename (anubis)'
+id: 9bf56c04-17d4-54be-9526-293d79edfa6f
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by anubis.
+  Incident: dragnet-ransomware-2025-0121
+  Ransomware victim claim by anubis: Paterson & Dowding Family Lawyers; country: AU; sector: Business Services
+  First observed: 2025-10-23.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://om6q4a6cyipxvt7ioudxt24cw4oqu4yodmqzl25mqd2hgllymrgu4aqd.onion/r/ylT8ETgghDfrKnFidvOIC8Dcnm76+F5nIGlsZGTf2BeWIbycjfJkEBwWBw+dlRjRBm7RYKG6ChGMH2PMSPMOKXh1Z0Jtdlo3
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0991 — Mass File Rename (funksec)'
+id: bcdacaa2-fb33-5ca6-a3dd-e4d4c2f0f58b
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by funksec.
+  Incident: dragnet-ransomware-2024-0991
+  Ransomware victim claim by funksec: USA Network; country: US; sector: Consumer Services
+  First observed: 2024-12-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://7ixfdvqb4eaju5lzj4gg76kwlrxg4ugqpuog5oqkkmgfyn33h527oyyd.onion/product1.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5384 — Recovery Inhibition (ElDorado)'
+id: a2cfc8e2-bfe3-502c-8b30-475b6c28bd99
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with ElDorado ransomware.
+  Incident: dragnet-ransomware-2024-5384
+  Ransomware victim claim by ElDorado: The Municipal Administration of Barranquitas and its Department of Finance; country: US; sector: Public Sector
+  First observed: 2024-11-18.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

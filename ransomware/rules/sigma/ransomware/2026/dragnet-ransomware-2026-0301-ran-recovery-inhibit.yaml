@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-0301 — Recovery Inhibition (crypto24)'
+id: 46e8af8f-c88f-5bb4-8469-d974c2a7c1f7
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with crypto24 ransomware.
+  Incident: dragnet-ransomware-2026-0301
+  Ransomware victim claim by crypto24: Putnam Precision, Inc.; country: US; sector: Manufacturing
+  First observed: 2026-02-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

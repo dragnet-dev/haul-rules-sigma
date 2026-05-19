@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2026-0391 — Ransomware C2 Communication'
+id: 8b402438-655f-5e97-96c0-faea29922986
+status: test
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2026-0391
+  Ransomware victim claim by interlock: Abbott Media Productions; country: US; sector: Business Services
+  First observed: 2026-02-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://c7bgta4watnqu64jnfgp4tzvhfhxgwveqnes65q3mcu4f34xvn7rumad.onion/index.php?p=
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://c7bgta4watnqu64jnfgp4tzvhfhxgwveqnes65q3mcu4f34xvn7rumad.onion/index.php?p='
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

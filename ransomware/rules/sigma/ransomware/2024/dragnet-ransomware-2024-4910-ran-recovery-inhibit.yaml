@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-4910 — Recovery Inhibition (ciphbit)'
+id: 81e56fa4-2f37-5bb8-98e9-3b701bdc9d4f
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with ciphbit ransomware.
+  Incident: dragnet-ransomware-2024-4910
+  Ransomware victim claim by ciphbit: TermoPlastic S.R.L; country: IT; sector: Manufacturing
+  First observed: 2024-04-06.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5060 — Recovery Inhibition (blackbyte)'
+id: dff263a8-a7e9-5a86-becf-f41a22243462
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with blackbyte ransomware.
+  Incident: dragnet-ransomware-2024-5060
+  Associated with BlackByte.
+  Ransomware victim claim by blackbyte: Encinajpa; sector: Not Found
+  First observed: 2024-03-06.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+  - dragnet.actor.blackbyte
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

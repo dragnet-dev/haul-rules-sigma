@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2697 — Mass File Rename (lynx)'
+id: ec2c9082-b598-565a-91e7-7cc16a86b791
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by lynx.
+  Incident: dragnet-ransomware-2025-2697
+  Ransomware victim claim by lynx: Solar Optimum; country: US; sector: Energy
+  First observed: 2025-03-25.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lynxblog.net/leaks/67e1f2a8ce8dcc3b0d330c44
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

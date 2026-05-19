@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1280 — Recovery Inhibition (donutleaks)'
+id: 3b9a62e5-d337-515d-ae52-986168e2bada
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with donutleaks ransomware.
+  Incident: dragnet-ransomware-2023-1280
+  Ransomware victim claim by donutleaks: The Travel Network Group; sector: Hospitality and Tourism
+  First observed: 2023-05-23.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://sbc2zv2qnz5vubwtx3aobfpkeao6l4igjegm3xx7tk5suqhjkp5jxtqd.onion/the-travel-network-group/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

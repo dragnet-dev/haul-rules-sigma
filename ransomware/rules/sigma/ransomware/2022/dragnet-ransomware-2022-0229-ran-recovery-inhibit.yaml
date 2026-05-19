@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-0229 — Recovery Inhibition (lv)'
+id: bb1296d2-a8df-5e2d-894e-5bd9fce7b633
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with lv ransomware.
+  Incident: dragnet-ransomware-2022-0229
+  Ransomware victim claim by lv: Importador Ferretero Trujillo Cia. Ltda; sector: Construction
+  First observed: 2022-04-15.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

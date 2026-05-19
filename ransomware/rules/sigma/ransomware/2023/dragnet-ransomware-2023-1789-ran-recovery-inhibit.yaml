@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1789 — Recovery Inhibition (losttrust)'
+id: d261d679-bd7f-560e-9b01-67e66856fc6a
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with losttrust ransomware.
+  Incident: dragnet-ransomware-2023-1789
+  Ransomware victim claim by losttrust: LoopLoc; sector: Not Found
+  First observed: 2023-09-26.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

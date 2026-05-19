@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1947 — Recovery Inhibition (ransomed)'
+id: d2d13ce1-3b77-5efd-b296-c6f6878dfb84
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with ransomed ransomware.
+  Incident: dragnet-ransomware-2023-1947
+  Ransomware victim claim by ransomed: wantager.com; sector: Consumer Services
+  First observed: 2023-09-04.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

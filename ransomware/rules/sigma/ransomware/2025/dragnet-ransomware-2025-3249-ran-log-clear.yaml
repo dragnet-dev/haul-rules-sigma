@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3249 — Event Log Clearing (dragonforce)'
+id: a3ce433a-3e99-5e00-a138-31a10a4eb809
+status: experimental
+description: |
+  Detects event log clearing associated with dragonforce ransomware.
+  Incident: dragnet-ransomware-2025-3249
+  Ransomware victim claim by dragonforce: Allgäu Stern Hotel; country: DE; sector: Hospitality and Tourism
+  First observed: 2025-10-08.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://z3wqggtxft7id3ibr7srivv5gjof5fwg76slewnzwwakjuf3nlhukdid.onion/blog/?post_uuid=6337b4a4-abc2-441b-95c7-83d99d6d3851
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

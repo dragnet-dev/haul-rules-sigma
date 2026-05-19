@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0932 — Recovery Inhibition (karma)'
+id: 6862d9e8-bfab-5395-951a-a34b408e8748
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with karma ransomware.
+  Incident: dragnet-ransomware-2021-0932
+  Associated with VOID MANTICORE.
+  Ransomware victim claim by karma: YASH Technologies. Part 1.; sector: Technology
+  First observed: 2021-10-04.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+  - dragnet.actor.void-manticore
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

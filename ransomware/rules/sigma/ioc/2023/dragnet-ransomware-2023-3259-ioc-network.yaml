@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-3259 — Ransomware C2 Communication'
+id: 12113653-3f35-505b-a268-9d29ea89a903
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-3259
+  Ransomware victim claim by monti: Imt - Press Release; sector: Business Services
+  First observed: 2023-11-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://mblogci3rudehaagbryjznltdp33ojwzkq6hn2pckvjq33rycmzczpid.onion/blog/75281516cd4c46e365bbfe44fc8f307d545b8f6b5afd2f6512b7c45a5c1cab7f/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://mblogci3rudehaagbryjznltdp33ojwzkq6hn2pckvjq33rycmzczpid.onion/blog/75281516cd4c46e365bbfe44fc8f307d545b8f6b5afd2f6512b7c45a5c1cab7f/'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

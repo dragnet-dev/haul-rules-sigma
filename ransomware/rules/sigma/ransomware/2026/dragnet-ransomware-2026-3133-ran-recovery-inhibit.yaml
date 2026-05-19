@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-3133 — Recovery Inhibition (AiLock)'
+id: c14c445a-5371-5450-a3a9-9e8616e10908
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with AiLock ransomware.
+  Incident: dragnet-ransomware-2026-3133
+  Ransomware victim claim by AiLock: Aaronson Rappaport Feinstein & Deutsch; country: US; sector: Business Services
+  First observed: 2026-03-03.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

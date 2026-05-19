@@ -1,0 +1,39 @@
+title: 'Dragnet [Container]: dragnet-container-2026-2513 — Vulnerable Base Image Pull'
+id: 6cca2403-1097-59b5-bf7a-10ba8b2b1a77
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-2513 (Tier 2, CVSS 10)
+  Format string vulnerability in the errors_create_window function in errors.c in xine-ui allows attackers to execute arbitrary code via unknown vectors.
+  First observed: 2026-04-23.
+references:
+  - http://osvdb.org/31594
+  - http://secunia.com/advisories/23709
+  - http://secunia.com/advisories/23891
+  - http://secunia.com/advisories/23931
+  - http://security.gentoo.org/glsa/glsa-200701-18.xml
+  - http://www.mandriva.com/security/advisories?name=MDKSA-2007:027
+  - http://www.mandriva.com/security/advisories?name=MDKSA-2007:154
+  - http://www.securityfocus.com/archive/1/456590/100/0/threaded
+  - http://www.securityfocus.com/bid/22002
+  - https://exchange.xforce.ibmcloud.com/vulnerabilities/31505
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

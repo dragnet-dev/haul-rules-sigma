@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-1497 — Mass File Rename (tengu)'
+id: be5d4f69-050c-5055-8849-eb79607f35c1
+status: test
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by tengu.
+  Incident: dragnet-ransomware-2026-1497
+  Ransomware victim claim by tengu: namico.go.ke; country: KE; sector: Public Sector
+  First observed: 2026-01-26.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://longcc4fqrfcqt5lzceutylaxir6h66fp6df3oin6mvwvz6pfdbxc6qd.onion/blog/f48b1e6bde5227d8950b8c30a544e9ba2a6694f6b9f19d8bec21f699ea1abbe8/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

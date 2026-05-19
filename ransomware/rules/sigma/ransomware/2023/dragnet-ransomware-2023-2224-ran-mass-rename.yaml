@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-2224 — Mass File Rename (knight)'
+id: 1500f5de-0804-5dbc-a9d3-b936d4e96eeb
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by knight.
+  Incident: dragnet-ransomware-2023-2224
+  Ransomware victim claim by knight: Mario de Cecco - Workwear & Corporate Wear IT; sector: Consumer Services
+  First observed: 2023-10-31.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://knight3xppu263m7g4ag3xlit2qxpryjwueobh7vjdc3zrscqlfu3pqd.onion/5ec6ea52-8f28-42dc-b239-e293fd648210/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

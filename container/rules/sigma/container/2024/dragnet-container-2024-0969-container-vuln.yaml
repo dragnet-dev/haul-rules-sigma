@@ -1,0 +1,28 @@
+title: 'Dragnet [Container]: dragnet-container-2024-0969 — Vulnerable Base Image Pull'
+id: a0ad22c3-9a51-5272-894b-4aecd20e8f4b
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-0969 (Tier 2, CVSS 9.8)
+  There is a heap-buffer-overflow at lit-strings.c:431 in lit_read_code_unit_from_utf8 in JerryScript 2.2.0.
+  First observed: 2024-11-21.
+references:
+  - https://github.com/jerryscript-project/jerryscript/issues/3870
+  - https://nvd.nist.gov/vuln/detail/CVE-2020-23321
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:10'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

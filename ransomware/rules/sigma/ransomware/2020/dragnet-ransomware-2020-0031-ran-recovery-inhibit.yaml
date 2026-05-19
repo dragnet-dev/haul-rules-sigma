@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0031 — Recovery Inhibition (agelocker)'
+id: 18849ee0-c2f5-52ab-940d-7b4b91c2b817
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with agelocker ransomware.
+  Incident: dragnet-ransomware-2020-0031
+  Ransomware victim claim by agelocker: QNAP; sector: Technology
+  First observed: 2020-08-30.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

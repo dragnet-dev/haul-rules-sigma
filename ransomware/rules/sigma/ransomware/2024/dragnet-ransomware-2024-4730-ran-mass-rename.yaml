@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-4730 — Mass File Rename (arcusmedia)'
+id: c137b256-8c00-5ce6-8a48-1b089adab1f9
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by arcusmedia.
+  Incident: dragnet-ransomware-2024-4730
+  Ransomware victim claim by arcusmedia: Freightliner of Grand Rapids & Kalamazoo; country: US; sector: Transportation/Logistics
+  First observed: 2024-06-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://arcuufpr5xxbbkin4mlidt7itmr6znlppk63jbtkeguuhszmc5g7qdyd.onion/?p=192
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

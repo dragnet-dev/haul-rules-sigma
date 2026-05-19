@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7792 — Event Log Clearing (blackshrantac)'
+id: a30348ad-2a4d-5fea-b375-175918cc8a30
+status: test
+description: |
+  Detects event log clearing associated with blackshrantac ransomware.
+  Incident: dragnet-ransomware-2025-7792
+  Ransomware victim claim by blackshrantac: Netstar Australia PTY Ltd; country: AU; sector: Telecommunication
+  First observed: 2025-12-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://b2ykcy2gcug4gnccm6hnrb5xapnresmyjjqgvhafaypppwgo4feixwyd.onion/targets/37
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

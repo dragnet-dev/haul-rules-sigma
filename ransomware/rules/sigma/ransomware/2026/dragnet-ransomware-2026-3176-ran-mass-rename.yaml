@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-3176 — Mass File Rename (sinobi)'
+id: 74721388-3528-5178-a02c-d056077bd8e8
+status: stable
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by sinobi.
+  Incident: dragnet-ransomware-2026-3176
+  Ransomware victim claim by sinobi: Unre3d; sector: Not Found
+  First observed: 2026-05-05.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://sinobi23i75c3znmqqxxyuzqvhxnjsar7actgvc4nqeuhgcn5yvz3zqd.onion/leaks/69fa49c28280ceeb9ae19779
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

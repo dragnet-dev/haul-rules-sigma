@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5560 — Event Log Clearing (apt73)'
+id: ae60435b-a539-59b1-b36c-e5ce0575bda4
+status: experimental
+description: |
+  Detects event log clearing associated with apt73 ransomware.
+  Incident: dragnet-ransomware-2024-5560
+  Ransomware victim claim by apt73: pkaufmann.com; country: US; sector: Manufacturing
+  First observed: 2024-10-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://bashe4aec32kr6zbifwd5x6xgjsmhg4tbowrbx4pneqhc5mqooyifpid.onion/page_company.php?id=71
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

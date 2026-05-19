@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-4122 — Ransomware C2 Communication'
+id: 156ba6a5-bb0b-5717-9709-f0c30c404bce
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-4122
+  Ransomware victim claim by ransomhub: EUROPEANPROF - Expertos en Seguridad y Altura -; country: ES; sector: Business Services
+  First observed: 2024-04-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ransomxifxwc5eteopdobynonjctkxxvap77yqifu2emfbecgbqdw6qd.onion/dcbcfd9c-5077-4e5d-ad8c-55767abae3a1/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://ransomxifxwc5eteopdobynonjctkxxvap77yqifu2emfbecgbqdw6qd.onion/dcbcfd9c-5077-4e5d-ad8c-55767abae3a1/'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

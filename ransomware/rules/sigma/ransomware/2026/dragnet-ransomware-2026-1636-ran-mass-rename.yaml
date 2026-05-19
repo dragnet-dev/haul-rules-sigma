@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-1636 — Mass File Rename (titan)'
+id: b1ad515e-5f11-5d73-9e19-9ba6b2c5a480
+status: stable
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by titan.
+  Incident: dragnet-ransomware-2026-1636
+  Ransomware victim claim by titan: DFI AMERICA, LLC; country: US; sector: Business Services
+  First observed: 2026-05-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://titanblog.org/post/the-files-were-downloaded-analyzed-using-titan-ai-k74fhhn0o4
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

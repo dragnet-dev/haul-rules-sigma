@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6211 — Shadow Copy Deletion (shinyhunters)'
+id: 18f9e963-7fda-5a9a-a8cb-f1b85ba0e665
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with shinyhunters ransomware.
+  Incident: dragnet-ransomware-2025-6211
+  Ransomware victim claim by shinyhunters: HMH (hmhco.com); country: US; sector: Education
+  First observed: 2025-07-08.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://breachforums.hn//hmhco.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

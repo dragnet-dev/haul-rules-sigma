@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7842 — Shadow Copy Deletion (apos)'
+id: 63b980e6-fbe0-53f7-b87a-4a9207664cdb
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with apos ransomware.
+  Incident: dragnet-ransomware-2025-7842
+  Ransomware victim claim by apos: Auxis; country: US; sector: Business Services
+  First observed: 2025-01-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://yrz6bayqwhleymbeviter7ejccxm64sv2ppgqgderzgdhutozcbbhpqd.onion/data/0727c3f3-c637-4db8-9bea-bf5bfd32195b
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

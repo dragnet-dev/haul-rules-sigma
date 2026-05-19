@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-3454 — Mass File Rename (cuba)'
+id: 195aa06e-ebff-577b-84a4-a8854c004a41
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by cuba.
+  Incident: dragnet-ransomware-2023-3454
+  Ransomware victim claim by cuba: hydrex.co.uk; country: GB; sector: Construction
+  First observed: 2023-07-31.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://cuba4ikm4jakjgmkezytyawtdgr2xymvy6nvzgw5cglswg3si76icnqd.onion/company/hydrex.co.uk
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

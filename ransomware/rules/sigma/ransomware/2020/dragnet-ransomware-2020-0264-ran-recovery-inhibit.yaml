@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0264 — Recovery Inhibition (prolock)'
+id: b026b2f9-ca1b-50ad-9adb-82c43ba3d240
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with prolock ransomware.
+  Incident: dragnet-ransomware-2020-0264
+  Ransomware victim claim by prolock: LaSalle County Government; country: US; sector: Public Sector
+  First observed: 2020-02-23.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

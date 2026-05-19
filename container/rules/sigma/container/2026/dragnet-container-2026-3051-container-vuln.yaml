@@ -1,0 +1,43 @@
+title: 'Dragnet [Container]: dragnet-container-2026-3051 — Vulnerable Base Image Pull'
+id: 5500350d-28b2-5b57-a748-3963095273f5
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-3051 (Tier 2, CVSS 9.3)
+  Associated with Earth Lusca.
+  Use-after-free vulnerability in WebKit, as used in Apple Safari before 4.1.3 and 5.0.x before 5.0.3, Google Chrome before 6.0.472.53, and webkitgtk before 1.2.6, allows remote attackers to execute arbitrary code or cause a denial of service (application crash) via vectors involving element focus.
+  First observed: 2026-04-29.
+references:
+  - https://nvd.nist.gov/vuln/detail/CVE-2010-3257
+  - http://code.google.com/p/chromium/issues/detail?id=52443
+  - http://googlechromereleases.blogspot.com/2010/09/stable-and-beta-channel-updates.html
+  - http://lists.apple.com/archives/security-announce/2010//Nov/msg00002.html
+  - http://lists.apple.com/archives/security-announce/2010//Nov/msg00003.html
+  - http://lists.opensuse.org/opensuse-security-announce/2011-01/msg00006.html
+  - http://secunia.com/advisories/41856
+  - http://secunia.com/advisories/42314
+  - http://secunia.com/advisories/43068
+  - http://secunia.com/advisories/43086
+  - http://support.apple.com/kb/HT4455
+  - http://support.apple.com/kb/HT4456
+  - http://www.mandriva.com/security/advisories?name=MDVSA-2011:039
+  - http://www.redhat.com/support/errata/RHSA-2011-0177.html
+  - http://www.securityfocus.com/bid/44204
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+  - dragnet.actor.earth-lusca
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'oraclelinux:6'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

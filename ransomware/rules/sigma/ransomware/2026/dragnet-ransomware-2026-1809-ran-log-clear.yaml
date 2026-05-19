@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-1809 — Event Log Clearing (lamashtu)'
+id: 54bf0927-1479-58cb-8cac-76ab35ad2d50
+status: stable
+description: |
+  Detects event log clearing associated with lamashtu ransomware.
+  Incident: dragnet-ransomware-2026-1809
+  Ransomware victim claim by lamashtu: Depósito Dental Universitario; country: MX; sector: Healthcare
+  First observed: 2026-05-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lamashtux5j74mcm7lwwgn5yrvuwtrpxjoyendif3v3hrztjesfoyayd.onion/post/d8a7c97ccb298dfa670f7c15ded1cc89
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

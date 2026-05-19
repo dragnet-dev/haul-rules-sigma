@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0213 — Event Log Clearing (wastedlocker)'
+id: 4d3edab1-30bd-5191-b7f1-4684beb96f8f
+status: deprecated
+description: |
+  Detects event log clearing associated with wastedlocker ransomware.
+  Incident: dragnet-ransomware-2020-0213
+  Ransomware victim claim by wastedlocker: Boyne Resorts; country: US; sector: Hospitality and Tourism
+  First observed: 2020-10-16.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

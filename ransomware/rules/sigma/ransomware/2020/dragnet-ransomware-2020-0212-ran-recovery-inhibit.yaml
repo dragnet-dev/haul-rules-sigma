@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0212 — Recovery Inhibition (ragnarlocker)'
+id: 53a87212-1ae8-5757-8dda-a27e3ab775df
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with ragnarlocker ransomware.
+  Incident: dragnet-ransomware-2020-0212
+  Ransomware victim claim by ragnarlocker: Security breach of CAPCOM network; sector: Technology
+  First observed: 2020-10-20.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

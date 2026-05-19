@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0120 — Event Log Clearing (donex)'
+id: f7ca2117-9e0c-5382-bd5c-a4d4ee8cbe8d
+status: experimental
+description: |
+  Detects event log clearing associated with donex ransomware.
+  Incident: dragnet-ransomware-2024-0120
+  Ransomware victim claim by donex: vdhelm; country: NL; sector: Technology
+  First observed: 2024-02-22.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://g3h3klsev3eiofxhykmtenmdpi67wzmaixredk5pjuttbx7okcfkftqd.onion/e6fef7da33be/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

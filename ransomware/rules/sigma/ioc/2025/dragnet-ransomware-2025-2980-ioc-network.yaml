@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-2980 — Ransomware C2 Communication'
+id: 4c6213c0-3911-51f2-909f-9c6eea7c1aab
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-2980
+  Ransomware victim claim by apos: KIU System Solutions; country: AR; sector: Technology
+  First observed: 2025-03-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://yrz6bayqwhleymbeviter7ejccxm64sv2ppgqgderzgdhutozcbbhpqd.onion/data/b5f8e897-1b33-43be-a54c-ad5fe4274ef9
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://yrz6bayqwhleymbeviter7ejccxm64sv2ppgqgderzgdhutozcbbhpqd.onion/data/b5f8e897-1b33-43be-a54c-ad5fe4274ef9'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

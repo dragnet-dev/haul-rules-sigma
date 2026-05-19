@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3142 — Event Log Clearing (radar)'
+id: eb03b38b-079e-57c6-8639-64c4b25ebba3
+status: experimental
+description: |
+  Detects event log clearing associated with radar ransomware.
+  Incident: dragnet-ransomware-2025-3142
+  Ransomware victim claim by radar: ROBERT G. DASHIELL, JR., P.E., INC; country: US; sector: Construction
+  First observed: 2025-09-10.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://3bnusfu2lgk5at43ceu7cdok5yv4gfbono2jv57ho74ucjvc7czirfid.onion/leaked-data/?id=60
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

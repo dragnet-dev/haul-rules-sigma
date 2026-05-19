@@ -1,0 +1,31 @@
+title: 'Dragnet [Container]: dragnet-container-2025-0186 — Vulnerable Base Image Pull'
+id: 97f23d7d-8977-5472-a0f1-5b6e07223b93
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2025-0186 (Tier 2, CVSS 9.8)
+  A heap-based buffer overflow vulnerability exists in the ISHNE parsing functionality of The Biosig Project libbiosig 3.9.0 and Master Branch (35a819fa). A specially crafted ISHNE ECG annotations file can lead to arbitrary code execution. An attacker can provide a malicious file to trigger this vulnerability.
+  First observed: 2025-11-03.
+references:
+  - https://talosintelligence.com/vulnerability_reports/TALOS-2025-2232
+  - https://www.talosintelligence.com/vulnerability_reports/TALOS-2025-2232
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

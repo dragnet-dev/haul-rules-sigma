@@ -1,0 +1,26 @@
+title: 'Dragnet [Container]: dragnet-container-2015-0004 — End-of-Life Base Image'
+id: 1c1124ef-6dec-5ae4-bc73-de7e158155ab
+status: deprecated
+description: |
+  Detects deployment of a container image based on an end-of-life product cycle.
+  EOL images receive no further security patches regardless of new CVEs.
+  Incident: dragnet-container-2015-0004
+  alpine 2.7 reached end-of-life on 2015-11-01. All images based on this cycle are permanently unpatched.
+  First observed: 2015-11-01.
+references:
+  - https://endoflife.date/alpine
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|startswith:
+      - 'alpine:2.7.'
+      - 'alpine:2.7-'
+  condition: selection
+falsepositives:
+  - Internal base images that pin to EOL cycles intentionally
+level: high

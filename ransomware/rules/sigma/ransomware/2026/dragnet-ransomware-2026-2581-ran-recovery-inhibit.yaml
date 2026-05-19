@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2581 — Recovery Inhibition (beast)'
+id: 813cc71b-5917-5af4-8a7d-8e91a6ec85e5
+status: test
+description: |
+  Detects boot/recovery disabling associated with beast ransomware.
+  Incident: dragnet-ransomware-2026-2581
+  Ransomware victim claim by beast: Ruskin College; country: UK; sector: Education
+  First observed: 2026-01-25.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://beast6azu4f7fxjakiayhnssybibsgjnmy77a6duufqw5afjzfjhzuqd.onion/card/ruskin_college
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

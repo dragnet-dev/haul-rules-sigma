@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-3361 — Mass File Rename (raworld)'
+id: 0ff64e75-ee0e-5258-86a3-5cf49f0e0083
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by raworld.
+  Incident: dragnet-ransomware-2023-3361
+  Ransomware victim claim by raworld: 24/7 Express Logistics (Unpay-Start Leaking); sector: Transportation/Logistics
+  First observed: 2023-09-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://pa32ymaeu62yo5th5mraikgw5fcvznnsiiwti42carjliarodltmqcqd.onion/post/7585.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

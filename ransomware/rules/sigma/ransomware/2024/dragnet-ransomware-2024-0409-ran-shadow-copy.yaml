@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0409 — Shadow Copy Deletion (playboy)'
+id: ce1850f3-3cab-5178-bd30-cc0ed3d321e7
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with playboy ransomware.
+  Incident: dragnet-ransomware-2024-0409
+  Ransomware victim claim by playboy: German Chamber of Commerce; country: DE; sector: Business Services
+  First observed: 2024-10-28.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://vlofmq2u3f5amxmnblvxaghy73aedwta74fyceywr6eeguw3cn6h6uad.onion/blog/details.php?id=24
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

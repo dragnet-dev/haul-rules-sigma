@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2735 — Mass File Rename (pear)'
+id: 21eb1b14-7574-510a-bb8a-9a199662b807
+status: stable
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by pear.
+  Incident: dragnet-ransomware-2026-2735
+  Ransomware victim claim by pear: Powell, Powell & Powell, P.A.; country: US; sector: Business Services
+  First observed: 2026-04-06.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://pearsmob5sn44ismokiusuld34pnfwi6ctgin3qbvonpoob4lh3rmtqd.onion/Companies/powelllawfirm
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7249 — Recovery Inhibition (blacknevas)'
+id: 31db7d2b-f4f2-5629-be24-2178f0b76383
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with blacknevas ransomware.
+  Incident: dragnet-ransomware-2025-7249
+  Ransomware victim claim by blacknevas: SISTRAN Consultores; country: MX; sector: Technology
+  First observed: 2025-09-01.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ctyfftrjgtwdjzlgqh4avbd35sqrs6tde4oyam2ufbjch6oqpqtkdtid.onion/publications/details/e5782aa4-2739-4e93-a29c-eed9a725bf66
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

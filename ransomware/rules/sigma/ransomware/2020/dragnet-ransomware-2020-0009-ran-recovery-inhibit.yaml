@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0009 — Recovery Inhibition (ryuk)'
+id: 8195388c-5d17-5787-afd6-5a3c648ad086
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with ryuk ransomware.
+  Incident: dragnet-ransomware-2020-0009
+  Ransomware victim claim by ryuk: Volusia County Library System; country: US; sector: Education
+  First observed: 2020-01-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

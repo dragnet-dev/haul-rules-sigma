@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2663 — Recovery Inhibition (payoutsking)'
+id: 7c47f731-f7c5-513f-be01-d9c3f7cda9e8
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with payoutsking ransomware.
+  Incident: dragnet-ransomware-2026-2663
+  Ransomware victim claim by payoutsking: E****b; country: US; sector: Not Found
+  First observed: 2026-03-27.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

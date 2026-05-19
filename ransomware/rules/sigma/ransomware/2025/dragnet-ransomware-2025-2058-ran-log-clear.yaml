@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2058 — Event Log Clearing (apt73)'
+id: 356acdc8-ebdc-599f-b8f1-7e88561571f1
+status: experimental
+description: |
+  Detects event log clearing associated with apt73 ransomware.
+  Incident: dragnet-ransomware-2025-2058
+  Ransomware victim claim by apt73: India car owners; country: IN; sector: Consumer Services
+  First observed: 2025-02-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://basherq53eniermxovo3bkduw5qqq5bkqcml3qictfmamgvmzovykyqd.onion/page_company.php?id=121
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

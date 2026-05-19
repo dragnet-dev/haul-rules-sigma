@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0248 — Event Log Clearing (underground)'
+id: 5e2df465-abcc-5966-b28b-d4b8a76bca95
+status: experimental
+description: |
+  Detects event log clearing associated with underground ransomware.
+  Incident: dragnet-ransomware-2024-0248
+  Ransomware victim claim by underground: belcherpharma.com; country: US; sector: Healthcare
+  First observed: 2024-05-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://47glxkuxyayqrvugfumgsblrdagvrah7gttfscgzn56eyss5wg3uvmqd.onion/packages/7f032f2b-4821-43f6-aaef-68ab86112cad
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-3194 — Recovery Inhibition (pear)'
+id: 1d45e138-e6dd-56b6-bb7f-a0f09cce392a
+status: test
+description: |
+  Detects boot/recovery disabling associated with pear ransomware.
+  Incident: dragnet-ransomware-2026-3194
+  Ransomware victim claim by pear: Rocky Mountain Associated Physicians; country: US; sector: Healthcare
+  First observed: 2026-01-26.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://pearsmob5sn44ismokiusuld34pnfwi6ctgin3qbvonpoob4lh3rmtqd.onion/Companies/utahbariatrics
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

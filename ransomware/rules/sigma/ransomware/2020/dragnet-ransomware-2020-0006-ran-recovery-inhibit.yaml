@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0006 — Recovery Inhibition (maze)'
+id: f18cde5e-4a03-521d-9101-fdb1f1aea27b
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with maze ransomware.
+  Incident: dragnet-ransomware-2020-0006
+  Ransomware victim claim by maze: Affordacare Urgent Care Clinic; country: US; sector: Healthcare
+  First observed: 2020-02-01.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

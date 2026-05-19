@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6925 — Mass File Rename (shinyhunters)'
+id: efa87588-f220-5ffb-8aaa-8a02f0524127
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by shinyhunters.
+  Incident: dragnet-ransomware-2025-6925
+  Ransomware victim claim by shinyhunters: Engie Resources (Plymouth); country: US; sector: Energy
+  First observed: 2025-07-18.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://breachforums.hn//engie.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

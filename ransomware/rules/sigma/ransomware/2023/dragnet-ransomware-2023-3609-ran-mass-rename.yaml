@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-3609 — Mass File Rename (ragnarlocker)'
+id: f095d4ce-1655-5e9b-8c93-4cbbc7eab4f5
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by ragnarlocker.
+  Incident: dragnet-ransomware-2023-3609
+  Ransomware victim claim by ragnarlocker: Eicon Controle Inteligentes; sector: Manufacturing
+  First observed: 2023-10-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://rgleaktxuey67yrgspmhvtnrqtgogur35lwdrup4d3igtbm3pupc4lyd.onion/?SPmTTkBnDYnpOES
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

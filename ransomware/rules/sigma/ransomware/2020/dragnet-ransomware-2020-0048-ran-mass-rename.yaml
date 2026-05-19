@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0048 — Mass File Rename (revil)'
+id: 758a5c10-1e17-5895-85ee-ecd588c0e0a6
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by revil.
+  Incident: dragnet-ransomware-2020-0048
+  Ransomware victim claim by revil: ADIF (Spanish railway manager); country: ES; sector: Transportation/Logistics
+  First observed: 2020-07-01.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

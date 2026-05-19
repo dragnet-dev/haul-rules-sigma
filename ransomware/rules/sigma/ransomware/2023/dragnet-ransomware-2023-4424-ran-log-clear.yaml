@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4424 — Event Log Clearing (vendetta)'
+id: 85304b8f-e894-521e-90af-2597b6a8d9c6
+status: deprecated
+description: |
+  Detects event log clearing associated with vendetta ransomware.
+  Incident: dragnet-ransomware-2023-4424
+  Ransomware victim claim by vendetta: Highwealth; sector: Construction
+  First observed: 2023-02-21.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

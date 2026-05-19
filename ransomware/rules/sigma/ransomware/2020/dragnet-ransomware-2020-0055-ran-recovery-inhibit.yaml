@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0055 — Recovery Inhibition (dispossessor)'
+id: c344f837-df5a-5bb9-ae56-a8dc3aa6be48
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with dispossessor ransomware.
+  Incident: dragnet-ransomware-2020-0055
+  Ransomware victim claim by dispossessor: deltadental.com; country: US; sector: Healthcare
+  First observed: 2020-11-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://dispossessor.com/blogs/57
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

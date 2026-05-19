@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-0556 — Mass File Rename (cmdorganization)'
+id: 1142fc13-25b5-55d1-bb3a-cfe23197f8af
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by cmdorganization.
+  Incident: dragnet-ransomware-2026-0556
+  Ransomware victim claim by cmdorganization: Zampell; country: IT; sector: Not Found
+  First observed: 2026-05-02.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

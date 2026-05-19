@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6939 — Mass File Rename (safepay)'
+id: 2ab4a189-29a8-5557-a282-c11baa16758a
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by safepay.
+  Incident: dragnet-ransomware-2025-6939
+  Ransomware victim claim by safepay: camaravalencia.com; country: ES; sector: Business Services
+  First observed: 2025-06-30.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://safepaypfxntwixwjrlcscft433ggemlhgkkdupi2ynhtcmvdgubmoyd.onion/blog/post/camaravalenciacom/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

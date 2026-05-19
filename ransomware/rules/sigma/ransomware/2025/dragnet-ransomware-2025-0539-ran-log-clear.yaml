@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0539 — Event Log Clearing (obscura)'
+id: 7c445771-6d9f-5087-8574-4f1d1db5b8ae
+status: experimental
+description: |
+  Detects event log clearing associated with obscura ransomware.
+  Incident: dragnet-ransomware-2025-0539
+  Ransomware victim claim by obscura: espectral.pt; country: PT; sector: Technology
+  First observed: 2025-10-13.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://obscurad3aphckihv7wptdxvdnl5emma6t3vikcf3c5oiiqndq6y6xad.onion/leaks/5
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

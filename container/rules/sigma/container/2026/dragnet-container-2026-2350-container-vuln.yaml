@@ -1,0 +1,33 @@
+title: 'Dragnet [Container]: dragnet-container-2026-2350 — Vulnerable Base Image Pull'
+id: ed920a19-51b4-529f-a0e5-704368c54c2a
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-2350 (Tier 2, CVSS 10)
+  Heap-based buffer overflow in the demux_open_bmp function in demux_bmp.c for Unix MPlayer 1.0pre5 allows remote attackers to execute arbitrary code via a bitmap (BMP) file containing a large biClrUsed field.
+  First observed: 2026-04-16.
+references:
+  - http://www.idefense.com/application/poi/display?id=168
+  - http://www.mandriva.com/security/advisories?name=MDKSA-2004:157
+  - http://www1.mplayerhq.hu/MPlayer/releases/ChangeLog
+  - https://exchange.xforce.ibmcloud.com/vulnerabilities/18527
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

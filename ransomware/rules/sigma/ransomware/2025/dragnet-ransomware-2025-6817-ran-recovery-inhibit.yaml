@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6817 — Recovery Inhibition (kairos)'
+id: 4dfcd912-7a2c-5817-84d1-e16f27cf4841
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with kairos ransomware.
+  Incident: dragnet-ransomware-2025-6817
+  Ransomware victim claim by kairos: Hazel Mercantile; country: IN; sector: Energy
+  First observed: 2025-11-24.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

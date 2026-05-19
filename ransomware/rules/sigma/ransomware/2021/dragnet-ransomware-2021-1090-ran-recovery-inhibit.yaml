@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1090 — Recovery Inhibition (xinglocker)'
+id: cf78b72c-f1ea-5df7-bb2f-6e5e55198ffc
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with xinglocker ransomware.
+  Incident: dragnet-ransomware-2021-1090
+  Ransomware victim claim by xinglocker: Desert Plastering LLC; country: US; sector: Financial Services
+  First observed: 2021-05-13.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

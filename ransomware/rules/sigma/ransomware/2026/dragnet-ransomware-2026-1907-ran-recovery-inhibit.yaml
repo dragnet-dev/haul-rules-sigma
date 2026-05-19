@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-1907 — Recovery Inhibition (SilentRansomGroup)'
+id: 98eaf8a8-cd96-5d3c-8514-dd29ae7c8b53
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with SilentRansomGroup ransomware.
+  Incident: dragnet-ransomware-2026-1907
+  Ransomware victim claim by SilentRansomGroup: Orrick, Herrington & Sutcliffe; country: US; sector: Business Services
+  First observed: 2026-02-23.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

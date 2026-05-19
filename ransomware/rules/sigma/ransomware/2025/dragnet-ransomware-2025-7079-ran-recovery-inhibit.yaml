@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7079 — Recovery Inhibition (pear)'
+id: b9dd4cc7-cd13-56b4-91c5-5c368d0ccc85
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with pear ransomware.
+  Incident: dragnet-ransomware-2025-7079
+  Ransomware victim claim by pear: Tri-Century Eye Care; country: US; sector: Healthcare
+  First observed: 2025-09-03.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://pearsmob5sn44ismokiusuld34pnfwi6ctgin3qbvonpoob4lh3rmtqd.onion/Companies/tricenturyeye
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0643 — Event Log Clearing (handala)'
+id: 5fd64454-045a-582b-b9cf-b62b8eade433
+status: experimental
+description: |
+  Detects event log clearing associated with handala ransomware.
+  Incident: dragnet-ransomware-2024-0643
+  Ransomware victim claim by handala: Harmony Pharm; country: IL; sector: Healthcare
+  First observed: 2024-05-22.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://handala.to/zionists-harmony-pharm-hacked/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

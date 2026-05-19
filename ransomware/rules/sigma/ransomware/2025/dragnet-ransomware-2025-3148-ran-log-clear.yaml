@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3148 — Event Log Clearing (spacebears)'
+id: e64d41d2-e719-5fe7-a3b6-cf7e1ce5e8b4
+status: experimental
+description: |
+  Detects event log clearing associated with spacebears ransomware.
+  Incident: dragnet-ransomware-2025-3148
+  Ransomware victim claim by spacebears: AP Lettering; country: BE; sector: Business Services
+  First observed: 2025-06-10.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://5butbkrljkaorg5maepuca25oma7eiwo6a2rlhvkblb4v6mf3ki2ovid.onion/companies/75/ap-lettering
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

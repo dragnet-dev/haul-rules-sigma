@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2843 — Mass File Rename (safepay)'
+id: 384b85ca-3371-52bb-ba7d-31e56b33313c
+status: stable
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by safepay.
+  Incident: dragnet-ransomware-2026-2843
+  Ransomware victim claim by safepay: hautarzt-budihardja.de; country: DE; sector: Healthcare
+  First observed: 2026-05-18.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://safepaypfxntwixwjrlcscft433ggemlhgkkdupi2ynhtcmvdgubmoyd.onion/blog/post/hautarzt-budihardjade/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

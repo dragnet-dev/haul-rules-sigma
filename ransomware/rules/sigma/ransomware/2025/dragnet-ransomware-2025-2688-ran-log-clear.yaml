@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2688 — Event Log Clearing (datacarry)'
+id: e9d53b26-3e32-5a67-b42a-d443cfabcd0a
+status: deprecated
+description: |
+  Detects event log clearing associated with datacarry ransomware.
+  Incident: dragnet-ransomware-2025-2688
+  Ransomware victim claim by datacarry: Executive Jet Support; country: GB; sector: Transportation/Logistics
+  First observed: 2025-01-30.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

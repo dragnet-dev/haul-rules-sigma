@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-0919 — Mass File Rename (dispossessor)'
+id: c7a80cdc-3dd0-5c71-998b-479efb6fa600
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by dispossessor.
+  Incident: dragnet-ransomware-2022-0919
+  Ransomware victim claim by dispossessor: sinopecthc.com; sector: Energy
+  First observed: 2022-11-06.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://dispossessor.com/blogs/373
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

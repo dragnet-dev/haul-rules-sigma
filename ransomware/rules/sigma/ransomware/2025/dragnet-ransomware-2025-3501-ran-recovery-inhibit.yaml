@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3501 — Recovery Inhibition (gunra)'
+id: 9de2e376-2fa3-5a0a-b559-e72bc56d37f9
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with gunra ransomware.
+  Incident: dragnet-ransomware-2025-3501
+  Ransomware victim claim by gunra: hwacheon; country: KR; sector: Manufacturing
+  First observed: 2025-09-10.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://gunrabxbig445sjqa535uaymzerj6fp4nwc6ngc2xughf2pedjdhk4ad.onion/samwha
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

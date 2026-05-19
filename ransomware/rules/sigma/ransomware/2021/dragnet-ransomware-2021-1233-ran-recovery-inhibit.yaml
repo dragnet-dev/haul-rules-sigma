@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1233 — Recovery Inhibition (rook)'
+id: ee85dfa8-73a3-5b68-ae6d-9dfc7bc5c13f
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with rook ransomware.
+  Incident: dragnet-ransomware-2021-1233
+  Ransomware victim claim by rook: Rossell Techsys; sector: Technology
+  First observed: 2021-12-14.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

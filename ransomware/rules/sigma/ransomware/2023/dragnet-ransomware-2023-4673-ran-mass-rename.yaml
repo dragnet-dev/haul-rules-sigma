@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4673 — Mass File Rename (knight)'
+id: bdac4b66-5101-5429-9843-23628a572ba5
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by knight.
+  Incident: dragnet-ransomware-2023-4673
+  Ransomware victim claim by knight: Garn Mason Orthodontics was hacked. All insurance and personal data of customers was stole; sector: Healthcare
+  First observed: 2023-09-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://knight3xppu263m7g4ag3xlit2qxpryjwueobh7vjdc3zrscqlfu3pqd.onion/blogs/5c7fd00b-34ef-4e4b-b7b5-1104feab699b/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

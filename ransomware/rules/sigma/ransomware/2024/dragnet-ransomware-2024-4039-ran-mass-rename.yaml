@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-4039 — Mass File Rename (kairos)'
+id: 4126ef68-dc89-5f74-ab4a-aae21d885017
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by kairos.
+  Incident: dragnet-ransomware-2024-4039
+  Ransomware victim claim by kairos: aneticaid.com; country: US; sector: Healthcare
+  First observed: 2024-12-13.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nerqnacjmdy3obvevyol7qhazkwkv57dwqvye5v46k5bcujtfa6sduad.onion/detail?code=aneticaid-com-uk
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

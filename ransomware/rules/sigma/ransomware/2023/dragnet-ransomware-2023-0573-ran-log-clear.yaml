@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0573 — Event Log Clearing (royal)'
+id: 6c860a1c-b6c7-529c-bb2d-5a4d5d3c0451
+status: experimental
+description: |
+  Detects event log clearing associated with royal ransomware.
+  Incident: dragnet-ransomware-2023-0573
+  Ransomware victim claim by royal: EdisonLearning; sector: Education
+  First observed: 2023-04-26.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://royal4ezp7xrbakkus3oofjw6gszrohpodmdnfbe5e4w3og5sm7vb3qd.onion/NAVgfNVBHCguzcetPtMyWwBzCU8MmT1W
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

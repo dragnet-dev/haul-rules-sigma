@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0738 — Recovery Inhibition (BrainCipher)'
+id: cae159d1-8d0e-5798-909d-f3f736885c57
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with BrainCipher ransomware.
+  Incident: dragnet-ransomware-2024-0738
+  Ransomware victim claim by BrainCipher: Apex Global | Big leak outlooks - 2tb.; country: NL; sector: Technology
+  First observed: 2024-07-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://vkvsgl7lhipjirmz6j5ubp3w3bwvxgcdbpi3fsbqngfynetqtw4w5hyd.onion/r/oM1ATTBNt5izCjitJGlRmW4BVLVk06HRuuNtcOPfZTvCFYeXwwa8hgI16mjjjbd1kRG0NcXSEnA7vEQAb9tVVMU2NLZm1z
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

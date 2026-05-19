@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0600 — Event Log Clearing (blackshadow)'
+id: 98a050f1-66a6-5550-a630-7b2e8bfc60d7
+status: deprecated
+description: |
+  Detects event log clearing associated with blackshadow ransomware.
+  Incident: dragnet-ransomware-2021-0600
+  Associated with Agrius.
+  Ransomware victim claim by blackshadow: CyberServe Company; sector: Technology
+  First observed: 2021-12-18.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+  - dragnet.actor.agrius
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-4178 — Ransomware C2 Communication'
+id: 8e3ca5c6-f3c6-5b0f-9d34-6d01fb01df57
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-4178
+  Ransomware victim claim by alphv: NAIVAS WAS HACKED A LARGE AMOUNT OF CONFIDENTIAL DATA HAS BEEN STOLEN; country: KE; sector: Consumer Services
+  First observed: 2023-04-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://alphvmmm27o3abo3r2mlmjrpdmzle3rykajqc5xsj7j7ejksbpsa36ad.onion/c60cc3c0-0972-4c8f-9f87-8ea4e7549212
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://alphvmmm27o3abo3r2mlmjrpdmzle3rykajqc5xsj7j7ejksbpsa36ad.onion/c60cc3c0-0972-4c8f-9f87-8ea4e7549212'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

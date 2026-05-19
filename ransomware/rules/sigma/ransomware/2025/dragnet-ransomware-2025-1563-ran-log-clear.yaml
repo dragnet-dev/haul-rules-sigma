@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1563 — Event Log Clearing (dragonforce)'
+id: bde1133e-6cf7-5512-a061-a9b1553bf688
+status: experimental
+description: |
+  Detects event log clearing associated with dragonforce ransomware.
+  Incident: dragnet-ransomware-2025-1563
+  Ransomware victim claim by dragonforce: GB Mail; country: GB; sector: Business Services
+  First observed: 2025-11-07.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://z3wqggtxft7id3ibr7srivv5gjof5fwg76slewnzwwakjuf3nlhukdid.onion/blog/?post_uuid=d9b5f95d-c93b-417c-b006-9598eeb171f0
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-0385 — Ransomware C2 Communication'
+id: a30b5b7a-4583-5996-a1bc-b12b18400820
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-0385
+  Ransomware victim claim by lynx: ACTi Corporation; country: TW; sector: Technology
+  First observed: 2025-02-25.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lynxblog.net/leaks/67cd5c2c44fac8dca1c3d876
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lynxblog.net/leaks/67cd5c2c44fac8dca1c3d876'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

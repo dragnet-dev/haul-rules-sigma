@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0925 — Mass File Rename (rhysida)'
+id: 46b35c09-dea8-5ec1-9d5a-efa8e16b1cf6
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by rhysida.
+  Incident: dragnet-ransomware-2024-0925
+  Ransomware victim claim by rhysida: Erivan Gecom Inc; country: CA; sector: Transportation/Logistics
+  First observed: 2024-06-22.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

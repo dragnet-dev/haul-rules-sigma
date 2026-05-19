@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6277 — Recovery Inhibition (securotrop)'
+id: 250b5a65-5ba3-52f7-8b98-f6ea3e4d8f3f
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with securotrop ransomware.
+  Incident: dragnet-ransomware-2025-6277
+  Ransomware victim claim by securotrop: VRE Sytems; country: CA; sector: Manufacturing
+  First observed: 2025-06-25.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://securo45z554mw7rgrt7wcgv5eenj2xmxyrsdj3fcjsvindu63s4bsid.onion/VRESystems/info.txt
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

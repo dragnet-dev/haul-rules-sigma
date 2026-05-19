@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2837 — Recovery Inhibition (kairos)'
+id: 0ce37490-744c-55ef-aa86-1249392b3658
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with kairos ransomware.
+  Incident: dragnet-ransomware-2025-2837
+  Ransomware victim claim by kairos: delpackaging.com; country: US; sector: Manufacturing
+  First observed: 2025-01-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nerqnacjmdy3obvevyol7qhazkwkv57dwqvye5v46k5bcujtfa6sduad.onion/detail?code=delpackaging-com-usa-272gb
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

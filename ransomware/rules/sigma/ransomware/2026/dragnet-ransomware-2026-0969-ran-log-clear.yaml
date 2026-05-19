@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-0969 — Event Log Clearing (linkc)'
+id: 69035d45-c15f-5d5d-b247-f4a0a19c882b
+status: test
+description: |
+  Detects event log clearing associated with linkc ransomware.
+  Incident: dragnet-ransomware-2026-0969
+  Ransomware victim claim by linkc: StrongLink; country: US; sector: Not Found
+  First observed: 2026-02-03.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://iywqjjaf2zioehzzauys3sktbcdmuzm2fsjkqsblnm7dt6axjfpoxwid.onion/article/f6bda96a-5c72-4e90-a32c-5f414e58e9dc
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

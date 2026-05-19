@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1668 — Mass File Rename (8base)'
+id: 81957dde-1691-59a7-a11c-248918f9eb84
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by 8base.
+  Incident: dragnet-ransomware-2023-1668
+  Ransomware victim claim by 8base: Davis Cedillo and Mendoza Inc; sector: Business Services
+  First observed: 2023-12-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://xb6q2aggycmlcrjtbjendcnnwpmmwbosqaugxsqb4nx6cmod3emy7sad.onion/company/7890332
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

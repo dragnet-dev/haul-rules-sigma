@@ -1,0 +1,36 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1736 — Event Log Clearing (play)'
+id: 76e27baf-f396-5685-ab95-b5c3a487ff5e
+status: test
+description: |
+  Detects event log clearing associated with play ransomware.
+  Incident: dragnet-ransomware-2025-1736
+  Associated with Play.
+  Ransomware victim claim by play: Stoughton Steel; country: US; sector: Manufacturing
+  First observed: 2025-12-26.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://j75o7xvvsm4lpsjhkjvb4wl2q6ajegvabe6oswthuaubbykk4xkzgpid.onion/topic.php?id=fxWg9TtLUNeSIE
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+  - dragnet.actor.play
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

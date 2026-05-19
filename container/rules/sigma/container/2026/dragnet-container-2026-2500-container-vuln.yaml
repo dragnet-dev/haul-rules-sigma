@@ -1,0 +1,37 @@
+title: 'Dragnet [Container]: dragnet-container-2026-2500 — Vulnerable Base Image Pull'
+id: 2cb2ffc1-afb6-56c4-9c63-2a9ac8eb1687
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-2500 (Tier 2, CVSS 9.8)
+  Heap-based buffer overflow in the create_url_list function in gena/gena_device.c in Portable UPnP SDK (aka libupnp) before 1.6.21 allows remote attackers to cause a denial of service (crash) or possibly execute arbitrary code via a valid URI followed by an invalid one in the CALLBACK header of an SUBSCRIBE request.
+  First observed: 2026-05-13.
+references:
+  - http://www.securityfocus.com/bid/92849
+  - https://security.gentoo.org/glsa/201701-52
+  - https://sourceforge.net/p/pupnp/bugs/133/
+  - https://sourceforge.net/p/pupnp/code/ci/master/tree/ChangeLog
+  - https://ubuntu.com/security/notices/USN-4794-1
+  - https://www.cve.org/CVERecord?id=CVE-2016-8863
+  - https://www.debian.org/security/2016/dsa-3736
+  - https://www.tenable.com/security/research/tra-2017-10
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:7'
+      - 'debian:8'
+      - 'ubuntu:14.04'
+      - 'ubuntu:16.04-ESM'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

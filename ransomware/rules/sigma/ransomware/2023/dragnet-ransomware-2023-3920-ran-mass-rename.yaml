@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-3920 — Mass File Rename (dispossessor)'
+id: 642ae86e-dd06-5510-9780-61417092d6fa
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by dispossessor.
+  Incident: dragnet-ransomware-2023-3920
+  Ransomware victim claim by dispossessor: aten.com; country: TW; sector: Technology
+  First observed: 2023-11-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://dispossessor.com/blogs/1136
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

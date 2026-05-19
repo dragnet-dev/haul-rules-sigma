@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-1226 — Recovery Inhibition (quantum)'
+id: fbe35f4e-7483-50cb-8b50-f473a76c3669
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with quantum ransomware.
+  Incident: dragnet-ransomware-2022-1226
+  Ransomware victim claim by quantum: Crupi Group; country: CA; sector: Business Services
+  First observed: 2022-06-30.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

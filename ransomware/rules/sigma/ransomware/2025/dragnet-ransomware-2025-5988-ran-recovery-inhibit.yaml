@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5988 — Recovery Inhibition (nova)'
+id: 8b65c3c9-3c7b-556e-b9a9-0f62a1319765
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with nova ransomware.
+  Incident: dragnet-ransomware-2025-5988
+  Ransomware victim claim by nova: novaevo+ / T.consulT; country: IT; sector: Technology
+  First observed: 2025-05-08.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://novavdivko2zvtrvtllnq45lxhba2rfzp76qigb4nrliklem5au7czqd.onion/Novaevo
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-2543 — Ransomware C2 Communication'
+id: 9ea9d48e-3668-5e21-b4c4-91a4059a92bb
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-2543
+  Ransomware victim claim by lockbit3: jacquart.fr; country: FR; sector: Manufacturing
+  First observed: 2023-06-06.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lockbitaptc2iq4atewz2ise62q63wfktyrl4qtwuk5qax262kgtzjqd.onion/post/D70X6TZexUa8uo00647f18b1ab9e6
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lockbitaptc2iq4atewz2ise62q63wfktyrl4qtwuk5qax262kgtzjqd.onion/post/D70X6TZexUa8uo00647f18b1ab9e6'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

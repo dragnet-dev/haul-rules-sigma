@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2034 — Mass File Rename (dispossessor)'
+id: 4007cd56-bb5a-5209-80c7-69a1de788c46
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by dispossessor.
+  Incident: dragnet-ransomware-2022-2034
+  Ransomware victim claim by dispossessor: seamlessglobalsolutions.com; country: MX; sector: Technology
+  First observed: 2022-10-30.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://dispossessor.com/blogs/356
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

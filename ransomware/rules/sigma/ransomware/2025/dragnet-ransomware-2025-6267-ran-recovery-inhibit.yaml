@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6267 — Recovery Inhibition (payoutsking)'
+id: b356ab2e-3f60-5ac4-861e-d4939189e01f
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with payoutsking ransomware.
+  Incident: dragnet-ransomware-2025-6267
+  Ransomware victim claim by payoutsking: BARIATRIX NUTRITION; country: CA; sector: Healthcare
+  First observed: 2025-04-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - https:/payoutsgn7cy6uliwevdqspncjpfxpmzgirwl2au65la7rfs5x3qnbqd.onion/detail_post/5p2EHbutxBZj61evrdE1
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

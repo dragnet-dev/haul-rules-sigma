@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1019 — Recovery Inhibition (rhysida)'
+id: a3180f71-a667-5515-aa04-bad32b812cbd
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with rhysida ransomware.
+  Incident: dragnet-ransomware-2023-1019
+  Ransomware victim claim by rhysida: Tyconz; sector: Business Services
+  First observed: 2023-06-18.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://rhysidaeoxtkejwuheks3a7htk4zn3dfuynt5mqw6oawlcx6kcxjdeyd.onion/GWzVx0E54DPx7nS88xej0vgxD6RbR6An/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

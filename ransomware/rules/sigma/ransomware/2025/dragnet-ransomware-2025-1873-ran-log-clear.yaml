@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1873 — Event Log Clearing (nova)'
+id: 0c8a7535-b68d-50cf-b496-7f73655d550d
+status: experimental
+description: |
+  Detects event log clearing associated with nova ransomware.
+  Incident: dragnet-ransomware-2025-1873
+  Ransomware victim claim by nova: Portel Logistic Technologies; country: ES; sector: Technology
+  First observed: 2025-06-30.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://leak7y2247fj7dbb35rpfyxuyaqtwbshiwxp6h35ttzlhrxmhvi4fead.onion/portel
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-3514 — Mass File Rename (apt73)'
+id: d781d428-6a32-54bb-b1e9-d5cf61685788
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by apt73.
+  Incident: dragnet-ransomware-2023-3514
+  Ransomware victim claim by apt73: gannons.co.uk; country: GB; sector: Business Services
+  First observed: 2023-11-01.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://basherq53eniermxovo3bkduw5qqq5bkqcml3qictfmamgvmzovykyqd.onion/page_company.php?id=51
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

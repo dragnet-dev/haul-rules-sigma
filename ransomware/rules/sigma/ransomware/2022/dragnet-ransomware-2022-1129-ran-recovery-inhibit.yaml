@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-1129 — Recovery Inhibition (onyx)'
+id: 79a2193b-1d5d-5f86-9d72-00f653922263
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with onyx ransomware.
+  Incident: dragnet-ransomware-2022-1129
+  Ransomware victim claim by onyx: Ackerman Plumbing Inc; sector: Construction
+  First observed: 2022-04-29.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

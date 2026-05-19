@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0509 — Mass File Rename (killsec)'
+id: 03ab67d1-6331-5520-a64d-df934965bbf4
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by killsec.
+  Incident: dragnet-ransomware-2024-0509
+  Ransomware victim claim by killsec: Sumitomo; country: ZA; sector: Manufacturing
+  First observed: 2024-11-02.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ks5424y3wpr5zlug5c7i6svvxweinhbdcqcfnptkfcutrncfazzgz5id.onion/posts.php?id=uGhjldjFBYggmBBc2Hd9mleU
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

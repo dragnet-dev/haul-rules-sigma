@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0279 — Event Log Clearing (shinyhunters)'
+id: 742b3c16-03a3-5d19-8e29-5becd9b65b24
+status: experimental
+description: |
+  Detects event log clearing associated with shinyhunters ransomware.
+  Incident: dragnet-ransomware-2024-0279
+  Ransomware victim claim by shinyhunters: Adidas; country: DE; sector: Consumer Services
+  First observed: 2024-05-02.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://breachforums.hn//adidas.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

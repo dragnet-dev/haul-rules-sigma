@@ -1,0 +1,37 @@
+title: 'Dragnet [Container]: dragnet-container-2024-1518 — Vulnerable Base Image Pull'
+id: c49f7c90-6a6c-571a-ada9-eebb73e895f4
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-1518 (Tier 2, CVSS 9.6)
+  Heap buffer overflow in fingerprint recognition in Google Chrome on ChromeOS prior to 96.0.4664.45 allowed a remote attacker who had compromised a WebUI renderer process to potentially perform a sandbox escape via a crafted HTML page.
+  First observed: 2024-11-21.
+references:
+  - https://chromereleases.googleblog.com/2021/11/stable-channel-update-for-desktop.html
+  - https://crbug.com/1242392
+  - https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/3W46HRT2UVHWSLZB6JZHQF6JNQWKV744/
+  - https://www.cve.org/CVERecord?id=CVE-2021-38013
+  - https://www.debian.org/security/2022/dsa-5046
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:10'
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+      - 'debian:9'
+      - 'ubuntu:18.04'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

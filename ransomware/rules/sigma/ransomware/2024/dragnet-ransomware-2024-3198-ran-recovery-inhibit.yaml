@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3198 — Recovery Inhibition (trigona)'
+id: 20c077c6-362d-5d7e-92f7-6705bb31dcd3
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with trigona ransomware.
+  Incident: dragnet-ransomware-2024-3198
+  Ransomware victim claim by trigona: Hotel Avenida, Hostal Espoz y Mina, Hostal Arriazu, Pension Alemana; country: ES; sector: Hospitality and Tourism
+  First observed: 2024-02-28.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://krsbhaxbki6jr4zvwblvkaqzjkircj7cxf46qt3na5o5sj2hpikbupqd.onion/?page=1leak/8409cefd
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

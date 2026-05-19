@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0557 — Shadow Copy Deletion (akira)'
+id: 7c6e14e1-33b4-5ead-8159-f928e6f0987b
+status: deprecated
+description: |
+  Detects shadow copy deletion commands associated with akira ransomware.
+  Incident: dragnet-ransomware-2024-0557
+  Associated with Akira.
+  Ransomware victim claim by akira: National AirVibrator; country: US; sector: Transportation/Logistics
+  First observed: 2024-12-06.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+  - dragnet.actor.akira
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

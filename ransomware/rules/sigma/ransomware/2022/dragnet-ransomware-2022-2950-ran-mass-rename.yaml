@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2950 — Mass File Rename (hive)'
+id: e3697597-33d7-52b8-abd2-543b75e31c42
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by hive.
+  Incident: dragnet-ransomware-2022-2950
+  Ransomware victim claim by hive: Norman Public Schools; sector: Education
+  First observed: 2022-11-23.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

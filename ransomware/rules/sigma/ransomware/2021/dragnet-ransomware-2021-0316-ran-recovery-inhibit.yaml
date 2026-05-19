@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0316 — Recovery Inhibition (avoslocker)'
+id: 48afbc97-17f7-50a8-8424-a50be676ab6f
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with avoslocker ransomware.
+  Incident: dragnet-ransomware-2021-0316
+  Ransomware victim claim by avoslocker: Artas Holding / Artas Insaat; sector: Construction
+  First observed: 2021-08-28.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4516 — Recovery Inhibition (dispossessor)'
+id: 4304738c-26a6-5a2f-b5a1-3ff4b556b44a
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with dispossessor ransomware.
+  Incident: dragnet-ransomware-2023-4516
+  Ransomware victim claim by dispossessor: tayloredservices.com; sector: Transportation/Logistics
+  First observed: 2023-10-01.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://dispossessor.com/blogs/1033
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

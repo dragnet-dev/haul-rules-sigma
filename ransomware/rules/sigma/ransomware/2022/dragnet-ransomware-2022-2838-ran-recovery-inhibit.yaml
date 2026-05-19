@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2838 — Recovery Inhibition (daixin)'
+id: 29014241-c3dd-59a1-af87-da54d1269a58
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with daixin ransomware.
+  Incident: dragnet-ransomware-2022-2838
+  Ransomware victim claim by daixin: OakBend Medical Center; country: US; sector: Healthcare
+  First observed: 2022-09-01.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

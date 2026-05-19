@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2542 — Event Log Clearing (ms13089)'
+id: 1f556dc5-7aaf-5b1f-94ab-1a8e2f8d8897
+status: test
+description: |
+  Detects event log clearing associated with ms13089 ransomware.
+  Incident: dragnet-ransomware-2025-2542
+  Ransomware victim claim by ms13089: uro.com; country: DE; sector: Healthcare
+  First observed: 2025-12-18.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://msleakjir7pxbe6onlqe5uwgvdmy6nq4mnwfy7ojswbhnleenm77vgad.onion/URO/index.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

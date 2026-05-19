@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-3176 — Recovery Inhibition (sinobi)'
+id: 7515e04b-845b-5bd5-bd87-bc09fecc9d0a
+status: stable
+description: |
+  Detects boot/recovery disabling associated with sinobi ransomware.
+  Incident: dragnet-ransomware-2026-3176
+  Ransomware victim claim by sinobi: Unre3d; sector: Not Found
+  First observed: 2026-05-05.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://sinobi23i75c3znmqqxxyuzqvhxnjsar7actgvc4nqeuhgcn5yvz3zqd.onion/leaks/69fa49c28280ceeb9ae19779
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

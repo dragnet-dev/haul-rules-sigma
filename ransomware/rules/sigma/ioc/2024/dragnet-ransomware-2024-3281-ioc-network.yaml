@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-3281 — Ransomware C2 Communication'
+id: 6fdf5f41-074a-5084-99f1-723bc95f89ce
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-3281
+  Ransomware victim claim by lynx: Wireless Solutions (Morris.Domain); country: US; sector: Telecommunication
+  First observed: 2024-12-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lynxblog.net/leaks/6797e48205a779c3d32fc334
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lynxblog.net/leaks/6797e48205a779c3d32fc334'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-3709 — Ransomware C2 Communication'
+id: 73aa14f1-5b92-53fb-b56b-cba6a68a2d6a
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-3709
+  Ransomware victim claim by lynx: Lexington Electric; country: US; sector: Energy
+  First observed: 2025-01-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lynxblog.net/leaks/679a244e05a779c3d33a35d2
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lynxblog.net/leaks/679a244e05a779c3d33a35d2'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

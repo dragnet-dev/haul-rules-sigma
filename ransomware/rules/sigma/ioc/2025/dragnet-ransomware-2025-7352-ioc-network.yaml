@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-7352 — Ransomware C2 Communication'
+id: 09d8d440-6368-540f-b80f-c5687a6c39eb
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-7352
+  Ransomware victim claim by shinyhunters: GAP, INC.; country: US; sector: Consumer Services
+  First observed: 2025-06-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://breachforums.hn//gap.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'https://breachforums.hn//gap.html'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

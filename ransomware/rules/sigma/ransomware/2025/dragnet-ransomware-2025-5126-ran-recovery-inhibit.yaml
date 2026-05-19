@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5126 — Recovery Inhibition (spacebears)'
+id: 60662e00-1914-5fe7-aa5f-5862c4a226c1
+status: test
+description: |
+  Detects boot/recovery disabling associated with spacebears ransomware.
+  Incident: dragnet-ransomware-2025-5126
+  Ransomware victim claim by spacebears: EXPERTISE MOBSIGN; country: FR; sector: Business Services
+  First observed: 2025-12-05.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://5butbkrljkaorg5maepuca25oma7eiwo6a2rlhvkblb4v6mf3ki2ovid.onion/companies/104/expertise-mobsign
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

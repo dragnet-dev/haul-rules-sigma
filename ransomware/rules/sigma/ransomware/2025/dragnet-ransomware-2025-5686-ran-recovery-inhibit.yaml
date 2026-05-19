@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5686 — Recovery Inhibition (nova)'
+id: f31b9372-5f09-5b38-badc-3a274a9464cf
+status: test
+description: |
+  Detects boot/recovery disabling associated with nova ransomware.
+  Incident: dragnet-ransomware-2025-5686
+  Ransomware victim claim by nova: Atenção Primária à Saúde Brazil; country: BR; sector: Healthcare
+  First observed: 2025-12-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://novadmrkp4vbk2padk5t6pbxolndceuc7hrcq4mjaoyed6nxsqiuzyyd.onion/#atencao-primaria-a-saude-brazil
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

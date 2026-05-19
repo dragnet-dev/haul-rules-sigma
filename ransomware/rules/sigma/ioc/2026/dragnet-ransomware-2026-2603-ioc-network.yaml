@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2026-2603 — Ransomware C2 Communication'
+id: 1363ec6a-4493-55a0-b05e-9c02fcb15e65
+status: stable
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2026-2603
+  Ransomware victim claim by ransomhouse: Jiangsu Zenergy Battery Technologies Group Co., Ltd.; country: CN; sector: Manufacturing
+  First observed: 2026-02-28.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://zohlm7ahjwegcedoz7lrdrti7bvpofymcayotp744qhx6gjmxbuo2yid.onion/r/dc227a632118c7c3f9c1e30d3715c607390ee1ae
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://zohlm7ahjwegcedoz7lrdrti7bvpofymcayotp744qhx6gjmxbuo2yid.onion/r/dc227a632118c7c3f9c1e30d3715c607390ee1ae'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

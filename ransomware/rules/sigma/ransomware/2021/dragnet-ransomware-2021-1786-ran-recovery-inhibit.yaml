@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1786 — Recovery Inhibition (groove)'
+id: 7afcc568-9281-537f-b58a-e87be0760717
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with groove ransomware.
+  Incident: dragnet-ransomware-2021-1786
+  Ransomware victim claim by groove: therecord.media 30k USD; sector: Not Found
+  First observed: 2021-10-23.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0918 — Mass File Rename (underground)'
+id: 142b94f9-f5e7-5c18-abb8-3b89836af0d6
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by underground.
+  Incident: dragnet-ransomware-2024-0918
+  Ransomware victim claim by underground: CentralSecurities.com; country: US; sector: Financial Services
+  First observed: 2024-05-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://47glxkuxyayqrvugfumgsblrdagvrah7gttfscgzn56eyss5wg3uvmqd.onion/packages/86c73086-16d1-4f25-94fa-582dd61354b5
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

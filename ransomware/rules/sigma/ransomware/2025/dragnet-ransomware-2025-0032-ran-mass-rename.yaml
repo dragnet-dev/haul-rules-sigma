@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0032 — Mass File Rename (spacebears)'
+id: a9185b38-8121-539b-b809-bb540a9af11d
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by spacebears.
+  Incident: dragnet-ransomware-2025-0032
+  Ransomware victim claim by spacebears: VERTEL; country: AU; sector: Telecommunication
+  First observed: 2025-04-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://5butbkrljkaorg5maepuca25oma7eiwo6a2rlhvkblb4v6mf3ki2ovid.onion/companies/76/vertel
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

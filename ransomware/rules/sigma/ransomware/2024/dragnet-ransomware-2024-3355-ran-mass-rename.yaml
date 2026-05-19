@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3355 — Mass File Rename (mallox)'
+id: 05b16a37-0b9f-5330-ab01-cb2df96cc91b
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by mallox.
+  Incident: dragnet-ransomware-2024-3355
+  Ransomware victim claim by mallox: Ramdev Chemical Industries; country: IN; sector: Manufacturing
+  First observed: 2024-03-14.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

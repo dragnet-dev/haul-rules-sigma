@@ -1,0 +1,33 @@
+title: 'Dragnet [Container]: dragnet-container-2026-1153 — Vulnerable Base Image Pull'
+id: bc2eff5b-f79f-524a-9a5e-7e350aa1e7d9
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-1153 (Tier 2, CVSS 10)
+  Wordpress before 2.8.3 allows remote attackers to gain privileges via a direct request to (1) admin-footer.php, (2) edit-category-form.php, (3) edit-form-advanced.php, (4) edit-form-comment.php, (5) edit-link-category-form.php, (6) edit-link-form.php, (7) edit-page-form.php, and (8) edit-tag-form.php in wp-admin/.
+  First observed: 2026-04-23.
+references:
+  - http://core.trac.wordpress.org/changeset/11768
+  - http://core.trac.wordpress.org/changeset/11769
+  - http://wordpress.org/development/2009/08/wordpress-2-8-3-security-release/
+  - http://www.debian.org/security/2009/dsa-1871
+  - http://www.openwall.com/lists/oss-security/2009/08/04/5
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

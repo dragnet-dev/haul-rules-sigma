@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-5319 — Ransomware C2 Communication'
+id: ed558b1b-4428-5414-8ef9-4c64ae87b7a6
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-5319
+  Ransomware victim claim by dispossessor: sbhc.us; country: US; sector: Healthcare
+  First observed: 2023-04-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://dispossessor.com/blogs/670
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'https://dispossessor.com/blogs/670'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

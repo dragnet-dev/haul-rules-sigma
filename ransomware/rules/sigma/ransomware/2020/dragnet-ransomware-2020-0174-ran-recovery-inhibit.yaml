@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0174 — Recovery Inhibition (sekhmet)'
+id: 452fc3c5-be5c-5701-a636-3b8d837198b1
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with sekhmet ransomware.
+  Incident: dragnet-ransomware-2020-0174
+  Ransomware victim claim by sekhmet: SilPac; country: US; sector: Energy
+  First observed: 2020-06-20.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

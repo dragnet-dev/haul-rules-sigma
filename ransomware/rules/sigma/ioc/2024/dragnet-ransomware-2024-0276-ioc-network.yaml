@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-0276 — Ransomware C2 Communication'
+id: 1c084356-1ecd-5b25-b0b8-40fba50379fb
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-0276
+  Ransomware victim claim by blackout: nedamaritime.gr; country: GR; sector: Transportation/Logistics
+  First observed: 2024-12-10.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://black3gnkizshuynieigw6ejgpblb53mpasftzd6pydqpmq2vn2xf6yd.onion/post/12e5210f-b8a9-41ce-9f5a-c67750c13a87/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://black3gnkizshuynieigw6ejgpblb53mpasftzd6pydqpmq2vn2xf6yd.onion/post/12e5210f-b8a9-41ce-9f5a-c67750c13a87/'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

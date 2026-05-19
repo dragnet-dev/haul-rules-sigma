@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-0265 — Recovery Inhibition (onyx)'
+id: de5b9298-d858-5266-b82e-dba54060ba38
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with onyx ransomware.
+  Incident: dragnet-ransomware-2022-0265
+  Ransomware victim claim by onyx: Borough of Union Beach; sector: Public Sector
+  First observed: 2022-08-05.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

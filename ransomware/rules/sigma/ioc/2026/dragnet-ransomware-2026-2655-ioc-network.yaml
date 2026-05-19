@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2026-2655 — Ransomware C2 Communication'
+id: 66cc143a-ae50-5700-945d-1584401bd056
+status: stable
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2026-2655
+  Ransomware victim claim by handala: Atlas Insurances Ltd; country: IL; sector: Financial Services
+  First observed: 2026-03-05.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://handala-hack.to/atlas-insurances-ltd-hacked/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'https://handala-hack.to/atlas-insurances-ltd-hacked/'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

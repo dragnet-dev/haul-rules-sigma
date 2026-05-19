@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-4475 — Ransomware C2 Communication'
+id: 877f2820-52cc-5b25-b4a7-96e6f3a7110a
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-4475
+  Ransomware victim claim by lynx: TaxPros of Clermont; country: US; sector: Financial Services
+  First observed: 2024-10-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lynxblog.net/leaks/67321fdedab69e0ba2d4cdcf
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lynxblog.net/leaks/67321fdedab69e0ba2d4cdcf'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-3216 — Mass File Rename (8base)'
+id: f3e0f90e-b9a9-540f-8293-5c110efa8703
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by 8base.
+  Incident: dragnet-ransomware-2023-3216
+  Ransomware victim claim by 8base: Texas Hotel and Lodging Association; sector: Hospitality and Tourism
+  First observed: 2023-06-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://basemmnnqwxevlymli5bs36o5ynti55xojzvn246spahniugwkff2pad.onion/company/7890149
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

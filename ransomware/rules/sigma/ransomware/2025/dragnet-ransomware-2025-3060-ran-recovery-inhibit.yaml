@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3060 — Recovery Inhibition (worldleaks)'
+id: 916ac8ee-dde9-5f4d-92a6-2b3d7f5be22d
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with worldleaks ransomware.
+  Incident: dragnet-ransomware-2025-3060
+  Ransomware victim claim by worldleaks: Sapp Bros; country: US; sector: Transportation/Logistics
+  First observed: 2025-08-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://worldleaksartrjm3c6vasllvgacbi5u3mgzkluehrzhk2jz4taufuid.onion/companies/6910645140
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

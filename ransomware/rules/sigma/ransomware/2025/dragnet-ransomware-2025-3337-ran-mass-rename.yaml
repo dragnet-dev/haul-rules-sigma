@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3337 — Mass File Rename (sarcoma)'
+id: 618dedae-6697-557a-9c22-b2f55a446a0d
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by sarcoma.
+  Incident: dragnet-ransomware-2025-3337
+  Ransomware victim claim by sarcoma: Western Insurance Marketing Corporation; country: US; sector: Financial Services
+  First observed: 2025-06-05.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-5371 — Mass File Rename (donutleaks)'
+id: 98decdd9-a191-58b2-a085-bb0608ccc3ba
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by donutleaks.
+  Incident: dragnet-ransomware-2023-5371
+  Ransomware victim claim by donutleaks: Albert, Righter & Tittmann architechts, inc.; sector: Construction
+  First observed: 2023-11-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://sbc2zv2qnz5vubwtx3aobfpkeao6l4igjegm3xx7tk5suqhjkp5jxtqd.onion/albert-rih/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

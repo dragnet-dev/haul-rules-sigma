@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5587 — Mass File Rename (J)'
+id: 9ae006a1-5a87-5951-a49f-242b57a1db5f
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by J.
+  Incident: dragnet-ransomware-2025-5587
+  Ransomware victim claim by J: Dimensional Control Systems (3dcs.com); country: US; sector: Technology
+  First observed: 2025-10-01.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://twniiyed6mydtbe64i5mdl56nihl7atfaqtpww6gqyaiohgc75apzpad.onion/posts/68dd1fe78cc3c2c54caa34e3/68dd1fe78cc3c2c54caa34e3/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

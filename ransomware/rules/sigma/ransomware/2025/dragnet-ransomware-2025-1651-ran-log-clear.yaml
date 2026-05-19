@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1651 — Event Log Clearing (IMNCrew)'
+id: c0fb3138-3f0f-5846-bddb-271edfc77428
+status: experimental
+description: |
+  Detects event log clearing associated with IMNCrew ransomware.
+  Incident: dragnet-ransomware-2025-1651
+  Ransomware victim claim by IMNCrew: Repremundo.com.co; country: CO; sector: Business Services
+  First observed: 2025-06-14.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://imncrewwfkbjkhr2oylerfm5qtbzfphhmpcfag43xc2kfgvluqtlgoid.onion/files/data/repremundo.zip
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

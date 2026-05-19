@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-3322 — Shadow Copy Deletion (dispossessor)'
+id: aa8acf71-f1d9-5b6a-be82-f4d519067cf0
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with dispossessor ransomware.
+  Incident: dragnet-ransomware-2023-3322
+  Ransomware victim claim by dispossessor: meaf.com; sector: Healthcare
+  First observed: 2023-08-13.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://dispossessor.com/blogs/873
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

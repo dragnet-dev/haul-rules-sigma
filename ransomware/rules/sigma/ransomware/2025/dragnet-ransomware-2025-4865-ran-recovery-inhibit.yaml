@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4865 — Recovery Inhibition (insomnia)'
+id: 73cec4d3-0a86-5654-a239-f0c2077711fa
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with insomnia ransomware.
+  Incident: dragnet-ransomware-2025-4865
+  Ransomware victim claim by insomnia: Internal Medicine of Milford; country: US; sector: Healthcare
+  First observed: 2025-11-05.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://i62huw7ve22rpyw6lnq3kmfump2dmsg4xpveec3ere73njwatrz74gad.onion/Company/IMMCT/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

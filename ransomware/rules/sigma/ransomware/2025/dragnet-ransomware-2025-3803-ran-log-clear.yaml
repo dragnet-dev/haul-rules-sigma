@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3803 — Event Log Clearing (blacknevas)'
+id: 6bfd7a2b-84b3-5db3-b05f-af1312a53ada
+status: experimental
+description: |
+  Detects event log clearing associated with blacknevas ransomware.
+  Incident: dragnet-ransomware-2025-3803
+  Ransomware victim claim by blacknevas: CILI; country: LT; sector: Hospitality and Tourism
+  First observed: 2025-07-02.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ctyfftrjgtwdjzlgqh4avbd35sqrs6tde4oyam2ufbjch6oqpqtkdtid.onion/publications/details/6e43dbb1-dc04-4fd1-a380-b755cf4a38d2
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

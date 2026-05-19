@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0782 — Recovery Inhibition (bert)'
+id: 37fda110-3d27-544a-92fe-d9ffc1628eef
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with bert ransomware.
+  Incident: dragnet-ransomware-2025-0782
+  Ransomware victim claim by bert: Wawasan Dengkil Sdn Bhd; country: MY; sector: Construction
+  First observed: 2025-05-22.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://bertblogsoqmm4ow7nqyh5ik7etsmefdbf25stauecytvwy7tkgizhad.onion/post/214D37FC479C4739B428FB75A9C0ECB6
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

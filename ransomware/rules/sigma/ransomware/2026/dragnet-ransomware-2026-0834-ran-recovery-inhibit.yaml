@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-0834 — Recovery Inhibition (AiLock)'
+id: 4fd437c0-fc68-5603-a398-3048ef9409c7
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with AiLock ransomware.
+  Incident: dragnet-ransomware-2026-0834
+  Ransomware victim claim by AiLock: Jazz Hipster; country: US; sector: Consumer Services
+  First observed: 2026-05-18.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

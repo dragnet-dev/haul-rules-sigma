@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3703 — Recovery Inhibition (embargo)'
+id: a600fdf6-8da7-55dc-8ef4-5092b5c91d1f
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with embargo ransomware.
+  Incident: dragnet-ransomware-2025-3703
+  Ransomware victim claim by embargo: hawaiiunified.com; country: US; sector: Telecommunication
+  First observed: 2025-06-02.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://embargobe3n5okxyzqphpmk3moinoap2snz5k6765mvtkk7hhi544jid.onion/#/post/2d992486-8268-4da7-9261-77643f3659f3
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

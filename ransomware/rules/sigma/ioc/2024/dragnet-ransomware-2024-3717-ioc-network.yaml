@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-3717 — Ransomware C2 Communication'
+id: 2312bb98-0d28-5e4f-8819-83220380e3dc
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-3717
+  Ransomware victim claim by blackout: metal7.com; country: CA; sector: Manufacturing
+  First observed: 2024-02-26.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://black3gnkizshuynieigw6ejgpblb53mpasftzd6pydqpmq2vn2xf6yd.onion/post/c01a10e4-b940-4938-8280-b4adbc2c0697/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://black3gnkizshuynieigw6ejgpblb53mpasftzd6pydqpmq2vn2xf6yd.onion/post/c01a10e4-b940-4938-8280-b4adbc2c0697/'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

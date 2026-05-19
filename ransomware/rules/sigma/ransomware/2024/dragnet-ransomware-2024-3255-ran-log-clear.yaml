@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3255 — Event Log Clearing (dragonransomware)'
+id: e9130036-a2d7-5d85-9870-8047751bc16b
+status: experimental
+description: |
+  Detects event log clearing associated with dragonransomware ransomware.
+  Incident: dragnet-ransomware-2024-3255
+  Ransomware victim claim by dragonransomware: www.infoer.com.ar; country: AR; sector: Technology
+  First observed: 2024-12-10.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://t.me/DragonRansom/429
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

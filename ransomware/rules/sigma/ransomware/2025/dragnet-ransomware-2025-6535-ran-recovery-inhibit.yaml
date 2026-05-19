@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6535 — Recovery Inhibition (warlock)'
+id: 6de57897-2c4a-5ed3-b3b4-6c9456ea9ae9
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with warlock ransomware.
+  Incident: dragnet-ransomware-2025-6535
+  Ransomware victim claim by warlock: medkar.com; country: TR; sector: Healthcare
+  First observed: 2025-09-16.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

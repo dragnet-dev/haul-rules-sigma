@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-1961 — Recovery Inhibition (shinyhunters)'
+id: 9ce8a2aa-1d9a-51f8-9534-df8eca22a730
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with shinyhunters ransomware.
+  Incident: dragnet-ransomware-2026-1961
+  Ransomware victim claim by shinyhunters: Adelante Soluciones Financieras (Addi.com); country: CO; sector: Financial Services
+  First observed: 2026-05-05.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

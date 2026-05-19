@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-2680 — Mass File Rename (snatch)'
+id: e377a517-52b2-5e8d-b519-0576ddf25a42
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by snatch.
+  Incident: dragnet-ransomware-2023-2680
+  Ransomware victim claim by snatch: Alliance Virgil Roberts Leadership Academy; sector: Education
+  First observed: 2023-10-10.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://hl66646wtlp2naoqnhattngigjp5palgqmbwixepcjyq5i534acgqyad.onion/news.php?id=5d86e0e7-5089-41bd-96b8-f6b52c04786b
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

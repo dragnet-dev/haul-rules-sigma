@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-1646 — Event Log Clearing (kairos)'
+id: a0400826-b234-5722-ab40-4f1f73fe2aba
+status: deprecated
+description: |
+  Detects event log clearing associated with kairos ransomware.
+  Incident: dragnet-ransomware-2026-1646
+  Ransomware victim claim by kairos: Gregory Jewellers; country: AU; sector: Consumer Services
+  First observed: 2026-04-22.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

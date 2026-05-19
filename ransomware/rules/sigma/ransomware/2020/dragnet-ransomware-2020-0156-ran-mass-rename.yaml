@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0156 — Mass File Rename (dispossessor)'
+id: 795d7c76-f9ae-5629-a66e-e80ad85ec23f
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by dispossessor.
+  Incident: dragnet-ransomware-2020-0156
+  Ransomware victim claim by dispossessor: bankers-bank.com; sector: Financial Services
+  First observed: 2020-07-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://dispossessor.com/blogs/207
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

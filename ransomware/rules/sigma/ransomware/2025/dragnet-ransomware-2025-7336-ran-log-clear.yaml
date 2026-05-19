@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7336 — Event Log Clearing (morpheus)'
+id: dc8aaae0-f1bd-56d5-82c2-5f09d2c8e33c
+status: deprecated
+description: |
+  Detects event log clearing associated with morpheus ransomware.
+  Incident: dragnet-ransomware-2025-7336
+  Ransomware victim claim by morpheus: Metal Sales Manufacturing Corporation; country: US; sector: Manufacturing
+  First observed: 2025-04-04.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3163 — Mass File Rename (satanlockv2)'
+id: 43af33ed-7fda-5a7c-83dc-ee99e690959f
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by satanlockv2.
+  Incident: dragnet-ransomware-2025-3163
+  Ransomware victim claim by satanlockv2: studionotarile.com; country: IT; sector: Business Services
+  First observed: 2025-07-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://tzhwmgguyxrg6q3tu4q3gvopcjynrhw6ryx2bdl5ghisdkyunfua5xyd.onion/blog/4821b80070a6e4cec911a0f632e4702e30d7342375f19a0ad50809abd1ebc631/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

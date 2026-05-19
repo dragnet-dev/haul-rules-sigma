@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3508 — Event Log Clearing (genesis)'
+id: 3a2ef2b9-2c94-59f3-9a5b-c96cef3dd1e7
+status: test
+description: |
+  Detects event log clearing associated with genesis ransomware.
+  Incident: dragnet-ransomware-2025-3508
+  Ransomware victim claim by genesis: PJSI Consultants SDN BHD.; country: MY; sector: Business Services
+  First observed: 2025-12-01.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://genesis6ixpb5mcy4kudybtw5op2wqlrkocfogbnenz3c647ibqixiad.onion/47b96c94c6b285785eea/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

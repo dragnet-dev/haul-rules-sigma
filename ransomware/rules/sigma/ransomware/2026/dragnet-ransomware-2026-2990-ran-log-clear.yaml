@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2990 — Event Log Clearing (vect)'
+id: e2f458d0-3e0e-5439-bc88-9486f1f87335
+status: deprecated
+description: |
+  Detects event log clearing associated with vect ransomware.
+  Incident: dragnet-ransomware-2026-2990
+  Ransomware victim claim by vect: Federal University of Sergipe; country: BR; sector: Education
+  First observed: 2026-01-05.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

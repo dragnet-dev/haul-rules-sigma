@@ -1,0 +1,35 @@
+title: 'Dragnet [Container]: dragnet-container-2025-0607 — Vulnerable Base Image Pull'
+id: 31ea81fd-9656-513d-a884-b10f6d1e0957
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2025-0607 (Tier 2, CVSS 9.8)
+  A Buffer Overflow vulnerabilityexists in Pev 0.81 via the pe_exports function from exports.c.. The array offsets_to_Names is dynamically allocated on the stack using exp->NumberOfFunctions as its size. However, the loop uses exp->NumberOfNames to iterate over it and set its components value. Therefore, the loop code assumes that exp->NumberOfFunctions is greater than ordinal at each iteration. This can lead to arbitrary code execution.
+  First observed: 2025-03-03.
+references:
+  - https://github.com/merces/libpe/issues/35
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'alpine:3.18'
+      - 'alpine:3.19'
+      - 'alpine:3.20'
+      - 'alpine:3.21'
+      - 'alpine:3.22'
+      - 'alpine:3.23'
+      - 'alpine edge:'
+      - 'debian:11'
+      - 'debian:12'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3767 — Event Log Clearing (metaencryptor)'
+id: 72b07f85-b674-53d2-bd17-61452fac6fa8
+status: experimental
+description: |
+  Detects event log clearing associated with metaencryptor ransomware.
+  Incident: dragnet-ransomware-2025-3767
+  Ransomware victim claim by metaencryptor: Lee Hartman & Sons; country: US; sector: Business Services
+  First observed: 2025-01-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://metacrptmytukkj7ajwjovdpjqzd7esg5v3sg344uzhigagpezcqlpyd.onion/0AFC:8ea49807958139e0a381d6ccce39a74c/0AFC:36b1d49279ba8926d1c9d95b2c5a448ed38cc107aedf32b4a5ed66d7038ce08c/0AFC:180c380ec061fefb17b288dd72b1473db533cad1c20267743e26fe338ce58e5c
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

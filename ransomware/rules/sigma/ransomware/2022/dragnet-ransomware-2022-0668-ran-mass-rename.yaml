@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-0668 — Mass File Rename (play)'
+id: 0f864777-671b-5a94-8a15-a998fa6809be
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by play.
+  Incident: dragnet-ransomware-2022-0668
+  Associated with Play.
+  Ransomware victim claim by play: FURETANK,SIRIUS SHIPPING,VAS,DONSONET; country: SE; sector: Transportation/Logistics
+  First observed: 2022-12-27.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+  - dragnet.actor.play
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

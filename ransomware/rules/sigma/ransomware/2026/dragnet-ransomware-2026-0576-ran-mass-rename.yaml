@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-0576 — Mass File Rename (nova)'
+id: 326923f8-0fbd-5270-9cf3-663c37ccda4b
+status: stable
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by nova.
+  Incident: dragnet-ransomware-2026-0576
+  Ransomware victim claim by nova: VX Case; country: BR; sector: Consumer Services
+  First observed: 2026-03-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://novadmrkp4vbk2padk5t6pbxolndceuc7hrcq4mjaoyed6nxsqiuzyyd.onion/vx-case
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

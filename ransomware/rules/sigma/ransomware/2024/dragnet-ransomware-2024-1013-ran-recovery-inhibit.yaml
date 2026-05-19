@@ -1,0 +1,31 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-1013 — Recovery Inhibition (cicada3301)'
+id: 09c6afba-8ac2-5eda-8035-359796d75113
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with cicada3301 ransomware.
+  Incident: dragnet-ransomware-2024-1013
+  Associated with menuPass.
+  Ransomware victim claim by cicada3301: Luxwood Software Tools; country: CA; sector: Technology
+  First observed: 2024-10-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://cicadabv7vicyvgz5khl7v2x5yygcgow7ryy6yppwmxii4eoobdaztqd.onion/6dstkn91ewr7em9rbnairevbxaodjs7d
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+  - dragnet.actor.menupass
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2321 — Event Log Clearing (dragonforce)'
+id: bf4808e4-ff10-5dcd-9807-d3d576db6486
+status: deprecated
+description: |
+  Detects event log clearing associated with dragonforce ransomware.
+  Incident: dragnet-ransomware-2024-2321
+  Ransomware victim claim by dragonforce: Davis & Young; country: CA; sector: Business Services
+  First observed: 2024-05-31.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-3795 — Ransomware C2 Communication'
+id: 85b75684-5b08-5189-b944-ff5569f3ba34
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-3795
+  Ransomware victim claim by metaencryptor: Epicure; sector: Consumer Services
+  First observed: 2023-08-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://metacrptmytukkj7ajwjovdpjqzd7esg5v3sg344uzhigagpezcqlpyd.onion/0AFC:f6328aeff57c691a502e5a66dd0e782f/0AFC:ba738e85cc2d1c1571fcda22f601cd906256f0114834bd5389dc2522965f1178/0AFC:75137f2a97601978ab87ba3ae27868b866a2fa75b87d254279c674363214fa90
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://metacrptmytukkj7ajwjovdpjqzd7esg5v3sg344uzhigagpezcqlpyd.onion/0AFC:f6328aeff57c691a502e5a66dd0e782f/0AFC:ba738e85cc2d1c1571fcda22f601cd906256f0114834bd5389dc2522965f1178/0AFC:75137f2a97601978ab87ba3ae27868b866a2fa75b87d254279c674363214fa90'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7049 — Event Log Clearing (J)'
+id: 758c6ef7-058d-57a1-8335-7c25e2fb1fe3
+status: experimental
+description: |
+  Detects event log clearing associated with J ransomware.
+  Incident: dragnet-ransomware-2025-7049
+  Ransomware victim claim by J: laticrete.com.cn; country: CN; sector: Manufacturing
+  First observed: 2025-03-13.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://twniiyed6mydtbe64i5mdl56nihl7atfaqtpww6gqyaiohgc75apzpad.onion/posts/67dc9267ca66cae8e574e78e/67dc9267ca66cae8e574e78e/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2207 — Shadow Copy Deletion (ransomhouse)'
+id: dbfd41d6-ee0c-5ec5-8d5f-2a6d62e765d0
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with ransomhouse ransomware.
+  Incident: dragnet-ransomware-2024-2207
+  Ransomware victim claim by ransomhouse: GuangDong South Land pharmaceutical; country: CN; sector: Healthcare
+  First observed: 2024-10-10.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://zohlm7ahjwegcedoz7lrdrti7bvpofymcayotp744qhx6gjmxbuo2yid.onion/r/89583126fb1f0578b410bd88ad34d7f87d9f9d68
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

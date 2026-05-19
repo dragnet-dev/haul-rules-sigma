@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-0459 — Event Log Clearing (titan)'
+id: 08c38874-4e4f-59eb-95b7-8c8e23001ecb
+status: stable
+description: |
+  Detects event log clearing associated with titan ransomware.
+  Incident: dragnet-ransomware-2026-0459
+  Ransomware victim claim by titan: Mezta Corporativo, S.A. de C.V.; country: MX; sector: Not Found
+  First observed: 2026-04-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://titanblog.org/post/https-www-dunsguide-com-es-company-fa5e54643c8b63d0736-b0xcjppra2
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

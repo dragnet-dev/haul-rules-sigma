@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-1915 — Ransomware C2 Communication'
+id: c73c8f31-bae7-5152-84d1-256e2899109a
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-1915
+  Ransomware victim claim by BrainCipher: Family Wealth Advisors Ltd.; country: IL; sector: Financial Services
+  First observed: 2024-07-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://vkvsgl7lhipjirmz6j5ubp3w3bwvxgcdbpi3fsbqngfynetqtw4w5hyd.onion/r/q4hbEsPqhm0CIRudOoc5pbkgceyGHJ7HDLAH27G1c92oXeG3SJJiEDLbhR5RS1Gd6mY5CE3Zz1UFf3Uj2v2+wzRZakdxTDJH
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://vkvsgl7lhipjirmz6j5ubp3w3bwvxgcdbpi3fsbqngfynetqtw4w5hyd.onion/r/q4hbEsPqhm0CIRudOoc5pbkgceyGHJ7HDLAH27G1c92oXeG3SJJiEDLbhR5RS1Gd6mY5CE3Zz1UFf3Uj2v2+wzRZakdxTDJH'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

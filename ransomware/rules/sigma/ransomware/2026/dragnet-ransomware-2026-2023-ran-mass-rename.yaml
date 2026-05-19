@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2023 — Mass File Rename (handala)'
+id: ba953508-44d6-5427-8895-7694c34b4f10
+status: test
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by handala.
+  Incident: dragnet-ransomware-2026-2023
+  Ransomware victim claim by handala: Handala Alert: Amplifying the Voice of Resistance; country: PS; sector: Not Found
+  First observed: 2026-01-02.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://handala-hack.to/handala-alert-amplifying-the-voice-of-resistance/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0915 — Shadow Copy Deletion (blackbyte)'
+id: 7d815c3e-7ca2-569d-a9b0-2e0e933fbbc1
+status: deprecated
+description: |
+  Detects shadow copy deletion commands associated with blackbyte ransomware.
+  Incident: dragnet-ransomware-2021-0915
+  Associated with BlackByte.
+  Ransomware victim claim by blackbyte: Medical Designs; sector: Healthcare
+  First observed: 2021-10-15.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+  - dragnet.actor.blackbyte
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

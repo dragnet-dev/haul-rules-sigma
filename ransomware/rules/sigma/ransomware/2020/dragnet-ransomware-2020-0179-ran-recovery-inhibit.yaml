@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0179 — Recovery Inhibition (wastedlocker)'
+id: 8c6a146b-be30-58c4-a78c-9ed18c720353
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with wastedlocker ransomware.
+  Incident: dragnet-ransomware-2020-0179
+  Ransomware victim claim by wastedlocker: Garmin; country: US; sector: Technology
+  First observed: 2020-07-23.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

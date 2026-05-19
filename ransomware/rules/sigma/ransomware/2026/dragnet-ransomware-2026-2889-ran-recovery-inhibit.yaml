@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2889 — Recovery Inhibition (lockbit5)'
+id: 4f00e2f3-53de-58e8-bae8-41d1c60b873e
+status: stable
+description: |
+  Detects boot/recovery disabling associated with lockbit5 ransomware.
+  Incident: dragnet-ransomware-2026-2889
+  Ransomware victim claim by lockbit5: ssskwt.com; country: KW; sector: Business Services
+  First observed: 2026-03-14.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lockbitapt67g6rwzjbcxnww5efpg4qok6vpfeth7wx3okj52ks4wtad.onion/post/2b2f505594bbe53268146efb0a931126
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

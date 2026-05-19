@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1383 — Recovery Inhibition (dispossessor)'
+id: 1919ff3c-ad5e-595e-a207-d1257bb21f09
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with dispossessor ransomware.
+  Incident: dragnet-ransomware-2023-1383
+  Ransomware victim claim by dispossessor: heidelbergbread.com; sector: Agriculture and Food Production
+  First observed: 2023-03-10.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://dispossessor.com/blogs/557
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

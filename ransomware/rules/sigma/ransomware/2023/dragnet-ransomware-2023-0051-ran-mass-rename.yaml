@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0051 — Mass File Rename (noescape)'
+id: cff5b45d-14ed-5648-9387-6396543d61ca
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by noescape.
+  Incident: dragnet-ransomware-2023-0051
+  Ransomware victim claim by noescape: IKP; country: AT; sector: Business Services
+  First observed: 2023-09-10.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://noescapemsqxvizdxyl7f7rmg5cdjwp33pg2wpmiaaibilb4btwzttad.onion/post/9a198107-8735-4892-a148-4eec3203566b
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

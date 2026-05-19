@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2046 — Event Log Clearing (kairos)'
+id: 779faadb-c021-5de0-9bac-b138f4414f9e
+status: experimental
+description: |
+  Detects event log clearing associated with kairos ransomware.
+  Incident: dragnet-ransomware-2024-2046
+  Ransomware victim claim by kairos: austinsfs.com.au; country: AU; sector: Financial Services
+  First observed: 2024-12-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nerqnacjmdy3obvevyol7qhazkwkv57dwqvye5v46k5bcujtfa6sduad.onion/detail?code=austinsfs-com-au-australia
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

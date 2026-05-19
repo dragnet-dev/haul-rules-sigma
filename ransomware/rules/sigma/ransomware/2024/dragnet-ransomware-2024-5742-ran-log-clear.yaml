@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5742 — Event Log Clearing (everest)'
+id: 0202e427-d6bb-5c2d-b578-3a8cf56bb2e5
+status: experimental
+description: |
+  Detects event log clearing associated with everest ransomware.
+  Incident: dragnet-ransomware-2024-5742
+  Ransomware victim claim by everest: A Sensitive Touch Home Health;Alphastar Home Health Care;Heart of Texas Home Healthcare Se; country: US; sector: Healthcare
+  First observed: 2024-11-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ransomocmou6mnbquqz44ewosbkjk3o5qjsl3orawojexfook2j7esad.onion/a-sensitive-touch-home-healthalphastar-home-health-careheart-of-texas-home-healthcare-services-inc/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

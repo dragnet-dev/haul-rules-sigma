@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-1922 — Event Log Clearing (cipherforce)'
+id: 1cf04bf5-94b6-5bb6-a3ff-2eef02b1b15f
+status: stable
+description: |
+  Detects event log clearing associated with cipherforce ransomware.
+  Incident: dragnet-ransomware-2026-1922
+  Ransomware victim claim by cipherforce: FindNear; country: VN; sector: Technology
+  First observed: 2026-02-23.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://o3ydbkayttkyg4iw2nc732jxmmex25bjeyqyvuuyngnxmpehdefjr3qd.onion/victims/victims/d0d3ba11-1efb-4e94-b5da-9998aaa057e7
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

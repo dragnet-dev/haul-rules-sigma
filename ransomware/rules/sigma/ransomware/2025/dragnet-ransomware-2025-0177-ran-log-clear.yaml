@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0177 — Event Log Clearing (interlock)'
+id: 7a443f4d-d0aa-5056-911a-1f68d5954c7b
+status: experimental
+description: |
+  Detects event log clearing associated with interlock ransomware.
+  Incident: dragnet-ransomware-2025-0177
+  Ransomware victim claim by interlock: Fowler Elementary School; country: US; sector: Education
+  First observed: 2025-05-03.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ebhmkoohccl45qesdbvrjqtyro2hmhkmh6vkyfyjjzfllm3ix72aqaid.onion/leaks.phphttp://a7rg7mb56w3s6yzmflzjbqbhfxpuuw5fwvq6ci52jrfjgvt7weu2qcqd.onion/index.php?p=
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

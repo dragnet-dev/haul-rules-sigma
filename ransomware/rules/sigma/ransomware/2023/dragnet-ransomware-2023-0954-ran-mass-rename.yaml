@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0954 — Mass File Rename (blackbyte)'
+id: 8b1f0f35-e23d-5313-8b5d-28f7feac181d
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by blackbyte.
+  Incident: dragnet-ransomware-2023-0954
+  Associated with BlackByte.
+  Ransomware victim claim by blackbyte: Inland Group; country: CA; sector: Transportation/Logistics
+  First observed: 2023-02-12.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+  - dragnet.actor.blackbyte
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

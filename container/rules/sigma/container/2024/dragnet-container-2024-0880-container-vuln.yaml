@@ -1,0 +1,33 @@
+title: 'Dragnet [Container]: dragnet-container-2024-0880 — Vulnerable Base Image Pull'
+id: af1ee8ab-231d-580f-b8b3-6afe8f80d21f
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-0880 (Tier 2, CVSS 9.8)
+  masqmail 0.2.21 through 0.2.30 improperly calls seteuid() in src/log.c and src/masqmail.c that results in improper privilege dropping.
+  First observed: 2024-11-21.
+references:
+  - https://access.redhat.com/security/cve/cve-2011-3350
+  - https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=638002
+  - https://security-tracker.debian.org/tracker/CVE-2011-3350
+  - https://www.cve.org/CVERecord?id=CVE-2011-3350
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'ubuntu:12.04'
+      - 'ubuntu:12.10'
+      - 'ubuntu:13.04'
+      - 'ubuntu:13.10'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

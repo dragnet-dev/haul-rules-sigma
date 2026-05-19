@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0180 — Recovery Inhibition (ransomexx)'
+id: d7d5363e-f334-57c0-a9ef-5880ea4d7a12
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with ransomexx ransomware.
+  Incident: dragnet-ransomware-2020-0180
+  Ransomware victim claim by ransomexx: Brazil’s Superior Tribunal de Justiça (Court System); country: BR; sector: Public Sector
+  First observed: 2020-11-03.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

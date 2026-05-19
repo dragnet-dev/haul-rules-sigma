@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5290 — Recovery Inhibition (obscura)'
+id: 5524aa17-74f7-5f13-854b-3dea4f07a618
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with obscura ransomware.
+  Incident: dragnet-ransomware-2025-5290
+  Ransomware victim claim by obscura: Revoil; country: GR; sector: Energy
+  First observed: 2025-12-24.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

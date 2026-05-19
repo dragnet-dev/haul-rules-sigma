@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0217 — Mass File Rename (ElDorado)'
+id: 29bf7212-c3b6-53d6-a108-f0044ccd29a1
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by ElDorado.
+  Incident: dragnet-ransomware-2023-0217
+  Ransomware victim claim by ElDorado: Panzer Solutions LLC Business Services; country: US; sector: Business Services
+  First observed: 2023-10-19.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

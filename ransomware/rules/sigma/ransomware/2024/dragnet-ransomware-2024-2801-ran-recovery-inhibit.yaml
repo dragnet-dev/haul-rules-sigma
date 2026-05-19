@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2801 — Recovery Inhibition (lynx)'
+id: d3093f1c-d559-59b7-bbec-011600b121d8
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with lynx ransomware.
+  Incident: dragnet-ransomware-2024-2801
+  Ransomware victim claim by lynx: powelltool.com; country: US; sector: Manufacturing
+  First observed: 2024-12-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lynxblog.net/leaks/677c5baf05a779c3d3a2f62c
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

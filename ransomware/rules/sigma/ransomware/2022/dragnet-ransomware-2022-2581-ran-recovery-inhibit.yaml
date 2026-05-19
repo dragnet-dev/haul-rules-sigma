@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2581 — Recovery Inhibition (ransomexx)'
+id: 4f0ebbad-6032-595a-855d-ff429f6130f5
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with ransomexx ransomware.
+  Incident: dragnet-ransomware-2022-2581
+  Ransomware victim claim by ransomexx: Ferrari; sector: Manufacturing
+  First observed: 2022-10-02.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://rnsm777cdsjrsdlbs4v5qoeppu3px6sb2igmh53jzrx7ipcrbjz5b2ad.onion/14902e9881109f26bfe4385ff6d68cfa9bad6769/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

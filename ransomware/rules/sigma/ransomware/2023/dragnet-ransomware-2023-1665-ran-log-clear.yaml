@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1665 — Event Log Clearing (dispossessor)'
+id: 74c592ac-a58f-5926-ac67-03aa9085ff83
+status: experimental
+description: |
+  Detects event log clearing associated with dispossessor ransomware.
+  Incident: dragnet-ransomware-2023-1665
+  Ransomware victim claim by dispossessor: www.c-v-e.com; country: US; sector: Business Services
+  First observed: 2023-10-02.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://dispossessor.com/blogs/15
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

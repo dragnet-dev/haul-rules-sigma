@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-2371 — Ransomware C2 Communication'
+id: ecad63b6-f0c0-547d-847f-7e3e2aae9d1c
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-2371
+  Ransomware victim claim by monti: Gloria Cales; country: US; sector: Not Found
+  First observed: 2025-03-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://mblogci3rudehaagbryjznltdp33ojwzkq6hn2pckvjq33rycmzczpid.onion/blog/f9b703dd490fb677614bd2dd48715289ae7f8811e239d5c97a8caab9b4dd7396/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://mblogci3rudehaagbryjznltdp33ojwzkq6hn2pckvjq33rycmzczpid.onion/blog/f9b703dd490fb677614bd2dd48715289ae7f8811e239d5c97a8caab9b4dd7396/'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

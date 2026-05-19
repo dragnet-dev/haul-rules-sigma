@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1118 — Mass File Rename (lockbit5)'
+id: ce9e9590-6ba3-57f9-965a-644ae2ca9921
+status: test
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by lockbit5.
+  Incident: dragnet-ransomware-2025-1118
+  Ransomware victim claim by lockbit5: tecnicarobertorocca.edu.ar; country: AR; sector: Education
+  First observed: 2025-12-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lockbitapt67g6rwzjbcxnww5efpg4qok6vpfeth7wx3okj52ks4wtad.onion/post/c9bac8fa64c2939ea557a048a6b60daa
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

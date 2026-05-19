@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0527 — Recovery Inhibition (AiLock)'
+id: 230bcf42-91c1-590f-99e9-cfaa06909b9a
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with AiLock ransomware.
+  Incident: dragnet-ransomware-2025-0527
+  Ransomware victim claim by AiLock: Lewis Drug; country: US; sector: Consumer Services
+  First observed: 2025-07-06.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

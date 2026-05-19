@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-1202 — Ransomware C2 Communication'
+id: b5b9197b-2ef2-50c5-8880-ff3e69cb1177
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-1202
+  Ransomware victim claim by alphv: Libyana was hacked A company with an enormous amount of vulnerabilities has allowed its cu; country: LY; sector: Telecommunication
+  First observed: 2023-05-12.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://alphvmmm27o3abo3r2mlmjrpdmzle3rykajqc5xsj7j7ejksbpsa36ad.onion/34c21435-4335-4fb5-b7a5-103c481b4969
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://alphvmmm27o3abo3r2mlmjrpdmzle3rykajqc5xsj7j7ejksbpsa36ad.onion/34c21435-4335-4fb5-b7a5-103c481b4969'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

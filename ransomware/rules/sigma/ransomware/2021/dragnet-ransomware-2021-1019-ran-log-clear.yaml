@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1019 — Event Log Clearing (conti)'
+id: 8572c74d-3d35-51eb-b6a3-73b07a5cf89b
+status: deprecated
+description: |
+  Detects event log clearing associated with conti ransomware.
+  Incident: dragnet-ransomware-2021-1019
+  Ransomware victim claim by conti: Bernd Siegmund GmbH; sector: Manufacturing
+  First observed: 2021-12-27.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2651 — Mass File Rename (m3rx)'
+id: 2735d59b-dbc0-5a31-a4eb-7f0042e7b219
+status: stable
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by m3rx.
+  Incident: dragnet-ransomware-2026-2651
+  Ransomware victim claim by m3rx: boxtopia.co.uk; country: GB; sector: Business Services
+  First observed: 2026-04-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://4k6plf4h2cm2nco6ae3inrsxnmqgl6lllmwefydhnlcq4tuhwbj4qpad.onion
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

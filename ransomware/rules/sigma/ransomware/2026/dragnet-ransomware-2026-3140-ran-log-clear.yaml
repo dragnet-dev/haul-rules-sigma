@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-3140 — Event Log Clearing (handala)'
+id: 92e01b51-17a2-5d6d-84bb-10691ac6f1db
+status: stable
+description: |
+  Detects event log clearing associated with handala ransomware.
+  Incident: dragnet-ransomware-2026-3140
+  Ransomware victim claim by handala: Hebrew University of Jerusalem; country: IL; sector: Education
+  First observed: 2026-03-13.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://handala-hack.to/hebrew-university-of-jerusalem-hacked/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

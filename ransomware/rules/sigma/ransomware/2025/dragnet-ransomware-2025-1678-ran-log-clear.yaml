@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1678 — Event Log Clearing (kraken)'
+id: b5e98b75-1927-5d01-80d2-9c69fa148b1e
+status: experimental
+description: |
+  Detects event log clearing associated with kraken ransomware.
+  Incident: dragnet-ransomware-2025-1678
+  Ransomware victim claim by kraken: www.ronvil.com; country: US; sector: Business Services
+  First observed: 2025-10-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://krakenccj3wr23452a4ibkbkuph4d6soyx2xgjoogtuamc3m7u7wemad.onion/news/91172e5b793ee3708e80da29bb3d9cdf
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

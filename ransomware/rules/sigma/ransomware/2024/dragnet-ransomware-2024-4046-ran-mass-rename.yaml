@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-4046 — Mass File Rename (knight)'
+id: dca11cdf-5d2e-5253-8d2f-1f2129a5ef88
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by knight.
+  Incident: dragnet-ransomware-2024-4046
+  Ransomware victim claim by knight: DHX–Dependable Hawaiian Express; country: US; sector: Transportation/Logistics
+  First observed: 2024-02-12.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://knight3xppu263m7g4ag3xlit2qxpryjwueobh7vjdc3zrscqlfu3pqd.onion/bdd7dfd3-514c-4fd9-b677-0673747fc6ca/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

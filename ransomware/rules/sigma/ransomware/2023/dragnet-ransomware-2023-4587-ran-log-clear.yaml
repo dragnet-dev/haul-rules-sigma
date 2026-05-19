@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4587 — Event Log Clearing (nokoyawa)'
+id: 06207323-b7be-5cfe-8015-0f5da8a1f2b9
+status: experimental
+description: |
+  Detects event log clearing associated with nokoyawa ransomware.
+  Incident: dragnet-ransomware-2023-4587
+  Ransomware victim claim by nokoyawa: Fresca; country: GB; sector: Agriculture and Food Production
+  First observed: 2023-05-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nokoleakb76znymx443veg4n6fytx6spck6pc7nkr4dvfuygpub6jsid.onion/leak/6453dfd40e3b22dab5b18c38
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

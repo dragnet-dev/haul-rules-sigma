@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0600 — Mass File Rename (blackshadow)'
+id: c6540eab-0f0e-50f7-905d-601602af3fe5
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by blackshadow.
+  Incident: dragnet-ransomware-2021-0600
+  Associated with Agrius.
+  Ransomware victim claim by blackshadow: CyberServe Company; sector: Technology
+  First observed: 2021-12-18.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+  - dragnet.actor.agrius
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

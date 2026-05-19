@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-3127 — Recovery Inhibition (kelvinsecurity)'
+id: 4c2acbd2-374a-5c01-95a4-d28175236da6
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with kelvinsecurity ransomware.
+  Incident: dragnet-ransomware-2022-3127
+  Ransomware victim claim by kelvinsecurity: CARACOL TV COLOMBIA; sector: Telecommunication
+  First observed: 2022-04-01.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

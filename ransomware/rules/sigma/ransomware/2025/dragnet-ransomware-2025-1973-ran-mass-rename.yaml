@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1973 — Mass File Rename (nitrogen)'
+id: 1ec8103c-d581-5d13-af97-fc5512526f2b
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by nitrogen.
+  Incident: dragnet-ransomware-2025-1973
+  Ransomware victim claim by nitrogen: Seneca Gaming & Entertainment; country: US; sector: Hospitality and Tourism
+  First observed: 2025-04-26.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nitrogenczslprh3xyw6lh5xyjvmsz7ciljoqxxknd7uymkfetfhgvqd.onion/posts/680c223a229e6d74c3fe6911
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

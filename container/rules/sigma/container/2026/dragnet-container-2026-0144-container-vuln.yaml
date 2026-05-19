@@ -1,0 +1,37 @@
+title: 'Dragnet [Container]: dragnet-container-2026-0144 — Vulnerable Base Image Pull'
+id: 497dc5ba-75af-5e1c-8aad-dbedf584754c
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-0144 (Tier 2, CVSS 10)
+  Multiple buffer overflows in vfte, based on FTE, before 0.50, allow local users to execute arbitrary code.
+  First observed: 2026-04-16.
+references:
+  - http://secunia.com/advisories/11290
+  - http://securitytracker.com/id?1009655
+  - http://securitytracker.com/id?1009656
+  - http://www.debian.org/security/2004/dsa-472
+  - http://www.kb.cert.org/vuls/id/354838
+  - http://www.kb.cert.org/vuls/id/900964
+  - http://www.securityfocus.com/bid/10041
+  - https://exchange.xforce.ibmcloud.com/vulnerabilities/15726
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

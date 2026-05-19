@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7161 — Recovery Inhibition (threeam)'
+id: b012c8a4-5fc1-5208-a0e5-56ababf39b6f
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with threeam ransomware.
+  Incident: dragnet-ransomware-2025-7161
+  Ransomware victim claim by threeam: soitinlaine.fi; country: FI; sector: Consumer Services
+  First observed: 2025-01-30.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://threeamkelxicjsaf2czjyz2lc4q3ngqkxhhlexyfcp2o6raw4rphyad.onionpost.php?id=55
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

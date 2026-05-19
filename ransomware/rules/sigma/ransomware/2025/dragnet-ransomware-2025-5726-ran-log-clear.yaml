@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5726 — Event Log Clearing (shinyhunters)'
+id: d974d081-7a92-51ee-8670-b0ae37db4020
+status: experimental
+description: |
+  Detects event log clearing associated with shinyhunters ransomware.
+  Incident: dragnet-ransomware-2025-5726
+  Ransomware victim claim by shinyhunters: Google Adsense; country: US; sector: Technology
+  First observed: 2025-06-30.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://breachforums.hn//google.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

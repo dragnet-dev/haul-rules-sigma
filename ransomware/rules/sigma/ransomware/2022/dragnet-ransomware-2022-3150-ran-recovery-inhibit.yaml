@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-3150 — Recovery Inhibition (quantum)'
+id: 64db259f-e99d-5aaa-8b53-a769243f1ae6
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with quantum ransomware.
+  Incident: dragnet-ransomware-2022-3150
+  Ransomware victim claim by quantum: Lewis & Clark College; country: US; sector: Education
+  First observed: 2022-01-13.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0443 — Mass File Rename (sarcoma)'
+id: a8ae4019-6ae9-5c50-80fc-71956ad729c9
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by sarcoma.
+  Incident: dragnet-ransomware-2024-0443
+  Ransomware victim claim by sarcoma: Gulf Petrochemical Services & Trading; country: OM; sector: Energy
+  First observed: 2024-12-08.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

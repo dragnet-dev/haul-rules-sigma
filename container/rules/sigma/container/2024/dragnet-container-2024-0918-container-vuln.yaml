@@ -1,0 +1,33 @@
+title: 'Dragnet [Container]: dragnet-container-2024-0918 — Vulnerable Base Image Pull'
+id: 7a1846d3-18e2-5a3d-b204-9cad27833787
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-0918 (Tier 2, CVSS 9.8)
+  A heap based buffer overflow vulnerability exists in tile decoding code of TIFF image parser in OpenImageIO master-branch-9aeece7a and v2.3.19.0. A specially-crafted TIFF file can lead to an out of bounds memory corruption, which can result in arbitrary code execution. An attacker can provide a malicious file to trigger this vulnerability.
+  First observed: 2024-11-21.
+references:
+  - https://security.gentoo.org/glsa/202305-33
+  - https://talosintelligence.com/vulnerability_reports/TALOS-2022-1633
+  - https://www.debian.org/security/2023/dsa-5384
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:10'
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

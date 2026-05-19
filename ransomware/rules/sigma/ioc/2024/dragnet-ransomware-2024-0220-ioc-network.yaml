@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-0220 — Ransomware C2 Communication'
+id: 549603bd-ad93-5852-99d0-d1ede659d910
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-0220
+  Ransomware victim claim by interlock: Bishop Ireton High School; country: US; sector: Education
+  First observed: 2024-11-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://viqh6qmehdkpn7jrfhthyejxtg3gd5hg4bch7sjetvkdaipeu3k6anad.onion/index.php?p=
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://viqh6qmehdkpn7jrfhthyejxtg3gd5hg4bch7sjetvkdaipeu3k6anad.onion/index.php?p='
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

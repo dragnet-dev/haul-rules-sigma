@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-5421 — Ransomware C2 Communication'
+id: e9ed5e7c-7937-5bd0-b7ad-b2690ef1deba
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-5421
+  Ransomware victim claim by hellogookie: CD Projekt!; country: PL; sector: Technology
+  First observed: 2024-04-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://hellogookie256cvccntvenyxrvn7ht73bs6ss3oj2ocfkjt5y6vq6gfi2tad.onion/news/02cae4a1a636af286036df3ec24bf727
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://hellogookie256cvccntvenyxrvn7ht73bs6ss3oj2ocfkjt5y6vq6gfi2tad.onion/news/02cae4a1a636af286036df3ec24bf727'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

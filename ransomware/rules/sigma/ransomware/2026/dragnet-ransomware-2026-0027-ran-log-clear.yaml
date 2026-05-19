@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-0027 — Event Log Clearing (payoutsking)'
+id: b830c2e2-082f-50a1-b60e-357a03ec8080
+status: stable
+description: |
+  Detects event log clearing associated with payoutsking ransomware.
+  Incident: dragnet-ransomware-2026-0027
+  Ransomware victim claim by payoutsking: Powell Electronics; country: US; sector: Manufacturing
+  First observed: 2026-02-26.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://payoutsgn7cy6uliwevdqspncjpfxpmzgirwl2au65la7rfs5x3qnbqd.onion/0w59lU-eTRarj-pnAkl6-DhXf9O-VUB7aJ
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

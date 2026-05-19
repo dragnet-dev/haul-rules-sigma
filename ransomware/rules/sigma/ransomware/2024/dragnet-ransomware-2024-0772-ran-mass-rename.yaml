@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0772 — Mass File Rename (blacklock)'
+id: 3525791a-a258-566b-b541-7e7954adf270
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by blacklock.
+  Incident: dragnet-ransomware-2024-0772
+  Ransomware victim claim by blacklock: Kennedy Funding; country: US; sector: Financial Services
+  First observed: 2024-11-18.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://zdkexsh2e7yihw5uhg5hpsgq3dois2m5je7lzfagij2y6iw5ptl35gyd.onion/Data_Download/kennedyfunding
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

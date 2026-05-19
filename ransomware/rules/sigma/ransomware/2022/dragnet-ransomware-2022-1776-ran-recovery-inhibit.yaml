@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-1776 — Recovery Inhibition (avoslocker)'
+id: 6b9b5838-056a-584d-83d8-e2f93851052a
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with avoslocker ransomware.
+  Incident: dragnet-ransomware-2022-1776
+  Ransomware victim claim by avoslocker: Sunland Asphalt And Construction; sector: Construction
+  First observed: 2022-12-26.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

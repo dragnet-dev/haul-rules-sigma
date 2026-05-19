@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-6697 — Ransomware C2 Communication'
+id: cb569cb8-51c3-54b0-b657-b0ca7cf3136b
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-6697
+  Ransomware victim claim by tridentlocker: EnQuest; country: GB; sector: Energy
+  First observed: 2025-10-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://tridentfrdy6jydwywfx4vx422vnto7pktao2gyx2qdcwjanogq454ad.onion/article/f0d60086-fec6-42af-a4ae-185c1e1d10e6
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://tridentfrdy6jydwywfx4vx422vnto7pktao2gyx2qdcwjanogq454ad.onion/article/f0d60086-fec6-42af-a4ae-185c1e1d10e6'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2897 — Recovery Inhibition (sabbath)'
+id: e958daa3-d603-5e8e-bd2c-a0bf73ccf78b
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with sabbath ransomware.
+  Incident: dragnet-ransomware-2022-2897
+  Ransomware victim claim by sabbath: ASL Napoli 3 Sud Network Seized; sector: Not Found
+  First observed: 2022-01-14.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

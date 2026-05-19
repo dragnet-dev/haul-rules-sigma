@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-1397 — Recovery Inhibition (mindware)'
+id: 0af1ee65-bf58-5c75-a642-305196f20322
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with mindware ransomware.
+  Incident: dragnet-ransomware-2022-1397
+  Ransomware victim claim by mindware: smd; sector: Not Found
+  First observed: 2022-05-05.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

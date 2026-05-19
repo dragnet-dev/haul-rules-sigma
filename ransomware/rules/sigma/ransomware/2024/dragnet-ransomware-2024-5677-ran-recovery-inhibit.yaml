@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5677 — Recovery Inhibition (blacksuit)'
+id: e493d4a4-b232-5062-9f67-bf6fdacbfc16
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with blacksuit ransomware.
+  Incident: dragnet-ransomware-2024-5677
+  Ransomware victim claim by blacksuit: marysville.k12.oh.us; country: US; sector: Education
+  First observed: 2024-10-28.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?id=s0WkNH5bav4Xvlf7
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

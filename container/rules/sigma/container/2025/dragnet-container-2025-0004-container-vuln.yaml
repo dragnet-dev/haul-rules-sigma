@@ -1,0 +1,29 @@
+title: 'Dragnet [Container]: dragnet-container-2025-0004 — Vulnerable Base Image Pull'
+id: c7aecad5-727b-51d0-b0e4-f59257298c21
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2025-0004 (Tier 2, CVSS 9.8)
+  Buffer Overflow vulnerability in Mathtex v.1.05 and before allows a remote attacker to execute arbitrary code via the length of the LaTeX string component.
+  First observed: 2025-05-30.
+references:
+  - https://blog.yulun.ac.cn/posts/2023/fuzzing-mathtex/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:10'
+      - 'debian:11'
+      - 'debian:12'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

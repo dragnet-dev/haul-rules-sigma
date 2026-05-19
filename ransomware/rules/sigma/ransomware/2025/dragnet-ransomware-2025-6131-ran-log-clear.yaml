@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6131 — Event Log Clearing (dunghill)'
+id: 2bb31156-736e-5f21-9953-f50e61927d28
+status: experimental
+description: |
+  Detects event log clearing associated with dunghill ransomware.
+  Incident: dragnet-ransomware-2025-6131
+  Ransomware victim claim by dunghill: The Printing House; country: CA; sector: Business Services
+  First observed: 2025-07-01.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nsalewdnfclsowcal6kn5csm4ryqmfpijznxwictukhrgvz2vbmjjjyd.onion/lot15.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

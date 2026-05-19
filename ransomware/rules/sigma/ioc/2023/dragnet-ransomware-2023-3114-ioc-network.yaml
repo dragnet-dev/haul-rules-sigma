@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-3114 — Ransomware C2 Communication'
+id: f1cd88b4-4b0f-5bf3-9315-30a839171f08
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-3114
+  Ransomware victim claim by alphv: Eastern Cape Gambling Board was hacked The most dangerous gambling company for cooperation; country: ZA; sector: Public Sector
+  First observed: 2023-04-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://alphvmmm27o3abo3r2mlmjrpdmzle3rykajqc5xsj7j7ejksbpsa36ad.onion/67e84aae-aa3a-4bd7-af19-dc2aa40c78b1
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://alphvmmm27o3abo3r2mlmjrpdmzle3rykajqc5xsj7j7ejksbpsa36ad.onion/67e84aae-aa3a-4bd7-af19-dc2aa40c78b1'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

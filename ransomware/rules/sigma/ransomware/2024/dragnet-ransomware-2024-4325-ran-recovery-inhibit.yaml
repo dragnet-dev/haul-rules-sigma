@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-4325 — Recovery Inhibition (ransomexx)'
+id: 2e6c7907-97c1-5e86-bf87-79c1c7e6d108
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with ransomexx ransomware.
+  Incident: dragnet-ransomware-2024-4325
+  Ransomware victim claim by ransomexx: Planet Group International; country: US; sector: Technology
+  First observed: 2024-07-26.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://rnsm777cdsjrsdlbs4v5qoeppu3px6sb2igmh53jzrx7ipcrbjz5b2ad.onion/./2024/07/26/planet-group-international/index.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

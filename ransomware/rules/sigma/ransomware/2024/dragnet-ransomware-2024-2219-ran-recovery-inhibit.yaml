@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2219 — Recovery Inhibition (funksec)'
+id: b406b477-160a-5f70-8dea-848e99395622
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with funksec ransomware.
+  Incident: dragnet-ransomware-2024-2219
+  Ransomware victim claim by funksec: ibram.org.br; country: BR; sector: Agriculture and Food Production
+  First observed: 2024-12-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://7ixfdvqb4eaju5lzj4gg76kwlrxg4ugqpuog5oqkkmgfyn33h527oyyd.onion/Breach46.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

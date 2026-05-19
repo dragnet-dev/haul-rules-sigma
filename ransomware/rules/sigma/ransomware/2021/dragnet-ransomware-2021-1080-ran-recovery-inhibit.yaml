@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1080 — Recovery Inhibition (payloadbin)'
+id: f2511e68-5f45-51df-9039-df0a3556e55d
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with payloadbin ransomware.
+  Incident: dragnet-ransomware-2021-1080
+  Ransomware victim claim by payloadbin: dawsoncountyne.org; sector: Public Sector
+  First observed: 2021-10-19.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

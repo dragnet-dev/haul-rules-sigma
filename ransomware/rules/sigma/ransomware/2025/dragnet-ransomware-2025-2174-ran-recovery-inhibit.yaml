@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2174 — Recovery Inhibition (hunters)'
+id: 9f8f6374-0040-5363-a8ce-4f79e17aa93b
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with hunters ransomware.
+  Incident: dragnet-ransomware-2025-2174
+  Ransomware victim claim by hunters: HOPI; country: CZ; sector: Not Found
+  First observed: 2025-04-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://hunters55rdxciehoqzwv7vgyv6nt37tbwax2reroyzxhou7my5ejyid.onion/companies/6064619477
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

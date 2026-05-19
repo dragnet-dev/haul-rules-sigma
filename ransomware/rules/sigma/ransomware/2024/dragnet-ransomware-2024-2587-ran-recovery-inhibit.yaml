@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2587 — Recovery Inhibition (redransomware)'
+id: ea485eb5-3ecf-5c91-8653-348cb0ff75f3
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with redransomware ransomware.
+  Incident: dragnet-ransomware-2024-2587
+  Ransomware victim claim by redransomware: Kutes.com; country: TR; sector: Construction
+  First observed: 2024-06-11.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

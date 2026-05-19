@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2563 — Event Log Clearing (lv)'
+id: ed04b6cd-bdca-56c5-a015-a2d90f2190ea
+status: deprecated
+description: |
+  Detects event log clearing associated with lv ransomware.
+  Incident: dragnet-ransomware-2022-2563
+  Ransomware victim claim by lv: CAPECODRTA - HACKED AND DATA LEAKED; sector: Transportation/Logistics
+  First observed: 2022-06-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

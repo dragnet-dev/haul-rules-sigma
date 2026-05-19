@@ -1,0 +1,33 @@
+title: 'Dragnet [Container]: dragnet-container-2026-2886 — Vulnerable Base Image Pull'
+id: 5c171db6-ed71-540c-a479-64f2b47125f4
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-2886 (Tier 2, CVSS 10)
+  The send_pinentry_environment function in asshelp.c in gpg2 on SUSE Linux 9.3 does not properly handle certain options, which can prevent pinentry from being found and causes S/MIME signing to fail.
+  First observed: 2026-04-16.
+references:
+  - http://lists.gnupg.org/pipermail/gpa-dev/2005-June/002291.html
+  - http://lists.gnupg.org/pipermail/gpa-dev/2005-June/002294.html
+  - http://www.novell.com/linux/security/advisories/2005_16_sr.html
+  - https://lists.gnupg.org/pipermail/gpa-dev/2005-May/002284.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

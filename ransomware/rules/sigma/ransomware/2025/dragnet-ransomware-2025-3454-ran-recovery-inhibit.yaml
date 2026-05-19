@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3454 — Recovery Inhibition (termite)'
+id: 239258c4-4314-549e-9b4d-3ea96f85d7ea
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with termite ransomware.
+  Incident: dragnet-ransomware-2025-3454
+  Ransomware victim claim by termite: LGM; country: FR; sector: Manufacturing
+  First observed: 2025-04-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://termiteuslbumdge2zmfmfcsrvmvsfe4gvyudc5j6cdnisnhtftvokid.onion/post/68115c11b8dc056e8a65410f
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

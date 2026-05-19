@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1808 — Event Log Clearing (funksec)'
+id: 3eb641a8-c6c2-5781-8792-89ab4c46ff8f
+status: experimental
+description: |
+  Detects event log clearing associated with funksec ransomware.
+  Incident: dragnet-ransomware-2025-1808
+  Ransomware victim claim by funksec: inmobiliariamaspormenos.com; country: ES; sector: Not Found
+  First observed: 2025-01-31.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://funkxxkovrk7ctnggbjnthdajav4ggex53k6m2x3esjwlxrkb3qiztid.onion/inmobiliariamaspormenos.com
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

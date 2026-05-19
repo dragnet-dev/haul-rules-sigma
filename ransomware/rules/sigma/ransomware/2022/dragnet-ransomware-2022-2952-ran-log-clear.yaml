@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2952 — Event Log Clearing (snatch)'
+id: f19b37d9-f0e4-5f82-b23d-4d0b89e6fec3
+status: deprecated
+description: |
+  Detects event log clearing associated with snatch ransomware.
+  Incident: dragnet-ransomware-2022-2952
+  Ransomware victim claim by snatch: Overseas Travel Agency; sector: Hospitality and Tourism
+  First observed: 2022-02-02.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

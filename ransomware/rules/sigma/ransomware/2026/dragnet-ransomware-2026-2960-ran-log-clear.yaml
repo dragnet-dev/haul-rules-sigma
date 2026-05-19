@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2960 — Event Log Clearing (secpo)'
+id: 7f8798d8-9af6-5ab4-80f7-e7b517837a14
+status: stable
+description: |
+  Detects event log clearing associated with secpo ransomware.
+  Incident: dragnet-ransomware-2026-2960
+  Ransomware victim claim by secpo: Color Communications LLC; country: US; sector: Telecommunication
+  First observed: 2026-04-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://secponewsxgrlnirowclps2kllzaotaf5w2bsvktdnz4qhjr2jnwvvyd.onion/post/94f588080358146b/index.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

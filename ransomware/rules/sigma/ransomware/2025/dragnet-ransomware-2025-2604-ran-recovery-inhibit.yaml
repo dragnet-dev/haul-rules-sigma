@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2604 — Recovery Inhibition (blacklock)'
+id: 950a770c-9cf0-5614-a11f-ad8b1706f0fb
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with blacklock ransomware.
+  Incident: dragnet-ransomware-2025-2604
+  Ransomware victim claim by blacklock: MCM Construction; country: US; sector: Construction
+  First observed: 2025-05-30.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://zdkexsh2e7yihw5uhg5hpsgq3dois2m5je7lzfagij2y6iw5ptl35gyd.onion/Data_Download/mcm-construction-inc
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

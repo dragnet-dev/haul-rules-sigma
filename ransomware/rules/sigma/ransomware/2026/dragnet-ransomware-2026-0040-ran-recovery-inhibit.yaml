@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-0040 — Recovery Inhibition (aurora)'
+id: 2d1a0692-d58b-5235-a028-05bd52fa9429
+status: stable
+description: |
+  Detects boot/recovery disabling associated with aurora ransomware.
+  Incident: dragnet-ransomware-2026-0040
+  Ransomware victim claim by aurora: Avanti Windows & Doors; country: US; sector: Manufacturing
+  First observed: 2026-05-12.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://u6lieui2dakbctcjea2bz4r4q32r7t36nwljovqbv7mxs6o2smgxixid.onion/blog/avanti-windows-doors-25cc6dc6
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

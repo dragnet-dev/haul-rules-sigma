@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2401 — Mass File Rename (lv)'
+id: 25d9d1bd-7501-52b4-8f60-202eb1d0d943
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by lv.
+  Incident: dragnet-ransomware-2022-2401
+  Ransomware victim claim by lv: CPQD - BANCO CENTRAL OF BRASIL BLOCKHAIN. 1.8TB DATA LEAKED WITH ALL SOURCES.; sector: Financial Services
+  First observed: 2022-05-02.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-5082 — Ransomware C2 Communication'
+id: 212ec3bf-ad96-5121-a1d0-03ececa2277a
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-5082
+  Ransomware victim claim by metaencryptor: Life University; country: US; sector: Education
+  First observed: 2024-08-22.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://metacrptmytukkj7ajwjovdpjqzd7esg5v3sg344uzhigagpezcqlpyd.onion/0AFC:b5eb8e07ab1bff2d11d97bb3ce75947d/0AFC:731346b414a49e94e7a60fbdc27098558c556ab3d17243d7259da3ffe194cbfe/0AFC:a302abbf7487c833b65f2d5ee15d28cd3b528276cdd92f748989b4d9a0a61b843ba391988885e49281638aee7d90b6cf
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'https://metacrptmytukkj7ajwjovdpjqzd7esg5v3sg344uzhigagpezcqlpyd.onion/0AFC:b5eb8e07ab1bff2d11d97bb3ce75947d/0AFC:731346b414a49e94e7a60fbdc27098558c556ab3d17243d7259da3ffe194cbfe/0AFC:a302abbf7487c833b65f2d5ee15d28cd3b528276cdd92f748989b4d9a0a61b843ba391988885e49281638aee7d90b6cf'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

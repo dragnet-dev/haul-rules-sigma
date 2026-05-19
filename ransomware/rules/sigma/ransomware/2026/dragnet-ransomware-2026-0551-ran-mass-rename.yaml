@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-0551 — Mass File Rename (worldleaks)'
+id: 2907cb40-8653-563a-a6f5-be1d1d1a6b45
+status: stable
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by worldleaks.
+  Incident: dragnet-ransomware-2026-0551
+  Ransomware victim claim by worldleaks: Sagent Pharmaceuticals; country: US; sector: Healthcare
+  First observed: 2026-03-08.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://worldleaksartrjm3c6vasllvgacbi5u3mgzkluehrzhk2jz4taufuid.onion/companies/4963154147
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

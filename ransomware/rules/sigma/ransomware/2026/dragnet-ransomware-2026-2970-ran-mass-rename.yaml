@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2970 — Mass File Rename (tengu)'
+id: 163d23cb-9a84-5231-9b0c-4d4ff305af93
+status: test
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by tengu.
+  Incident: dragnet-ransomware-2026-2970
+  Ransomware victim claim by tengu: Deck India Engineering Pvt. Ltd; country: IN; sector: Manufacturing
+  First observed: 2026-01-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://longcc4fqrfcqt5lzceutylaxir6h66fp6df3oin6mvwvz6pfdbxc6qd.onion/blog/0efa3457c1f79c49a71d5eb75be4b1f4a3a71a897a36fca52f74dde407005433/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

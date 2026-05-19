@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-2545 — Ransomware C2 Communication'
+id: bcfe1fe8-42a2-5077-b734-8086cddf696c
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-2545
+  Ransomware victim claim by ransomed: Metropolitan Club DC; sector: Hospitality and Tourism
+  First observed: 2023-08-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://ransomed.vc/dc.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'https://ransomed.vc/dc.html'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

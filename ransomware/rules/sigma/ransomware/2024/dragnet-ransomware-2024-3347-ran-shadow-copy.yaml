@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3347 — Shadow Copy Deletion (madliberator)'
+id: 27ade85a-87ac-587f-9bb1-064ccd6297bf
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with madliberator ransomware.
+  Incident: dragnet-ransomware-2024-3347
+  Ransomware victim claim by madliberator: VITALDENT; country: ES; sector: Healthcare
+  First observed: 2024-06-13.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://k67ivvik3dikqi4gy4ua7xa6idijl4si7k5ad5lotbaeirfcsx4sgbid.onion/vitaldent.com
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

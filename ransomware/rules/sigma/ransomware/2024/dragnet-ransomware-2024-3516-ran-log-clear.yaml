@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3516 — Event Log Clearing (flocker)'
+id: 57bf6dcd-be52-5d24-b12b-ca0abaad391f
+status: experimental
+description: |
+  Detects event log clearing associated with flocker ransomware.
+  Incident: dragnet-ransomware-2024-3516
+  Ransomware victim claim by flocker: SBC Global, Bitfinex, Coinmom, and Rutgers University Part 2; sector: Education
+  First observed: 2024-05-05.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://flock4cvoeqm4c62gyohvmncx6ck2e7ugvyqgyxqtrumklhd5ptwzpqd.onion/?p=196
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

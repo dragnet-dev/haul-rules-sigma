@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-7882 — Ransomware C2 Communication'
+id: 1d2e0d0e-a5a7-55fb-8f68-fc04bcf79748
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-7882
+  Ransomware victim claim by interlock: National Defense Corp; country: US; sector: Public Sector
+  First observed: 2025-02-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ebhmkoohccl45qesdbvrjqtyro2hmhkmh6vkyfyjjzfllm3ix72aqaid.onion/leaks.phpad7tx2oyln5g6yk7turvhjxhqvunfucuiq5iwzc5odlomft7tvysxvqd.onionindex.php?p=
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://ebhmkoohccl45qesdbvrjqtyro2hmhkmh6vkyfyjjzfllm3ix72aqaid.onion/leaks.phpad7tx2oyln5g6yk7turvhjxhqvunfucuiq5iwzc5odlomft7tvysxvqd.onionindex.php?p='
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-3378 — Mass File Rename (noescape)'
+id: 142e0d26-6be9-543e-b9b3-ab355d8bb982
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by noescape.
+  Incident: dragnet-ransomware-2023-3378
+  Ransomware victim claim by noescape: Elbe-Obst Fruchtverarbeitung GmbH; country: DE; sector: Agriculture and Food Production
+  First observed: 2023-10-01.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://noescapemsqxvizdxyl7f7rmg5cdjwp33pg2wpmiaaibilb4btwzttad.onion/post/9a46fff8-667d-4f98-82d3-742bbf332c66
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

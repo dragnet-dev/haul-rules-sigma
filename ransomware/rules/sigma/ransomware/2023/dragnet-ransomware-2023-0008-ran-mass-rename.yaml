@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0008 — Mass File Rename (noescape)'
+id: e31f4d54-5ce4-5767-b32b-99ad8514f7d3
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by noescape.
+  Incident: dragnet-ransomware-2023-0008
+  Ransomware victim claim by noescape: R N Wooler & Co Ltd; country: GB; sector: Construction
+  First observed: 2023-10-25.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://noescapemsqxvizdxyl7f7rmg5cdjwp33pg2wpmiaaibilb4btwzttad.onion/post/9a747913-0173-42f8-af3a-ea4c61b416df
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

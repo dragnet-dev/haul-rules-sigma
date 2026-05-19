@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1838 — Mass File Rename (chaos)'
+id: 498de419-754f-5cd7-a64f-c6819d2bda84
+status: test
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by chaos.
+  Incident: dragnet-ransomware-2025-1838
+  Ransomware victim claim by chaos: NSE Insurance Agencies; country: US; sector: Financial Services
+  First observed: 2025-12-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://hptqq2o2qjva7lcaaq67w36jihzivkaitkexorauw7b2yul2z6zozpqd.onion/post/FDIFJK1IguYnhzvpUYb5pAsCieBgXHIr
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

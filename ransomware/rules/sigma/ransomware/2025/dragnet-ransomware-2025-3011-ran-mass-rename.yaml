@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3011 — Mass File Rename (cephalus)'
+id: da5d8394-b1fa-55b9-b6bb-1ba1b6b60ccf
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by cephalus.
+  Incident: dragnet-ransomware-2025-3011
+  Ransomware victim claim by cephalus: CoCo Yachts; country: NL; sector: Manufacturing
+  First observed: 2025-08-28.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

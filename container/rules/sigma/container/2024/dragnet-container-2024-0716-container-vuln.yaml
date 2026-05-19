@@ -1,0 +1,34 @@
+title: 'Dragnet [Container]: dragnet-container-2024-0716 — Vulnerable Base Image Pull'
+id: 861a3e69-5a98-523e-8c43-c11526a37e76
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-0716 (Tier 2, CVSS 9.8)
+  In NetHack before 3.6.5, too long of a value for the SYMBOL configuration file option can cause a buffer overflow resulting in a crash or remote code execution/privilege escalation. This vulnerability affects systems that have NetHack installed suid/sgid and shared systems that allow users to upload their own configuration files. Users should upgrade to NetHack 3.6.5.
+  First observed: 2024-11-21.
+references:
+  - https://github.com/NetHack/NetHack/security/advisories/GHSA-rr25-4v34-pr7v
+  - https://nethack.org/security/CVE-2020-5213.html
+  - https://www.cve.org/CVERecord?id=CVE-2020-5213
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+      - 'ubuntu:18.04-ESM'
+      - 'ubuntu:20.04-ESM'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

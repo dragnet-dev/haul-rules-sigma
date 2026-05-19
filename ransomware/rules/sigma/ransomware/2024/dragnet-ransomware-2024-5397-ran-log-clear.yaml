@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5397 — Event Log Clearing (cloak)'
+id: ac6b837a-079f-51e6-a40d-5a61b7de6c17
+status: deprecated
+description: |
+  Detects event log clearing associated with cloak ransomware.
+  Incident: dragnet-ransomware-2024-5397
+  Ransomware victim claim by cloak: Hu********.ca; country: CA; sector: Business Services
+  First observed: 2024-03-12.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

@@ -1,0 +1,33 @@
+title: 'Dragnet [Container]: dragnet-container-2026-0787 — Vulnerable Base Image Pull'
+id: 6b3465a8-2b56-5a90-a39f-b6047f6c3a30
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-0787 (Tier 2, CVSS 10)
+  Cacti before 0.6.8 allows attackers to execute arbitrary commands via the "Data Input" option in console mode.
+  First observed: 2026-04-16.
+references:
+  - http://archives.neohapsis.com/archives/bugtraq/2002-09/0028.html
+  - http://www.debian.org/security/2002/dsa-164
+  - http://www.iss.net/security_center/static/10050.php
+  - http://www.knights-of-the-routing-table.org/advisories/krt_001_20020903_cacti.txt
+  - http://www.securityfocus.com/bid/5630
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

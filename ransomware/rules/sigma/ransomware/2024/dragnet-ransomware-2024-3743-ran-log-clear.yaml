@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3743 — Event Log Clearing (dAn0n)'
+id: 288a4871-e47e-5a13-832e-726ea24e2b3f
+status: experimental
+description: |
+  Detects event log clearing associated with dAn0n ransomware.
+  Incident: dragnet-ransomware-2024-3743
+  Ransomware victim claim by dAn0n: The Blake Law Firm; country: US; sector: Business Services
+  First observed: 2024-03-30.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://2c7nd54guzi6xhjyqrj5kdkrq2ngm2u3e6oy4nfhn3wm3r54ul2utiqd.onion/OKCyWXJk40VWoKCkNTiZ0r2Hq3OqLSTzoGYrm4lF2MM/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

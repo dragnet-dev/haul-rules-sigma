@@ -1,0 +1,46 @@
+title: 'Dragnet [Container]: dragnet-container-2026-2345 — Vulnerable Base Image Pull'
+id: cc66bc9a-43be-585f-87c0-230c18710b4e
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-2345 (Tier 2, CVSS 9.1)
+  The TIFFReadRawStrip1 and TIFFReadRawTile1 functions in tif_read.c in libtiff before 4.0.7 allows remote attackers to cause a denial of service (crash) or possibly obtain sensitive information via a negative index in a file-content buffer.
+  First observed: 2026-05-13.
+references:
+  - http://libtiff.maptools.org/v4.0.7.html
+  - http://www.debian.org/security/2017/dsa-3762
+  - http://www.openwall.com/lists/oss-security/2016/07/13/3
+  - http://www.openwall.com/lists/oss-security/2016/07/14/4
+  - http://www.securityfocus.com/bid/91741
+  - https://access.redhat.com/security/cve/CVE-2016-6223
+  - https://nvd.nist.gov/vuln/detail/CVE-2016-6223
+  - https://security.gentoo.org/glsa/201701-16
+  - https://ubuntu.com/security/notices/USN-3212-1
+  - https://www.cve.org/CVERecord?id=CVE-2016-6223
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+      - 'debian:7'
+      - 'debian:8'
+      - 'redhat/ubi9:'
+      - 'ubuntu:14.04'
+      - 'ubuntu:14.04-ESM'
+      - 'ubuntu:16.04'
+      - 'ubuntu:16.04-ESM'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

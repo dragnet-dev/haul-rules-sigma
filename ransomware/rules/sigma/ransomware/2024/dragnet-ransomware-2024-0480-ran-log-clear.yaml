@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0480 — Event Log Clearing (mallox)'
+id: 037965af-9ebd-5774-89ed-ea6bb1b68e05
+status: experimental
+description: |
+  Detects event log clearing associated with mallox ransomware.
+  Incident: dragnet-ransomware-2024-0480
+  Ransomware victim claim by mallox: Río Negro; country: AR; sector: Agriculture and Food Production
+  First observed: 2024-06-03.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://wtyafjyhwqrgo4a45wdvvwhen3cx4euie73qvlhkhvlrexljoyuklaad.onion/view/22MjmBROC1qU525
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

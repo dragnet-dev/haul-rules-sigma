@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-1837 — Recovery Inhibition (quantum)'
+id: 4adccf8e-36b7-5ca0-8529-5e835d3b70a7
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with quantum ransomware.
+  Incident: dragnet-ransomware-2022-1837
+  Ransomware victim claim by quantum: Florida Department of Veterans' Affairs; country: US; sector: Public Sector
+  First observed: 2022-05-27.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

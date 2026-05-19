@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-1804 — Mass File Rename (helldown)'
+id: f78d9a37-db84-5ae0-b4a6-6c155381ca07
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by helldown.
+  Incident: dragnet-ransomware-2024-1804
+  Ransomware victim claim by helldown: briju; country: PL; sector: Business Services
+  First observed: 2024-08-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://onyxcgfg4pjevvp5h34zvhaj45kbft3dg5r33j5vu3nyp7xic3vrzvad.onion/1c9d4d16.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

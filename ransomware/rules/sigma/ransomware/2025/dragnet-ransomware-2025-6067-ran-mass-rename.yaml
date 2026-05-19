@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6067 — Mass File Rename (blackshrantac)'
+id: 89077eb4-8298-5b01-a559-b7b36d8a6b18
+status: test
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by blackshrantac.
+  Incident: dragnet-ransomware-2025-6067
+  Ransomware victim claim by blackshrantac: demilac, Inc; country: TR; sector: Manufacturing
+  First observed: 2025-12-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://b2ykcy2gcug4gnccm6hnrb5xapnresmyjjqgvhafaypppwgo4feixwyd.onion/targets/34
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

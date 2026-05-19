@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-2943 — Mass File Rename (losttrust)'
+id: 769e8f94-4b02-52c0-a4c9-8ef8c4833feb
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by losttrust.
+  Incident: dragnet-ransomware-2023-2943
+  Ransomware victim claim by losttrust: Jersey College; country: US; sector: Education
+  First observed: 2023-09-26.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

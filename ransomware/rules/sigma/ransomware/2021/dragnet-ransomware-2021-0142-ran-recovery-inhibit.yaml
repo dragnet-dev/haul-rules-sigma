@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0142 — Recovery Inhibition (spook)'
+id: 5355ae6d-2dce-5a78-9d80-1bdfa441fe42
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with spook ransomware.
+  Incident: dragnet-ransomware-2021-0142
+  Ransomware victim claim by spook: NOF CORPORATION; sector: Manufacturing
+  First observed: 2021-10-16.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

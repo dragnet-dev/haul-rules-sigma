@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5853 — Shadow Copy Deletion (gunra)'
+id: 8a351c3b-caf7-5377-85f3-c5856aa08b60
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with gunra ransomware.
+  Incident: dragnet-ransomware-2025-5853
+  Ransomware victim claim by gunra: American Hospital Dubai; country: AE; sector: Healthcare
+  First observed: 2025-06-05.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://gunrabxbig445sjqa535uaymzerj6fp4nwc6ngc2xughf2pedjdhk4ad.onion
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0718 — Shadow Copy Deletion (lockbit2)'
+id: 84f106b3-eadd-5960-90a0-a32846039b28
+status: deprecated
+description: |
+  Detects shadow copy deletion commands associated with lockbit2 ransomware.
+  Incident: dragnet-ransomware-2021-0718
+  Associated with Sea Turtle.
+  Ransomware victim claim by lockbit2: verisilicon.com; sector: Technology
+  First observed: 2021-09-10.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+  - dragnet.actor.sea-turtle
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

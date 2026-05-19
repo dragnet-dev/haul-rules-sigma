@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0155 — Mass File Rename (metaencryptor)'
+id: 1130c8b7-a51e-57e4-b62b-66be112b0612
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by metaencryptor.
+  Incident: dragnet-ransomware-2025-0155
+  Ransomware victim claim by metaencryptor: Groupe Devimco; country: CA; sector: Construction
+  First observed: 2025-06-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://metacrptmytukkj7ajwjovdpjqzd7esg5v3sg344uzhigagpezcqlpyd.onion/0AFC:ba270ae571712ff17c74ce5ef6b4f51e/0AFC:87b371025fb0a27ba31ab625bd471451bb6ee3a36dd9369e455758ebba92ef90/0AFC:3bf698f25eb62a50066236df2a8c57fe2c2a37ec968a740d81535176fa7ece90
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

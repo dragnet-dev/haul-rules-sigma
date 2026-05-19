@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2476 — Mass File Rename (vicesociety)'
+id: d847ecd1-fafa-5ff1-9da9-7e1c1ba11d11
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by vicesociety.
+  Incident: dragnet-ransomware-2022-2476
+  Ransomware victim claim by vicesociety: The Bishop of Hereford's Bluecoat School; sector: Education
+  First observed: 2022-10-29.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

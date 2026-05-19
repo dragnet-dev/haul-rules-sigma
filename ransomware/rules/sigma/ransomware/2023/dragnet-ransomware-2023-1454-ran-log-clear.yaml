@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1454 — Event Log Clearing (abyss)'
+id: 00f34adb-3c0b-51d9-a256-bfa1eb1e3bcb
+status: deprecated
+description: |
+  Detects event log clearing associated with abyss ransomware.
+  Incident: dragnet-ransomware-2023-1454
+  Ransomware victim claim by abyss: shawneemilling.com; sector: Agriculture and Food Production
+  First observed: 2023-11-11.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

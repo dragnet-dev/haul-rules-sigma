@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0413 — Recovery Inhibition (stormous)'
+id: a571dae5-4776-52e4-8d4b-6a325e807c7b
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with stormous ransomware.
+  Incident: dragnet-ransomware-2023-0413
+  Ransomware victim claim by stormous: mamboafricaadventure; country: TZ; sector: Hospitality and Tourism
+  First observed: 2023-07-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://h3reihqb2y7woqdary2g3bmk3apgtxuyhx4j2ftovbhe3l5svev7bdyd.onion/mamboafricaadventure..html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

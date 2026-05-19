@@ -1,0 +1,30 @@
+title: 'Dragnet [Container]: dragnet-container-2024-1347 — Vulnerable Base Image Pull'
+id: ae80b27c-297b-5426-9464-4202c427b0a5
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-1347 (Tier 2, CVSS 9.1)
+  The mg_http_serve_file function in Cesanta Mongoose HTTP server 7.0 is vulnerable to remote OOB write attack via connection request after exhausting memory pool.
+  First observed: 2024-11-21.
+references:
+  - https://github.com/cesanta/mongoose/issues/1201
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

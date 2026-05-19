@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0850 — Recovery Inhibition (daixin)'
+id: 59b45d98-ef80-5797-a69c-677cda49168f
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with daixin ransomware.
+  Incident: dragnet-ransomware-2023-0850
+  Ransomware victim claim by daixin: North Texas Municipal Water District; country: US; sector: Public Sector
+  First observed: 2023-11-28.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1662 — Event Log Clearing (revil)'
+id: 8328ebe5-6566-5d34-be7c-4bddbc34cfcc
+status: deprecated
+description: |
+  Detects event log clearing associated with revil ransomware.
+  Incident: dragnet-ransomware-2021-1662
+  Ransomware victim claim by revil: Acer; sector: Technology
+  First observed: 2021-03-01.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

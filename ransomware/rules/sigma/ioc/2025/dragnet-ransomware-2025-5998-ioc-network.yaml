@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-5998 — Ransomware C2 Communication'
+id: 03e86ec4-31a9-5adb-939c-67a8f49f93e1
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-5998
+  Ransomware victim claim by desolator: Tri Thuc Software; country: VN; sector: Technology
+  First observed: 2025-08-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://po4tq2brx4rgwbdx4mac24fz34uuuf7oigosebp32n2462m2vxl6biqd.onion/victim/3f3f4013-f375-4279-8089-0a7d185b3fd6
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://po4tq2brx4rgwbdx4mac24fz34uuuf7oigosebp32n2462m2vxl6biqd.onion/victim/3f3f4013-f375-4279-8089-0a7d185b3fd6'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

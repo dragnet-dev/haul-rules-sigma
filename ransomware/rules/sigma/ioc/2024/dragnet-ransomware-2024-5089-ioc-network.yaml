@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-5089 — Ransomware C2 Communication'
+id: e81eeb31-7065-509f-b3db-72a748c30698
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-5089
+  Ransomware victim claim by lynx: BeClever; country: BR; sector: Business Services
+  First observed: 2024-10-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lynxblog.net/leaks/6741249be42beed9ed26c81e
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lynxblog.net/leaks/6741249be42beed9ed26c81e'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

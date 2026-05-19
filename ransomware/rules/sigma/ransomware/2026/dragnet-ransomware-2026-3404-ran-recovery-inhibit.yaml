@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-3404 — Recovery Inhibition (payload)'
+id: f7484037-7a7c-5317-82c2-53ec7d46dbfc
+status: stable
+description: |
+  Detects boot/recovery disabling associated with payload ransomware.
+  Incident: dragnet-ransomware-2026-3404
+  Ransomware victim claim by payload: Inteceng.com.my (+ Tsksynergy.com.my + Amemanufacturing.com.my + Woodnova.com.my); country: MY; sector: Manufacturing
+  First observed: 2026-05-13.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://payloadrz5yw227brtbvdqpnlhq3rdcdekdnn3rgucbcdeawq2v6vuyd.onion/posts/61827d93-eb95-42af-b264-9b84aeecefb7
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

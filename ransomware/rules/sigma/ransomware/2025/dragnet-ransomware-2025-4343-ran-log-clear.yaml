@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4343 — Event Log Clearing (nightspire)'
+id: 606a156e-5476-5f53-98bd-7f1828d8a81a
+status: experimental
+description: |
+  Detects event log clearing associated with nightspire ransomware.
+  Incident: dragnet-ransomware-2025-4343
+  Ransomware victim claim by nightspire: Pistolero; country: MX; sector: Not Found
+  First observed: 2025-05-30.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nspirebcv4sy3yydtaercuut34hwc4fsxqqv4b4ye4xmo6qp3vxhulqd.onion/details/54pistolero
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

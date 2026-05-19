@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-1814 — Mass File Rename (tengu)'
+id: be7c7684-d467-5d14-90c6-6d61a4d007b9
+status: test
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by tengu.
+  Incident: dragnet-ransomware-2026-1814
+  Ransomware victim claim by tengu: Quick Safety Electric; country: AU; sector: Manufacturing
+  First observed: 2026-01-14.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://longcc4fqrfcqt5lzceutylaxir6h66fp6df3oin6mvwvz6pfdbxc6qd.onion/blog/b97904dfa9f56c1edd2c4bc06a22786ff9ec1bb76c4e5717796b18ca076bbbb5/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

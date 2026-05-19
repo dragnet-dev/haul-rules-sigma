@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-0732 — Recovery Inhibition (tengu)'
+id: 56c2b057-9070-58e7-9a37-044aaa3f0b71
+status: test
+description: |
+  Detects boot/recovery disabling associated with tengu ransomware.
+  Incident: dragnet-ransomware-2026-0732
+  Ransomware victim claim by tengu: KSP TLM INDONESIA; country: ID; sector: Financial Services
+  First observed: 2026-01-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://longcc4fqrfcqt5lzceutylaxir6h66fp6df3oin6mvwvz6pfdbxc6qd.onion/blog/c67e84903e2846c4ee156159fe8d168786be2d7d2c0c624739aaa9ded8bba542/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

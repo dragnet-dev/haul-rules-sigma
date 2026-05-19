@@ -1,0 +1,31 @@
+title: 'Dragnet [Container]: dragnet-container-2026-2471 — Vulnerable Base Image Pull'
+id: 3623b8be-ff20-5a0b-9764-0e3ca870f1ea
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-2471 (Tier 2, CVSS 9.3)
+  Blender 2.34, 2.35a, 2.40, and 2.49b allows remote attackers to execute arbitrary code via a .blend file that contains Python statements in the onLoad action of a ScriptLink SDNA.
+  First observed: 2026-04-23.
+references:
+  - http://www.coresecurity.com/content/blender-scripting-injection
+  - http://www.securityfocus.com/archive/1/507706/100/0/threaded
+  - http://www.securityfocus.com/bid/36838
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

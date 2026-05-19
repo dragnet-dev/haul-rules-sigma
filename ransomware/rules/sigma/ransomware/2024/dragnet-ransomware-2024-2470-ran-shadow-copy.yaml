@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2470 — Shadow Copy Deletion (madliberator)'
+id: 6ed4da15-94c4-53df-a3ee-9cf4f4649498
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with madliberator ransomware.
+  Incident: dragnet-ransomware-2024-2470
+  Ransomware victim claim by madliberator: MONTERO & SEGURA; country: ES; sector: Business Services
+  First observed: 2024-07-12.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://k67ivvik3dikqi4gy4ua7xa6idijl4si7k5ad5lotbaeirfcsx4sgbid.onion/msprocuradores.es
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

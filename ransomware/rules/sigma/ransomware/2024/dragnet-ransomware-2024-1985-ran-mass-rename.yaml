@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-1985 — Mass File Rename (killsec)'
+id: a6ac8e87-a82d-598b-980d-b2b8550ddb24
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by killsec.
+  Incident: dragnet-ransomware-2024-1985
+  Ransomware victim claim by killsec: telehealthcenter.in; country: IN; sector: Healthcare
+  First observed: 2024-10-01.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://kill432ltnkqvaqntbalnsgojqqs2wz4lhnamrqjg66tq6fuvcztilyd.onion/post/pEAN63fr9vo1WlF2EuD2wayPV
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

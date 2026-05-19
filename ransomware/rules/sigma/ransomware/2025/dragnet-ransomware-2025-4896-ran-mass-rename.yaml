@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4896 — Mass File Rename (embargo)'
+id: 5b3ca987-5651-542f-b708-6bd3588d138c
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by embargo.
+  Incident: dragnet-ransomware-2025-4896
+  Ransomware victim claim by embargo: ACTi.com; country: TW; sector: Technology
+  First observed: 2025-10-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://embargobe3n5okxyzqphpmk3moinoap2snz5k6765mvtkk7hhi544jid.onion/#/post/7e0fe038-1185-4f6e-9a51-e43e56889e20
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0408 — Mass File Rename (avaddon)'
+id: d3153d67-26a9-523c-9b46-7a78474db650
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by avaddon.
+  Incident: dragnet-ransomware-2021-0408
+  Ransomware victim claim by avaddon: Active Business & Technology; sector: Technology
+  First observed: 2021-09-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

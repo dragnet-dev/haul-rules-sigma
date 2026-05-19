@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0914 — Mass File Rename (arvinclub)'
+id: 93b2696c-8043-504c-a806-aab8c1abe92e
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by arvinclub.
+  Incident: dragnet-ransomware-2021-0914
+  Ransomware victim claim by arvinclub: Etoudplus.ir; sector: Business Services
+  First observed: 2021-09-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

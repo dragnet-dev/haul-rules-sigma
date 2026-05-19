@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0277 — Event Log Clearing (alphalocker)'
+id: 20bfc518-0c36-58ed-90bc-0ec64bf4ec5b
+status: experimental
+description: |
+  Detects event log clearing associated with alphalocker ransomware.
+  Incident: dragnet-ransomware-2024-0277
+  Ransomware victim claim by alphalocker: IntegrityInc.org Integrity Inc; country: US; sector: Business Services
+  First observed: 2024-01-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://mydatae2d63il5oaxxangwnid5loq2qmtsol2ozr6vtb7yfm5ypzo6id.onion/blog_1-2
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2109 — Recovery Inhibition (shinyhunters)'
+id: b9bc669b-c4c0-55c7-8604-1a60199681b7
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with shinyhunters ransomware.
+  Incident: dragnet-ransomware-2026-2109
+  Ransomware victim claim by shinyhunters: University of Pennsylvania; country: US; sector: Education
+  First observed: 2026-02-04.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

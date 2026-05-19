@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4721 — Recovery Inhibition (crosslock)'
+id: 83d0e246-4791-53a3-89a6-9a99ca94eaf4
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with crosslock ransomware.
+  Incident: dragnet-ransomware-2023-4721
+  Ransomware victim claim by crosslock: validcertificadora.com.br; country: BR; sector: Agriculture and Food Production
+  First observed: 2023-04-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://crosslock5cwfljbw4v37zuzq4talxxhyavjm2lufmjwgbpfjdsh56yd.onion/view.php?id=3
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

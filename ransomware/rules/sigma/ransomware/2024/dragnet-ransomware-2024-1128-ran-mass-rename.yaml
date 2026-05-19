@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-1128 — Mass File Rename (8base)'
+id: 4c62b79d-8808-56c4-8f4f-7fcf81407b5d
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by 8base.
+  Incident: dragnet-ransomware-2024-1128
+  Ransomware victim claim by 8base: ASMFC: Atlantic States Marine Fisheries Commission; country: US; sector: Agriculture and Food Production
+  First observed: 2024-04-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://xb6q2aggycmlcrjtbjendcnnwpmmwbosqaugxsqb4nx6cmod3emy7sad.onion/company/7890425
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5553 — Recovery Inhibition (apt73)'
+id: 920bded3-fae7-5f4a-857f-ccd11d9a8c36
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with apt73 ransomware.
+  Incident: dragnet-ransomware-2024-5553
+  Ransomware victim claim by apt73: www.protectasecurity.pe; country: PE; sector: Business Services
+  First observed: 2024-11-18.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://bashe4aec32kr6zbifwd5x6xgjsmhg4tbowrbx4pneqhc5mqooyifpid.onion/page_company.php?id=83
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

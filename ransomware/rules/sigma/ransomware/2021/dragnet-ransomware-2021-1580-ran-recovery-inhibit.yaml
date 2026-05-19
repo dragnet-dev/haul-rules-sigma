@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1580 — Recovery Inhibition (spook)'
+id: 1d3ba48d-eb18-5d7a-81c0-87d9a4af8630
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with spook ransomware.
+  Incident: dragnet-ransomware-2021-1580
+  Ransomware victim claim by spook: Legendary, Inc.; sector: Consumer Services
+  First observed: 2021-10-05.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

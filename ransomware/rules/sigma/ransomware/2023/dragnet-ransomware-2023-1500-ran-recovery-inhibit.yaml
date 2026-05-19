@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1500 — Recovery Inhibition (ransomexx)'
+id: 2c593cd2-0359-5917-b201-b2281fbbc44d
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with ransomexx ransomware.
+  Incident: dragnet-ransomware-2023-1500
+  Ransomware victim claim by ransomexx: AlJaber Engineering; country: QA; sector: Construction
+  First observed: 2023-11-26.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://rnsm777cdsjrsdlbs4v5qoeppu3px6sb2igmh53jzrx7ipcrbjz5b2ad.onion/21316f605400c95190b754f46cef34788998c331/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5927 — Event Log Clearing (cloak)'
+id: 26abf6b1-7ee3-5d18-bbfe-44af763328d4
+status: experimental
+description: |
+  Detects event log clearing associated with cloak ransomware.
+  Incident: dragnet-ransomware-2024-5927
+  Ransomware victim claim by cloak: SCAFF'HOLDING; country: FR; sector: Financial Services
+  First observed: 2024-11-06.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://cloak7jpvcb73rtx2ff7kaw2kholu7bdiivxpzbhlny4ybz75dpxckqd.onion/scaff
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

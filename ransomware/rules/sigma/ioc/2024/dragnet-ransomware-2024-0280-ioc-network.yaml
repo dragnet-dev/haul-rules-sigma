@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-0280 — Ransomware C2 Communication'
+id: e84eaaf6-09bf-55e8-9e8c-0917f95b7e83
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-0280
+  Ransomware victim claim by BrainCipher: hanwa.co.th; country: TH; sector: Business Services
+  First observed: 2024-09-22.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://vkvsgl7lhipjirmz6j5ubp3w3bwvxgcdbpi3fsbqngfynetqtw4w5hyd.onion/r/Jq43MlxAQSfLQyA399uTBFRuqTVSgz6qL2XTBlCCS5zsxdugV1SrxGcr3g6R29oEJdWdUYKJZ04Dd23l5bxwF1VHbGZ2bFRG
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://vkvsgl7lhipjirmz6j5ubp3w3bwvxgcdbpi3fsbqngfynetqtw4w5hyd.onion/r/Jq43MlxAQSfLQyA399uTBFRuqTVSgz6qL2XTBlCCS5zsxdugV1SrxGcr3g6R29oEJdWdUYKJZ04Dd23l5bxwF1VHbGZ2bFRG'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

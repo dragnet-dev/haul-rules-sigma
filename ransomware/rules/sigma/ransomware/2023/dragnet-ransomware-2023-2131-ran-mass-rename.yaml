@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-2131 — Mass File Rename (moneymessage)'
+id: 2eb0dc4a-a816-50b0-a5ad-38f09f7c5a99
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by moneymessage.
+  Incident: dragnet-ransomware-2023-2131
+  Ransomware victim claim by moneymessage: Biman airlines; country: BD; sector: Hospitality and Tourism
+  First observed: 2023-03-23.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://blogvl7tjyjvsfthobttze52w36wwiz34hrfcmorgvdzb6hikucb7aqd.onion/news.php?id=4
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

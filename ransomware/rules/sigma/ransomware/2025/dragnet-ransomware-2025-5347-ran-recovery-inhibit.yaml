@@ -1,0 +1,31 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5347 — Recovery Inhibition (cicada3301)'
+id: 5a400e87-1e2e-52b9-9c2b-7b58545a7225
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with cicada3301 ransomware.
+  Incident: dragnet-ransomware-2025-5347
+  Associated with menuPass.
+  Ransomware victim claim by cicada3301: Sensical; country: US; sector: Not Found
+  First observed: 2025-07-18.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://cicadabv7vicyvgz5khl7v2x5yygcgow7ryy6yppwmxii4eoobdaztqd.onion/7zl4ydf8x78l0e1h7hb682gkp8ow293n
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+  - dragnet.actor.menupass
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

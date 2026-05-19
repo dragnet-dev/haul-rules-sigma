@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-1270 — Mass File Rename (donutleaks)'
+id: 3ace3861-ea94-5423-b624-d0b9b0fbfc30
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by donutleaks.
+  Incident: dragnet-ransomware-2022-1270
+  Ransomware victim claim by donutleaks: Southwest Healthcare Services; sector: Healthcare
+  First observed: 2022-10-22.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://sbc2zv2qnz5vubwtx3aobfpkeao6l4igjegm3xx7tk5suqhjkp5jxtqd.onion/soon/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

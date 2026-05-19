@@ -1,0 +1,28 @@
+title: 'Dragnet [Container]: dragnet-container-2024-0702 — Vulnerable Base Image Pull'
+id: ef2bee9a-1446-5425-96be-f39d4042d8f6
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-0702 (Tier 2, CVSS 9.8)
+  The Auth0 integration in GitLab before 10.3.9, 10.4.x before 10.4.6, and 10.5.x before 10.5.6 has an incorrect omniauth-auth0 configuration, leading to signing in unintended users.
+  First observed: 2024-11-21.
+references:
+  - https://about.gitlab.com/2018/03/20/critical-security-release-gitlab-10-dot-5-dot-6-released/
+  - https://www.debian.org/security/2018/dsa-4206
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:9'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

@@ -1,0 +1,35 @@
+title: 'Dragnet [Container]: dragnet-container-2024-0817 — Vulnerable Base Image Pull'
+id: 7f8f5160-052e-5dce-8172-85c636ac533c
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-0817 (Tier 2, CVSS 9.8)
+  TinyXML2 6.2.0 has a heap-based buffer over-read in the XMLDocument::Parse function in libtinyxml2.so. NOTE: The tinyxml2 developers have determined that the reported overflow is due to improper use of the library and not a vulnerability in tinyxml2
+  First observed: 2024-11-21.
+references:
+  - https://access.redhat.com/security/cve/CVE-2018-11210
+  - https://github.com/leethomason/tinyxml2/issues/675
+  - https://github.com/leethomason/tinyxml2/issues/675#issuecomment-439933437
+  - https://github.com/leethomason/tinyxml2/issues/675#issuecomment-462194018
+  - https://nvd.nist.gov/vuln/detail/CVE-2018-11210
+  - https://www.cve.org/CVERecord?id=CVE-2018-11210
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

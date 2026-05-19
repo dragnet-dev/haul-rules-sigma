@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1121 — Event Log Clearing (astroteam)'
+id: 91a105a4-5cc7-570e-b18b-a17737c7a0a2
+status: deprecated
+description: |
+  Detects event log clearing associated with astroteam ransomware.
+  Incident: dragnet-ransomware-2021-1121
+  Ransomware victim claim by astroteam: Hoya Vision Care US/Optical Labs; country: US; sector: Manufacturing
+  First observed: 2021-04-05.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

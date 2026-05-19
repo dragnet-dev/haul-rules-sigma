@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1718 — Recovery Inhibition (bert)'
+id: 6fee4fe8-a9e1-51c8-8eb0-b62bdbc4e951
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with bert ransomware.
+  Incident: dragnet-ransomware-2025-1718
+  Ransomware victim claim by bert: SIMCO Electronics; country: US; sector: Technology
+  First observed: 2025-04-30.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://bertblogsoqmm4ow7nqyh5ik7etsmefdbf25stauecytvwy7tkgizhad.onion/post/B029BD33337F4B229A5812CF5A0B2AD2
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

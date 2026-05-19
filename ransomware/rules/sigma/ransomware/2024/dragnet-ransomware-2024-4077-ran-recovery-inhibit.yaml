@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-4077 — Recovery Inhibition (madliberator)'
+id: 9de8b689-0eec-53e8-9251-40b1b5439f0a
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with madliberator ransomware.
+  Incident: dragnet-ransomware-2024-4077
+  Ransomware victim claim by madliberator: vrd.be; country: BE; sector: Business Services
+  First observed: 2024-07-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://k67ivvik3dikqi4gy4ua7xa6idijl4si7k5ad5lotbaeirfcsx4sgbid.onion
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

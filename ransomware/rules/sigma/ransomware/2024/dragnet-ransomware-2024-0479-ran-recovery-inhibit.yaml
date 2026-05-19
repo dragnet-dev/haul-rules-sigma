@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0479 — Recovery Inhibition (monti)'
+id: 502c7bf1-fd07-53c0-9517-959be4931996
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with monti ransomware.
+  Incident: dragnet-ransomware-2024-0479
+  Ransomware victim claim by monti: City Of Forest Park - Full Leak; country: US; sector: Public Sector
+  First observed: 2024-10-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://mblogci3rudehaagbryjznltdp33ojwzkq6hn2pckvjq33rycmzczpid.onion/blog/358c4d15c88f881a4fe9b4009fea92875bd9569160533db6cbea77d6fbdee3be/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-0296 — Ransomware C2 Communication'
+id: d0358ce9-9bd0-5b10-bd14-21d599215f0a
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-0296
+  Ransomware victim claim by incransom: Benjamin Plumbing Inc; country: US; sector: Business Services
+  First observed: 2024-01-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://incapt.blog/blog/leak/69C5D5E630F8C11D
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://incapt.blog/blog/leak/69C5D5E630F8C11D'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

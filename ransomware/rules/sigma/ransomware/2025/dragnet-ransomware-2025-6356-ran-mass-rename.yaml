@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6356 — Mass File Rename (pear)'
+id: db00ca65-e402-5687-8dc6-5ec19012577b
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by pear.
+  Incident: dragnet-ransomware-2025-6356
+  Ransomware victim claim by pear: Garrison Law Firm; country: US; sector: Business Services
+  First observed: 2025-07-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://peargxn3oki34c4savcbcfqofjjwjnnyrlrbszfv6ujlx36mhrh57did.onion/Companies/garrisonlegal
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

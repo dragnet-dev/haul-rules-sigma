@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4642 — Recovery Inhibition (karakurt)'
+id: 4be73436-aa95-5301-9fb1-0752fd739d1b
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with karakurt ransomware.
+  Incident: dragnet-ransomware-2023-4642
+  Ransomware victim claim by karakurt: Hospice of Huntington; sector: Healthcare
+  First observed: 2023-09-22.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

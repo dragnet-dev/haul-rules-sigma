@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0525 — Recovery Inhibition (global)'
+id: b9c46d37-c5a8-5377-82ec-af185b893f74
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with global ransomware.
+  Incident: dragnet-ransomware-2025-0525
+  Ransomware victim claim by global: entab.se; country: SE; sector: Technology
+  First observed: 2025-06-30.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

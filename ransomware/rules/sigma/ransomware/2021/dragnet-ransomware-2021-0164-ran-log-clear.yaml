@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0164 — Event Log Clearing (blackbyte)'
+id: 53df7344-8755-59f2-aa2b-eff5c26256c6
+status: deprecated
+description: |
+  Detects event log clearing associated with blackbyte ransomware.
+  Incident: dragnet-ransomware-2021-0164
+  Associated with BlackByte.
+  Ransomware victim claim by blackbyte: Williams & Rowe Company, Inc.; sector: Business Services
+  First observed: 2021-11-15.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+  - dragnet.actor.blackbyte
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

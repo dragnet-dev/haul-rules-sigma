@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2026-2344 — Ransomware C2 Communication'
+id: 1aff8dfd-e085-51dc-b2b0-69adefb6822e
+status: stable
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2026-2344
+  Ransomware victim claim by interlock: First United Methodist Church Boerne; country: US; sector: Consumer Services
+  First observed: 2026-05-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ixybueqla5otlp5qfud5bcri2qoyxxhujwtrae5dkxnuo2eof3oliiyd.onion/index.php?p=
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://ixybueqla5otlp5qfud5bcri2qoyxxhujwtrae5dkxnuo2eof3oliiyd.onion/index.php?p='
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

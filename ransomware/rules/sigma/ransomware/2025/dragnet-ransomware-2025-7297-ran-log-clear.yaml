@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7297 — Event Log Clearing (embargo)'
+id: 8b97b25a-bfb2-5b21-938b-51e0d5e7e3f2
+status: experimental
+description: |
+  Detects event log clearing associated with embargo ransomware.
+  Incident: dragnet-ransomware-2025-7297
+  Ransomware victim claim by embargo: Heart of America Medical Centr (HAMC); country: US; sector: Healthcare
+  First observed: 2025-07-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://embargobe3n5okxyzqphpmk3moinoap2snz5k6765mvtkk7hhi544jid.onion/#/post/8e8343cb-1fcd-482b-ae9b-b091380a9a33
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

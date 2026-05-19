@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5826 — Recovery Inhibition (radar)'
+id: 7b69ef10-165b-57ef-ba2e-5a70a858c19b
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with radar ransomware.
+  Incident: dragnet-ransomware-2025-5826
+  Ransomware victim claim by radar: One Agency Eastlakes; country: AU; sector: Consumer Services
+  First observed: 2025-10-17.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

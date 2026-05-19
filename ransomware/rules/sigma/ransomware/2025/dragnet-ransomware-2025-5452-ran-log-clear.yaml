@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5452 — Event Log Clearing (interlock)'
+id: 09c27334-280b-5277-88bc-7f346e51d327
+status: experimental
+description: |
+  Detects event log clearing associated with interlock ransomware.
+  Incident: dragnet-ransomware-2025-5452
+  Ransomware victim claim by interlock: Pritchard Brown & Chillicothe Metal; country: US; sector: Manufacturing
+  First observed: 2025-10-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://5s2rv76limdt3eelmoh2vw6xovckjl563tjdifplvyxezdchcyn5xxyd.onion/index.php?p=
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4874 — Event Log Clearing (fog)'
+id: fcccd7b3-d9d5-5839-819a-3416c6ffb2df
+status: experimental
+description: |
+  Detects event log clearing associated with fog ransomware.
+  Incident: dragnet-ransomware-2025-4874
+  Ransomware victim claim by fog: Pampili (pampili.com.br); country: BR; sector: Consumer Services
+  First observed: 2025-03-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://xbkv2qey6u3gd3qxcojynrt4h5sgrhkar6whuo74wo63hijnn677jnyd.onion/posts/67c715cc03e546ad96cc5e55/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

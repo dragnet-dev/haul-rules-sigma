@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-2030 — Ransomware C2 Communication'
+id: c85818b8-f304-5fe6-a9e4-bac8b3af16ab
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-2030
+  Ransomware victim claim by shinyhunters: FedEx; country: US; sector: Transportation/Logistics
+  First observed: 2025-08-31.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://breachforums.hn//fedex.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'https://breachforums.hn//fedex.html'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7055 — Mass File Rename (d4rk4rmy)'
+id: 9a873d8a-d67a-553b-89f1-2528d0afe17b
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by d4rk4rmy.
+  Incident: dragnet-ransomware-2025-7055
+  Ransomware victim claim by d4rk4rmy: VINHAS E REDENSCHI ADVOGADOS; country: BR; sector: Business Services
+  First observed: 2025-07-28.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://d4rkd2fybtclo44hss2dpqpw7gmofboxhruax2az3uejw7puxxbpkvqd.onion/?p=201
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

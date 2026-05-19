@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-1364 — Mass File Rename (lv)'
+id: db60c3cd-171c-5e0f-8f09-9f8102985f40
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by lv.
+  Incident: dragnet-ransomware-2022-1364
+  Ransomware victim claim by lv: SEMIKRON - EXTREMELY LOW LEVEL OF CYBERSECURITY. 2 TB OF CORPORATE DATA STOLEN; sector: Manufacturing
+  First observed: 2022-08-04.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

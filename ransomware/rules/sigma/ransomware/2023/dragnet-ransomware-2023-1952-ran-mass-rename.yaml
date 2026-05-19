@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1952 — Mass File Rename (stormous)'
+id: 1999b866-4d23-5b70-9b6d-780cb9f761c7
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by stormous.
+  Incident: dragnet-ransomware-2023-1952
+  Ransomware victim claim by stormous: Senior; country: BR; sector: Business Services
+  First observed: 2023-07-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://h3reihqb2y7woqdary2g3bmk3apgtxuyhx4j2ftovbhe3l5svev7bdyd.onion/senior.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

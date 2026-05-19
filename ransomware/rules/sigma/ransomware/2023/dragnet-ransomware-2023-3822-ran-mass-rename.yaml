@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-3822 — Mass File Rename (ElDorado)'
+id: f4ccc0dd-bb47-5ce6-96f7-71f76fc9e986
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by ElDorado.
+  Incident: dragnet-ransomware-2023-3822
+  Ransomware victim claim by ElDorado: lindostar.it; country: IT; sector: Technology
+  First observed: 2023-12-07.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://dataleakypypu7uwblm5kttv726l3iripago6p336xjnbstkjwrlnlid.onion/posts/lindostar.it/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

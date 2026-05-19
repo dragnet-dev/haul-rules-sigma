@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0421 — Recovery Inhibition (dispossessor)'
+id: 89b888d7-76df-5370-a882-fe94a9dcceac
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with dispossessor ransomware.
+  Incident: dragnet-ransomware-2021-0421
+  Ransomware victim claim by dispossessor: genesisenergy.com; country: US; sector: Energy
+  First observed: 2021-10-12.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://dispossessor.com/blogs/42
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

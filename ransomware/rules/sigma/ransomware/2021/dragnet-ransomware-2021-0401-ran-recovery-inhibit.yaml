@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0401 — Recovery Inhibition (doppelpaymer)'
+id: c7872b6e-ad5e-5db4-be56-ef6b82cd2177
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with doppelpaymer ransomware.
+  Incident: dragnet-ransomware-2021-0401
+  Ransomware victim claim by doppelpaymer: Kia Motors America (KMA); country: US; sector: Manufacturing
+  First observed: 2021-02-16.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

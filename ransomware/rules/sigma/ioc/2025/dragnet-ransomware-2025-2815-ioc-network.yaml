@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-2815 — Ransomware C2 Communication'
+id: 4030a6c0-11bd-5ff0-ba5e-3d3b420a67f7
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-2815
+  Ransomware victim claim by warlock: eira-group; country: FI; sector: Not Found
+  First observed: 2025-04-10.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://drive.proton.me/urls/YDMKJ83NX4#nnKgxiR3XGsx
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'https://drive.proton.me/urls/YDMKJ83NX4#nnKgxiR3XGsx'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-1193 — Recovery Inhibition (leaktheanalyst)'
+id: f4676cf9-c3a9-5d8a-bf6d-4bb490db7c85
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with leaktheanalyst ransomware.
+  Incident: dragnet-ransomware-2022-1193
+  Ransomware victim claim by leaktheanalyst: 3 Breaking News; sector: Not Found
+  First observed: 2022-01-01.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

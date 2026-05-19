@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-1268 — Event Log Clearing (sensayq)'
+id: 7886ff57-d2aa-5c02-8308-7b5a101d9930
+status: experimental
+description: |
+  Detects event log clearing associated with sensayq ransomware.
+  Incident: dragnet-ransomware-2024-1268
+  Ransomware victim claim by sensayq: Vimer Industrie Grafiche Italiane; country: IT; sector: Manufacturing
+  First observed: 2024-06-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://159.69.60.54/r/LOcRx06Vf22jPmXvyIFRkXfJshnaosQPiM5am1qV4uC0CZmMghpcz6r0+5hBZoyQF5IwvZLpFN8st7DQxcxnkxNY0MzcmV5
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

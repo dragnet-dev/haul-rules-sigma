@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0314 — Recovery Inhibition (mountlocker)'
+id: 0746b605-9f02-5236-9f4d-1a443dc92a69
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with mountlocker ransomware.
+  Incident: dragnet-ransomware-2021-0314
+  Ransomware victim claim by mountlocker: Wasserstorm; sector: Consumer Services
+  First observed: 2021-09-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

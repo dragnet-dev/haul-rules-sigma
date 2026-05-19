@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2638 — Recovery Inhibition (J)'
+id: 015966b7-b6a8-51af-ab42-9f07c2bdbe68
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with J ransomware.
+  Incident: dragnet-ransomware-2025-2638
+  Ransomware victim claim by J: southweststone.net; country: US; sector: Construction
+  First observed: 2025-07-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://twniiyed6mydtbe64i5mdl56nihl7atfaqtpww6gqyaiohgc75apzpad.onion/posts/6887d434c4bd670d16344076/6887d434c4bd670d16344076/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

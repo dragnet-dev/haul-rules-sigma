@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-0666 — Shadow Copy Deletion (dispossessor)'
+id: d09660ef-7a66-5dec-b366-9a6d6ded4b32
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with dispossessor ransomware.
+  Incident: dragnet-ransomware-2022-0666
+  Ransomware victim claim by dispossessor: aplusfcu.org; sector: Financial Services
+  First observed: 2022-08-22.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://dispossessor.com/blogs/196
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0439 — Mass File Rename (lapsus$)'
+id: ea26c485-c12a-5912-ae4f-563cae95e58f
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by lapsus$.
+  Incident: dragnet-ransomware-2021-0439
+  Associated with LAPSUS$.
+  Ransomware victim claim by lapsus$: Brazilian Ministry of Health; country: BR; sector: Public Sector
+  First observed: 2021-12-10.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+  - dragnet.actor.lapsus
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

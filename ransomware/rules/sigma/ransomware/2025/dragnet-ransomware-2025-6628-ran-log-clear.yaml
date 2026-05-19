@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6628 — Event Log Clearing (spacebears)'
+id: a803056b-7ae3-5d34-93a5-e6791300e78a
+status: experimental
+description: |
+  Detects event log clearing associated with spacebears ransomware.
+  Incident: dragnet-ransomware-2025-6628
+  Ransomware victim claim by spacebears: SANTA MARIA LABORATORIO; country: BR; sector: Healthcare
+  First observed: 2025-01-22.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://5butbkrljkaorg5maepuca25oma7eiwo6a2rlhvkblb4v6mf3ki2ovid.onion/companies/52/santa-maria-laboratorio
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

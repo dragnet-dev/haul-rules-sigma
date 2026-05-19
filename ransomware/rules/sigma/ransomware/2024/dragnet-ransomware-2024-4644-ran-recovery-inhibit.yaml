@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-4644 — Recovery Inhibition (blacklock)'
+id: 07aede6a-e38a-580b-a64a-429d2df175a9
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with blacklock ransomware.
+  Incident: dragnet-ransomware-2024-4644
+  Ransomware victim claim by blacklock: Acumen Group; country: US; sector: Business Services
+  First observed: 2024-12-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://zdkexsh2e7yihw5uhg5hpsgq3dois2m5je7lzfagij2y6iw5ptl35gyd.onion/Data_Download/acumengroup.us
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

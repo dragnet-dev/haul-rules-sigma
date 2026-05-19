@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-0993 — Ransomware C2 Communication'
+id: 5356f6de-58f7-527e-94ca-a0b53d932068
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-0993
+  Ransomware victim claim by lynx: Jacobs & Thompson; country: CA; sector: Manufacturing
+  First observed: 2024-12-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lynxblog.net/leaks/67868d5905a779c3d3d46453
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lynxblog.net/leaks/67868d5905a779c3d3d46453'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

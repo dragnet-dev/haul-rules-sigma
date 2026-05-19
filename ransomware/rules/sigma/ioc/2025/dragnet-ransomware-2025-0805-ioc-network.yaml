@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-0805 — Ransomware C2 Communication'
+id: dc617847-6d33-5f8d-bbb3-9f1eb2731d14
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-0805
+  Ransomware victim claim by funksec: hreu.eu; country: BG; sector: Business Services
+  First observed: 2025-02-02.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://funknqn44slwmgwgnewne6bintbooauwkaupik4yrlgtycew3ergraid.onion/hreu.eu
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://funknqn44slwmgwgnewne6bintbooauwkaupik4yrlgtycew3ergraid.onion/hreu.eu'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

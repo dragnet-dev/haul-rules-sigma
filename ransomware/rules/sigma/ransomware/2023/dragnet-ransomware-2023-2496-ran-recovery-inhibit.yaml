@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-2496 — Recovery Inhibition (werewolves)'
+id: 2d7b2e3b-0496-553f-b605-5a03865da2f9
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with werewolves ransomware.
+  Incident: dragnet-ransomware-2023-2496
+  Ransomware victim claim by werewolves: maritimebank.com; sector: Financial Services
+  First observed: 2023-09-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://werewolves.pro/en/habarovsk-amaks-hotels-ru.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

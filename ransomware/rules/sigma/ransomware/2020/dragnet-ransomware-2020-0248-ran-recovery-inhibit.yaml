@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0248 — Recovery Inhibition (pay2key)'
+id: 18719037-06a6-5050-b047-eccc82f37991
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with pay2key ransomware.
+  Incident: dragnet-ransomware-2020-0248
+  Ransomware victim claim by pay2key: Habana Labs; country: IL; sector: Technology
+  First observed: 2020-12-13.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

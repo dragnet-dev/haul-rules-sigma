@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-1507 — Recovery Inhibition (ALP-001)'
+id: 8adf77cc-ad02-5a35-87cc-1d0f313f19a8
+status: stable
+description: |
+  Detects boot/recovery disabling associated with ALP-001 ransomware.
+  Incident: dragnet-ransomware-2026-1507
+  Ransomware victim claim by ALP-001: aviwest.com; country: FR; sector: Technology
+  First observed: 2026-04-08.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://b4riuxx7ypobdptctf6lyfcvgi6vn74iurzdh4kn2agbk7472dvywgyd.onion#aviwest.com
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

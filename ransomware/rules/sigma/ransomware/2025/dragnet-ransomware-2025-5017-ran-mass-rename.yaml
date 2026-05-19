@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5017 — Mass File Rename (worldleaks)'
+id: 0f6ed21b-31a6-508d-8a5b-819664ce7afd
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by worldleaks.
+  Incident: dragnet-ransomware-2025-5017
+  Ransomware victim claim by worldleaks: Center for Clinical Research; country: US; sector: Healthcare
+  First observed: 2025-05-23.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://worldleaksartrjm3c6vasllvgacbi5u3mgzkluehrzhk2jz4taufuid.onion/companies/3634002458
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

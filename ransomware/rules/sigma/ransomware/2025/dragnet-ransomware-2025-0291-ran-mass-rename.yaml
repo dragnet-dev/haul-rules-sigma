@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0291 — Mass File Rename (worldleaks)'
+id: ba246eba-7b5b-5135-b693-0f881ba413f1
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by worldleaks.
+  Incident: dragnet-ransomware-2025-0291
+  Ransomware victim claim by worldleaks: ASC Machine Tools; country: US; sector: Manufacturing
+  First observed: 2025-05-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://worldleaksartrjm3c6vasllvgacbi5u3mgzkluehrzhk2jz4taufuid.onion/companies/9507551804
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

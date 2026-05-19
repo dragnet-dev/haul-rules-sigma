@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-5829 — Ransomware C2 Communication'
+id: dc4d7799-d9a4-5cc8-94a4-8b1c8d2d4cbf
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-5829
+  Ransomware victim claim by anubis: Olive Branch Family Medical Center; country: US; sector: Healthcare
+  First observed: 2025-11-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://om6q4a6cyipxvt7ioudxt24cw4oqu4yodmqzl25mqd2hgllymrgu4aqd.onion/r/ogoG9ZXUcwQYYtWkD15htBDgjK2MHhrpuQkA7DI+zZBrqB8Rlc6pD9rXwcFveS0Q87x0+7Nao+W0HYLVneLEhsVTJmN1lk
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://om6q4a6cyipxvt7ioudxt24cw4oqu4yodmqzl25mqd2hgllymrgu4aqd.onion/r/ogoG9ZXUcwQYYtWkD15htBDgjK2MHhrpuQkA7DI+zZBrqB8Rlc6pD9rXwcFveS0Q87x0+7Nao+W0HYLVneLEhsVTJmN1lk'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

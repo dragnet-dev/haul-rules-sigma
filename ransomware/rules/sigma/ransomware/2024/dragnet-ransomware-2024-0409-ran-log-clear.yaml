@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0409 — Event Log Clearing (playboy)'
+id: 461a119e-fabf-595f-9015-ea5aec72825e
+status: experimental
+description: |
+  Detects event log clearing associated with playboy ransomware.
+  Incident: dragnet-ransomware-2024-0409
+  Ransomware victim claim by playboy: German Chamber of Commerce; country: DE; sector: Business Services
+  First observed: 2024-10-28.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://vlofmq2u3f5amxmnblvxaghy73aedwta74fyceywr6eeguw3cn6h6uad.onion/blog/details.php?id=24
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

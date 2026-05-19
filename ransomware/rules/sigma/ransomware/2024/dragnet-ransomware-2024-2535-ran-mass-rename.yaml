@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2535 — Mass File Rename (monti)'
+id: 0bd8b14e-85cc-52a4-83bc-86d836d68d92
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by monti.
+  Incident: dragnet-ransomware-2024-2535
+  Ransomware victim claim by monti: Burgess Kilpatrick; country: CA; sector: Business Services
+  First observed: 2024-10-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://mblogci3rudehaagbryjznltdp33ojwzkq6hn2pckvjq33rycmzczpid.onion/blog/669e331cdac072ba51bd016e154e7fcfa6c41d7613cc0e74b34fb723687ab740/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

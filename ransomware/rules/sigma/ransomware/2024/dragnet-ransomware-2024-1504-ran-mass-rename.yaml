@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-1504 — Mass File Rename (blackout)'
+id: f39e56c3-c12b-5e33-b424-6b26fa2fc739
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by blackout.
+  Incident: dragnet-ransomware-2024-1504
+  Ransomware victim claim by blackout: ht-hospitaltechnik.de; country: DE; sector: Healthcare
+  First observed: 2024-04-18.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://black3gnkizshuynieigw6ejgpblb53mpasftzd6pydqpmq2vn2xf6yd.onion/post/12faac6a-2930-4fe4-bab0-50c095d4543e/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0079 — Recovery Inhibition (maze)'
+id: 7a75bd7c-ff74-5f6a-972e-d3b2ec1b19bf
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with maze ransomware.
+  Incident: dragnet-ransomware-2020-0079
+  Ransomware victim claim by maze: Tom Berkowitz Trucking Inc (whitinsville, MA); country: US; sector: Transportation/Logistics
+  First observed: 2020-04-25.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0910 — Event Log Clearing (kairos)'
+id: d456d9d3-67a7-55d8-a0e6-4f355065b1ff
+status: experimental
+description: |
+  Detects event log clearing associated with kairos ransomware.
+  Incident: dragnet-ransomware-2025-0910
+  Ransomware victim claim by kairos: combinedpoolandspa.com; country: US; sector: Consumer Services
+  First observed: 2025-01-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nerqnacjmdy3obvevyol7qhazkwkv57dwqvye5v46k5bcujtfa6sduad.onion/detail?code=combinedpoolandspa-com-usa
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

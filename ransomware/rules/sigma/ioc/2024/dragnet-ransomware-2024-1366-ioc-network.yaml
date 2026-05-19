@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-1366 — Ransomware C2 Communication'
+id: f8f6171f-0d0c-5c6f-807d-8a122f79fc3d
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-1366
+  Ransomware victim claim by lynx: Pyle Group; country: CA; sector: Transportation/Logistics
+  First observed: 2024-07-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lynxblog.net/leaks/66aa5330e7861ae72f224106
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lynxblog.net/leaks/66aa5330e7861ae72f224106'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

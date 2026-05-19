@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0108 — Recovery Inhibition (maze)'
+id: 2702264a-f25c-5f92-9818-613e46039c2d
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with maze ransomware.
+  Incident: dragnet-ransomware-2020-0108
+  Ransomware victim claim by maze: Benefit Recovery Specialists Inc (BRSI); country: US; sector: Financial Services
+  First observed: 2020-04-20.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1590 — Event Log Clearing (marketo)'
+id: bd122739-808b-5c02-8a17-9a8381451f6d
+status: deprecated
+description: |
+  Detects event log clearing associated with marketo ransomware.
+  Incident: dragnet-ransomware-2021-1590
+  Ransomware victim claim by marketo: Gamesa Corporation leaked data; sector: Energy
+  First observed: 2021-12-07.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

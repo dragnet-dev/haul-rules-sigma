@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0523 — Shadow Copy Deletion (chort)'
+id: 9f2d816b-8cad-5f21-9ccc-6b69cf8f5f61
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with chort ransomware.
+  Incident: dragnet-ransomware-2024-0523
+  Ransomware victim claim by chort: bartow.k12.ga.us; country: US; sector: Education
+  First observed: 2024-11-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://hgxyonufefcglpekxma55fttev3lcfucrf7jvep2c3j6447cjroadead.onion/comp/bartow.k12.ga.us/index
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

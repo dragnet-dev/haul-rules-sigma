@@ -1,0 +1,28 @@
+title: 'Dragnet [Container]: dragnet-container-2026-0423 — Vulnerable Base Image Pull'
+id: cf861df4-1110-599a-a4d9-7004c3b56465
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-0423 (Tier 2, CVSS 10)
+  libutils in Android before 5.1.1 LMY48T allows remote attackers to execute arbitrary code or cause a denial of service (memory corruption) via a crafted audio file, aka internal bug 22952485.
+  First observed: 2026-05-06.
+references:
+  - https://groups.google.com/forum/message/raw?msg=android-security-updates/_Rm-lKnS2M8/dGTcilt0CAAJ
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6004 — Event Log Clearing (lynx)'
+id: 7fb509be-4fcf-573c-917f-9ad4354b561d
+status: experimental
+description: |
+  Detects event log clearing associated with lynx ransomware.
+  Incident: dragnet-ransomware-2025-6004
+  Ransomware victim claim by lynx: (kc2) geokon.com; country: US; sector: Technology
+  First observed: 2025-02-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lynxblog.net/leaks/67b1ed4f44fac8dca1016d9f
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

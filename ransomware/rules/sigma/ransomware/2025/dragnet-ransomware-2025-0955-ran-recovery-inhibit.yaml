@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0955 — Recovery Inhibition (cloak)'
+id: 01b72ff3-fecc-57d0-be41-6f8cecb28e25
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with cloak ransomware.
+  Incident: dragnet-ransomware-2025-0955
+  Ransomware victim claim by cloak: ****e-det**.de; sector: Not Found
+  First observed: 2025-11-18.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

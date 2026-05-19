@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1711 — Mass File Rename (insomnia)'
+id: 81ad87e1-1a1b-5cc1-979d-9566761d5498
+status: test
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by insomnia.
+  Incident: dragnet-ransomware-2025-1711
+  Ransomware victim claim by insomnia: Tri-Cities Gastroenterology; country: US; sector: Healthcare
+  First observed: 2025-12-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://i62huw7ve22rpyw6lnq3kmfump2dmsg4xpveec3ere73njwatrz74gad.onion/Company/TriCitiesGastroenterology/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

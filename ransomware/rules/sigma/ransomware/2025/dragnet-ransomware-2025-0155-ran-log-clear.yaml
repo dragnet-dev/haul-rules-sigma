@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0155 — Event Log Clearing (metaencryptor)'
+id: e863573b-20d5-516f-a7ef-2d9dd498d126
+status: experimental
+description: |
+  Detects event log clearing associated with metaencryptor ransomware.
+  Incident: dragnet-ransomware-2025-0155
+  Ransomware victim claim by metaencryptor: Groupe Devimco; country: CA; sector: Construction
+  First observed: 2025-06-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://metacrptmytukkj7ajwjovdpjqzd7esg5v3sg344uzhigagpezcqlpyd.onion/0AFC:ba270ae571712ff17c74ce5ef6b4f51e/0AFC:87b371025fb0a27ba31ab625bd471451bb6ee3a36dd9369e455758ebba92ef90/0AFC:3bf698f25eb62a50066236df2a8c57fe2c2a37ec968a740d81535176fa7ece90
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

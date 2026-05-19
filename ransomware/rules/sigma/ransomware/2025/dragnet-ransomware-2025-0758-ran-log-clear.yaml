@@ -1,0 +1,36 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0758 — Event Log Clearing (worldleaks)'
+id: 7e0f025d-87ae-5089-8caf-0a1506f9c0fa
+status: experimental
+description: |
+  Detects event log clearing associated with worldleaks ransomware.
+  Incident: dragnet-ransomware-2025-0758
+  Associated with PLATINUM.
+  Ransomware victim claim by worldleaks: Platinum Healthcare Staffing; country: US; sector: Healthcare
+  First observed: 2025-08-30.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://worldleaksartrjm3c6vasllvgacbi5u3mgzkluehrzhk2jz4taufuid.onion/companies/3553555941
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+  - dragnet.actor.platinum
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

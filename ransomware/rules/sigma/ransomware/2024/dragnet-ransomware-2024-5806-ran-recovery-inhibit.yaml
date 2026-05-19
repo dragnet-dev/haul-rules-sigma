@@ -1,0 +1,31 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5806 — Recovery Inhibition (akira)'
+id: 752a8ca7-85a2-50d3-9f82-034eedec6730
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with akira ransomware.
+  Incident: dragnet-ransomware-2024-5806
+  Associated with Akira.
+  Ransomware victim claim by akira: REIMERS FURNITURE MFG INC; country: US; sector: Manufacturing
+  First observed: 2024-12-01.
+  Confidence: 90% (ransomware_live).
+references:
+  - rfmseating.com
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+  - dragnet.actor.akira
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

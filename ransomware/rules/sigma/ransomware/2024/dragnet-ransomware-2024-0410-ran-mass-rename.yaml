@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0410 — Mass File Rename (lynx)'
+id: 5172a722-de24-5ad2-9587-6bc73b51ac33
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by lynx.
+  Incident: dragnet-ransomware-2024-0410
+  Ransomware victim claim by lynx: The Wendt Agency; country: US; sector: Business Services
+  First observed: 2024-11-30.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lynxblog.net/leaks/6787a75c05a779c3d3daa634
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

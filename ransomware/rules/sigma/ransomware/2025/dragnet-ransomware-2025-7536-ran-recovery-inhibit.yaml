@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7536 — Recovery Inhibition (shinyhunters)'
+id: cd1b0ba0-a152-5076-a155-24a539a17421
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with shinyhunters ransomware.
+  Incident: dragnet-ransomware-2025-7536
+  Ransomware victim claim by shinyhunters: Puma; country: DE; sector: Consumer Services
+  First observed: 2025-05-02.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://breachforums.hn//puma.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

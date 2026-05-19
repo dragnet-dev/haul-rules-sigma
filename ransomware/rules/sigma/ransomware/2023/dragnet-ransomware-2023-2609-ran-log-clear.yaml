@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-2609 — Event Log Clearing (ragnarlocker)'
+id: eeb03e44-8e9a-5876-9f22-03724c72d021
+status: experimental
+description: |
+  Detects event log clearing associated with ragnarlocker ransomware.
+  Incident: dragnet-ransomware-2023-2609
+  Ransomware victim claim by ragnarlocker: Network Pacific Real Estate - Leak; sector: Not Found
+  First observed: 2023-09-30.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://rgleaktxuey67yrgspmhvtnrqtgogur35lwdrup4d3igtbm3pupc4lyd.onion/?TmDxhxSMOj
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7753 — Shadow Copy Deletion (handala)'
+id: f60df68c-cde9-5a75-b649-98b6a54c613b
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with handala ransomware.
+  Incident: dragnet-ransomware-2025-7753
+  Ransomware victim claim by handala: A space surprise soon!; sector: Not Found
+  First observed: 2025-09-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://handala-hack.to/a-space-surprise-soon/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

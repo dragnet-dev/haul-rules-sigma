@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1756 — Recovery Inhibition (ciphbit)'
+id: f2b01026-af77-501f-9578-0cf2f7ebb3f8
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with ciphbit ransomware.
+  Incident: dragnet-ransomware-2023-1756
+  Ransomware victim claim by ciphbit: NeoDomos; country: FR; sector: Business Services
+  First observed: 2023-11-08.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

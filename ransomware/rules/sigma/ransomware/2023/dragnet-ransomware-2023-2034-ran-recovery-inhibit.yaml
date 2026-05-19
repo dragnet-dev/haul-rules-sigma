@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-2034 — Recovery Inhibition (meow)'
+id: 38bd31ad-8162-5b36-aef6-14670c41d79f
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with meow ransomware.
+  Incident: dragnet-ransomware-2023-2034
+  Ransomware victim claim by meow: RCSB PDB; sector: Not Found
+  First observed: 2023-12-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://meow6xanhzfci2gbkn3lmbqq7xjjufskkdfocqdngt3ltvzgqpsg5mid.onion/story/rcsb-pdb
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

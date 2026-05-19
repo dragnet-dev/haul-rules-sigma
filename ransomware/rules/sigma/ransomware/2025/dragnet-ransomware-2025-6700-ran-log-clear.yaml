@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6700 — Event Log Clearing (blacksuit)'
+id: 7335870d-8699-503c-8921-48549def0354
+status: experimental
+description: |
+  Detects event log clearing associated with blacksuit ransomware.
+  Incident: dragnet-ransomware-2025-6700
+  Ransomware victim claim by blacksuit: Massachusetts Municipal Wholesale Electric; country: US; sector: Energy
+  First observed: 2025-02-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://weg7sdx54bevnvulapqu6bpzwztryeflq3s23tegbmnhkbpqz637f2yd.onion/?id=ps9W81KFsr4Avd7d
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

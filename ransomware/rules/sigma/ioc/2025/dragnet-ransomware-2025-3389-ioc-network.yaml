@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-3389 — Ransomware C2 Communication'
+id: c8f65a84-53c5-5857-8ce9-606b1c95c4f2
+status: test
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-3389
+  Ransomware victim claim by payoutsking: Visionwheel; country: US; sector: Manufacturing
+  First observed: 2025-11-25.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://payoutsgn7cy6uliwevdqspncjpfxpmzgirwl2au65la7rfs5x3qnbqd.onion/cy7n5xY5EcI2gKKtbF5K
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'https://payoutsgn7cy6uliwevdqspncjpfxpmzgirwl2au65la7rfs5x3qnbqd.onion/cy7n5xY5EcI2gKKtbF5K'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

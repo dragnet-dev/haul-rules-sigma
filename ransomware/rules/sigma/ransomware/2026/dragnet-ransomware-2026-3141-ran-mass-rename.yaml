@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-3141 — Mass File Rename (termite)'
+id: a0a9db61-25d3-5c88-9fbc-91227e6d688f
+status: stable
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by termite.
+  Incident: dragnet-ransomware-2026-3141
+  Ransomware victim claim by termite: Millennium Dental Technologies; country: US; sector: Healthcare
+  First observed: 2026-04-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://termiteuslbumdge2zmfmfcsrvmvsfe4gvyudc5j6cdnisnhtftvokid.onion/post/69e1671a786a0e50d7a6a887
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

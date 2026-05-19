@@ -1,0 +1,30 @@
+title: 'Dragnet [Container]: dragnet-container-2024-0901 — Vulnerable Base Image Pull'
+id: 8cb5fe50-53d1-5039-a3a0-fc1f2a60c7bf
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-0901 (Tier 2, CVSS 9.8)
+  dpic 2021.04.10 has a Heap Buffer Overflow in themakevar() function in dpic.y
+  First observed: 2024-11-21.
+references:
+  - https://gitlab.com/aplevich/dpic/-/issues/8
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

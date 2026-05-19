@@ -1,0 +1,29 @@
+title: 'Dragnet [Container]: dragnet-container-2024-1266 — Vulnerable Base Image Pull'
+id: 139bcede-29e8-56b4-b3f6-5e4b070b4f81
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-1266 (Tier 2, CVSS 9.8)
+  acccheck.pl in acccheck 0.2.1 allows Command Injection via shell metacharacters in a username or password file, as demonstrated by injection into an smbclient command line.
+  First observed: 2024-11-21.
+references:
+  - http://b3n7s.github.io/acccheck-command-injection.html
+  - https://www.cve.org/CVERecord?id=CVE-2018-12268
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:9'
+      - 'ubuntu:18.04-ESM'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

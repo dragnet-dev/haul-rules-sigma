@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-3112 — Event Log Clearing (play)'
+id: a130fbcd-7b31-5975-9566-e6e3db091324
+status: deprecated
+description: |
+  Detects event log clearing associated with play ransomware.
+  Incident: dragnet-ransomware-2022-3112
+  Associated with Play.
+  Ransomware victim claim by play: Verity cloud; sector: Technology
+  First observed: 2022-11-28.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+  - dragnet.actor.play
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

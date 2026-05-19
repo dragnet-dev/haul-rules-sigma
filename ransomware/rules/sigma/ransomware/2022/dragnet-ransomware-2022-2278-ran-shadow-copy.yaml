@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2278 — Shadow Copy Deletion (snatch)'
+id: 41a7db25-3450-564c-b5ca-c1cd6ada717b
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with snatch ransomware.
+  Incident: dragnet-ransomware-2022-2278
+  Ransomware victim claim by snatch: Weidmuller; country: SE; sector: Manufacturing
+  First observed: 2022-10-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://snatchnews.top/news.php?id=02ccf56e-b248-4a47-99f2-1558bc23807b
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

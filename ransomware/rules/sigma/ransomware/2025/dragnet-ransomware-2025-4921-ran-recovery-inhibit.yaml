@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4921 — Recovery Inhibition (kraken)'
+id: bf2d91ff-3b8f-5f0b-b929-e60ec029741a
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with kraken ransomware.
+  Incident: dragnet-ransomware-2025-4921
+  Ransomware victim claim by kraken: The Last Haven Board; sector: Not Found
+  First observed: 2025-09-02.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://krakenccj3wr23452a4ibkbkuph4d6soyx2xgjoogtuamc3m7u7wemad.onion/news/1248a6a117760f7393f403b1ae14cf70
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

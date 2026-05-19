@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-7253 — Ransomware C2 Communication'
+id: dd446202-2522-5a7b-834d-8085b7856680
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-7253
+  Ransomware victim claim by J: FAI Aviation Group (fai.ag) - The biggest leak ever; country: DE; sector: Transportation/Logistics
+  First observed: 2025-09-23.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://twniiyed6mydtbe64i5mdl56nihl7atfaqtpww6gqyaiohgc75apzpad.onion/posts/68d2f944f0cd632fbb8953ce/68d2f944f0cd632fbb8953ce/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://twniiyed6mydtbe64i5mdl56nihl7atfaqtpww6gqyaiohgc75apzpad.onion/posts/68d2f944f0cd632fbb8953ce/68d2f944f0cd632fbb8953ce/'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

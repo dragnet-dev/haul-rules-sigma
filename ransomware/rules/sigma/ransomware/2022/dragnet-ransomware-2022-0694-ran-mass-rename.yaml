@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-0694 — Mass File Rename (royal)'
+id: b34b5be2-aaa1-58d8-b979-76fec382714d
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by royal.
+  Incident: dragnet-ransomware-2022-0694
+  Ransomware victim claim by royal: Zehnders of Frankenmuth; sector: Hospitality and Tourism
+  First observed: 2022-12-20.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

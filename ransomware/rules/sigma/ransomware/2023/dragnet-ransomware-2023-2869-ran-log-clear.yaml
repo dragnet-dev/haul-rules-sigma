@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-2869 — Event Log Clearing (malas)'
+id: c79a481f-ed99-5ed1-8c14-0815764d1ff1
+status: experimental
+description: |
+  Detects event log clearing associated with malas ransomware.
+  Incident: dragnet-ransomware-2023-2869
+  Ransomware victim claim by malas: Mangum Construction; sector: Construction
+  First observed: 2023-04-09.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://malas2urovbyyavjzaezkt5ohljvyd5lt7vv7mnsgbf2y4bwlh72doqd.onion/posts/defaulters/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

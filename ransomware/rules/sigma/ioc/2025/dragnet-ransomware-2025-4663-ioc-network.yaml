@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-4663 — Ransomware C2 Communication'
+id: 1280b9f5-6f9d-5ad7-805f-cf185c762d71
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-4663
+  Ransomware victim claim by lynx: Springer & Steinberg; country: US; sector: Not Found
+  First observed: 2025-04-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lynxblog.net/leaks/68013466d5daa03fd3e096bc
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lynxblog.net/leaks/68013466d5daa03fd3e096bc'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4297 — Mass File Rename (8base)'
+id: 2848f839-7771-5df1-b7d8-146e3a2277aa
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by 8base.
+  Incident: dragnet-ransomware-2023-4297
+  Ransomware victim claim by 8base: Delaney Browne Recruitment; country: GB; sector: Business Services
+  First observed: 2023-08-06.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://basemmnnqwxevlymli5bs36o5ynti55xojzvn246spahniugwkff2pad.onion/company/7890206
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

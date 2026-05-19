@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2191 — Recovery Inhibition (handala)'
+id: 94a97152-501a-54d2-a91d-9da79f3880bc
+status: stable
+description: |
+  Detects boot/recovery disabling associated with handala ransomware.
+  Incident: dragnet-ransomware-2026-2191
+  Ransomware victim claim by handala: Behind the Curtain: Full Details of Shin Bet’s Iran Desk Officers Released; country: IL; sector: Not Found
+  First observed: 2026-03-23.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://handala-team.to/behind-the-curtain-full-details-of-shin-bets-iran-desk-officers-released/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

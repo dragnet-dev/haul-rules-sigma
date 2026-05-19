@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-0625 — Event Log Clearing (blackwater)'
+id: 599dec85-a301-51de-982e-f5de1eeb68d0
+status: stable
+description: |
+  Detects event log clearing associated with blackwater ransomware.
+  Incident: dragnet-ransomware-2026-0625
+  Ransomware victim claim by blackwater: Shenzhen Gongjin Electronics; country: CN; sector: Manufacturing
+  First observed: 2026-04-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ejzl7cjxmkx7lzhiqwidmrwtfjv45pkczbc4fnyaut3t7gll3yaiq5id.onion/blog?uuid=b822ef9f-7d60-358d-814f-b6e21815bf05
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

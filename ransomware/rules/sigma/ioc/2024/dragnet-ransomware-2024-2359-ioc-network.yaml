@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-2359 — Ransomware C2 Communication'
+id: c4980aad-4b72-58ff-bb94-2264d1a38aeb
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-2359
+  Ransomware victim claim by incransom: OrthoNY, Orthopedic Care; country: US; sector: Healthcare
+  First observed: 2024-01-25.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://incapt.blog/blog/leak/B0873B072264B9DB
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://incapt.blog/blog/leak/B0873B072264B9DB'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

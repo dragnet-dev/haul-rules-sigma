@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1933 — Mass File Rename (IMNCrew)'
+id: a4c82d5a-aaf9-509b-9b3c-b26d76273f12
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by IMNCrew.
+  Incident: dragnet-ransomware-2025-1933
+  Ransomware victim claim by IMNCrew: Onegolditalia.it; country: IT; sector: Manufacturing
+  First observed: 2025-08-02.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://imncrewwfkbjkhr2oylerfm5qtbzfphhmpcfag43xc2kfgvluqtlgoid.onion/files/data/onegolditalia.zip
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0814 — Recovery Inhibition (J)'
+id: 120963fc-d05d-584b-8223-df5c139d0cb3
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with J ransomware.
+  Incident: dragnet-ransomware-2025-0814
+  Ransomware victim claim by J: mygoalseek.com; country: US; sector: Not Found
+  First observed: 2025-03-13.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://twniiyed6mydtbe64i5mdl56nihl7atfaqtpww6gqyaiohgc75apzpad.onion/posts/67dc9103ca66cae8e574e733/67dc9103ca66cae8e574e733/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

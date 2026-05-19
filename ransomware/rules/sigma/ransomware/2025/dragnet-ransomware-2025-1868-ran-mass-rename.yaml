@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1868 — Mass File Rename (lynx)'
+id: 6250ed04-f965-5cbb-97d1-90dea0eb6d5f
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by lynx.
+  Incident: dragnet-ransomware-2025-1868
+  Ransomware victim claim by lynx: AMICIO; country: FR; sector: Business Services
+  First observed: 2025-03-07.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lynxblog.net/leaks/67d9c5a051e131d63479e0b1
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

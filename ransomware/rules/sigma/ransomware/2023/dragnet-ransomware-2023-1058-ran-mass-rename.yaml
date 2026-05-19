@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1058 — Mass File Rename (0mega)'
+id: 7a914133-5bcd-5cc7-ad6b-905cac116fa3
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by 0mega.
+  Incident: dragnet-ransomware-2023-1058
+  Ransomware victim claim by 0mega: US Liner Company & American Made LLC; sector: Manufacturing
+  First observed: 2023-10-04.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

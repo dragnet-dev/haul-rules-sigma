@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3378 — Event Log Clearing (anubis)'
+id: 981678f4-3a24-5f04-8749-1d65172d2c1c
+status: experimental
+description: |
+  Detects event log clearing associated with anubis ransomware.
+  Incident: dragnet-ransomware-2025-3378
+  Ransomware victim claim by anubis: Ambleside; sector: Healthcare
+  First observed: 2025-03-23.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://om6q4a6cyipxvt7ioudxt24cw4oqu4yodmqzl25mqd2hgllymrgu4aqd.onion/r/9yTou4nGDHJBugvSi3lu9F7Zps018JBp5wuYy2UsKe5VUSgUhIYTIBeQiuh+mCuaWnqJfI5D5CyT9r7JFZw3kJONXRLZWg2
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

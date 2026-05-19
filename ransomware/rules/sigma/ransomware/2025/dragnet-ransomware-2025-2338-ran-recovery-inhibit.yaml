@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2338 — Recovery Inhibition (genesis)'
+id: 3c50ba9f-7271-5ef6-a135-172b28497b8e
+status: test
+description: |
+  Detects boot/recovery disabling associated with genesis ransomware.
+  Incident: dragnet-ransomware-2025-2338
+  Ransomware victim claim by genesis: Abacus Employment Services.; country: GB; sector: Business Services
+  First observed: 2025-12-08.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://genesis6ixpb5mcy4kudybtw5op2wqlrkocfogbnenz3c647ibqixiad.onion/5ef56805ff1995688f5a/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

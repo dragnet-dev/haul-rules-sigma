@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-3182 — Ransomware C2 Communication'
+id: 7a3ad0ae-a7a3-5f7d-afc0-2779d413aca1
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-3182
+  Ransomware victim claim by BrainCipher: ghanare.com; country: GH; sector: Consumer Services
+  First observed: 2024-08-28.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://vkvsgl7lhipjirmz6j5ubp3w3bwvxgcdbpi3fsbqngfynetqtw4w5hyd.onion/r/M51w37KqV2S4rYC6pK5DczokzeoJGHZUhG6QAONslOHS2N06ViwAAseBHqT89A+LtJ8u4HRohyn7dHvO0o2fgEtMRlc4aDN3
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://vkvsgl7lhipjirmz6j5ubp3w3bwvxgcdbpi3fsbqngfynetqtw4w5hyd.onion/r/M51w37KqV2S4rYC6pK5DczokzeoJGHZUhG6QAONslOHS2N06ViwAAseBHqT89A+LtJ8u4HRohyn7dHvO0o2fgEtMRlc4aDN3'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

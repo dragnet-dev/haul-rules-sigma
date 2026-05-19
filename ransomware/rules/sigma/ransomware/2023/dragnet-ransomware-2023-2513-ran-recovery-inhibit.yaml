@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-2513 — Recovery Inhibition (0mega)'
+id: c17ea51c-c6bf-50e0-ace1-e8b6afc2f1c8
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with 0mega ransomware.
+  Incident: dragnet-ransomware-2023-2513
+  Ransomware victim claim by 0mega: Aviacode (GeBBS); sector: Healthcare
+  First observed: 2023-02-12.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

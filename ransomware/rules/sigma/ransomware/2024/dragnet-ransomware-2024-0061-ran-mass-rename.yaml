@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0061 — Mass File Rename (argonauts)'
+id: 3ae35138-f56d-5e29-bab1-f98115ab5f38
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by argonauts.
+  Incident: dragnet-ransomware-2024-0061
+  Ransomware victim claim by argonauts: crollatelecom.it; country: IT; sector: Business Services
+  First observed: 2024-10-26.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://jbmk7h6xlkedn2gg5yi76zca6y3jgdlp5wchlsrd7735tlnrmmvqe5ad.onion/?p=99
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

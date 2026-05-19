@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-2545 — Event Log Clearing (ransomed)'
+id: 75874c9b-b6d2-5bb3-8f37-139033f1079a
+status: experimental
+description: |
+  Detects event log clearing associated with ransomed ransomware.
+  Incident: dragnet-ransomware-2023-2545
+  Ransomware victim claim by ransomed: Metropolitan Club DC; sector: Hospitality and Tourism
+  First observed: 2023-08-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://ransomed.vc/dc.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

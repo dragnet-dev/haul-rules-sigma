@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4572 — Recovery Inhibition (noescape)'
+id: 6cf34869-f98d-5b8f-a6f3-be53430473b9
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with noescape ransomware.
+  Incident: dragnet-ransomware-2023-4572
+  Ransomware victim claim by noescape: CASTEC Inc; sector: Manufacturing
+  First observed: 2023-06-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://noescapemsqxvizdxyl7f7rmg5cdjwp33pg2wpmiaaibilb4btwzttad.onion/post/9962b964-ac11-4bac-811d-d0bf10d81b24
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

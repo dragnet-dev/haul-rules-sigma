@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0806 — Recovery Inhibition (frag)'
+id: 0472bbfb-704d-5aa9-a5db-76ae1265bffb
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with frag ransomware.
+  Incident: dragnet-ransomware-2024-0806
+  Ransomware victim claim by frag: Stuwarooij; country: NL; sector: Transportation/Logistics
+  First observed: 2024-09-24.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

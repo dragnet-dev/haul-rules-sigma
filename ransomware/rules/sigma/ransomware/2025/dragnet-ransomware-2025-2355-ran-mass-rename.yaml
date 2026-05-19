@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2355 — Mass File Rename (global)'
+id: d1b2999b-41c5-5617-ae59-d5eeb5d483f6
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by global.
+  Incident: dragnet-ransomware-2025-2355
+  Ransomware victim claim by global: www.motorworldarc.co.uk; country: GB; sector: Transportation/Logistics
+  First observed: 2025-06-02.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

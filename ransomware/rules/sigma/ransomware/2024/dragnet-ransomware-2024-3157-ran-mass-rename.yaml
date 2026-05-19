@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3157 — Mass File Rename (stormous)'
+id: 3ba5562a-7b30-564d-a2f8-fee3878fcaee
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by stormous.
+  Incident: dragnet-ransomware-2024-3157
+  Ransomware victim claim by stormous: tdra; country: AE; sector: Public Sector
+  First observed: 2024-05-02.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

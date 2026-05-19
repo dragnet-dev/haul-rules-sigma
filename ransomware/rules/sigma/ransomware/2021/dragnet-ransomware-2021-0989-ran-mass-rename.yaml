@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0989 — Mass File Rename (avoslocker)'
+id: 205d8b7a-525e-5dd3-99a1-1df6cf33f586
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by avoslocker.
+  Incident: dragnet-ransomware-2021-0989
+  Ransomware victim claim by avoslocker: Gimmler Gruppe; sector: Not Found
+  First observed: 2021-08-19.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

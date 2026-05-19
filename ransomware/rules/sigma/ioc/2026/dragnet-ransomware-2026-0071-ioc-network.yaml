@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2026-0071 — Ransomware C2 Communication'
+id: 8af447f4-4b67-5946-b8c5-7b3f88dc7c89
+status: stable
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2026-0071
+  Ransomware victim claim by titan: ETM-ELECTROMATIC, INC.; country: US; sector: Manufacturing
+  First observed: 2026-05-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://titanblog.org/post/the-files-were-downloaded-analyzed-using-titan-ai-k7kbu7rvn4
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'https://titanblog.org/post/the-files-were-downloaded-analyzed-using-titan-ai-k7kbu7rvn4'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

@@ -1,0 +1,40 @@
+title: 'Dragnet [Container]: dragnet-container-2024-1305 — Vulnerable Base Image Pull'
+id: 733cb82a-b248-51eb-a397-db379fb7488a
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-1305 (Tier 2, CVSS 9.1)
+  stb_image.h (aka the stb image loader) 2.23 has a heap-based buffer over-read in stbi__tga_load, leading to Information Disclosure or Denial of Service.
+  First observed: 2024-11-21.
+references:
+  - https://access.redhat.com/security/cve/CVE-2019-15058
+  - https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=934973
+  - https://github.com/nothings/stb/issues/790
+  - https://nvd.nist.gov/vuln/detail/CVE-2019-15058
+  - https://security-tracker.debian.org/tracker/CVE-2019-15058
+  - https://www.cve.org/CVERecord?id=CVE-2019-15058
+  - https://www.cvedetails.com/cve/CVE-2019-15058/
+  - https://www.mail-archive.com/debian-bugs-dist%40lists.debian.org/msg1695025.html
+  - https://www.suse.com/security/cve/CVE-2019-15058/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:10'
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+      - 'redhat/ubi9:'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

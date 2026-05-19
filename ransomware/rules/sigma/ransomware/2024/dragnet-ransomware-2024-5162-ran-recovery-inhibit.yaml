@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5162 — Recovery Inhibition (lynx)'
+id: de20711d-55db-5dd1-ba88-e5812a6de923
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with lynx ransomware.
+  Incident: dragnet-ransomware-2024-5162
+  Ransomware victim claim by lynx: Funlab; country: AU; sector: Hospitality and Tourism
+  First observed: 2024-10-02.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lynxblog.net/leaks/66fdce7bcbfc63d2fbfb84b9
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

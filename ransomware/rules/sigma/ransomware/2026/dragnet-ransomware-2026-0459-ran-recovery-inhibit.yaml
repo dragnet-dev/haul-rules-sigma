@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-0459 — Recovery Inhibition (titan)'
+id: 8450ccc3-bef8-5ce6-a7db-4a9e8a415f5b
+status: stable
+description: |
+  Detects boot/recovery disabling associated with titan ransomware.
+  Incident: dragnet-ransomware-2026-0459
+  Ransomware victim claim by titan: Mezta Corporativo, S.A. de C.V.; country: MX; sector: Not Found
+  First observed: 2026-04-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://titanblog.org/post/https-www-dunsguide-com-es-company-fa5e54643c8b63d0736-b0xcjppra2
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

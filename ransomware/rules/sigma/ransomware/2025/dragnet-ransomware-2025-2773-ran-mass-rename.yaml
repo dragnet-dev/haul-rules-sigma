@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2773 — Mass File Rename (cephalus)'
+id: 934437be-0111-54ad-b6ba-72e0efdf9dc8
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by cephalus.
+  Incident: dragnet-ransomware-2025-2773
+  Ransomware victim claim by cephalus: BAR Architects & Interiors; sector: Construction
+  First observed: 2025-08-26.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://darkforums.st/Thread-Document-BAR-Architects-Interiors-DATA-LEAK-1-5T--18961
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

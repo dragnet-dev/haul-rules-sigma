@@ -1,0 +1,37 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2956 — Shadow Copy Deletion (yanluowang)'
+id: 2e57146e-b9f6-5d22-b913-1b017e1096b1
+status: deprecated
+description: |
+  Detects shadow copy deletion commands associated with yanluowang ransomware.
+  Incident: dragnet-ransomware-2022-2956
+  Ransomware victim claim by yanluowang: Cincinnati bell didn’t pay the ransom; sector: Telecommunication
+  First observed: 2022-07-02.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

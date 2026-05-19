@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0241 — Event Log Clearing (nefilim)'
+id: cc810615-cee9-5639-a213-7ebc643f8d97
+status: deprecated
+description: |
+  Detects event log clearing associated with nefilim ransomware.
+  Incident: dragnet-ransomware-2020-0241
+  Ransomware victim claim by nefilim: Orange (mobile operator); country: FR; sector: Telecommunication
+  First observed: 2020-07-04.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

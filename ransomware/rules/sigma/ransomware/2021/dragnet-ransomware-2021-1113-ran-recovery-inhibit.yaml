@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1113 — Recovery Inhibition (doppelpaymer)'
+id: 965eae8a-8b79-50cc-b2f4-67fbbf284b53
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with doppelpaymer ransomware.
+  Incident: dragnet-ransomware-2021-1113
+  Ransomware victim claim by doppelpaymer: Cuyahoga Metropolitan Housing Authority; country: US; sector: Public Sector
+  First observed: 2021-02-08.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

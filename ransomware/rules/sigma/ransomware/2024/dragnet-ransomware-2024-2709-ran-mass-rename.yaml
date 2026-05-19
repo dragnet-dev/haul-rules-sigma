@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2709 — Mass File Rename (werewolves)'
+id: f742ae2f-b804-5c88-b430-489090bad2e8
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by werewolves.
+  Incident: dragnet-ransomware-2024-2709
+  Ransomware victim claim by werewolves: vsexshop.ru; country: RU; sector: Business Services
+  First observed: 2024-03-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://weerwolven.biz/ru/davidsbridal-com.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

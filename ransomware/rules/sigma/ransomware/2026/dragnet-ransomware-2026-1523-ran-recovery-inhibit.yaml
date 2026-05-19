@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-1523 — Recovery Inhibition (threeam)'
+id: 45b77bae-eec9-556b-a574-7c032c506ae6
+status: stable
+description: |
+  Detects boot/recovery disabling associated with threeam ransomware.
+  Incident: dragnet-ransomware-2026-1523
+  Ransomware victim claim by threeam: bun.nl; country: NL; sector: Agriculture and Food Production
+  First observed: 2026-05-01.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://threeamkelxicjsaf2czjyz2lc4q3ngqkxhhlexyfcp2o6raw4rphyad.onion/detail/ga91ncdex7z3l6yz50bntndj8shagd
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

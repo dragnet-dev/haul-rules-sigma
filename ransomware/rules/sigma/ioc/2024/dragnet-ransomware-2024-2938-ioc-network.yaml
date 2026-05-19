@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-2938 — Ransomware C2 Communication'
+id: bb37bd43-e7ed-5e57-ae76-215ad0b35efc
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-2938
+  Ransomware victim claim by metaencryptor: Elbers GmbH & Co. KG; country: DE; sector: Manufacturing
+  First observed: 2024-05-07.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://metacrptmytukkj7ajwjovdpjqzd7esg5v3sg344uzhigagpezcqlpyd.onion/0AFC:c755583e4f768a8b6ed35c650cd19a7e/0AFC:bb543d143dc0631bc96b5f79da2791f8/0AFC:2f0cd152469a6f6a455d69025b29c3a90940ffbbe6bcf6f2c5e314804ff7437c5ec9bd77aff9a46c2bcc23c21152571f
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'https://metacrptmytukkj7ajwjovdpjqzd7esg5v3sg344uzhigagpezcqlpyd.onion/0AFC:c755583e4f768a8b6ed35c650cd19a7e/0AFC:bb543d143dc0631bc96b5f79da2791f8/0AFC:2f0cd152469a6f6a455d69025b29c3a90940ffbbe6bcf6f2c5e314804ff7437c5ec9bd77aff9a46c2bcc23c21152571f'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

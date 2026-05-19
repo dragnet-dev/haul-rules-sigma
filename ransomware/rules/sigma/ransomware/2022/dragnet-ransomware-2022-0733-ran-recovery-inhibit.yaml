@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-0733 — Recovery Inhibition (suncrypt)'
+id: 8c6e6134-7639-503e-be9d-9b2d32adcfc4
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with suncrypt ransomware.
+  Incident: dragnet-ransomware-2022-0733
+  Ransomware victim claim by suncrypt: KVK Tech | Specialty Brands and Generics; sector: Technology
+  First observed: 2022-02-15.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

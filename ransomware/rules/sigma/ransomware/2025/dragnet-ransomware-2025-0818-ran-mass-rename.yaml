@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0818 — Mass File Rename (J)'
+id: 8a2f53c3-4e90-5477-86d4-151fcd42d4da
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by J.
+  Incident: dragnet-ransomware-2025-0818
+  Ransomware victim claim by J: a********p.com; sector: Not Found
+  First observed: 2025-08-13.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://twniiyed6mydtbe64i5mdl56nihl7atfaqtpww6gqyaiohgc75apzpad.onion/posts/689d83580b175cbc06955d85/689d83580b175cbc06955d85/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

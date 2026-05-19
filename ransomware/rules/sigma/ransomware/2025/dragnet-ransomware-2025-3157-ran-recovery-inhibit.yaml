@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3157 — Recovery Inhibition (anubis)'
+id: 4ea9219b-7f1b-553b-ad6c-687cda8bd397
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with anubis ransomware.
+  Incident: dragnet-ransomware-2025-3157
+  Ransomware victim claim by anubis: Storage King; country: AU; sector: Consumer Services
+  First observed: 2025-09-30.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://om6q4a6cyipxvt7ioudxt24cw4oqu4yodmqzl25mqd2hgllymrgu4aqd.onion/r/63Hz1G6cnBvcyk7P0y1bfutL1RWXe2XCG73wnOF9BLaxhAsCcYZ4LSlo0EnRssu7RjkBujYy6J+3OeDuQfpolVuVE53elZJ
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

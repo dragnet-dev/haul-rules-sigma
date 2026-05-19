@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0953 — Shadow Copy Deletion (dispossessor)'
+id: ef7f81fe-6572-5031-a15d-8be0cb1b970e
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with dispossessor ransomware.
+  Incident: dragnet-ransomware-2023-0953
+  Ransomware victim claim by dispossessor: bakermech.com; sector: Manufacturing
+  First observed: 2023-03-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://dispossessor.com/blogs/599
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

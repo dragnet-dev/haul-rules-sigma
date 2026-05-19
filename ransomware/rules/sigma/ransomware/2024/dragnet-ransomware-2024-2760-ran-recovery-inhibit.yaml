@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2760 — Recovery Inhibition (termite)'
+id: e07fc890-5974-5594-bae0-3aa78d7d3c8f
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with termite ransomware.
+  Incident: dragnet-ransomware-2024-2760
+  Ransomware victim claim by termite: Culligan; country: FR; sector: Business Services
+  First observed: 2024-04-26.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://termiteuslbumdge2zmfmfcsrvmvsfe4gvyudc5j6cdnisnhtftvokid.onion/post/6733e79533cbcfa7e4770276
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

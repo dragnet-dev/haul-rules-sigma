@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2611 — Recovery Inhibition (weyhro)'
+id: e7b98666-7f33-5a51-be1f-1fa26c8b1ace
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with weyhro ransomware.
+  Incident: dragnet-ransomware-2025-2611
+  Ransomware victim claim by weyhro: Valens Bank/Pay/Exchange; country: DE; sector: Financial Services
+  First observed: 2025-03-31.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://weyhro27ruifvuqkk3hxzcrtxv2lsalntxgkv6q2j3znkhdqudz54rqd.onion//leaks/valens
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

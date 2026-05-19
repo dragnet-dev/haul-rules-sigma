@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1533 — Event Log Clearing (nokoyawa)'
+id: 1b021f3f-2628-5d7c-8f0d-01c805935db0
+status: experimental
+description: |
+  Detects event log clearing associated with nokoyawa ransomware.
+  Incident: dragnet-ransomware-2023-1533
+  Ransomware victim claim by nokoyawa: Canopy Children's Solutions; sector: Healthcare
+  First observed: 2023-05-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nokoleakb76znymx443veg4n6fytx6spck6pc7nkr4dvfuygpub6jsid.onion/leak/645d4ab948843000772d4425
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

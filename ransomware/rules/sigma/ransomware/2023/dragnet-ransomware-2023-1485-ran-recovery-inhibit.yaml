@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1485 — Recovery Inhibition (darkpower)'
+id: b43b34b3-cbb6-51ca-9efa-7df38f054736
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with darkpower ransomware.
+  Incident: dragnet-ransomware-2023-1485
+  Ransomware victim claim by darkpower: rcc.gob.pe; country: PE; sector: Public Sector
+  First observed: 2023-03-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://powerj7kmpzkdhjg4szvcxxgktgk36ezpjxvtosylrpey7svpmrjyuyd.onion/480a8b87123a4065a38a961cf6c89b85
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

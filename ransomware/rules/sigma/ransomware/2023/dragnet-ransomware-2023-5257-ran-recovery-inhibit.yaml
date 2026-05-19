@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-5257 — Recovery Inhibition (dispossessor)'
+id: 941e477e-376c-5976-8c61-5def736b584c
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with dispossessor ransomware.
+  Incident: dragnet-ransomware-2023-5257
+  Ransomware victim claim by dispossessor: namibmills.com; country: NA; sector: Agriculture and Food Production
+  First observed: 2023-05-07.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://dispossessor.com/blogs/706
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

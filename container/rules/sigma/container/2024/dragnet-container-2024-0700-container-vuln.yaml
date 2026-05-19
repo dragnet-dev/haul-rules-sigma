@@ -1,0 +1,31 @@
+title: 'Dragnet [Container]: dragnet-container-2024-0700 — Vulnerable Base Image Pull'
+id: 15bd76ce-2c32-5b03-b91f-671d74678b28
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-0700 (Tier 2, CVSS 9.8)
+  Buffer overflow in H2O version 2.2.4 and earlier allows remote attackers to execute arbitrary code or cause a denial of service (DoS) via unspecified vectors.
+  First observed: 2024-11-21.
+references:
+  - http://jvn.jp/en/jp/JVN93226941/index.html
+  - https://github.com/h2o/h2o/issues/1775
+  - https://www.cve.org/CVERecord?id=CVE-2018-0608
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'ubuntu:18.04-ESM'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2781 — Event Log Clearing (bravox)'
+id: 813bdbf8-e28e-5ac1-a19b-cabde624d679
+status: test
+description: |
+  Detects event log clearing associated with bravox ransomware.
+  Incident: dragnet-ransomware-2026-2781
+  Ransomware victim claim by bravox: OEC Bretagne; country: FR; sector: Financial Services
+  First observed: 2026-02-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://bravoxxwcfz5qk43ychgveprpd5mw5hvxfs4a2uz2okx7mumiht4fzyd.onion/blog/c3a6cf71-2205-4f75-a1c3-bc403014a3ad
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

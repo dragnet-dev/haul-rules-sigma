@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1726 — Event Log Clearing (weyhro)'
+id: ac4b7ab4-bccb-59c0-a802-85d3e6edeea4
+status: experimental
+description: |
+  Detects event log clearing associated with weyhro ransomware.
+  Incident: dragnet-ransomware-2025-1726
+  Ransomware victim claim by weyhro: Adriatic Glass & Mirrors; country: CA; sector: Manufacturing
+  First observed: 2025-05-31.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://weyhro27ruifvuqkk3hxzcrtxv2lsalntxgkv6q2j3znkhdqudz54rqd.onion//leaks/adriaticglass
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

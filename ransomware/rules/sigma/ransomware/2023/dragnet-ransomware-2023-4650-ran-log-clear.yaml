@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4650 — Event Log Clearing (knight)'
+id: 93a917b3-7335-581f-8015-5c772325726c
+status: experimental
+description: |
+  Detects event log clearing associated with knight ransomware.
+  Incident: dragnet-ransomware-2023-4650
+  Ransomware victim claim by knight: Lopez & Associates Inc; sector: Business Services
+  First observed: 2023-09-18.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://knight3xppu263m7g4ag3xlit2qxpryjwueobh7vjdc3zrscqlfu3pqd.onion/blogs/4c6f5bab-7365-43c8-ae9f-60391a1b0f77/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

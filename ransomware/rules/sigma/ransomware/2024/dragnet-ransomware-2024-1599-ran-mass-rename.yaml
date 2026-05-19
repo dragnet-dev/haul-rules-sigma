@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-1599 — Mass File Rename (unsafe)'
+id: 579d64e0-06a8-53ac-9a86-086462e266cb
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by unsafe.
+  Incident: dragnet-ransomware-2024-1599
+  Ransomware victim claim by unsafe: American International College; country: US; sector: Education
+  First observed: 2024-01-14.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

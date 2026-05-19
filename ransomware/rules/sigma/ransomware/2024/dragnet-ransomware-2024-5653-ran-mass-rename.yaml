@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5653 — Mass File Rename (handala)'
+id: 3351d354-e0fd-586e-910c-b9bd7bb203bd
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by handala.
+  Incident: dragnet-ransomware-2024-5653
+  Ransomware victim claim by handala: Ramat Gan Academic College; country: IL; sector: Education
+  First observed: 2024-05-25.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://handala.to/ramat-gan-academic-college-hacked/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

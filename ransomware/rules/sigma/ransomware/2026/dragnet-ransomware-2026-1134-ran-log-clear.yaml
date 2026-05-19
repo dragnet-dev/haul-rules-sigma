@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-1134 — Event Log Clearing (thegentlemen)'
+id: 0dffc5a5-0faa-5fd7-9b9e-b0932857d18d
+status: stable
+description: |
+  Detects event log clearing associated with thegentlemen ransomware.
+  Incident: dragnet-ransomware-2026-1134
+  Ransomware victim claim by thegentlemen: MEDICUS SHUPPAN; country: JP; sector: Healthcare
+  First observed: 2026-03-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://tezwsse5czllksjb7cwp65rvnk4oobmzti2znn42i43bjdfd2prqqkad.onion
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

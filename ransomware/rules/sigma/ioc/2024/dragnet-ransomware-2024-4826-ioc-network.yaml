@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-4826 — Ransomware C2 Communication'
+id: 42ef0d59-891f-5b1e-b587-e3a4d7588ed5
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-4826
+  Ransomware victim claim by monti: Premier Tax Services; country: US; sector: Financial Services
+  First observed: 2024-11-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://mblogci3rudehaagbryjznltdp33ojwzkq6hn2pckvjq33rycmzczpid.onion/blog/725feabbf69089428d055b7c3e9096a41c8e9766241ca334127b6359f22ef484/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://mblogci3rudehaagbryjznltdp33ojwzkq6hn2pckvjq33rycmzczpid.onion/blog/725feabbf69089428d055b7c3e9096a41c8e9766241ca334127b6359f22ef484/'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2552 — Event Log Clearing (madliberator)'
+id: 6694049c-ed10-5faa-b33c-d875ab2d85d3
+status: experimental
+description: |
+  Detects event log clearing associated with madliberator ransomware.
+  Incident: dragnet-ransomware-2024-2552
+  Ransomware victim claim by madliberator: marthamedeiros.com.br; country: BR; sector: Business Services
+  First observed: 2024-10-01.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://k67ivvik3dikqi4gy4ua7xa6idijl4si7k5ad5lotbaeirfcsx4sgbid.onion/download/marthamedeiros.com.br
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

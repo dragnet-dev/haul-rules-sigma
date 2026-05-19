@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0033 — Mass File Rename (cloak)'
+id: 8692b68b-1909-5744-a24f-814617804c88
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by cloak.
+  Incident: dragnet-ransomware-2023-0033
+  Ransomware victim claim by cloak: Sonabhy.bf; country: BF; sector: Not Found
+  First observed: 2023-08-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://cloak7jpvcb73rtx2ff7kaw2kholu7bdiivxpzbhlny4ybz75dpxckqd.onion/sonabhy
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

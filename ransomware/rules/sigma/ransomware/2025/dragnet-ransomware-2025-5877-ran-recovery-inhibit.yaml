@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5877 — Recovery Inhibition (silent)'
+id: f51646dc-7037-53d4-a4d7-bf5f270b2e8d
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with silent ransomware.
+  Incident: dragnet-ransomware-2025-5877
+  Ransomware victim claim by silent: Cocoon; country: US; sector: Not Found
+  First observed: 2025-05-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://silentbgdghp3zeldwpumnwabglreql7jcffhx5vqkvtf2lshc4n5zid.onion
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

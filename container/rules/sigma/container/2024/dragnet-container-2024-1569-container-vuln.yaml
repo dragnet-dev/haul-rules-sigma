@@ -1,0 +1,31 @@
+title: 'Dragnet [Container]: dragnet-container-2024-1569 — Vulnerable Base Image Pull'
+id: 1b1d3545-451e-5ba5-a416-d86c353b9c5a
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-1569 (Tier 2, CVSS 9.8)
+  opensysusers through 0.6 does not safely use eval on files in sysusers.d that may contain shell metacharacters. For example, it allows command execution via a crafted GECOS field whereas systemd-sysusers (a program with the same specification) does not do that.
+  First observed: 2024-11-21.
+references:
+  - https://bugs.debian.org/992058
+  - https://github.com/artix-linux/opensysusers/releases
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

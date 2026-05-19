@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0629 — Event Log Clearing (siegedsec)'
+id: df4b5433-0c2d-545b-b998-e1bb5ec044b8
+status: experimental
+description: |
+  Detects event log clearing associated with siegedsec ransomware.
+  Incident: dragnet-ransomware-2023-0629
+  Ransomware victim claim by siegedsec: Operation Israel - 1; sector: Public Sector
+  First observed: 2023-11-26.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nv5p2mmpctvyqdyyi5zwh4gnifq2uxdx4etvnmaheqlrw6ordrjwxryd.onion/post/10.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

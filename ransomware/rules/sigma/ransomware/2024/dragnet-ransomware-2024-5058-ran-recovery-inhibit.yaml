@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5058 — Recovery Inhibition (hellcat)'
+id: 82ba04bd-8831-5659-b11d-2d95ab2fb377
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with hellcat ransomware.
+  Incident: dragnet-ransomware-2024-5058
+  Ransomware victim claim by hellcat: Ministry of Education - Jordan; country: JO; sector: Education
+  First observed: 2024-11-04.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

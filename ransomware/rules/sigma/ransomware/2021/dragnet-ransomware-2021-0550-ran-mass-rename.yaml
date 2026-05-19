@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0550 — Mass File Rename (avaddon)'
+id: c5bc79c6-c5f5-56f7-a627-0f054901a656
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by avaddon.
+  Incident: dragnet-ransomware-2021-0550
+  Ransomware victim claim by avaddon: VAUGHN CONCRETE PRODUCTS, INC; sector: Construction
+  First observed: 2021-09-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2024 — Mass File Rename (leaktheanalyst)'
+id: 17b715cf-5b1a-5dcb-8d44-af1902113a64
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by leaktheanalyst.
+  Incident: dragnet-ransomware-2022-2024
+  Ransomware victim claim by leaktheanalyst: 19 You Must Never Forget LeakTheAnalyst; sector: Not Found
+  First observed: 2022-03-29.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

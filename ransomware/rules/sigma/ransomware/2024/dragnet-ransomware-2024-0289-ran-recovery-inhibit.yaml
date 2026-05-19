@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0289 — Recovery Inhibition (mallox)'
+id: 9525b741-4660-5db4-a7f4-50d39b4888b8
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with mallox ransomware.
+  Incident: dragnet-ransomware-2024-0289
+  Ransomware victim claim by mallox: highfashion.com.hk; country: HK; sector: Business Services
+  First observed: 2024-03-03.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

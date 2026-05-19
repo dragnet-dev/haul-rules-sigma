@@ -1,0 +1,35 @@
+title: 'Dragnet [Container]: dragnet-container-2024-0878 — Vulnerable Base Image Pull'
+id: e7fbe187-987e-5609-acd1-4306968135f2
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-0878 (Tier 2, CVSS 9.8)
+  NULL Pointer Dereference in the "isomedia/track.c" module's "MergeTrack()" function of GPAC v0.5.2 allows attackers to execute arbitrary code or cause a Denial-of-Service (DoS) by uploading a malicious MP4 file.
+  First observed: 2024-11-21.
+references:
+  - https://github.com/gpac/gpac/issues/1702
+  - https://www.cve.org/CVERecord?id=CVE-2021-28300
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:10'
+      - 'debian:11'
+      - 'debian:9'
+      - 'ubuntu:16.04-ESM'
+      - 'ubuntu:18.04-ESM'
+      - 'ubuntu:20.04-ESM'
+      - 'ubuntu:22.04'
+      - 'ubuntu:24.04'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

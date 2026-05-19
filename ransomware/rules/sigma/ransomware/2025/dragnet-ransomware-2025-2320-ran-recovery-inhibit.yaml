@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2320 — Recovery Inhibition (obscura)'
+id: 23d95240-11f9-5857-bf98-ed3c829ae3fb
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with obscura ransomware.
+  Incident: dragnet-ransomware-2025-2320
+  Ransomware victim claim by obscura: The Fixing Company; country: IE; sector: Construction
+  First observed: 2025-08-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://obscurad3aphckihv7wptdxvdnl5emma6t3vikcf3c5oiiqndq6y6xad.onion/company.html?company=fixing
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

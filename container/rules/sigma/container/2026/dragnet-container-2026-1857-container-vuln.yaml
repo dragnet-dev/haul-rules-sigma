@@ -1,0 +1,35 @@
+title: 'Dragnet [Container]: dragnet-container-2026-1857 — Vulnerable Base Image Pull'
+id: 91800827-d53d-5ed7-bf60-c442bf16ef9a
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-1857 (Tier 2, CVSS 9.8)
+  The pam_sm_authenticate function in pam_sshauth.c in libpam-sshauth might allow context-dependent attackers to bypass authentication or gain privileges via a system user account.
+  First observed: 2026-05-06.
+references:
+  - http://www.debian.org/security/2016/dsa-3567
+  - http://www.openwall.com/lists/oss-security/2016/05/01/2
+  - https://bazaar.launchpad.net/~ltsp-upstream/ltsp/libpam-sshauth/revision/114#src/pam_sshauth.c
+  - https://bazaar.launchpad.net/~ltsp-upstream/ltsp/libpam-sshauth/revision/93/src/pam_sshauth.c (introduced in)
+  - https://www.cve.org/CVERecord?id=CVE-2016-4422
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:8'
+      - 'ubuntu:14.04'
+      - 'ubuntu:15.10'
+      - 'ubuntu:16.04'
+      - 'ubuntu:16.04-ESM'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

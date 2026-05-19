@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-5656 — Ransomware C2 Communication'
+id: dccaa091-d0d7-517f-94fc-4c49d6b28ba3
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-5656
+  Ransomware victim claim by lynx: Colmar Industrial Supplies; country: US; sector: Manufacturing
+  First observed: 2025-04-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lynxblog.net/leaks/67f90ddcce8dcc3b0d4c3132
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lynxblog.net/leaks/67f90ddcce8dcc3b0d4c3132'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

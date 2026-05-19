@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4852 — Recovery Inhibition (IMNCrew)'
+id: ffb52b13-b249-5de0-bec0-35775be58a66
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with IMNCrew ransomware.
+  Incident: dragnet-ransomware-2025-4852
+  Ransomware victim claim by IMNCrew: Synthesia.com; country: CZ; sector: Technology
+  First observed: 2025-05-05.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://imncrewwfkbjkhr2oylerfm5qtbzfphhmpcfag43xc2kfgvluqtlgoid.onion
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0444 — Event Log Clearing (darkleakmarket)'
+id: d3f4be90-a98e-5d7e-988e-b9ba34c1a9a2
+status: deprecated
+description: |
+  Detects event log clearing associated with darkleakmarket ransomware.
+  Incident: dragnet-ransomware-2021-0444
+  Ransomware victim claim by darkleakmarket: Pine Labs Data Leak; sector: Financial Services
+  First observed: 2021-09-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

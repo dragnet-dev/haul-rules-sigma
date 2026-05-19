@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0601 — Recovery Inhibition (knight)'
+id: a3fc3ecb-3e53-5e18-882b-341005568470
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with knight ransomware.
+  Incident: dragnet-ransomware-2023-0601
+  Ransomware victim claim by knight: Wakefield & Associates; country: US; sector: Business Services
+  First observed: 2023-11-30.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://knight3xppu263m7g4ag3xlit2qxpryjwueobh7vjdc3zrscqlfu3pqd.onion/bbdc8734-aad4-4eac-9594-71988c6c6029/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

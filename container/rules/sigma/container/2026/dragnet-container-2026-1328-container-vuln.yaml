@@ -1,0 +1,29 @@
+title: 'Dragnet [Container]: dragnet-container-2026-1328 — Vulnerable Base Image Pull'
+id: 03b92caf-8506-51c3-8c26-8f22cfad38ad
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-1328 (Tier 2, CVSS 9)
+  The external SMB storage driver in ownCloud Server before 6.0.8, 7.0.x before 7.0.6, and 8.0.x before 8.0.4 allows remote authenticated users to execute arbitrary SMB commands via a ; (semicolon) character in a file.
+  First observed: 2026-05-06.
+references:
+  - http://www.debian.org/security/2015/dsa-3373
+  - http://www.securityfocus.com/bid/76162
+  - https://owncloud.org/security/advisory/?id=oc-sa-2015-008
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:8'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

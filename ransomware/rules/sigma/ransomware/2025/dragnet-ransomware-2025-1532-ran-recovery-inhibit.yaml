@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1532 — Recovery Inhibition (chaos)'
+id: 37ef24ca-67f1-556c-9c74-d3e09dc03c52
+status: test
+description: |
+  Detects boot/recovery disabling associated with chaos ransomware.
+  Incident: dragnet-ransomware-2025-1532
+  Ransomware victim claim by chaos: lesker.com; country: US; sector: Technology
+  First observed: 2025-12-02.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://hptqq2o2qjva7lcaaq67w36jihzivkaitkexorauw7b2yul2z6zozpqd.onion/post/G1KKj8LbLQx4tNmeFvGNPdDekm5oWn2k
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

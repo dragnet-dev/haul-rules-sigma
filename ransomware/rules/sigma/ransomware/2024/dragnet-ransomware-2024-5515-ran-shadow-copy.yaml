@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5515 — Shadow Copy Deletion (lynx)'
+id: 7efec2b9-3a85-547c-9cf9-85fb24ff4844
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with lynx ransomware.
+  Incident: dragnet-ransomware-2024-5515
+  Ransomware victim claim by lynx: Hisingstads Bleck; country: SE; sector: Manufacturing
+  First observed: 2024-12-28.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lynxch2k5xi35j7hlbmwl7d6u2oz4vp2wqp6qkwol624cod3d6iqiyqd.onion/leaks/67b34dd344fac8dca10a0f90
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

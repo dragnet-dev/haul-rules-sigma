@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0672 — Event Log Clearing (interlock)'
+id: 3ca680ad-2f07-526c-9f4d-1ea7e996f6aa
+status: experimental
+description: |
+  Detects event log clearing associated with interlock ransomware.
+  Incident: dragnet-ransomware-2023-0672
+  Ransomware victim claim by interlock: Milano; country: MX; sector: Consumer Services
+  First observed: 2023-12-01.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ljurl2gqwtgfqzk6pkz5ggtdrdrpzpzzkdvf4jhpkk33dnwkcsmdi4ad.onion/index.php?p=
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

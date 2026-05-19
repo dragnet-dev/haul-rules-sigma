@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5273 — Event Log Clearing (incransom)'
+id: a4426550-fbd4-5bc5-bd4e-c017775c3f4c
+status: experimental
+description: |
+  Detects event log clearing associated with incransom ransomware.
+  Incident: dragnet-ransomware-2024-5273
+  Ransomware victim claim by incransom: CellNetix Pathology & Laboratories, LLC; country: US; sector: Healthcare
+  First observed: 2024-01-08.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://incapt.blog/blog/leak/0C23D0EE595F03AD
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

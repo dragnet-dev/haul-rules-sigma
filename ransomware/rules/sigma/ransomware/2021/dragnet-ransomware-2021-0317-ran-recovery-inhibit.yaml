@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0317 — Recovery Inhibition (payloadbin)'
+id: 9b2c5c0b-c02e-515d-875c-26639d501ff9
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with payloadbin ransomware.
+  Incident: dragnet-ransomware-2021-0317
+  Ransomware victim claim by payloadbin: Uptownbakers.com; sector: Agriculture and Food Production
+  First observed: 2021-09-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

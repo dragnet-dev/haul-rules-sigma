@@ -1,0 +1,29 @@
+title: 'Dragnet [Container]: dragnet-container-2024-1085 — Vulnerable Base Image Pull'
+id: 363d7c3d-b053-5f99-9bca-a7deacdfb7c8
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-1085 (Tier 2, CVSS 9.8)
+  In Rhonabwy through 1.1.13, HMAC signature verification uses a strcmp function that is vulnerable to side-channel attacks, because it stops the comparison when the first difference is spotted in the two signatures. (The fix uses gnutls_memcmp, which has constant-time execution.)
+  First observed: 2024-11-21.
+references:
+  - https://github.com/babelouest/rhonabwy/commit/f9fd9a1c77e48b514ebb3baf0360f87eef3d846e
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-1046 — Ransomware C2 Communication'
+id: ae737aed-c81b-5a64-bff5-ea62dfe46ac0
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-1046
+  Ransomware victim claim by anubis: Maine Oxy; country: US; sector: Manufacturing
+  First observed: 2025-10-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://om6q4a6cyipxvt7ioudxt24cw4oqu4yodmqzl25mqd2hgllymrgu4aqd.onion/r/cYEsBnPfSaq4VsASGWRQ+i9aGEHCEl5iBwrvH4aHEHQ3HrczH1bAJYi8fLGk73h9Ki0N8BC56uLM36dyHVNW5PYlROMG40
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://om6q4a6cyipxvt7ioudxt24cw4oqu4yodmqzl25mqd2hgllymrgu4aqd.onion/r/cYEsBnPfSaq4VsASGWRQ+i9aGEHCEl5iBwrvH4aHEHQ3HrczH1bAJYi8fLGk73h9Ki0N8BC56uLM36dyHVNW5PYlROMG40'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

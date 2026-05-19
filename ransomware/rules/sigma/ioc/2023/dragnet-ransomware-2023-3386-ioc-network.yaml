@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-3386 — Ransomware C2 Communication'
+id: beab614f-f1ae-5cd7-9d0d-51e9fdc37500
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-3386
+  Ransomware victim claim by dispossessor: www.fennpest.com; country: US; sector: Business Services
+  First observed: 2023-08-31.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://dispossessor.com/blogs/25
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'https://dispossessor.com/blogs/25'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

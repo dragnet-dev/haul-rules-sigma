@@ -1,0 +1,43 @@
+title: 'Dragnet [Container]: dragnet-container-2026-1863 — Vulnerable Base Image Pull'
+id: 3b0c7a1d-3162-5068-88ee-15c33f2b856e
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-1863 (Tier 2, CVSS 9.3)
+  liboggplay in Mozilla Firefox 3.5.x before 3.5.6 and SeaMonkey before 2.0.1 might allow context-dependent attackers to cause a denial of service (application crash) or execute arbitrary code via unspecified vectors, related to "memory safety issues."
+  First observed: 2026-04-23.
+references:
+  - https://nvd.nist.gov/vuln/detail/CVE-2009-3388
+  - http://secunia.com/advisories/37699
+  - http://secunia.com/advisories/37785
+  - http://secunia.com/advisories/37856
+  - http://secunia.com/advisories/37881
+  - http://securitytracker.com/id?1023335
+  - http://securitytracker.com/id?1023336
+  - http://www.mozilla.org/security/announce/2009/mfsa2009-66.html
+  - http://www.novell.com/linux/security/advisories/2009_63_firefox.html
+  - http://www.securityfocus.com/bid/37349
+  - http://www.securityfocus.com/bid/37369
+  - http://www.ubuntu.com/usn/USN-874-1
+  - http://www.vupen.com/english/advisories/2009/3547
+  - https://access.redhat.com/security/cve/CVE-2009-3388
+  - https://bugzilla.mozilla.org/show_bug.cgi?id=504843
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

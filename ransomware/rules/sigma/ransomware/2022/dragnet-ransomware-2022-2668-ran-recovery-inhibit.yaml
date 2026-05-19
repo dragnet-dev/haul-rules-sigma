@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2668 — Recovery Inhibition (icefire)'
+id: 9e71c5c1-1c98-56a2-b641-6d1ac0360e37
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with icefire ransomware.
+  Incident: dragnet-ransomware-2022-2668
+  Ransomware victim claim by icefire: *.directfn.net; sector: Financial Services
+  First observed: 2022-08-20.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

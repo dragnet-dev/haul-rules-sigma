@@ -1,0 +1,30 @@
+title: 'Dragnet [Container]: dragnet-container-2024-0292 — Vulnerable Base Image Pull'
+id: 8c83fc80-bcc6-527f-ac6b-ac72299346d9
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-0292 (Tier 2, CVSS 9.8)
+  HotelDruid HotelDruid 2.3.0 version 2.3.0 and earlier contains a SQL Injection vulnerability in "id_utente_mod" parameter in gestione_utenti.php file that can result in An attacker can dump all the database records of backend webserver. This attack appear to be exploitable via the attack can be done by anyone via specially crafted sql query passed to the "id_utente_mod=1" parameter.
+  First observed: 2024-11-21.
+references:
+  - https://www.exploit-db.com/exploits/45976
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:8'
+      - 'debian:9'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

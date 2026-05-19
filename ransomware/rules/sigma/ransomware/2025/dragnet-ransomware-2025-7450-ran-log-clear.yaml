@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7450 — Event Log Clearing (ralord)'
+id: ed13e804-a667-5477-9260-9fe7795fc561
+status: experimental
+description: |
+  Detects event log clearing associated with ralord ransomware.
+  Incident: dragnet-ransomware-2025-7450
+  Ransomware victim claim by ralord: NewHotel cloud company; country: ES; sector: Hospitality and Tourism
+  First observed: 2025-04-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ralordqe33mpufkpsr6zkdatktlu3t2uei4ught3sitxgtzfmqmbsuyd.onion/newhotelcloud
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

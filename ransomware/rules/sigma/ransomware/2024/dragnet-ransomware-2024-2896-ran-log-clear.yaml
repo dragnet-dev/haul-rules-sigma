@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2896 — Event Log Clearing (spacebears)'
+id: e69ffb74-f57f-5b34-88ce-ba9e4af8a2fa
+status: experimental
+description: |
+  Detects event log clearing associated with spacebears ransomware.
+  Incident: dragnet-ransomware-2024-2896
+  Ransomware victim claim by spacebears: CORTEX Chiropractic & Clinical Neuroscience; country: US; sector: Healthcare
+  First observed: 2024-04-28.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://5butbkrljkaorg5maepuca25oma7eiwo6a2rlhvkblb4v6mf3ki2ovid.onion/companies/1/cortex-chiropractic-clinical-neuroscience
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

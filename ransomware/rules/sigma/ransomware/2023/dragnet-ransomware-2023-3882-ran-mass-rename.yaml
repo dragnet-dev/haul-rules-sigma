@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-3882 — Mass File Rename (darkpower)'
+id: c6c755e7-8588-5bcf-8d38-2ff62e335fed
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by darkpower.
+  Incident: dragnet-ransomware-2023-3882
+  Ransomware victim claim by darkpower: onyx-pharma.dz; country: DZ; sector: Healthcare
+  First observed: 2023-03-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://powerj7kmpzkdhjg4szvcxxgktgk36ezpjxvtosylrpey7svpmrjyuyd.onion/27ffeae6d31d475f9f6a23413af968eb
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

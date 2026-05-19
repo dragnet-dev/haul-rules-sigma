@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1324 — Recovery Inhibition (revil)'
+id: 0255c78d-3058-5215-8d3e-5eb7be60ce5f
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with revil ransomware.
+  Incident: dragnet-ransomware-2021-1324
+  Ransomware victim claim by revil: angstrom automotive group; country: US; sector: Manufacturing
+  First observed: 2021-09-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

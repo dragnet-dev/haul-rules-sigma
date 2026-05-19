@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1505 — Recovery Inhibition (lynx)'
+id: ef24708c-e181-55e9-b00f-3c16f8416e26
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with lynx ransomware.
+  Incident: dragnet-ransomware-2025-1505
+  Ransomware victim claim by lynx: Longue Vue Club; country: US; sector: Hospitality and Tourism
+  First observed: 2025-01-31.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lynxblog.net/leaks/67d0620c44fac8dca1d7d92f
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

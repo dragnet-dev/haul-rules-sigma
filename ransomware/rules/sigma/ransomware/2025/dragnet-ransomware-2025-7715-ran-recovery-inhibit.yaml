@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7715 — Recovery Inhibition (teamxxx)'
+id: 9b25b7cc-fd87-54a8-b1bf-8f79545885e8
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with teamxxx ransomware.
+  Incident: dragnet-ransomware-2025-7715
+  Ransomware victim claim by teamxxx: BelkorpAg.com; country: DE; sector: Agriculture and Food Production
+  First observed: 2025-04-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://tp5cwh6d2b5hekcg6jlhoe6mawa7dlwiv47epvnfmzuaaur2dnaa3uid.onion/BelkorpAg.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

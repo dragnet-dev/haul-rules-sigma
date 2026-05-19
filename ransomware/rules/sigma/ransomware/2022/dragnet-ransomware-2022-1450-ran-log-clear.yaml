@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-1450 — Event Log Clearing (vicesociety)'
+id: 465cdc47-7ee7-5399-96c9-b17e06027966
+status: deprecated
+description: |
+  Detects event log clearing associated with vicesociety ransomware.
+  Incident: dragnet-ransomware-2022-1450
+  Ransomware victim claim by vicesociety: Vectalia group; sector: Transportation/Logistics
+  First observed: 2022-07-04.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

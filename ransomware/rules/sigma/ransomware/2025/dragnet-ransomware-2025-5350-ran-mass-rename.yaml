@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5350 — Mass File Rename (global)'
+id: e771c1d8-5037-5121-936c-3b6c9211aad5
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by global.
+  Incident: dragnet-ransomware-2025-5350
+  Ransomware victim claim by global: moelco.es; country: ES; sector: Manufacturing
+  First observed: 2025-07-25.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

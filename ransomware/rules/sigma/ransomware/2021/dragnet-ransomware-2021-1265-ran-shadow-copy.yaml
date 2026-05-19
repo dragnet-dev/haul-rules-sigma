@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1265 — Shadow Copy Deletion (medusalocker)'
+id: f47eab1a-1098-53a6-8635-7881c3f1fa95
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with medusalocker ransomware.
+  Incident: dragnet-ransomware-2021-1265
+  Ransomware victim claim by medusalocker: Jalux Americas, Inc.; sector: Business Services
+  First observed: 2021-11-03.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://z6wkgghtoawog5noty5nxulmmt2zs7c3yvwr22v4czbffdoly2kl4uad.onion/?p=187
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

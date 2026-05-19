@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-1644 — Event Log Clearing (apos)'
+id: afe4adee-f281-55db-a296-6213b062c32e
+status: experimental
+description: |
+  Detects event log clearing associated with apos ransomware.
+  Incident: dragnet-ransomware-2024-1644
+  Ransomware victim claim by apos: Bitz Softwares; country: BR; sector: Technology
+  First observed: 2024-04-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://apos.blog/apos-raas/Bitz-Softwares-bc9e829383bb4f0086ed1598c052cefe
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

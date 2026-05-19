@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-2801 — Ransomware C2 Communication'
+id: 07ef8f19-c62a-5898-86dd-67219a6cf352
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-2801
+  Ransomware victim claim by lynx: powelltool.com; country: US; sector: Manufacturing
+  First observed: 2024-12-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lynxblog.net/leaks/677c5baf05a779c3d3a2f62c
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lynxblog.net/leaks/677c5baf05a779c3d3a2f62c'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-1537 — Mass File Rename (genesis)'
+id: 61e177a0-c2ac-5a29-bcfd-65c2dc6d7c68
+status: test
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by genesis.
+  Incident: dragnet-ransomware-2026-1537
+  Ransomware victim claim by genesis: Community Management Associates; country: US; sector: Business Services
+  First observed: 2026-02-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://genesis6ixpb5mcy4kudybtw5op2wqlrkocfogbnenz3c647ibqixiad.onion/ace424141bd0616d9b9a/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2990 — Recovery Inhibition (vect)'
+id: f75361b1-999b-56b4-a501-750360dc0f7b
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with vect ransomware.
+  Incident: dragnet-ransomware-2026-2990
+  Ransomware victim claim by vect: Federal University of Sergipe; country: BR; sector: Education
+  First observed: 2026-01-05.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

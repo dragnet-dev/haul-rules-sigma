@@ -1,0 +1,36 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5806 — Event Log Clearing (akira)'
+id: 5411cf8c-0c37-5562-8a7d-33be71692cf5
+status: experimental
+description: |
+  Detects event log clearing associated with akira ransomware.
+  Incident: dragnet-ransomware-2024-5806
+  Associated with Akira.
+  Ransomware victim claim by akira: REIMERS FURNITURE MFG INC; country: US; sector: Manufacturing
+  First observed: 2024-12-01.
+  Confidence: 90% (ransomware_live).
+references:
+  - rfmseating.com
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+  - dragnet.actor.akira
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2311 — Event Log Clearing (m3rx)'
+id: 031f315b-3d86-564d-a21a-09b6eb09999e
+status: stable
+description: |
+  Detects event log clearing associated with m3rx ransomware.
+  Incident: dragnet-ransomware-2026-2311
+  Ransomware victim claim by m3rx: datasavior.com; country: US; sector: Technology
+  First observed: 2026-05-06.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://4k6plf4h2cm2nco6ae3inrsxnmqgl6lllmwefydhnlcq4tuhwbj4qpad.onion#datasavior.com
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

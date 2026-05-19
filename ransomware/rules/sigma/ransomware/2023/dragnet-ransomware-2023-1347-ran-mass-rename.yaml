@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1347 — Mass File Rename (ragnarlocker)'
+id: 7adc3d7f-1df1-5136-83fd-748a5b68a0dd
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by ragnarlocker.
+  Incident: dragnet-ransomware-2023-1347
+  Ransomware victim claim by ragnarlocker: International Presence Ltd - Leaked; sector: Not Found
+  First observed: 2023-10-06.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://rgleaktxuey67yrgspmhvtnrqtgogur35lwdrup4d3igtbm3pupc4lyd.onion/?fqVD7GoDUZa9yJ
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

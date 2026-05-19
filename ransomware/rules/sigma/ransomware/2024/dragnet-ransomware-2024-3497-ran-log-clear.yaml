@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3497 — Event Log Clearing (bluebox)'
+id: 70f33103-b828-5f1b-ad19-c54e7912ce9c
+status: experimental
+description: |
+  Detects event log clearing associated with bluebox ransomware.
+  Incident: dragnet-ransomware-2024-3497
+  Ransomware victim claim by bluebox: Groupe-fimar; country: FR; sector: Transportation/Logistics
+  First observed: 2024-12-14.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://zu3wfrmrkl4ltqqnpt3owp3cwa33rqwod4gpe3ttb5o4vf2is2gzm6qd.onion/2024/12/18/Groupe-fimar-Commercial-and-Logistics-Group/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

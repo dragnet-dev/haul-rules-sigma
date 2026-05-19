@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0302 — Mass File Rename (azroteam)'
+id: 060a444c-3c7b-52c1-83f6-f3c7edb249ad
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by azroteam.
+  Incident: dragnet-ransomware-2021-0302
+  Ransomware victim claim by azroteam: HOYA Corporation; country: JP; sector: Technology
+  First observed: 2021-09-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

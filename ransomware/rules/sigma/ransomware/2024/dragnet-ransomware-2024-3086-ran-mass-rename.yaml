@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3086 — Mass File Rename (moneymessage)'
+id: fbcd1782-252b-5b08-9245-eaa3d8e543b1
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by moneymessage.
+  Incident: dragnet-ransomware-2024-3086
+  Ransomware victim claim by moneymessage: Insurance Agency Marketing Services; country: US; sector: Financial Services
+  First observed: 2024-05-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://blogvl7tjyjvsfthobttze52w36wwiz34hrfcmorgvdzb6hikucb7aqd.onion/news.php?id=1
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

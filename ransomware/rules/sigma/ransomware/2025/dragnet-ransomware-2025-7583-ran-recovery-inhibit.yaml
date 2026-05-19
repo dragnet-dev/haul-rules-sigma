@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7583 — Recovery Inhibition (cephalus)'
+id: 471a5341-ba64-58ad-8564-29c17515cae0
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with cephalus ransomware.
+  Incident: dragnet-ransomware-2025-7583
+  Ransomware victim claim by cephalus: Delta Information Systems; country: US; sector: Technology
+  First observed: 2025-08-29.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

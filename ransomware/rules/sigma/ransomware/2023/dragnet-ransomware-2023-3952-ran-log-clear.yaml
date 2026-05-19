@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-3952 — Event Log Clearing (cactus)'
+id: 65b70491-6fbf-52d0-860f-c6d045ba77f6
+status: deprecated
+description: |
+  Detects event log clearing associated with cactus ransomware.
+  Incident: dragnet-ransomware-2023-3952
+  Ransomware victim claim by cactus: ODALYS; country: FR; sector: Hospitality and Tourism
+  First observed: 2023-10-10.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

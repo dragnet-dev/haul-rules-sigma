@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-1622 — Event Log Clearing (handala)'
+id: f501adbb-9563-574c-b155-2d326e0d7c7d
+status: stable
+description: |
+  Detects event log clearing associated with handala ransomware.
+  Incident: dragnet-ransomware-2026-1622
+  Ransomware victim claim by handala: The General in the Shadows: Sapir’s Commander Exposed; sector: Not Found
+  First observed: 2026-02-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://handala-hack.to/693-2/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

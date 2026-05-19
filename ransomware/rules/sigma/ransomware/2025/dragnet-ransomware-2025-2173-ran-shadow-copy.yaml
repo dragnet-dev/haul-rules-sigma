@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2173 — Shadow Copy Deletion (lynx)'
+id: 3a6ae44a-0542-54e8-a1d1-a117704e01b2
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with lynx ransomware.
+  Incident: dragnet-ransomware-2025-2173
+  Ransomware victim claim by lynx: Ranhill Bersekutu; country: MY; sector: Energy
+  First observed: 2025-01-06.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lynxblog.net/leaks/67b4765544fac8dca1131227
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

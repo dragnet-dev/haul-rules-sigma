@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-1220 — Ransomware C2 Communication'
+id: dc488abe-6d1d-52d7-956c-66ced903df95
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-1220
+  Ransomware victim claim by handala: Mor-logistics; country: IL; sector: Transportation/Logistics
+  First observed: 2025-06-18.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://handala-hack.to/mor-logistics-hacked/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'https://handala-hack.to/mor-logistics-hacked/'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

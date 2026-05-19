@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-5337 — Mass File Rename (stormous)'
+id: 9cb03a3c-8820-5f37-9e2d-32ba9ed771d6
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by stormous.
+  Incident: dragnet-ransomware-2023-5337
+  Ransomware victim claim by stormous: Nipun Consultancy; sector: Business Services
+  First observed: 2023-07-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://h3reihqb2y7woqdary2g3bmk3apgtxuyhx4j2ftovbhe3l5svev7bdyd.onion/Nipun.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

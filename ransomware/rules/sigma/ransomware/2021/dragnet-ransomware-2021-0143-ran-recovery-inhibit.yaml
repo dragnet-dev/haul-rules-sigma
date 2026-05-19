@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0143 — Recovery Inhibition (avaddon)'
+id: a4d794b3-e933-524f-9ef4-b3aa8be88987
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with avaddon ransomware.
+  Incident: dragnet-ransomware-2021-0143
+  Ransomware victim claim by avaddon: Indonesia Infrastructure Guarantee Fund; sector: Financial Services
+  First observed: 2021-09-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

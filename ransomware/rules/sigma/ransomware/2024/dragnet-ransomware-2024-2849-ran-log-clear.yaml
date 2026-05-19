@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2849 — Event Log Clearing (zerotolerance)'
+id: c851815f-dc46-561a-b4f1-9c5bc0556dae
+status: experimental
+description: |
+  Detects event log clearing associated with zerotolerance ransomware.
+  Incident: dragnet-ransomware-2024-2849
+  Ransomware victim claim by zerotolerance: Banco central argentina; country: AR; sector: Financial Services
+  First observed: 2024-05-05.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://zhuobnfsddn2myfxxdqtpxk367dqnntjf3kq7mrzdgienfxjyllq4rqd.onion/info?id=HjHA9TCVsdg9bS6bglFkWqLNJlstirxr3KnVhTkw5oonEOM--W1S8fYIFt7xwbbTDmiey3X42aMg7oXRueGj6rwCeO38CsDo
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

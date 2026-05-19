@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0681 — Recovery Inhibition (grief)'
+id: 270c27f1-d26a-5bc1-b921-7e3dcedb0e14
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with grief ransomware.
+  Incident: dragnet-ransomware-2021-0681
+  Ransomware victim claim by grief: Lancaster Independent School District; country: US; sector: Education
+  First observed: 2021-06-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

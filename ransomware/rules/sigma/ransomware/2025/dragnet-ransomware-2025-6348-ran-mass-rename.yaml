@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6348 — Mass File Rename (monti)'
+id: 6a871f37-6cb9-5a06-b8f8-91b189149de4
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by monti.
+  Incident: dragnet-ransomware-2025-6348
+  Ransomware victim claim by monti: sole technology; country: US; sector: Technology
+  First observed: 2025-02-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://mblogci3rudehaagbryjznltdp33ojwzkq6hn2pckvjq33rycmzczpid.onion/blog/2126d4e8e748b01c022bb4c8b74a674adcab995ab861bf99c810422bfec6d57f/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

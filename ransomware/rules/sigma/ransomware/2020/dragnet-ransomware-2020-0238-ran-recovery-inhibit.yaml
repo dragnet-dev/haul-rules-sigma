@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0238 — Recovery Inhibition (dispossessor)'
+id: f9f612a5-89e8-57bc-ae10-b2c28de096d5
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with dispossessor ransomware.
+  Incident: dragnet-ransomware-2020-0238
+  Ransomware victim claim by dispossessor: unitedregional.org; sector: Healthcare
+  First observed: 2020-06-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://dispossessor.com/blogs/168
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

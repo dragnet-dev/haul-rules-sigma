@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3207 — Mass File Rename (VanHelsing)'
+id: c3134111-20f3-5757-bfc6-e76ea64829f3
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by VanHelsing.
+  Incident: dragnet-ransomware-2025-3207
+  Ransomware victim claim by VanHelsing: www.cityofbellville.com; country: US; sector: Public Sector
+  First observed: 2025-03-12.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://vanhelxjo52qr2ixcmtjayqqrcodkuh36n7uq7q7xj23ggotyr3y72yd.onion/blog/blog.php?id=12
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

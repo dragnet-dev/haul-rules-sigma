@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5331 — Mass File Rename (tengu)'
+id: d9ab298d-97c3-50ae-ae70-e37bd4e4d156
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by tengu.
+  Incident: dragnet-ransomware-2025-5331
+  Ransomware victim claim by tengu: Al Rimal Group; country: AE; sector: Agriculture and Food Production
+  First observed: 2025-10-23.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://longcc4fqrfcqt5lzceutylaxir6h66fp6df3oin6mvwvz6pfdbxc6qd.onion/blog/3483b78af6ee44881238e7fc60509b54c0e83edce7687f606c2682e60ab9b981/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

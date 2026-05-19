@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5438 — Event Log Clearing (tridentlocker)'
+id: e972626a-c944-5411-af9d-b9f886dc0af7
+status: experimental
+description: |
+  Detects event log clearing associated with tridentlocker ransomware.
+  Incident: dragnet-ransomware-2025-5438
+  Ransomware victim claim by tridentlocker: GuestTek; country: CA; sector: Technology
+  First observed: 2025-11-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://tridentfrdy6jydwywfx4vx422vnto7pktao2gyx2qdcwjanogq454ad.onion/article/7861298b-ba53-482e-9c9f-1a8ea73560af
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

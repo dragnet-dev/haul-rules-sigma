@@ -1,0 +1,44 @@
+title: 'Dragnet [Container]: dragnet-container-2026-1371 — Vulnerable Base Image Pull'
+id: 2ea80b40-ec19-525e-ad7e-9abc8ad5b487
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-1371 (Tier 2, CVSS 10)
+  Buffer overflow in Wireshark (aka Ethereal) 0.8.16 to 0.99.0 allows remote attackers to cause a denial of service and possibly execute arbitrary code via the NFS dissector.
+  First observed: 2026-04-16.
+references:
+  - https://nvd.nist.gov/vuln/detail/CVE-2006-3632
+  - ftp://patches.sgi.com/support/free/security/advisories/20060801-01-P
+  - http://rhn.redhat.com/errata/RHSA-2006-0602.html
+  - http://secunia.com/advisories/21078
+  - http://secunia.com/advisories/21107
+  - http://secunia.com/advisories/21121
+  - http://secunia.com/advisories/21204
+  - http://secunia.com/advisories/21249
+  - http://secunia.com/advisories/21467
+  - http://secunia.com/advisories/21488
+  - http://secunia.com/advisories/21598
+  - http://secunia.com/advisories/22089
+  - http://security.gentoo.org/glsa/glsa-200607-09.xml
+  - http://securitytracker.com/id?1016532
+  - http://support.avaya.com/elmodocs2/security/ASA-2006-197.htm
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

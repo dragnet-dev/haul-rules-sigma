@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-1194 — Recovery Inhibition (dispossessor)'
+id: a8804289-52ad-5192-a3e1-4d21bd7dba33
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with dispossessor ransomware.
+  Incident: dragnet-ransomware-2024-1194
+  Ransomware victim claim by dispossessor: navalaviationmuseum.org; country: US; sector: Hospitality and Tourism
+  First observed: 2024-04-18.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://dispossessor.com/blogs/1361
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

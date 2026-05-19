@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-3684 — Mass File Rename (lorenz)'
+id: 99fc3e65-956e-57b9-b9af-ff9ce3173c3f
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by lorenz.
+  Incident: dragnet-ransomware-2023-3684
+  Ransomware victim claim by lorenz: Felling Trailers, Inc.; sector: Manufacturing
+  First observed: 2023-07-13.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

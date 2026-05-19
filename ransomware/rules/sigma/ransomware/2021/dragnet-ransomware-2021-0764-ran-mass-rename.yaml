@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0764 — Mass File Rename (lockbit2)'
+id: 5efa825b-b7bd-571b-9af2-ef61f2a7d85f
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by lockbit2.
+  Incident: dragnet-ransomware-2021-0764
+  Ransomware victim claim by lockbit2: cassini-technol...; sector: Technology
+  First observed: 2021-10-16.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0693 — Event Log Clearing (pysa)'
+id: a4c4dd80-52be-5ce3-9d0d-f1b2ed9c661a
+status: deprecated
+description: |
+  Detects event log clearing associated with pysa ransomware.
+  Incident: dragnet-ransomware-2021-0693
+  Ransomware victim claim by pysa: Our Lady's Abingdon; sector: Education
+  First observed: 2021-10-18.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

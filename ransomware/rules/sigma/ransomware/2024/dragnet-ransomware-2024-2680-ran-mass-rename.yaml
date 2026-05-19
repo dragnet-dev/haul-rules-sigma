@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2680 — Mass File Rename (vanirgroup)'
+id: b8cb563d-c5de-5ebd-9d37-e42d6af8b9d1
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by vanirgroup.
+  Incident: dragnet-ransomware-2024-2680
+  Ransomware victim claim by vanirgroup: Beowulfchain; sector: Technology
+  First observed: 2024-07-10.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

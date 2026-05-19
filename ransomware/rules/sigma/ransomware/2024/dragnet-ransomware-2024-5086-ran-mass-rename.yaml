@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5086 — Mass File Rename (threeam)'
+id: 7516af9a-8409-5a40-8630-5afcd5a82fbd
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by threeam.
+  Incident: dragnet-ransomware-2024-5086
+  Ransomware victim claim by threeam: verco.co.uk; country: GB; sector: Manufacturing
+  First observed: 2024-09-30.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://threeamkelxicjsaf2czjyz2lc4q3ngqkxhhlexyfcp2o6raw4rphyad.onionpost.php?id=40
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

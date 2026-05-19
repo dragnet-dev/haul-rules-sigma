@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1141 — Event Log Clearing (devman)'
+id: 2f264e2c-9da2-5103-aa97-2d4e19fc0ef3
+status: experimental
+description: |
+  Detects event log clearing associated with devman ransomware.
+  Incident: dragnet-ransomware-2025-1141
+  Ransomware victim claim by devman: www.shimaogroup.com; country: CN; sector: Construction
+  First observed: 2025-09-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://wugurgyscp5rxpihef5vl6b6m5ont3b6sezhl7boboso2enib2k3q6qd.onion#wwwshimaogroupcom
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

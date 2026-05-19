@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2881 — Mass File Rename (payoutsking)'
+id: 9bc6428c-5c1c-5098-b07b-8e6885158bdf
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by payoutsking.
+  Incident: dragnet-ransomware-2025-2881
+  Ransomware victim claim by payoutsking: Institute of Culinary Education; country: US; sector: Education
+  First observed: 2025-05-28.
+  Confidence: 90% (ransomware_live).
+references:
+  - https:/payoutsgn7cy6uliwevdqspncjpfxpmzgirwl2au65la7rfs5x3qnbqd.onion/detail_post/chnYzXRfSeoWiVb49nEg
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

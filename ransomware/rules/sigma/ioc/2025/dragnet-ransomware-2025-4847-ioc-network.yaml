@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-4847 — Ransomware C2 Communication'
+id: b60be1aa-441e-50cb-94d9-907e61b3ada3
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-4847
+  Ransomware victim claim by anubis: DG2 Design; country: US; sector: Financial Services
+  First observed: 2025-04-01.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://om6q4a6cyipxvt7ioudxt24cw4oqu4yodmqzl25mqd2hgllymrgu4aqd.onion/r/oZu5xEew4is55SjUv+hNMqwrlzLroR1woPDfxD6DsW6BAaPAQy87pTMuzkMS6aeYTC1DMcYUui5pSi8OdjQoUlGYWF1OExa
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://om6q4a6cyipxvt7ioudxt24cw4oqu4yodmqzl25mqd2hgllymrgu4aqd.onion/r/oZu5xEew4is55SjUv+hNMqwrlzLroR1woPDfxD6DsW6BAaPAQy87pTMuzkMS6aeYTC1DMcYUui5pSi8OdjQoUlGYWF1OExa'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

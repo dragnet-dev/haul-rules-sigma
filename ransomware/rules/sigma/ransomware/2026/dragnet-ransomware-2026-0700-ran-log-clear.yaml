@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-0700 — Event Log Clearing (abyss)'
+id: 3e423cf2-57f0-5820-b677-988fd248e4e4
+status: deprecated
+description: |
+  Detects event log clearing associated with abyss ransomware.
+  Incident: dragnet-ransomware-2026-0700
+  Ransomware victim claim by abyss: sitoy.com; country: HK; sector: Consumer Services
+  First observed: 2026-01-26.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

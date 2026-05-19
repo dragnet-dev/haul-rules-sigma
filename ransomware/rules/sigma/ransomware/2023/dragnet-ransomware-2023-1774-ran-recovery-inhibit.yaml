@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1774 — Recovery Inhibition (trigona)'
+id: be3eea2b-3a9c-5587-9cdb-8f3143778048
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with trigona ransomware.
+  Incident: dragnet-ransomware-2023-1774
+  Ransomware victim claim by trigona: Axiom Professional Solutions; sector: Business Services
+  First observed: 2023-05-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://aeey7hxzgl6zowiwhteo5xjbf6sb36tkbn5hptykgmbsjrbiygv4c4id.onion/?id=PJgcIAxi
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

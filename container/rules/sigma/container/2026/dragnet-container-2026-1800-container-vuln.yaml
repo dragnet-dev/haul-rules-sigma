@@ -1,0 +1,35 @@
+title: 'Dragnet [Container]: dragnet-container-2026-1800 — Vulnerable Base Image Pull'
+id: cc871ba4-0176-5ea5-9698-5c85de15ba28
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-1800 (Tier 2, CVSS 10)
+  Multiple integer overflows in xpdf 3.0, and other packages that use xpdf code such as CUPS, allow remote attackers to cause a denial of service (crash) and possibly execute arbitrary code, a different set of vulnerabilities than those identified by CVE-2004-0888.
+  First observed: 2026-04-16.
+references:
+  - http://marc.info/?l=bugtraq&m=109880927526773&w=2
+  - http://www.gentoo.org/security/en/glsa/glsa-200410-20.xml
+  - http://www.gentoo.org/security/en/glsa/glsa-200410-30.xml
+  - http://www.mandriva.com/security/advisories?name=MDKSA-2004:113
+  - http://www.securityfocus.com/bid/11501
+  - https://exchange.xforce.ibmcloud.com/vulnerabilities/17819
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

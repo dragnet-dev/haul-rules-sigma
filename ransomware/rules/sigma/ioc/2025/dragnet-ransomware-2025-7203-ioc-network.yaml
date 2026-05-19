@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-7203 — Ransomware C2 Communication'
+id: c8ee5903-bfa3-5f88-9592-2f272cb7b509
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-7203
+  Ransomware victim claim by lynx: D-7 Roofing; country: US; sector: Business Services
+  First observed: 2025-01-07.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lynxblog.net/leaks/677d0a0e05a779c3d3a6353a
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lynxblog.net/leaks/677d0a0e05a779c3d3a6353a'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

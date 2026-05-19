@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2022-1886 — Ransomware C2 Communication'
+id: 03d76ddd-e38d-5309-ab56-c6e0ffa7186e
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2022-1886
+  Ransomware victim claim by alphv: ENPPI - HACKED AND MORE THEN 1100 GB DATA LEAKED!; country: EG; sector: Energy
+  First observed: 2022-11-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://alphvmmm27o3abo3r2mlmjrpdmzle3rykajqc5xsj7j7ejksbpsa36ad.onion/b37133d8-fd6e-4a95-91fd-a7fe3a3c8745
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://alphvmmm27o3abo3r2mlmjrpdmzle3rykajqc5xsj7j7ejksbpsa36ad.onion/b37133d8-fd6e-4a95-91fd-a7fe3a3c8745'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

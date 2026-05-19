@@ -1,0 +1,32 @@
+title: 'Dragnet [Container]: dragnet-container-2026-3059 — Vulnerable Base Image Pull'
+id: db542764-680a-57aa-82ed-1c14d7601f37
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-3059 (Tier 2, CVSS 9.8)
+  An attacker can send a notify request that causes a new secondary domain to be added to the bind backend, but causes said backend to update its configuration to an invalid one, leading to the backend no longer able to run on the next restart, requiring manual operation to fix it.
+  First observed: 2026-04-24.
+references:
+  - https://docs.powerdns.com/authoritative/security-advisories/powerdns-advisory-powerdns-2026-05.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'alpine:3.23'
+      - 'alpine edge:'
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

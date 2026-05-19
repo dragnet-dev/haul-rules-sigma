@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0566 — Event Log Clearing (moneymessage)'
+id: 32706441-3a5a-5928-be0b-208968c3e423
+status: deprecated
+description: |
+  Detects event log clearing associated with moneymessage ransomware.
+  Incident: dragnet-ransomware-2023-0566
+  Ransomware victim claim by moneymessage: Lpa-group.com; sector: Manufacturing
+  First observed: 2023-01-04.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

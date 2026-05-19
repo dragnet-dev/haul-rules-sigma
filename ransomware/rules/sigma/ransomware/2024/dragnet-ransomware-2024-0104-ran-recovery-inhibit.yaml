@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0104 — Recovery Inhibition (8base)'
+id: 48bc8b84-3493-5046-94e8-46220fe1c884
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with 8base ransomware.
+  Incident: dragnet-ransomware-2024-0104
+  Ransomware victim claim by 8base: Island Grill; country: JM; sector: Hospitality and Tourism
+  First observed: 2024-09-23.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://92.118.36.204/company/7890474
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

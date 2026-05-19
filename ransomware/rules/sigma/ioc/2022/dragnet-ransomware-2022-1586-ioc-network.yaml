@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2022-1586 — Ransomware C2 Communication'
+id: c44163e6-4138-5259-bde8-28cab1edec12
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2022-1586
+  Ransomware victim claim by alphv: CENTRAL BANK OF GAMBIA HACKED 2 TB OF CRITICAL DATA WAS STOLEN; country: GM; sector: Financial Services
+  First observed: 2022-11-08.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://alphvmmm27o3abo3r2mlmjrpdmzle3rykajqc5xsj7j7ejksbpsa36ad.onion/54ad0aba-c57f-4219-bc7d-4cc7606892ad
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://alphvmmm27o3abo3r2mlmjrpdmzle3rykajqc5xsj7j7ejksbpsa36ad.onion/54ad0aba-c57f-4219-bc7d-4cc7606892ad'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

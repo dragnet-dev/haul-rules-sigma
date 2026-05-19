@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0241 — Event Log Clearing (mallox)'
+id: 220e14f1-ba35-58ed-9fd0-56c6b84b82f4
+status: deprecated
+description: |
+  Detects event log clearing associated with mallox ransomware.
+  Incident: dragnet-ransomware-2024-0241
+  Ransomware victim claim by mallox: speditionlangen.de; country: DE; sector: Transportation/Logistics
+  First observed: 2024-04-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

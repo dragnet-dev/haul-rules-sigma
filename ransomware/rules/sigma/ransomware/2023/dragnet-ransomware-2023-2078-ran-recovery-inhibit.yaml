@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-2078 — Recovery Inhibition (trigona)'
+id: 13a94ec5-6761-5e72-ad82-7d3b546ba31b
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with trigona ransomware.
+  Incident: dragnet-ransomware-2023-2078
+  Ransomware victim claim by trigona: Pacific Union College; sector: Education
+  First observed: 2023-05-30.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0372 — Mass File Rename (marketo)'
+id: 2e18ba1b-0814-5cbc-96bc-ceb1e9df4031
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by marketo.
+  Incident: dragnet-ransomware-2021-0372
+  Ransomware victim claim by marketo: Navistar (Volkswagen Group); sector: Manufacturing
+  First observed: 2021-12-07.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

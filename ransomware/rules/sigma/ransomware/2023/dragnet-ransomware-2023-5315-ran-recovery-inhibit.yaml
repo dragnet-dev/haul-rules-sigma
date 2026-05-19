@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-5315 — Recovery Inhibition (noescape)'
+id: 17a8c84d-8422-5f11-b6f1-40e7f70ce285
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with noescape ransomware.
+  Incident: dragnet-ransomware-2023-5315
+  Ransomware victim claim by noescape: Healthy Baby Essentials Inc; sector: Healthcare
+  First observed: 2023-09-25.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://noescapemsqxvizdxyl7f7rmg5cdjwp33pg2wpmiaaibilb4btwzttad.onion/post/9a38a779-9486-4eb8-9cc4-06cc0b7c81d8
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

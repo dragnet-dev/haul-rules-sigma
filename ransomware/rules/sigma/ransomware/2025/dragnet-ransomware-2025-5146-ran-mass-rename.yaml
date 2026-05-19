@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5146 — Mass File Rename (shinyhunters)'
+id: 872110c3-6cea-5d9a-85d0-8597e4b388e1
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by shinyhunters.
+  Incident: dragnet-ransomware-2025-5146
+  Ransomware victim claim by shinyhunters: Marriott; country: US; sector: Hospitality and Tourism
+  First observed: 2025-08-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://breachforums.hn//marriott.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

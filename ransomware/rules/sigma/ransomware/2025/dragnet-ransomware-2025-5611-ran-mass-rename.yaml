@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5611 — Mass File Rename (nova)'
+id: 3c3f3fd4-9763-58d7-9111-08ec8f19c928
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by nova.
+  Incident: dragnet-ransomware-2025-5611
+  Ransomware victim claim by nova: ANG BROTHERS (M&E) PTE. LTD. (P1); country: SG; sector: Construction
+  First observed: 2025-11-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://pifk3xu3vad6cuxsjll4qjomyaaaoyvnyqppro75pazadzctrrvpdnyd.onion/#ang-brothers-m-e-pte-ltd-p1
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

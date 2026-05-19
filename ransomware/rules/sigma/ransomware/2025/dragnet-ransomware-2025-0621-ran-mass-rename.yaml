@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0621 — Mass File Rename (warlock)'
+id: 24b009c3-78a7-5f42-862b-ef7a18da3843
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by warlock.
+  Incident: dragnet-ransomware-2025-0621
+  Ransomware victim claim by warlock: iberol; country: ES; sector: Not Found
+  First observed: 2025-04-10.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

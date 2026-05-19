@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0588 — Mass File Rename (cloak)'
+id: ab9412c1-8351-5ed6-985a-314c5e4e4d38
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by cloak.
+  Incident: dragnet-ransomware-2023-0588
+  Ransomware victim claim by cloak: gsh-cargo.com; sector: Transportation/Logistics
+  First observed: 2023-08-24.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

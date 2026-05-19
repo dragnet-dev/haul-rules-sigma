@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-1181 — Mass File Rename (trinity)'
+id: 5b8b1fbe-4558-5886-842f-da80bb3f0924
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by trinity.
+  Incident: dragnet-ransomware-2024-1181
+  Ransomware victim claim by trinity: sgvfr.com; country: US; sector: Financial Services
+  First observed: 2024-06-12.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://txtggyng5euqkyzl2knbejwpm4rlq575jn2egqldu27osbqytrj6ruyd.onion/articles/articles/4
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

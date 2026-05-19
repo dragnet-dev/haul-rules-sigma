@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-4666 — Recovery Inhibition (dispossessor)'
+id: c698cceb-46f3-5e1f-8b2d-923f2bfc8aa9
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with dispossessor ransomware.
+  Incident: dragnet-ransomware-2024-4666
+  Ransomware victim claim by dispossessor: marykay.com; sector: Business Services
+  First observed: 2024-04-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://dispossessor.com/blogs/129
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

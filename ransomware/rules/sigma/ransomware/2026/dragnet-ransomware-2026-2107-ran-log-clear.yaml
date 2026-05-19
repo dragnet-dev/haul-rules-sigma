@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2107 — Event Log Clearing (interlock)'
+id: 4f86e97e-4451-5396-b86c-a74dfd5c4a94
+status: test
+description: |
+  Detects event log clearing associated with interlock ransomware.
+  Incident: dragnet-ransomware-2026-2107
+  Ransomware victim claim by interlock: Yew Tree Dairy; country: GB; sector: Agriculture and Food Production
+  First observed: 2026-02-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://f53mekzwvscxejfqxtikrzcmqnd3bt5i4d7odvh62sir7eqhdwwjntad.onion/index.php?p=
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

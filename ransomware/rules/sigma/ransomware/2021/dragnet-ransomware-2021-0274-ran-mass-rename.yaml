@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0274 — Mass File Rename (ragnarlocker)'
+id: 9b9dc860-67ae-5c58-b3a2-aa4fe747e637
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by ragnarlocker.
+  Incident: dragnet-ransomware-2021-0274
+  Ransomware victim claim by ragnarlocker: LINICAL doesn't care about digital hygiene; sector: Healthcare
+  First observed: 2021-10-30.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

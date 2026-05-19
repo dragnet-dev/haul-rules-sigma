@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-1114 — Ransomware C2 Communication'
+id: 973c37f6-e534-5833-b06b-3b1bfa4575ab
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-1114
+  Ransomware victim claim by handala: ClockWorkAdmin; sector: Technology
+  First observed: 2025-06-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://handala-hack.to/clockworkadmin-hacked/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'https://handala-hack.to/clockworkadmin-hacked/'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

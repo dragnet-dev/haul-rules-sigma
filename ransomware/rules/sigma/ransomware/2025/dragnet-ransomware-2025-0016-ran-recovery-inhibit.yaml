@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0016 — Recovery Inhibition (obscura)'
+id: 697a42f2-e01f-54a2-8fd2-f666ed5797f6
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with obscura ransomware.
+  Incident: dragnet-ransomware-2025-0016
+  Ransomware victim claim by obscura: ACE Forwarding; country: US; sector: Transportation/Logistics
+  First observed: 2025-11-19.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

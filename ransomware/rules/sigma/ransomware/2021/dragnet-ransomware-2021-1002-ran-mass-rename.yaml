@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1002 — Mass File Rename (avaddon)'
+id: 23c78769-ae28-514c-b178-41e4666f850f
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by avaddon.
+  Incident: dragnet-ransomware-2021-1002
+  Ransomware victim claim by avaddon: Capital Medical Center; country: US; sector: Healthcare
+  First observed: 2021-02-01.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

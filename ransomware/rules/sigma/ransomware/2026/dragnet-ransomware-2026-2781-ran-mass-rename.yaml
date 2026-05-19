@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2781 — Mass File Rename (bravox)'
+id: 64780d4a-c8c6-597b-9750-6af321d56634
+status: test
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by bravox.
+  Incident: dragnet-ransomware-2026-2781
+  Ransomware victim claim by bravox: OEC Bretagne; country: FR; sector: Financial Services
+  First observed: 2026-02-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://bravoxxwcfz5qk43ychgveprpd5mw5hvxfs4a2uz2okx7mumiht4fzyd.onion/blog/c3a6cf71-2205-4f75-a1c3-bc403014a3ad
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

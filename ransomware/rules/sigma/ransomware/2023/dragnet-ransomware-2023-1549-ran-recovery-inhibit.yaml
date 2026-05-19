@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1549 — Recovery Inhibition (dispossessor)'
+id: 12bca5d7-ef84-5ee3-a2b8-6e081d3c2087
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with dispossessor ransomware.
+  Incident: dragnet-ransomware-2023-1549
+  Ransomware victim claim by dispossessor: millwgs.com; sector: Business Services
+  First observed: 2023-08-31.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://dispossessor.com/blogs/945
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

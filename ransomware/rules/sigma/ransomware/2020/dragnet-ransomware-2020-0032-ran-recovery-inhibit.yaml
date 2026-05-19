@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0032 — Recovery Inhibition (ryuk)'
+id: bbec5f88-74f6-5780-a320-1e6dfa86dc89
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with ryuk ransomware.
+  Incident: dragnet-ransomware-2020-0032
+  Ransomware victim claim by ryuk: Sky Lakes Medical Center; country: US; sector: Healthcare
+  First observed: 2020-10-27.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

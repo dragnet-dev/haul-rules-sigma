@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1252 — Recovery Inhibition (synack)'
+id: 74b6f3de-b1a7-5504-953c-1f7b131ff0f1
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with synack ransomware.
+  Incident: dragnet-ransomware-2021-1252
+  Ransomware victim claim by synack: Maharashtra Industrial Development Corporation (MIDC) IT systems; country: IN; sector: Technology
+  First observed: 2021-03-21.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

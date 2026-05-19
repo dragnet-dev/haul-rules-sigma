@@ -1,0 +1,43 @@
+title: 'Dragnet [Container]: dragnet-container-2024-1486 — Vulnerable Base Image Pull'
+id: 5938da76-d7fa-5ea4-81c6-7d6aa2f18598
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-1486 (Tier 2, CVSS 9.8)
+  The TLS stack in Mono before 3.12.1 allows remote attackers to have unspecified impact via vectors related to client-side SSLv2 fallback.
+  First observed: 2024-11-21.
+references:
+  - http://www.mono-project.com/news/2015/03/07/mono-tls-vulnerability/
+  - http://www.openwall.com/lists/oss-security/2015/03/17/9
+  - http://www.securityfocus.com/bid/73256
+  - http://www.ubuntu.com/usn/USN-2547-1
+  - https://bugzilla.redhat.com/show_bug.cgi?id=1202869
+  - https://github.com/mono/mono/commit/b371da6b2d68b4cdd0f21d6342af6c42794f998b
+  - https://ubuntu.com/security/notices/USN-2547-1
+  - https://www.cve.org/CVERecord?id=CVE-2015-2320
+  - https://www.debian.org/security/2015/dsa-3202
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+      - 'debian:7'
+      - 'ubuntu:12.04'
+      - 'ubuntu:14.04'
+      - 'ubuntu:14.04-ESM'
+      - 'ubuntu:14.10'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

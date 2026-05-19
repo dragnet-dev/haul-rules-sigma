@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-5113 — Event Log Clearing (dunghill)'
+id: ca3ab133-46a1-5beb-8ff0-7b2146d859c1
+status: experimental
+description: |
+  Detects event log clearing associated with dunghill ransomware.
+  Incident: dragnet-ransomware-2023-5113
+  Ransomware victim claim by dunghill: Gentex Corporation; sector: Manufacturing
+  First observed: 2023-05-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://p66slxmtum2ox4jpayco6ai3qfehd5urgrs4oximjzklxcol264driqd.onion/index3.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

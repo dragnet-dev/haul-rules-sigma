@@ -1,0 +1,30 @@
+title: 'Dragnet [Container]: dragnet-container-2026-1085 — Vulnerable Base Image Pull'
+id: aa2e7120-edb2-5127-8fb7-668c24c4e4b1
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-1085 (Tier 2, CVSS 9)
+  pbs_mom in Terascale Open-Source Resource and Queue Manager (aka TORQUE Resource Manager) 2.5.x, 4.x, and earlier does not properly restrict access by unprivileged ports, which allows remote authenticated users to execute arbitrary jobs by submitting a command.
+  First observed: 2026-04-29.
+references:
+  - http://www.debian.org/security/2013/dsa-2770
+  - http://www.openwall.com/lists/oss-security/2013/09/09/11
+  - http://www.openwall.com/lists/oss-security/2013/09/09/4
+  - http://www.supercluster.org/pipermail/torqueusers/2013-September/016098.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:7'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

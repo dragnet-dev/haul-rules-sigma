@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7777 — Event Log Clearing (d4rk4rmy)'
+id: 973c9543-b8e3-548e-8712-767785ce191e
+status: experimental
+description: |
+  Detects event log clearing associated with d4rk4rmy ransomware.
+  Incident: dragnet-ransomware-2025-7777
+  Ransomware victim claim by d4rk4rmy: Digitall Evolution; country: BR; sector: Technology
+  First observed: 2025-07-28.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://d4rkd2fybtclo44hss2dpqpw7gmofboxhruax2az3uejw7puxxbpkvqd.onion/?p=199
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

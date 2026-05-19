@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1224 — Event Log Clearing (cring)'
+id: 14c3cd13-dc3b-549c-9f8b-f8db88f72e6b
+status: deprecated
+description: |
+  Detects event log clearing associated with cring ransomware.
+  Incident: dragnet-ransomware-2021-1224
+  Ransomware victim claim by cring: Unnamed manufacturing facilities; country: IT; sector: Manufacturing
+  First observed: 2021-01-01.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

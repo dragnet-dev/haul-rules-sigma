@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-3103 — Recovery Inhibition (onyx)'
+id: 84780f49-77ea-5af3-ba9a-c79445c1b5a3
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with onyx ransomware.
+  Incident: dragnet-ransomware-2022-3103
+  Ransomware victim claim by onyx: C&C FARMERSâ SUPPLY CORP; sector: Agriculture and Food Production
+  First observed: 2022-04-29.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

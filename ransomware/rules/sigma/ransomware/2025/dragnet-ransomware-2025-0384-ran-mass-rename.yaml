@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0384 — Mass File Rename (ciphbit)'
+id: 3f91573e-b12b-5a84-a321-de3b3bc3679e
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by ciphbit.
+  Incident: dragnet-ransomware-2025-0384
+  Ransomware victim claim by ciphbit: Clínica Villa Zaita; country: PA; sector: Healthcare
+  First observed: 2025-12-02.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

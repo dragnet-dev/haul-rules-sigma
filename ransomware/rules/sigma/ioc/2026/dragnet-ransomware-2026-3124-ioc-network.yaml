@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2026-3124 — Ransomware C2 Communication'
+id: afcdca70-4fad-5780-aa23-1df72ebd7df1
+status: stable
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2026-3124
+  Ransomware victim claim by handala: No Place to Hide: Senior Navy Officers’ Identities Now Public; sector: Not Found
+  First observed: 2026-03-14.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://handala-hack.to/no-place-to-hide-senior-navy-officers-identities-now-public/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'https://handala-hack.to/no-place-to-hide-senior-navy-officers-identities-now-public/'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

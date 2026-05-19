@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-0513 — Recovery Inhibition (cheers)'
+id: d26923f8-eaa7-5840-9e1d-c89bc5afac8a
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with cheers ransomware.
+  Incident: dragnet-ransomware-2022-0513
+  Ransomware victim claim by cheers: An British Financial Company -Public; sector: Financial Services
+  First observed: 2022-08-18.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

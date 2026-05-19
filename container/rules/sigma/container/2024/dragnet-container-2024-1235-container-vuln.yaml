@@ -1,0 +1,30 @@
+title: 'Dragnet [Container]: dragnet-container-2024-1235 — Vulnerable Base Image Pull'
+id: 95dd5a28-39a6-53c6-b9e2-2febc8c9b84f
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-1235 (Tier 2, CVSS 9.8)
+  In nDPI through 3.2 Stable, the SSH protocol dissector has multiple KEXINIT integer overflows that result in a controlled remote heap overflow in concat_hash_string in ssh.c. Due to the granular nature of the overflow primitive and the ability to control both the contents and layout of the nDPI library's heap memory through remote input, this vulnerability may be abused to achieve full Remote Code Execution against any network inspection stack that is linked against nDPI and uses it to perform network traffic analysis.
+  First observed: 2024-11-21.
+references:
+  - https://github.com/ntop/nDPI/commit/7ce478a58b4dd29a8d1e6f4e9df2f778613d9202
+  - https://securitylab.github.com/advisories/GHSL-2020-051_052-ntop-ndpi
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

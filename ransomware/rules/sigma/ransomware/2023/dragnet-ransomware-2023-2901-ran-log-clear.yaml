@@ -1,0 +1,36 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-2901 — Event Log Clearing (akira)'
+id: eb818627-b9b3-535a-b71c-06932bf61efb
+status: experimental
+description: |
+  Detects event log clearing associated with akira ransomware.
+  Incident: dragnet-ransomware-2023-2901
+  Associated with Akira.
+  Ransomware victim claim by akira: The City of Nassau Bay; sector: Public Sector
+  First observed: 2023-06-24.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://akiral2iz6a7qgd3ayp3l6yub7xx2uep76idk3u2kollpj5z3z636bad.onion/t/679b5fc6b472f01bf4ef9abbb97d4a3a
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+  - dragnet.actor.akira
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

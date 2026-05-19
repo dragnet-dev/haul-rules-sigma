@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5464 — Recovery Inhibition (handala)'
+id: 907bacf5-5650-5ca7-8fbe-b99752d9e2cc
+status: test
+description: |
+  Detects boot/recovery disabling associated with handala ransomware.
+  Incident: dragnet-ransomware-2025-5464
+  Ransomware victim claim by handala: Caught by the Octopus: Bennett’s Darkest Hour; sector: Not Found
+  First observed: 2025-12-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://handala-hack.to/caught-by-the-octopus-bennetts-darkest-hour/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

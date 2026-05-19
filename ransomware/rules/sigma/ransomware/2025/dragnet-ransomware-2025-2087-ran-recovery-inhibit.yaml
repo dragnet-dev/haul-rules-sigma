@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2087 — Recovery Inhibition (RunSomeWares)'
+id: 8c83a2fb-01fc-5cd5-a5da-30f8756c4420
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with RunSomeWares ransomware.
+  Incident: dragnet-ransomware-2025-2087
+  Ransomware victim claim by RunSomeWares: Donna G. Rogers, CPA, P.A.; country: US; sector: Financial Services
+  First observed: 2025-02-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://oow7rehrxlzpy6vh3hezl2khstkpa6s7wx3iit74tr6xbjibupld5iad.onion/dgr/dgr.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

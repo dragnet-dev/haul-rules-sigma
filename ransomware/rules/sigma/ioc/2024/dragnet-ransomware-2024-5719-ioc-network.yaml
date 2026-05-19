@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-5719 — Ransomware C2 Communication'
+id: 4f6ff6d5-fa9f-5d61-9727-d6366bf2ef3f
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-5719
+  Ransomware victim claim by lockbit3: jtu.com.br; country: BR; sector: Transportation/Logistics
+  First observed: 2024-12-10.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lockbit7ouvrsdgtojeoj5hvu6bljqtghitekwpdy3b6y62ixtsu5jqd.onion/post/M0BKXzqFcDfi9oOg67c05184b35e8
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lockbit7ouvrsdgtojeoj5hvu6bljqtghitekwpdy3b6y62ixtsu5jqd.onion/post/M0BKXzqFcDfi9oOg67c05184b35e8'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0815 — Recovery Inhibition (nokoyawa)'
+id: 0f749c44-22c4-5b69-b952-30e3b98f549d
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with nokoyawa ransomware.
+  Incident: dragnet-ransomware-2023-0815
+  Ransomware victim claim by nokoyawa: Gaston College; country: US; sector: Education
+  First observed: 2023-03-09.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nokoleakb76znymx443veg4n6fytx6spck6pc7nkr4dvfuygpub6jsid.onion/leak/6409b19bb8e220f8719002cb
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

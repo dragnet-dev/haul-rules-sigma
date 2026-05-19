@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-3378 — Mass File Rename (anubis)'
+id: 41bec84a-01d9-5fe8-bad3-7996d0c1f9e4
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by anubis.
+  Incident: dragnet-ransomware-2025-3378
+  Ransomware victim claim by anubis: Ambleside; sector: Healthcare
+  First observed: 2025-03-23.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://om6q4a6cyipxvt7ioudxt24cw4oqu4yodmqzl25mqd2hgllymrgu4aqd.onion/r/9yTou4nGDHJBugvSi3lu9F7Zps018JBp5wuYy2UsKe5VUSgUhIYTIBeQiuh+mCuaWnqJfI5D5CyT9r7JFZw3kJONXRLZWg2
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1749 — Event Log Clearing (arcusmedia)'
+id: 8831ad45-f5bb-5124-b5d8-2b7d5c699061
+status: experimental
+description: |
+  Detects event log clearing associated with arcusmedia ransomware.
+  Incident: dragnet-ransomware-2025-1749
+  Ransomware victim claim by arcusmedia: Colegio de la Compania de Maria Vigo; country: ES; sector: Education
+  First observed: 2025-05-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://arcuufpr5xxbbkin4mlidt7itmr6znlppk63jbtkeguuhszmc5g7qdyd.onion/?p=476
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

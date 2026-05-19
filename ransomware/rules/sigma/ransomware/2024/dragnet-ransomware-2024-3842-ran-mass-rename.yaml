@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3842 — Mass File Rename (donutleaks)'
+id: 3e9eeb80-837c-54a8-9e1f-f111d66e5c63
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by donutleaks.
+  Incident: dragnet-ransomware-2024-3842
+  Ransomware victim claim by donutleaks: labline.it; country: IT; sector: Healthcare
+  First observed: 2024-07-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://sbc2zv2qnz5vubwtx3aobfpkeao6l4igjegm3xx7tk5suqhjkp5jxtqd.onion/labline-it/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

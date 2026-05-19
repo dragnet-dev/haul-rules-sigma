@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2088 — Recovery Inhibition (mallox)'
+id: 006e09d4-b290-5c23-a7d2-7a96b8072482
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with mallox ransomware.
+  Incident: dragnet-ransomware-2024-2088
+  Ransomware victim claim by mallox: Assist Informatica; country: IT; sector: Technology
+  First observed: 2024-05-23.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

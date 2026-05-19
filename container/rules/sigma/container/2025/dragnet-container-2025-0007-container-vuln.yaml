@@ -1,0 +1,30 @@
+title: 'Dragnet [Container]: dragnet-container-2025-0007 — Vulnerable Base Image Pull'
+id: ffb6c20e-7db5-5691-a761-36a675f01648
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2025-0007 (Tier 2, CVSS 9.8)
+  An exploitable memory corruption vulnerability exists in the Websocket protocol implementation of Cesanta Mongoose 6.8. A specially crafted websocket packet can cause a buffer to be allocated while leaving stale pointers which leads to a use-after-free vulnerability which can be exploited to achieve remote code execution. An attacker needs to send a specially crafted websocket packet over the network to trigger this vulnerability.
+  First observed: 2025-04-20.
+references:
+  - https://www.talosintelligence.com/vulnerability_reports/TALOS-2017-0429
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

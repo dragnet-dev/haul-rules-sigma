@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4579 — Recovery Inhibition (chaos)'
+id: ae322358-e9c2-505c-a00e-f50f8545f523
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with chaos ransomware.
+  Incident: dragnet-ransomware-2025-4579
+  Ransomware victim claim by chaos: amsino.com; country: US; sector: Healthcare
+  First observed: 2025-02-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://hptqq2o2qjva7lcaaq67w36jihzivkaitkexorauw7b2yul2z6zozpqd.onion/post/7N1uBXCya7l6oSZNUR8Vsy1AAQoYAHpL
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

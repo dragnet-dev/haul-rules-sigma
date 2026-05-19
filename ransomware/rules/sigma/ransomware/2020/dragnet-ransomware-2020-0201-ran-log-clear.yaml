@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0201 — Event Log Clearing (ryuk)'
+id: 671cb784-0ee4-50f3-b1f8-9e00320bd3b2
+status: deprecated
+description: |
+  Detects event log clearing associated with ryuk ransomware.
+  Incident: dragnet-ransomware-2020-0201
+  Ransomware victim claim by ryuk: Dickinson County Health; country: US; sector: Healthcare
+  First observed: 2020-10-17.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

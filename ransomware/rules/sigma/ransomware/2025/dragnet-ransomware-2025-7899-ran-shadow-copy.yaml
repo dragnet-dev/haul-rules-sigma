@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7899 — Shadow Copy Deletion (anubis)'
+id: 6ed4f6a8-9436-52c3-9619-930a64056f15
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with anubis ransomware.
+  Incident: dragnet-ransomware-2025-7899
+  Ransomware victim claim by anubis: Parkway Construction LLC; country: US; sector: Construction
+  First observed: 2025-06-10.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://om6q4a6cyipxvt7ioudxt24cw4oqu4yodmqzl25mqd2hgllymrgu4aqd.onion/r/khZlNrERqYZDupMc52R2uSAstx8bFZ3VJpGRsv16CbUzH7UYInDoRt7sHol6uWUWSVZmZ6bGA+KNocBZGrbpEpWcm14UkJ2
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

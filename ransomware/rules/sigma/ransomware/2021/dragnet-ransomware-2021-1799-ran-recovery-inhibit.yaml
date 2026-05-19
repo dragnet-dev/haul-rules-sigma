@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1799 — Recovery Inhibition (grief)'
+id: 0a29299e-9f5a-55cb-8aa0-1b22a0efab35
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with grief ransomware.
+  Incident: dragnet-ransomware-2021-1799
+  Ransomware victim claim by grief: Booneville School District; country: US; sector: Education
+  First observed: 2021-06-30.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

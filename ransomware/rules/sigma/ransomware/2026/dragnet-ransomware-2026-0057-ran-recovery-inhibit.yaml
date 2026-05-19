@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-0057 — Recovery Inhibition (fulcrumsec)'
+id: 309a729e-b97d-5aec-855c-649c0f28dd6a
+status: stable
+description: |
+  Detects boot/recovery disabling associated with fulcrumsec ransomware.
+  Incident: dragnet-ransomware-2026-0057
+  Ransomware victim claim by fulcrumsec: Fashinza; country: IN; sector: Manufacturing
+  First observed: 2026-05-01.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://4e3p3in2bl67hxchuwza7qvnpe7pyeloyztr5fnh257fxkovfhappjyd.onion/shame/fashinza/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

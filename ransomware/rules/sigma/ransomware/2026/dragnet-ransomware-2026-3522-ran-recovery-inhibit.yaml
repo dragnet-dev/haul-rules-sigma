@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-3522 — Recovery Inhibition (interlock)'
+id: f7c4f3ab-7b05-568c-a693-9c82ee1e6e64
+status: test
+description: |
+  Detects boot/recovery disabling associated with interlock ransomware.
+  Incident: dragnet-ransomware-2026-3522
+  Ransomware victim claim by interlock: Odyssey Academy; country: US; sector: Education
+  First observed: 2026-02-01.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://2tlkuy2qn7bfxyvbfpxqaqveoezctbrnk6yvbvin6dueiuk4rdoosyqd.onion/index.php?p=
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

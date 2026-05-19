@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0140 — Recovery Inhibition (marketo)'
+id: 141c3d79-d519-5298-88c1-54871d136376
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with marketo ransomware.
+  Incident: dragnet-ransomware-2021-0140
+  Ransomware victim claim by marketo: morgancorp.com; sector: Business Services
+  First observed: 2021-12-07.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2371 — Recovery Inhibition (monti)'
+id: 984f1241-015b-5e1c-96c9-0fc128905ab8
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with monti ransomware.
+  Incident: dragnet-ransomware-2025-2371
+  Ransomware victim claim by monti: Gloria Cales; country: US; sector: Not Found
+  First observed: 2025-03-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://mblogci3rudehaagbryjznltdp33ojwzkq6hn2pckvjq33rycmzczpid.onion/blog/f9b703dd490fb677614bd2dd48715289ae7f8811e239d5c97a8caab9b4dd7396/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5691 — Mass File Rename (babuk2)'
+id: 203344e5-1c46-527d-b354-6fa708ec18ca
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by babuk2.
+  Incident: dragnet-ransomware-2025-5691
+  Ransomware victim claim by babuk2: woqod.com; country: QA; sector: Energy
+  First observed: 2025-03-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - http:/bxwu33iefqfc3rxigynn3ghvq4gdw3gxgxna5m4aa3o4vscdeeqhiqad.onion/blog/e6c5461f72626d0dd12186aa932006643c9a45b9cc7c4c024ccb73ad550c7b98/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

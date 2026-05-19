@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-1936 — Ransomware C2 Communication'
+id: 835b3284-4ceb-5543-9660-52b4ad3cd947
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-1936
+  Ransomware victim claim by interlock: Loyola College; country: AU; sector: Education
+  First observed: 2025-08-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ewalffgokvo5x547bygn6c7ne56urhhwrl6q6t34fnryq65qf4oqnoqd.onion/index.php?p=
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://ewalffgokvo5x547bygn6c7ne56urhhwrl6q6t34fnryq65qf4oqnoqd.onion/index.php?p='
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

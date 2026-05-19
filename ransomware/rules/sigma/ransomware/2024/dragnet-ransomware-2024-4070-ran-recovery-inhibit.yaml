@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-4070 — Recovery Inhibition (insane)'
+id: 17bc13ac-7ab1-52b0-aaeb-63f13c5f38a9
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with insane ransomware.
+  Incident: dragnet-ransomware-2024-4070
+  Ransomware victim claim by insane: JspPharma; country: TH; sector: Healthcare
+  First observed: 2024-01-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nv5lbsrr4rxmewzmpe25nnalowe4ga7ki6yfvit3wlpu7dfc36pyh4ad.onion/jsp.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

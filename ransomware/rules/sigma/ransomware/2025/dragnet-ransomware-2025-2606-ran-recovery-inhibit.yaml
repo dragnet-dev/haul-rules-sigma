@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2606 — Recovery Inhibition (shinyhunters)'
+id: 513e8d10-559a-52ee-8881-e7005c056a86
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with shinyhunters ransomware.
+  Incident: dragnet-ransomware-2025-2606
+  Ransomware victim claim by shinyhunters: Home Depot; country: US; sector: Consumer Services
+  First observed: 2025-09-07.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://breachforums.hn//homedepot.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

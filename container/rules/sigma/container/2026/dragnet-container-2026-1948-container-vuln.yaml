@@ -1,0 +1,34 @@
+title: 'Dragnet [Container]: dragnet-container-2026-1948 — Vulnerable Base Image Pull'
+id: 17bf2de9-3df2-5975-bdc4-f95d81b0c037
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-1948 (Tier 2, CVSS 9.3)
+  Associated with Earth Lusca.
+  The Cascading Style Sheets (CSS) implementation in Google Chrome before 5.0.375.99 does not properly perform style rendering, which allows remote attackers to cause a denial of service (memory corruption) or possibly have unspecified other impact via unknown vectors.
+  First observed: 2026-04-29.
+references:
+  - http://code.google.com/p/chromium/issues/detail?id=46360
+  - http://googlechromereleases.blogspot.com/2010/07/stable-channel-update.html
+  - https://oval.cisecurity.org/repository/search/definition/oval%3Aorg.mitre.oval%3Adef%3A12028
+  - https://ubuntu.com/security/notices/USN-1195-1
+  - https://www.cve.org/CVERecord?id=CVE-2010-2651
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+  - dragnet.actor.earth-lusca
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'ubuntu:12.04'
+      - 'ubuntu:12.10'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

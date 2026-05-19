@@ -1,0 +1,26 @@
+title: 'Dragnet [Container]: dragnet-container-2006-0004 — End-of-Life Base Image'
+id: 71efbc1a-1abe-5091-8003-bb24ae9974a3
+status: deprecated
+description: |
+  Detects deployment of a container image based on an end-of-life product cycle.
+  EOL images receive no further security patches regardless of new CVEs.
+  Incident: dragnet-container-2006-0004
+  debian 3.0 reached end-of-life on 2006-06-30. All images based on this cycle are permanently unpatched.
+  First observed: 2006-06-30.
+references:
+  - https://endoflife.date/debian
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|startswith:
+      - 'debian:3.0.'
+      - 'debian:3.0-'
+  condition: selection
+falsepositives:
+  - Internal base images that pin to EOL cycles intentionally
+level: high

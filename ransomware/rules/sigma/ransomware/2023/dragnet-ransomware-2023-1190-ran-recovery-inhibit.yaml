@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-1190 — Recovery Inhibition (noescape)'
+id: 9289badf-291a-507c-91a7-beb700cfa295
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with noescape ransomware.
+  Incident: dragnet-ransomware-2023-1190
+  Ransomware victim claim by noescape: City of Victorville; country: US; sector: Public Sector
+  First observed: 2023-10-23.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://noescapemsqxvizdxyl7f7rmg5cdjwp33pg2wpmiaaibilb4btwzttad.onion/post/9a6f3d94-0883-4964-8499-2ea6369144e0
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

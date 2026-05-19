@@ -1,0 +1,32 @@
+title: 'Dragnet [Container]: dragnet-container-2024-0795 — Vulnerable Base Image Pull'
+id: 2d42bf0d-d5f9-516d-9b54-59d592467bbe
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-0795 (Tier 2, CVSS 9.8)
+  Integer Overflow or Wraparound vulnerability in the XML RPC library of OpenRobotics ros_comm communications packages allows unauthenticated network traffic to cause unexpected behavior. This issue affects: OpenRobotics ros_comm communications packages Noetic and prior versions. Fixed in https://github.com/ros/ros_comm/pull/2065.
+  First observed: 2024-11-21.
+references:
+  - https://github.com/ros/ros_comm/pull/2065
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:10'
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+      - 'debian:9'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

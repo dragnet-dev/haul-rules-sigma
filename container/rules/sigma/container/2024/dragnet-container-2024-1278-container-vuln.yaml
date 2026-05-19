@@ -1,0 +1,30 @@
+title: 'Dragnet [Container]: dragnet-container-2024-1278 — Vulnerable Base Image Pull'
+id: b2336ef7-435d-5e7c-942b-202635ec5cd4
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-1278 (Tier 2, CVSS 9.8)
+  A heap-based buffer overflow exists in stbi__bmp_load_cont in stb_image.h in catimg 2.4.0.
+  First observed: 2024-11-21.
+references:
+  - https://github.com/posva/catimg/issues/34
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

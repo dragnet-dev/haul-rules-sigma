@@ -1,0 +1,29 @@
+title: 'Dragnet [Container]: dragnet-container-2026-0367 — Vulnerable Base Image Pull'
+id: b7d2ea6b-22a0-572c-84f4-b1c4ac7895ab
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-0367 (Tier 2, CVSS 10)
+  libutils in Android before 5.1.1 LMY48X and 6.0 before 2015-11-01 allows remote attackers to execute arbitrary code or cause a denial of service (memory corruption) via a crafted audio file, aka internal bug 22953624.
+  First observed: 2026-05-06.
+references:
+  - http://www.securitytracker.com/id/1034049
+  - https://groups.google.com/forum/message/raw?msg=android-security-updates/n1aw2MGce4E/jhpVEWDUCAAJ
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2608 — Recovery Inhibition (payoutsking)'
+id: 9da10c6f-0177-5d3d-9d1d-4bf866da3eac
+status: test
+description: |
+  Detects boot/recovery disabling associated with payoutsking ransomware.
+  Incident: dragnet-ransomware-2025-2608
+  Ransomware victim claim by payoutsking: Rameder; country: DE; sector: Manufacturing
+  First observed: 2025-11-28.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://payoutsgn7cy6uliwevdqspncjpfxpmzgirwl2au65la7rfs5x3qnbqd.onion/MfIM89-V4gFuH-Pph4Ub-8k7HqA-lmqp8I
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

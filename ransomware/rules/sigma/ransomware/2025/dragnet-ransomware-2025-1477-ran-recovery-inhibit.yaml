@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1477 — Recovery Inhibition (chaos)'
+id: 455a01b0-1f71-59ea-ac21-96cf54cc63dc
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with chaos ransomware.
+  Incident: dragnet-ransomware-2025-1477
+  Ransomware victim claim by chaos: smythco.com; country: US; sector: Business Services
+  First observed: 2025-02-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://hptqq2o2qjva7lcaaq67w36jihzivkaitkexorauw7b2yul2z6zozpqd.onion/post/EKOWyRZFHpYF8o9Bg0IyEzYToXLhueXD
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

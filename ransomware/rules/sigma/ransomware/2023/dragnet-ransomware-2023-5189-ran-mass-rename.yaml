@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-5189 — Mass File Rename (snatch)'
+id: aa54aaf0-4247-5864-8b26-73076bfebfc1
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by snatch.
+  Incident: dragnet-ransomware-2023-5189
+  Ransomware victim claim by snatch: SsangYong Motor; sector: Manufacturing
+  First observed: 2023-06-03.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://hl66646wtlp2naoqnhattngigjp5palgqmbwixepcjyq5i534acgqyad.onion/news.php?id=ef9355e4-8328-4fb7-b1a9-5dcaa949f22c
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

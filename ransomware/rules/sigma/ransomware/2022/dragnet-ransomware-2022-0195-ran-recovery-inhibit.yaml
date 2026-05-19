@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-0195 — Recovery Inhibition (avoslocker)'
+id: d578e2d5-bee5-5072-a0b0-a125e1141341
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with avoslocker ransomware.
+  Incident: dragnet-ransomware-2022-0195
+  Ransomware victim claim by avoslocker: LPA Design; sector: Technology
+  First observed: 2022-12-26.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

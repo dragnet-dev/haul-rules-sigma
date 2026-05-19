@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-0265 — Event Log Clearing (onyx)'
+id: 97adf1c4-59e8-5e43-8794-ebc04f5a0abc
+status: deprecated
+description: |
+  Detects event log clearing associated with onyx ransomware.
+  Incident: dragnet-ransomware-2022-0265
+  Ransomware victim claim by onyx: Borough of Union Beach; sector: Public Sector
+  First observed: 2022-08-05.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

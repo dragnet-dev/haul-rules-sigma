@@ -1,0 +1,30 @@
+title: 'Dragnet [Container]: dragnet-container-2026-0482 — Vulnerable Base Image Pull'
+id: 6a4bceda-4d2f-5f12-8a98-177dce2e72c7
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-0482 (Tier 2, CVSS 9.8)
+  In uClibc 0.9.33.2, there is an out-of-bounds read in the get_subexp function in misc/regex/regexec.c when processing a crafted regular expression.
+  First observed: 2026-05-13.
+references:
+  - http://openwall.com/lists/oss-security/2017/06/16/4
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-4240 — Ransomware C2 Communication'
+id: ddaec080-4216-5f32-ada8-a5a6140d11e8
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-4240
+  Ransomware victim claim by BrainCipher: mbmdubai.com; country: AE; sector: Not Found
+  First observed: 2025-05-05.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://vkvsgl7lhipjirmz6j5ubp3w3bwvxgcdbpi3fsbqngfynetqtw4w5hyd.onion/s/zHcQoVTzSguPmoSbuvWNc9SvfxF++SJTJIl1x530XGxUErPt+X1s+Z3+UgReBeyuy9a05ksqs9yGSlDhXxpckGxjQTY5Sm5T
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://vkvsgl7lhipjirmz6j5ubp3w3bwvxgcdbpi3fsbqngfynetqtw4w5hyd.onion/s/zHcQoVTzSguPmoSbuvWNc9SvfxF++SJTJIl1x530XGxUErPt+X1s+Z3+UgReBeyuy9a05ksqs9yGSlDhXxpckGxjQTY5Sm5T'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0020 — Mass File Rename (doppelpaymer)'
+id: d562b856-6f49-5da4-916c-4b2f19c2d567
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by doppelpaymer.
+  Incident: dragnet-ransomware-2020-0020
+  Ransomware victim claim by doppelpaymer: Visser Precision; country: US; sector: Manufacturing
+  First observed: 2020-02-01.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

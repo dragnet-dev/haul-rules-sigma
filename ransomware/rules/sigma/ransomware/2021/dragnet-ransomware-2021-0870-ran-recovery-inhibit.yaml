@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0870 — Recovery Inhibition (pay2key)'
+id: e4189975-d40d-5001-ad14-ec8540877786
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with pay2key ransomware.
+  Incident: dragnet-ransomware-2021-0870
+  Ransomware victim claim by pay2key: IAI - Israel Aerospace Industries; sector: Manufacturing
+  First observed: 2021-09-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

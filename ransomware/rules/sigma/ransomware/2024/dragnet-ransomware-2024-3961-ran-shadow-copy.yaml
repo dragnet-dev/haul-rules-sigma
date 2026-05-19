@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3961 — Shadow Copy Deletion (BrainCipher)'
+id: 19b2b793-c436-56b5-9dfd-da5710693bbc
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with BrainCipher ransomware.
+  Incident: dragnet-ransomware-2024-3961
+  Ransomware victim claim by BrainCipher: cyceron.fr; country: FR; sector: Healthcare
+  First observed: 2024-08-12.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://vkvsgl7lhipjirmz6j5ubp3w3bwvxgcdbpi3fsbqngfynetqtw4w5hyd.onion/r/qCyKv0rJUqLO68fNlB34zje1gogdBFHZSEGdN6+bxuL3H9NYBCk1hUsCHcGMYwiKXyMcOJ++4obG+wrQq2poTTI2Rmha
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1301 — Mass File Rename (mountlocker)'
+id: d6d01e2e-30f5-5ba5-aa80-bab45d7966f6
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by mountlocker.
+  Incident: dragnet-ransomware-2021-1301
+  Ransomware victim claim by mountlocker: Nachi America Inc.; sector: Manufacturing
+  First observed: 2021-09-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0220 — Mass File Rename (interlock)'
+id: 2f6e266e-8a65-52ef-a141-24edf5e0c746
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by interlock.
+  Incident: dragnet-ransomware-2024-0220
+  Ransomware victim claim by interlock: Bishop Ireton High School; country: US; sector: Education
+  First observed: 2024-11-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://viqh6qmehdkpn7jrfhthyejxtg3gd5hg4bch7sjetvkdaipeu3k6anad.onion/index.php?p=
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

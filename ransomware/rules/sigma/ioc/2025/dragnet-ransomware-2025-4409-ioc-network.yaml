@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-4409 — Ransomware C2 Communication'
+id: b1254202-9e9a-54cb-a26b-0e6131926a4c
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-4409
+  Ransomware victim claim by interlock: Wier Boerner Allin; country: US; sector: Business Services
+  First observed: 2025-08-22.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://6oqw2koek4nbmbb7ic3y4jr6scqsypg5en4h6mcqyrgg3jkny4sgaiyd.onion/index.php?p=
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://6oqw2koek4nbmbb7ic3y4jr6scqsypg5en4h6mcqyrgg3jkny4sgaiyd.onion/index.php?p='
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

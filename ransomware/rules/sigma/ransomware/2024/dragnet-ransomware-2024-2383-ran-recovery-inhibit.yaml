@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2383 — Recovery Inhibition (trigona)'
+id: df172d10-25aa-5645-a0cc-0a24eaec9c57
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with trigona ransomware.
+  Incident: dragnet-ransomware-2024-2383
+  Ransomware victim claim by trigona: Samuel Sekuritas Indonesia & Samuel Aset Manajemen; country: ID; sector: Financial Services
+  First observed: 2024-01-18.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://krsbhaxbki6jr4zvwblvkaqzjkircj7cxf46qt3na5o5sj2hpikbupqd.onion/leak/1905433c
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

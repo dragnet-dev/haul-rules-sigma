@@ -1,0 +1,31 @@
+title: 'Dragnet [Container]: dragnet-container-2026-2398 — Vulnerable Base Image Pull'
+id: 9582d93c-ed8e-5865-81f1-a80843876c36
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-2398 (Tier 2, CVSS 9.8)
+  Integer overflow in the readpgm function in pnm.c for GOCR 0.40, when using the netpbm library, allows remote attackers to execute arbitrary code via a PNM file with large width and height values, which leads to a heap-based buffer overflow.
+  First observed: 2026-04-16.
+references:
+  - http://marc.info/?l=bugtraq&m=111358557823673&w=2
+  - http://www.overflow.pl/adv/gocr.txt
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

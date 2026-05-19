@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6718 — Shadow Copy Deletion (gunra)'
+id: 1c714391-542b-5e5a-98e1-1ae92c69e5c5
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with gunra ransomware.
+  Incident: dragnet-ransomware-2025-6718
+  Ransomware victim claim by gunra: Justicia Penal Militar; country: CO; sector: Public Sector
+  First observed: 2025-08-18.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://gunrabxbig445sjqa535uaymzerj6fp4nwc6ngc2xughf2pedjdhk4ad.onion/juspemil.co
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

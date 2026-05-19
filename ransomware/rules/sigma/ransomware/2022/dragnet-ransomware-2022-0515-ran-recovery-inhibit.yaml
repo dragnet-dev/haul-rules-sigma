@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-0515 — Recovery Inhibition (lorenz)'
+id: 1405937b-8db1-5f71-826b-2d5b4f424796
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with lorenz ransomware.
+  Incident: dragnet-ransomware-2022-0515
+  Ransomware victim claim by lorenz: VadaTech; sector: Technology
+  First observed: 2022-03-15.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

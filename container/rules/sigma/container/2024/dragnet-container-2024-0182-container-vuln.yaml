@@ -1,0 +1,31 @@
+title: 'Dragnet [Container]: dragnet-container-2024-0182 — Vulnerable Base Image Pull'
+id: 43f813b9-4621-510c-9450-4e7a8118c04f
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-0182 (Tier 2, CVSS 9.8)
+  An issue was discovered in the cantata-mounter D-Bus service in Cantata through 2.3.1. The wrapper script 'mount.cifs.wrapper' uses the shell to forward the arguments to the actual mount.cifs binary. The shell evaluates wildcards (such as in an injected string:/home/../tmp/* string).
+  First observed: 2024-11-21.
+references:
+  - http://www.openwall.com/lists/oss-security/2018/06/18/1
+  - https://github.com/CDrummond/cantata/commit/afc4f8315d3e96574925fb530a7004cc9e6ce3d3
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

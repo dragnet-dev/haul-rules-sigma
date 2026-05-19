@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1238 — Event Log Clearing (payoutsking)'
+id: 5dc7fef7-95b0-5878-9689-4528c1bd53b4
+status: experimental
+description: |
+  Detects event log clearing associated with payoutsking ransomware.
+  Incident: dragnet-ransomware-2025-1238
+  Ransomware victim claim by payoutsking: Time Equities; country: US; sector: Financial Services
+  First observed: 2025-10-22.
+  Confidence: 90% (ransomware_live).
+references:
+  - https:/payoutsgn7cy6uliwevdqspncjpfxpmzgirwl2au65la7rfs5x3qnbqd.onion/post/X7Z1qJAQva5dXYuyPh1L
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

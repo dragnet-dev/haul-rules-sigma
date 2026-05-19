@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1969 — Recovery Inhibition (direwolf)'
+id: 53f3c8e4-59ec-5349-8a7c-08f4f914b1b4
+status: test
+description: |
+  Detects boot/recovery disabling associated with direwolf ransomware.
+  Incident: dragnet-ransomware-2025-1969
+  Ransomware victim claim by direwolf: Kingsford Group; country: SG; sector: Business Services
+  First observed: 2025-11-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://direwolfcdkv5whaz2spehizdg22jsuf5aeje4asmetpbt6ri4jnd4qd.onion/api/public/articles/29
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

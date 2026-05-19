@@ -1,0 +1,44 @@
+title: 'Dragnet [Container]: dragnet-container-2026-1130 — Vulnerable Base Image Pull'
+id: a43a7735-7662-526d-b91f-a0799c58cc8c
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-1130 (Tier 2, CVSS 10)
+  arpwatch 2.1a15, as used by Red Hat, Debian, Fedora, and possibly others, does not properly drop supplementary groups, which might allow attackers to gain root privileges by leveraging other vulnerabilities in the daemon.
+  First observed: 2026-04-29.
+references:
+  - http://lists.fedoraproject.org/pipermail/package-announce/2012-June/082553.html
+  - http://lists.fedoraproject.org/pipermail/package-announce/2012-June/082565.html
+  - http://lists.fedoraproject.org/pipermail/package-announce/2012-June/082569.html
+  - http://www.debian.org/security/2012/dsa-2481
+  - http://www.mandriva.com/security/advisories?name=MDVSA-2012:113
+  - http://www.openwall.com/lists/oss-security/2012/05/24/12
+  - http://www.openwall.com/lists/oss-security/2012/05/24/13
+  - http://www.openwall.com/lists/oss-security/2012/05/24/14
+  - http://www.openwall.com/lists/oss-security/2012/05/25/5
+  - https://access.redhat.com/security/cve/CVE-2012-2653
+  - https://nvd.nist.gov/vuln/detail/CVE-2012-2653
+  - https://security.gentoo.org/glsa/201607-16
+  - https://www.cve.org/CVERecord?id=CVE-2012-2653
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+      - 'redhat/ubi9:'
+      - 'ubuntu:12.04'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

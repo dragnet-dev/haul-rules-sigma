@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-1315 — Ransomware C2 Communication'
+id: 153f1e68-0727-5d7a-b194-b498e79fa04d
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-1315
+  Ransomware victim claim by metaencryptor: Belzona UK Ltd; country: GB; sector: Manufacturing
+  First observed: 2023-09-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://metacrptmytukkj7ajwjovdpjqzd7esg5v3sg344uzhigagpezcqlpyd.onion/0AFC:a40e344676624757953c7a57684ae9a8/0AFC:ca52c735a3fe7adfd61a696b0e428291b7bba88d662d56cb363dde13a7fab408/0AFC:aee6bd80a01cd6b1410697b21a1ddfcfa05115936cbca5907badaf81f405466a
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://metacrptmytukkj7ajwjovdpjqzd7esg5v3sg344uzhigagpezcqlpyd.onion/0AFC:a40e344676624757953c7a57684ae9a8/0AFC:ca52c735a3fe7adfd61a696b0e428291b7bba88d662d56cb363dde13a7fab408/0AFC:aee6bd80a01cd6b1410697b21a1ddfcfa05115936cbca5907badaf81f405466a'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-0071 — Shadow Copy Deletion (titan)'
+id: e9c0a22e-eea3-5aec-97b2-d247a89dccc7
+status: stable
+description: |
+  Detects shadow copy deletion commands associated with titan ransomware.
+  Incident: dragnet-ransomware-2026-0071
+  Ransomware victim claim by titan: ETM-ELECTROMATIC, INC.; country: US; sector: Manufacturing
+  First observed: 2026-05-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://titanblog.org/post/the-files-were-downloaded-analyzed-using-titan-ai-k7kbu7rvn4
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

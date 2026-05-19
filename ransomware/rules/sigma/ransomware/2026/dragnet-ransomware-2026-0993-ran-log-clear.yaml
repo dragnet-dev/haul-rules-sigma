@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-0993 — Event Log Clearing (fulcrumsec)'
+id: 143e119e-3932-537f-8932-f3825fbbe058
+status: stable
+description: |
+  Detects event log clearing associated with fulcrumsec ransomware.
+  Incident: dragnet-ransomware-2026-0993
+  Ransomware victim claim by fulcrumsec: Nordstern Technologies; country: MX; sector: Technology
+  First observed: 2026-05-01.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://4e3p3in2bl67hxchuwza7qvnpe7pyeloyztr5fnh257fxkovfhappjyd.onion/shame/nordstern/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

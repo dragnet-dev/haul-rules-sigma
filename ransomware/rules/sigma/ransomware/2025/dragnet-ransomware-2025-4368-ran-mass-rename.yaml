@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4368 — Mass File Rename (babuk2)'
+id: 2463b351-496e-53b6-ac6b-75f3c91e9693
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by babuk2.
+  Incident: dragnet-ransomware-2025-4368
+  Ransomware victim claim by babuk2: nadra.gov.pk - NADRA official Of Pakistan Army & (Andhra Pradesh); country: PK; sector: Public Sector
+  First observed: 2025-03-27.
+  Confidence: 90% (ransomware_live).
+references:
+  - http:/bxwu33iefqfc3rxigynn3ghvq4gdw3gxgxna5m4aa3o4vscdeeqhiqad.onion/blog/a3ddb365f1307e9df5b9e0c16ceaf025b9af209f95465f95fba9f0f11ee65962/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

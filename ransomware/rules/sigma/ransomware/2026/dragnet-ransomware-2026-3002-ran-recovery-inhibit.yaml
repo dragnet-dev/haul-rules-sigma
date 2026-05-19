@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-3002 — Recovery Inhibition (handala)'
+id: fd61c861-4731-5643-8d9f-467432accb42
+status: stable
+description: |
+  Detects boot/recovery disabling associated with handala ransomware.
+  Incident: dragnet-ransomware-2026-3002
+  Ransomware victim claim by handala: Sharjah National Oil Corporation; country: AE; sector: Energy
+  First observed: 2026-03-03.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://handala-hack.to/sharjah-national-oil-corporation-hacked/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

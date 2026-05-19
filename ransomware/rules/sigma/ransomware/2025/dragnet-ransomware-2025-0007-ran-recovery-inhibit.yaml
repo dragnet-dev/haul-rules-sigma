@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0007 — Recovery Inhibition (embargo)'
+id: 439870c7-5d2c-5de4-97d1-f174ce294496
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with embargo ransomware.
+  Incident: dragnet-ransomware-2025-0007
+  Ransomware victim claim by embargo: M&H Electric Fabricators; country: US; sector: Manufacturing
+  First observed: 2025-05-23.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://embargobe3n5okxyzqphpmk3moinoap2snz5k6765mvtkk7hhi544jid.onion/#/post/a43c44bf-5548-46a9-8268-1545489bf142
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

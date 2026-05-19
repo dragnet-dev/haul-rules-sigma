@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-4405 — Ransomware C2 Communication'
+id: aae80f69-0774-522f-bd94-066ed95d249c
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-4405
+  Ransomware victim claim by lockbit3: transports-douaud.com; sector: Transportation/Logistics
+  First observed: 2023-03-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lockbitapt2yfbt7lchxejug47kmqvqqxvvjpqkmevv4l3azl3gy6pyd.onion/post/ZHJvpl7ZER0w5lkY64198a8173a17
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lockbitapt2yfbt7lchxejug47kmqvqqxvvjpqkmevv4l3azl3gy6pyd.onion/post/ZHJvpl7ZER0w5lkY64198a8173a17'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

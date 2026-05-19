@@ -1,0 +1,30 @@
+title: 'Dragnet [Container]: dragnet-container-2024-1217 — Vulnerable Base Image Pull'
+id: 2cf36d07-75f2-534f-8607-a15860c889bb
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-1217 (Tier 2, CVSS 9.8)
+  An integer overflow in parse_mqtt in mongoose.c in Cesanta Mongoose 6.16 allows an attacker to achieve remote DoS (infinite loop), or possibly cause an out-of-bounds write, by sending a crafted MQTT protocol packet.
+  First observed: 2024-11-21.
+references:
+  - https://github.com/cesanta/mongoose/issues/1055
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

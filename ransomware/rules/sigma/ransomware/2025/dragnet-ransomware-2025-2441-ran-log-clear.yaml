@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2441 — Event Log Clearing (thegentlemen)'
+id: 3e667c8c-12ed-56e9-aab7-b09684c964b1
+status: test
+description: |
+  Detects event log clearing associated with thegentlemen ransomware.
+  Incident: dragnet-ransomware-2025-2441
+  Ransomware victim claim by thegentlemen: Everbiz Industrial Co. Ltd.; country: TW; sector: Manufacturing
+  First observed: 2025-11-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://tezwsse5czllksjb7cwp65rvnk4oobmzti2znn42i43bjdfd2prqqkad.onion
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

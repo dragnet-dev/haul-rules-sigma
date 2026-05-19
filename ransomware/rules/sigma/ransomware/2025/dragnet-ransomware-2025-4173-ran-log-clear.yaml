@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4173 — Event Log Clearing (kraken)'
+id: 732bd344-d93e-5924-96e4-843f92f0ff1b
+status: experimental
+description: |
+  Detects event log clearing associated with kraken ransomware.
+  Incident: dragnet-ransomware-2025-4173
+  Ransomware victim claim by kraken: Kitty cookies; sector: Consumer Services
+  First observed: 2025-02-09.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://krakenccj3wr23452a4ibkbkuph4d6soyx2xgjoogtuamc3m7u7wemad.onion/news/bb27072d9edbc55651ad21b068807fd3
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

@@ -1,0 +1,35 @@
+title: 'Dragnet [Container]: dragnet-container-2024-0236 — Vulnerable Base Image Pull'
+id: e5b31d09-ef7c-57cf-8ac3-122a985af274
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-0236 (Tier 2, CVSS 9.8)
+  Heap-based Buffer Overflow in Homebrew mruby prior to 3.2.
+  First observed: 2024-11-21.
+references:
+  - https://github.com/mruby/mruby/commit/47068ae07a5fa3aa9a1879cdfe98a9ce0f339299
+  - https://huntr.dev/bounties/9bdc49ca-6697-4adc-a785-081e1961bf40
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'alpine:3.17'
+      - 'alpine:3.18'
+      - 'alpine:3.19'
+      - 'alpine:3.20'
+      - 'alpine:3.21'
+      - 'alpine:3.22'
+      - 'alpine:3.23'
+      - 'alpine edge:'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

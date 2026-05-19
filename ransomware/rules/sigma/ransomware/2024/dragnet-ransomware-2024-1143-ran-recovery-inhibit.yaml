@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-1143 — Recovery Inhibition (cloak)'
+id: 5254be81-f95e-5b0d-865e-6efa03a762bb
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with cloak ransomware.
+  Incident: dragnet-ransomware-2024-1143
+  Ransomware victim claim by cloak: Unit*****************.com; country: US; sector: Not Found
+  First observed: 2024-06-30.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

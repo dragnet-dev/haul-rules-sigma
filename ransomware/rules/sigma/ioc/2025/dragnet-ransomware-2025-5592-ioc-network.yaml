@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-5592 — Ransomware C2 Communication'
+id: f00f2f25-57b8-541c-a894-4983faa40ecf
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-5592
+  Ransomware victim claim by lockbit3: gruppocogesi.org; country: IT; sector: Business Services
+  First observed: 2025-02-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lockbit7ouvrsdgtojeoj5hvu6bljqtghitekwpdy3b6y62ixtsu5jqd.onion/post/C1J0mMR9dcwtKgRm67c49364dd1c8
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lockbit7ouvrsdgtojeoj5hvu6bljqtghitekwpdy3b6y62ixtsu5jqd.onion/post/C1J0mMR9dcwtKgRm67c49364dd1c8'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

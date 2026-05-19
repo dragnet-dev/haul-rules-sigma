@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-5192 — Event Log Clearing (trigona)'
+id: 5d3a7cb7-7519-5721-a54a-1c3f9fa5a3b2
+status: deprecated
+description: |
+  Detects event log clearing associated with trigona ransomware.
+  Incident: dragnet-ransomware-2023-5192
+  Ransomware victim claim by trigona: Leidos; sector: Technology
+  First observed: 2023-05-25.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

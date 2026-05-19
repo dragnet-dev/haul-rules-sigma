@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-4185 — Ransomware C2 Communication'
+id: 313c78aa-75b1-5e7e-bb7f-0d34413c1a74
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-4185
+  Ransomware victim claim by securotrop: Titan Trailer Mfg; country: US; sector: Manufacturing
+  First observed: 2025-06-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://securo45z554mw7rgrt7wcgv5eenj2xmxyrsdj3fcjsvindu63s4bsid.onion/TitanTrailerMfg/info.txt
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://securo45z554mw7rgrt7wcgv5eenj2xmxyrsdj3fcjsvindu63s4bsid.onion/TitanTrailerMfg/info.txt'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-1823 — Mass File Rename (vicesociety)'
+id: 8828b0ba-eac2-52c8-b0ee-b81ba1cca9a6
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by vicesociety.
+  Incident: dragnet-ransomware-2022-1823
+  Ransomware victim claim by vicesociety: Butler County Community College; sector: Education
+  First observed: 2022-01-14.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

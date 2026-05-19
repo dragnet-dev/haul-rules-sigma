@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-0421 — Ransomware C2 Communication'
+id: 01133702-861b-5265-b9da-e0d055b2c60d
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-0421
+  Ransomware victim claim by monti: Southern Oregon Veterinary Specialty Center; country: US; sector: Healthcare
+  First observed: 2024-11-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://mblogci3rudehaagbryjznltdp33ojwzkq6hn2pckvjq33rycmzczpid.onion/blog/21f398416f104bd7a83b797ee2841f081c01d5a0dc105178a6c1f396570d6c38/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://mblogci3rudehaagbryjznltdp33ojwzkq6hn2pckvjq33rycmzczpid.onion/blog/21f398416f104bd7a83b797ee2841f081c01d5a0dc105178a6c1f396570d6c38/'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

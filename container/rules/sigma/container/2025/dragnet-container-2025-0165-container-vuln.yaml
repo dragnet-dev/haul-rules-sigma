@@ -1,0 +1,32 @@
+title: 'Dragnet [Container]: dragnet-container-2025-0165 — Vulnerable Base Image Pull'
+id: d041f346-0b15-5baa-a2df-c5835912cdd1
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2025-0165 (Tier 2, CVSS 9.8)
+  An issue in the IpFile argument of rust-lang webbrowser-rs v0.8.2 allows attackers to access arbitrary files via supplying a crafted URL.
+  First observed: 2025-04-07.
+references:
+  - https://github.com/amodm/webbrowser-rs
+  - https://github.com/amodm/webbrowser-rs/commit/431b5139e274b7e456bea27e768aaa121b97be4c
+  - https://github.com/amodm/webbrowser-rs/releases/tag/v0.8.3
+  - https://github.com/offalltn/CVE-2022-45299
+  - https://nvd.nist.gov/vuln/detail/CVE-2022-45299
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

@@ -1,0 +1,36 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-3434 — Event Log Clearing (handala)'
+id: bc77214f-ea18-569e-a32a-892612dee86f
+status: stable
+description: |
+  Detects event log clearing associated with handala ransomware.
+  Incident: dragnet-ransomware-2026-3434
+  Associated with VOID MANTICORE.
+  Ransomware victim claim by handala: Propaganda Chief and Former Mossad Deputy Exposed by Handala Hack; sector: Not Found
+  First observed: 2026-03-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://handala-team.to/zionist-propaganda-chief-and-former-mossad-deputy-exposed-by-handala-hack/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+  - dragnet.actor.void-manticore
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-0071 — Recovery Inhibition (titan)'
+id: 5ca8b0d2-b841-57f4-8dc1-ce2197907caf
+status: stable
+description: |
+  Detects boot/recovery disabling associated with titan ransomware.
+  Incident: dragnet-ransomware-2026-0071
+  Ransomware victim claim by titan: ETM-ELECTROMATIC, INC.; country: US; sector: Manufacturing
+  First observed: 2026-05-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://titanblog.org/post/the-files-were-downloaded-analyzed-using-titan-ai-k7kbu7rvn4
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2026-1636 — Ransomware C2 Communication'
+id: edb5ba29-8cbe-54ff-88a7-11561daa447a
+status: stable
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2026-1636
+  Ransomware victim claim by titan: DFI AMERICA, LLC; country: US; sector: Business Services
+  First observed: 2026-05-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://titanblog.org/post/the-files-were-downloaded-analyzed-using-titan-ai-k74fhhn0o4
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'https://titanblog.org/post/the-files-were-downloaded-analyzed-using-titan-ai-k74fhhn0o4'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

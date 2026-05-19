@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5814 — Event Log Clearing (shinyhunters)'
+id: f28bd476-04ec-5249-a292-2f5dd15f0700
+status: experimental
+description: |
+  Detects event log clearing associated with shinyhunters ransomware.
+  Incident: dragnet-ransomware-2025-5814
+  Ransomware victim claim by shinyhunters: Telstra; country: AU; sector: Telecommunication
+  First observed: 2025-10-08.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://shinypogk4jjniry5qi7247tznop6mxdrdte2k6pdu5cyo43vdzmrwid.onion/telstra.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5004 — Mass File Rename (meow)'
+id: 0065f53d-867a-505e-9530-17a301264d26
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by meow.
+  Incident: dragnet-ransomware-2024-5004
+  Ransomware victim claim by meow: La Futura; country: IT; sector: Business Services
+  First observed: 2024-10-10.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://meow6xanhzfci2gbkn3lmbqq7xjjufskkdfocqdngt3ltvzgqpsg5mid.onion/product/105
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

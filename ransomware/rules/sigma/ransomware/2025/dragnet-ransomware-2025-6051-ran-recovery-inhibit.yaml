@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6051 — Recovery Inhibition (insomnia)'
+id: ade38824-c2ee-59dd-a522-80eb309aa8df
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with insomnia ransomware.
+  Incident: dragnet-ransomware-2025-6051
+  Ransomware victim claim by insomnia: Integrated Fresh Solutions; country: US; sector: Agriculture and Food Production
+  First observed: 2025-10-08.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://i62huw7ve22rpyw6lnq3kmfump2dmsg4xpveec3ere73njwatrz74gad.onion/Company/IFS/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

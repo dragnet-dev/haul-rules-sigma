@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-4482 — Ransomware C2 Communication'
+id: f3232438-9bd5-5a6c-bb5a-f34fcff9559b
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-4482
+  Ransomware victim claim by dAn0n: mmtransport.com; country: US; sector: Transportation/Logistics
+  First observed: 2024-08-14.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://2c7nd54guzi6xhjyqrj5kdkrq2ngm2u3e6oy4nfhn3wm3r54ul2utiqd.onion/7oZa_U_8jEQpA-qS3y2u7v7CvSlSfdyxIh0z_Yd9SMk/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://2c7nd54guzi6xhjyqrj5kdkrq2ngm2u3e6oy4nfhn3wm3r54ul2utiqd.onion/7oZa_U_8jEQpA-qS3y2u7v7CvSlSfdyxIh0z_Yd9SMk/'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

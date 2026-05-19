@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1779 — Recovery Inhibition (bqtlock)'
+id: 85889de7-a4d5-588e-9efe-a4f945f8dfc7
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with bqtlock ransomware.
+  Incident: dragnet-ransomware-2025-1779
+  Ransomware victim claim by bqtlock: eFunda, Inc.; country: US; sector: Technology
+  First observed: 2025-07-31.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://yywhylvqeqynzik6ibocb53o2nat7lmzn5ynjpar3stndzcgmy6dkgid.onion
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

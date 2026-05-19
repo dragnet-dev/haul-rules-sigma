@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4265 — Recovery Inhibition (dispossessor)'
+id: bd69fa8a-5a06-528d-8db9-0b2409877813
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with dispossessor ransomware.
+  Incident: dragnet-ransomware-2023-4265
+  Ransomware victim claim by dispossessor: layherna.com; sector: Business Services
+  First observed: 2023-05-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://dispossessor.com/blogs/705
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

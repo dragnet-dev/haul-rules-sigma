@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2148 — Mass File Rename (abyss)'
+id: 809bf5f8-a6fc-5b94-9684-5a9fda2b51bc
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by abyss.
+  Incident: dragnet-ransomware-2024-2148
+  Ransomware victim claim by abyss: berkotfoods.com; country: US; sector: Agriculture and Food Production
+  First observed: 2024-12-21.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

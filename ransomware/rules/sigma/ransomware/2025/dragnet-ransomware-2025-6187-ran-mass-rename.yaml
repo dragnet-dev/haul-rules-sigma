@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6187 — Mass File Rename (kraken)'
+id: ff688965-9e86-58f3-b00c-009088f0479c
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by kraken.
+  Incident: dragnet-ransomware-2025-6187
+  Ransomware victim claim by kraken: www.selt-sistemi.com; country: IT; sector: Technology
+  First observed: 2025-02-14.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://krakenccj3wr23452a4ibkbkuph4d6soyx2xgjoogtuamc3m7u7wemad.onion/news/4e5b7fed7acc410f70673f68004518ba
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

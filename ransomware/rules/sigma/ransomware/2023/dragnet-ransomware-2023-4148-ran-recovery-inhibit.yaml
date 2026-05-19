@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-4148 — Recovery Inhibition (dispossessor)'
+id: e5597769-34e4-5808-98f0-60f2f027b87e
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with dispossessor ransomware.
+  Incident: dragnet-ransomware-2023-4148
+  Ransomware victim claim by dispossessor: consolenergy.com; sector: Energy
+  First observed: 2023-02-02.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://dispossessor.com/blogs/143
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

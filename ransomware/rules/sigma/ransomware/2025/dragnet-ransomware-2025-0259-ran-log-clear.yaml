@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0259 — Event Log Clearing (worldleaks)'
+id: 4673cac2-2985-54e0-b7fa-d6daae232bcb
+status: experimental
+description: |
+  Detects event log clearing associated with worldleaks ransomware.
+  Incident: dragnet-ransomware-2025-0259
+  Ransomware victim claim by worldleaks: Prime Beverage Group; country: US; sector: Consumer Services
+  First observed: 2025-06-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://worldleaksartrjm3c6vasllvgacbi5u3mgzkluehrzhk2jz4taufuid.onion/companies/5414479604
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

@@ -1,0 +1,28 @@
+title: 'Dragnet [Container]: dragnet-container-2026-1724 — Vulnerable Base Image Pull'
+id: 2ad0a6a2-d3a6-54ee-8da0-d89abce4bc09
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-1724 (Tier 2, CVSS 9.1)
+  When safe filter is used with variable expansion, all following pipelines on the same string are incorrectly interpreted as safe too, enabling unsafe data to be unescaped. This can enable SQL / LDAP injection attacks when used in authentication. Avoid using safe filter until on fixed version. No publicly available exploits are known.
+  First observed: 2026-05-18.
+references:
+  - https://documentation.open-xchange.com/dovecot/security/advisories/csaf/2026/oxdc-adv-2026-0002.json
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

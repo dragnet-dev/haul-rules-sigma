@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-4928 — Shadow Copy Deletion (malekteam)'
+id: 7bfb83a7-7d1e-5a50-b8c3-b7b46515a6e6
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with malekteam ransomware.
+  Incident: dragnet-ransomware-2024-4928
+  Ransomware victim claim by malekteam: emalon.co.il; country: IL; sector: Business Services
+  First observed: 2024-04-05.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://195.14.123.2/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

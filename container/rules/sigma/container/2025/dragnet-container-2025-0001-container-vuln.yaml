@@ -1,0 +1,31 @@
+title: 'Dragnet [Container]: dragnet-container-2025-0001 — Vulnerable Base Image Pull'
+id: 7fa703b9-51c6-5e0f-9f8b-055895850098
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2025-0001 (Tier 2, CVSS 9.8)
+  Buffer-overflow in jsdtoa.c in Artifex MuJS in versions 1.0.1 to 1.1.1. An integer overflow happens when js_strtod() reads in floating point exponent, which leads to a buffer overflow in the pointer *d.
+  First observed: 2025-02-06.
+references:
+  - https://github.com/ccxvii/mujs/commit/833b6f1672b4f2991a63c4d05318f0b84ef4d550
+  - https://github.com/ccxvii/mujs/issues/148
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

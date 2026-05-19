@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2219 — Event Log Clearing (play)'
+id: 898dedc9-021a-59d7-863f-d5d2db49dcbf
+status: deprecated
+description: |
+  Detects event log clearing associated with play ransomware.
+  Incident: dragnet-ransomware-2022-2219
+  Associated with Play.
+  Ransomware victim claim by play: CIBTvisas; sector: Business Services
+  First observed: 2022-12-06.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+  - dragnet.actor.play
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

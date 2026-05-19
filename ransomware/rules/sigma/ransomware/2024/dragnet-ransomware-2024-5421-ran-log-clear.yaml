@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5421 — Event Log Clearing (hellogookie)'
+id: 039c26aa-dd87-5340-93f2-a79642902482
+status: experimental
+description: |
+  Detects event log clearing associated with hellogookie ransomware.
+  Incident: dragnet-ransomware-2024-5421
+  Ransomware victim claim by hellogookie: CD Projekt!; country: PL; sector: Technology
+  First observed: 2024-04-19.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://hellogookie256cvccntvenyxrvn7ht73bs6ss3oj2ocfkjt5y6vq6gfi2tad.onion/news/02cae4a1a636af286036df3ec24bf727
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

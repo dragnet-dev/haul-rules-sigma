@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-0383 — Ransomware C2 Communication'
+id: 8257fbe2-f965-531a-85c4-240923d5e87a
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-0383
+  Ransomware victim claim by orca: Transport Lutztulln; country: AT; sector: Transportation/Logistics
+  First observed: 2025-05-07.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://orca66hwnpciepupe5626k2ib6dds6zizjwuuashz67usjps2wehz4id.onion/r/C2pAnpL4wqxIravEuM5yHfBCn43FqdIpWZyBvgO8VSq5QI1JZhGAJ4eHaEx3dUMBs3gYzR3mdVTvD2yXBgjJ2ME1JUEN2/1
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://orca66hwnpciepupe5626k2ib6dds6zizjwuuashz67usjps2wehz4id.onion/r/C2pAnpL4wqxIravEuM5yHfBCn43FqdIpWZyBvgO8VSq5QI1JZhGAJ4eHaEx3dUMBs3gYzR3mdVTvD2yXBgjJ2ME1JUEN2/1'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

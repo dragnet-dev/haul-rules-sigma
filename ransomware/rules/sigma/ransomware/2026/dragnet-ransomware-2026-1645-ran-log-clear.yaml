@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-1645 — Event Log Clearing (tridentlocker)'
+id: 87c9e12c-d2cb-5bd4-ba03-be3c3ef4cd6f
+status: stable
+description: |
+  Detects event log clearing associated with tridentlocker ransomware.
+  Incident: dragnet-ransomware-2026-1645
+  Ransomware victim claim by tridentlocker: RT Software; country: GB; sector: Technology
+  First observed: 2026-04-26.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://tridentfrdy6jydwywfx4vx422vnto7pktao2gyx2qdcwjanogq454ad.onion/article/2aa40bd7-8408-431d-859f-529cc367e255
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-3601 — Recovery Inhibition (dispossessor)'
+id: dd152ebe-012e-5ef8-9145-799a7fe3cc2a
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with dispossessor ransomware.
+  Incident: dragnet-ransomware-2023-3601
+  Ransomware victim claim by dispossessor: commercialfluidpower.com; country: US; sector: Manufacturing
+  First observed: 2023-08-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://dispossessor.com/blogs/1003
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

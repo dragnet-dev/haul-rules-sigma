@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3404 — Mass File Rename (raworld)'
+id: 277aba76-ba7a-5a21-8fd5-a9d0c1a148bd
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by raworld.
+  Incident: dragnet-ransomware-2024-3404
+  Ransomware victim claim by raworld: HALLIDAYS GROUP LIMITED; country: GB; sector: Financial Services
+  First observed: 2024-03-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://raworldw32b2qxevn3gp63pvibgixr4v75z62etlptg3u3pmajwra4ad.onion/post/587460.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

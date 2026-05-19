@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-5712 — Mass File Rename (pear)'
+id: 900f2e39-e4d6-5e5e-a68e-84b984967a07
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by pear.
+  Incident: dragnet-ransomware-2025-5712
+  Ransomware victim claim by pear: Catholic Charities of the Diocese of Albany; country: US; sector: Public Sector
+  First observed: 2025-05-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://pearsmob5sn44ismokiusuld34pnfwi6ctgin3qbvonpoob4lh3rmtqd.onion/Companies/ccrcda
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

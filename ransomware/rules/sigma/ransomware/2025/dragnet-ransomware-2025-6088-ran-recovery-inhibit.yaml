@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-6088 — Recovery Inhibition (funksec)'
+id: 688cd8fd-d371-548e-a52d-f6b3376db48f
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with funksec ransomware.
+  Incident: dragnet-ransomware-2025-6088
+  Ransomware victim claim by funksec: barilga.gov.mn; country: MN; sector: Public Sector
+  First observed: 2025-01-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://funknqn44slwmgwgnewne6bintbooauwkaupik4yrlgtycew3ergraid.onion/barilga-gov-mn
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

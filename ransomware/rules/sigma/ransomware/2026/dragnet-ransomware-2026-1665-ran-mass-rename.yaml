@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-1665 — Mass File Rename (cipherforce)'
+id: c16caa0a-36a2-5b71-b66c-a07b9b41eed9
+status: stable
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by cipherforce.
+  Incident: dragnet-ransomware-2026-1665
+  Ransomware victim claim by cipherforce: hiringsteps.com; country: US; sector: Business Services
+  First observed: 2026-02-23.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://o3ydbkayttkyg4iw2nc732jxmmex25bjeyqyvuuyngnxmpehdefjr3qd.onion/victims/victims/f7148215-b8e6-4584-95a0-818350b21e2b
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

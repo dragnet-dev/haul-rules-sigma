@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0599 — Mass File Rename (interlock)'
+id: d786637e-0264-58fd-9632-8f96eeeb5974
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by interlock.
+  Incident: dragnet-ransomware-2025-0599
+  Ransomware victim claim by interlock: DaVita; country: US; sector: Healthcare
+  First observed: 2025-04-12.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://523gzulwswe5tfevqlrxvqqh2fxo2mwrs2irnjel4mtu7qodgdu2ccyd.onion/index.php?p=
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

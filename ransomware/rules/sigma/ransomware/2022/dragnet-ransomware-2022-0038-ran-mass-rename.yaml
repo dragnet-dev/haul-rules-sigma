@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-0038 — Mass File Rename (hive)'
+id: 84ecda46-1dad-5d34-8039-9a883a0bc970
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by hive.
+  Incident: dragnet-ransomware-2022-0038
+  Ransomware victim claim by hive: Goodman Campbell Brain & Spine; country: US; sector: Healthcare
+  First observed: 2022-06-08.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

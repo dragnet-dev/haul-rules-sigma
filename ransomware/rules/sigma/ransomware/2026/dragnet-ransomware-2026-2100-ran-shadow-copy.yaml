@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2100 — Shadow Copy Deletion (anubis)'
+id: afd66728-937b-5fb0-8be7-44ca8c6f7354
+status: stable
+description: |
+  Detects shadow copy deletion commands associated with anubis ransomware.
+  Incident: dragnet-ransomware-2026-2100
+  Ransomware victim claim by anubis: Envirogen Technologies; country: US; sector: Manufacturing
+  First observed: 2026-02-26.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://om6q4a6cyipxvt7ioudxt24cw4oqu4yodmqzl25mqd2hgllymrgu4aqd.onion/r/mJ3C96jR1frafLN9lGzLMW9kpp2gsQrY+gphK7xCoMggb68u7S7Vd+9z2TMEBR+HuYaKEqP4+zv8jW2dEN86AU81cllJRWtp
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-1597 — Recovery Inhibition (medusalocker)'
+id: e1121c2f-6e6c-54fc-a561-e21fe30a2a67
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with medusalocker ransomware.
+  Incident: dragnet-ransomware-2022-1597
+  Ransomware victim claim by medusalocker: archimages inc; sector: Not Found
+  First observed: 2022-11-15.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

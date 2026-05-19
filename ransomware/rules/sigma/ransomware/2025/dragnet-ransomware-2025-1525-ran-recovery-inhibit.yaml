@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1525 — Recovery Inhibition (alphalocker)'
+id: f3635ae2-2ddf-53d7-a6aa-78c80be06a82
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with alphalocker ransomware.
+  Incident: dragnet-ransomware-2025-1525
+  Ransomware victim claim by alphalocker: gazomet.pl & cgas.pl; country: PL; sector: Energy
+  First observed: 2025-09-08.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://mydatae2d63il5oaxxangwnid5loq2qmtsol2ozr6vtb7yfm5ypzo6id.onion/blog_1-20
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

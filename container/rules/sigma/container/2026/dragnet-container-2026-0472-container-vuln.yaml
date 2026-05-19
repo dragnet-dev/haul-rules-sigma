@@ -1,0 +1,31 @@
+title: 'Dragnet [Container]: dragnet-container-2026-0472 — Vulnerable Base Image Pull'
+id: 5326e1e7-963f-5cad-8c04-a81956ac06e3
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-0472 (Tier 2, CVSS 9.3)
+  The field_end function in libavcodec/h264.c in FFmpeg before 1.1.2 allows remote attackers to have an unspecified impact via crafted H.264 data, related to an SPS and slice mismatch and an out-of-bounds array access.
+  First observed: 2026-04-29.
+references:
+  - http://git.videolan.org/?p=ffmpeg.git%3Ba=commitdiff%3Bh=eaa9d2cd6b8c1e2722d5bfc56ea67fde865200ce
+  - http://www.ffmpeg.org/security.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

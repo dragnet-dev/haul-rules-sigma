@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1462 — Event Log Clearing (conti)'
+id: 9a7d0637-c34f-59a1-a606-4ad3262e4451
+status: deprecated
+description: |
+  Detects event log clearing associated with conti ransomware.
+  Incident: dragnet-ransomware-2021-1462
+  Ransomware victim claim by conti: HARTMANN FINANCIAL ADVISORS LLC; sector: Financial Services
+  First observed: 2021-11-16.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

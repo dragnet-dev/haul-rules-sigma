@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1309 — Recovery Inhibition (avaddon)'
+id: bfbd880f-2415-5a58-94ad-57f43c242498
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with avaddon ransomware.
+  Incident: dragnet-ransomware-2021-1309
+  Ransomware victim claim by avaddon: Doré Law Group P.C; sector: Business Services
+  First observed: 2021-09-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

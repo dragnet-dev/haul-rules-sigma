@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1665 — Recovery Inhibition (groove)'
+id: 4b18561f-be79-57df-b195-c044d23d6070
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with groove ransomware.
+  Incident: dragnet-ransomware-2021-1665
+  Ransomware victim claim by groove: trivalleypc.com; sector: Technology
+  First observed: 2021-10-22.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

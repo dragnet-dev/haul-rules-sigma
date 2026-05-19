@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-2510 — Event Log Clearing (trigona)'
+id: 17557ad6-060b-5961-84bd-279a8fc556de
+status: experimental
+description: |
+  Detects event log clearing associated with trigona ransomware.
+  Incident: dragnet-ransomware-2023-2510
+  Ransomware victim claim by trigona: McKinney Trailers; country: US; sector: Manufacturing
+  First observed: 2023-04-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://6n5tfadusp4sarzuxntz34q4ohspiaya2mc6aw6uhlusfqfsdomavyyd.onion/leak/8
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

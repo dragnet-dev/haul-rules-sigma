@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-0006 — Recovery Inhibition (dispossessor)'
+id: c436b710-8af4-5524-afdb-cc38c1b1322c
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with dispossessor ransomware.
+  Incident: dragnet-ransomware-2022-0006
+  Ransomware victim claim by dispossessor: aon.com; sector: Financial Services
+  First observed: 2022-07-03.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://dispossessor.com/blogs/249
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

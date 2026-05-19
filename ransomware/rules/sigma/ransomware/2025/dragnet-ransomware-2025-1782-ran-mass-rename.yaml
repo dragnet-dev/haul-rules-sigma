@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1782 — Mass File Rename (bqtlock)'
+id: c5099241-88b3-5072-afe7-646c8ef76635
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by bqtlock.
+  Incident: dragnet-ransomware-2025-1782
+  Ransomware victim claim by bqtlock: Adore UAE; country: AE; sector: Consumer Services
+  First observed: 2025-10-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://yywhylvqeqynzik6ibocb53o2nat7lmzn5ynjpar3stndzcgmy6dkgid.onion
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

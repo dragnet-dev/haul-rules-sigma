@@ -1,0 +1,44 @@
+title: 'Dragnet [Container]: dragnet-container-2026-1665 — Vulnerable Base Image Pull'
+id: a62835bf-f80c-56e5-be95-523a9bbbb27a
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-1665 (Tier 2, CVSS 9.3)
+  Ghostscript 8.64, 8.70, and possibly other versions allows context-dependent attackers to execute arbitrary code via a PostScript file containing unlimited recursive procedure invocations, which trigger memory corruption in the stack of the interpreter.
+  First observed: 2026-04-29.
+references:
+  - https://nvd.nist.gov/vuln/detail/CVE-2010-1628
+  - http://bugs.ghostscript.com/show_bug.cgi?id=691295
+  - http://lists.opensuse.org/opensuse-security-announce/2010-08/msg00001.html
+  - http://seclists.org/fulldisclosure/2010/May/134
+  - http://secunia.com/advisories/39753
+  - http://secunia.com/advisories/40580
+  - http://security.gentoo.org/glsa/glsa-201412-17.xml
+  - http://www.mandriva.com/security/advisories?name=MDVSA-2010:134
+  - http://www.openwall.com/lists/oss-security/2010/05/12/1
+  - http://www.openwall.com/lists/oss-security/2010/05/18/7
+  - http://www.securityfocus.com/archive/1/511243/100/0/threaded
+  - http://www.securityfocus.com/bid/40107
+  - http://www.ubuntu.com/usn/USN-961-1
+  - http://www.vupen.com/english/advisories/2010/1138
+  - https://access.redhat.com/security/cve/CVE-2010-1628
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

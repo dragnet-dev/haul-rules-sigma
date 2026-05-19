@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-2148 — Mass File Rename (J)'
+id: 951d5ec1-494c-53cb-8469-f601af738ae0
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by J.
+  Incident: dragnet-ransomware-2025-2148
+  Ransomware victim claim by J: ausfec1.com.au; country: AU; sector: Not Found
+  First observed: 2025-02-22.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://twniiyed6mydtbe64i5mdl56nihl7atfaqtpww6gqyaiohgc75apzpad.onion/posts/67eae9e8ca66cae8e574e8d8/67eae9e8ca66cae8e574e8d8/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-0007 — Event Log Clearing (embargo)'
+id: 1508397e-8605-5bc9-bdc3-75a2201bffa0
+status: experimental
+description: |
+  Detects event log clearing associated with embargo ransomware.
+  Incident: dragnet-ransomware-2025-0007
+  Ransomware victim claim by embargo: M&H Electric Fabricators; country: US; sector: Manufacturing
+  First observed: 2025-05-23.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://embargobe3n5okxyzqphpmk3moinoap2snz5k6765mvtkk7hhi544jid.onion/#/post/a43c44bf-5548-46a9-8268-1545489bf142
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

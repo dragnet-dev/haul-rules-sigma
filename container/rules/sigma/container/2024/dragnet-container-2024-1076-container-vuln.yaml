@@ -1,0 +1,32 @@
+title: 'Dragnet [Container]: dragnet-container-2024-1076 — Vulnerable Base Image Pull'
+id: cd62a7c5-698e-5ca4-989d-0bf02643bb2c
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-1076 (Tier 2, CVSS 9.8)
+  Icinga Web 2 before 2.6.2 allows injection of PHP ini-file directives via vectors involving environment variables as the channel to send information to the attacker, such as a name=${PATH}_${APACHE_RUN_DIR}_${APACHE_RUN_USER} parameter to /icingaweb2/navigation/add or /icingaweb2/dashboard/new-dashlet.
+  First observed: 2024-11-21.
+references:
+  - http://lists.opensuse.org/opensuse-security-announce/2020-01/msg00031.html
+  - https://herolab.usd.de/wp-content/uploads/sites/4/2018/12/usd20180030.txt
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+      - 'debian:9'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

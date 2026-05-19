@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1389 — Event Log Clearing (ransomexx)'
+id: 53d09dd1-bfe2-5dec-b34e-e5264a0f1a37
+status: deprecated
+description: |
+  Detects event log clearing associated with ransomexx ransomware.
+  Incident: dragnet-ransomware-2021-1389
+  Ransomware victim claim by ransomexx: Unione Reno Galliera; sector: Not Found
+  First observed: 2021-09-26.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

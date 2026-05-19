@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-1682 — Recovery Inhibition (AuditTeam)'
+id: f620c875-3d65-5a86-90eb-b97105726868
+status: stable
+description: |
+  Detects boot/recovery disabling associated with AuditTeam ransomware.
+  Incident: dragnet-ransomware-2026-1682
+  Ransomware victim claim by AuditTeam: Mo***et; sector: Not Found
+  First observed: 2026-05-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://6tdqqaxftvradka5d2frzgwixis7fmro7rfh4ettzcx7jfapkebe6jad.onion/entity/974E9F6C44C975EA
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

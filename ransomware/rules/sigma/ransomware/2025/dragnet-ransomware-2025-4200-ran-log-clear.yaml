@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4200 — Event Log Clearing (nightspire)'
+id: 384a813b-23a9-5eba-93b4-ab1788c8f5bf
+status: experimental
+description: |
+  Detects event log clearing associated with nightspire ransomware.
+  Incident: dragnet-ransomware-2025-4200
+  Ransomware victim claim by nightspire: Accueil - Site Offciel de la commune d'Ardon; country: FR; sector: Public Sector
+  First observed: 2025-04-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nspireyzmvapgiwgtuoznlafqvlyz7ey6himtgn5bdvdcowfyto3yryd.onion/data/27Ardon.fr/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

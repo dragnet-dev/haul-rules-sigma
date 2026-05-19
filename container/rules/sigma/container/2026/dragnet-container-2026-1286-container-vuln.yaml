@@ -1,0 +1,39 @@
+title: 'Dragnet [Container]: dragnet-container-2026-1286 — Vulnerable Base Image Pull'
+id: 93a42a6d-cc74-5467-a4b2-8d36eb14c6d0
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-1286 (Tier 2, CVSS 10)
+  Stack-based buffer overflow in the demux_open_vqf function in libmpdemux/demux_vqf.c in MPlayer 1.0 rc2 before r28150 allows remote attackers to execute arbitrary code via a malformed TwinVQ file.
+  First observed: 2026-04-23.
+references:
+  - http://secunia.com/advisories/33136
+  - http://secunia.com/advisories/34845
+  - http://svn.mplayerhq.hu/mplayer/branches/1.0rc2/libmpdemux/demux_vqf.c?r1=24723&r2=28150&pathrev=28150
+  - http://svn.mplayerhq.hu/mplayer/branches/1.0rc2/libmpdemux/demux_vqf.c?view=log&pathrev=28150#rev28150
+  - http://trapkit.de/advisories/TKADV2008-014.txt
+  - http://www.debian.org/security/2009/dsa-1782
+  - http://www.mandriva.com/security/advisories?name=MDVSA-2009:013
+  - http://www.mandriva.com/security/advisories?name=MDVSA-2009:014
+  - http://www.securityfocus.com/archive/1/499214/100/0/threaded
+  - http://www.securityfocus.com/bid/32822
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

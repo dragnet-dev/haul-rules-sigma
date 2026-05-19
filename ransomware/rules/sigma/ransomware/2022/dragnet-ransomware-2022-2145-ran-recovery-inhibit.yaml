@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-2145 — Recovery Inhibition (daixin)'
+id: a641d964-30f0-50ea-b181-9abfe790e799
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with daixin ransomware.
+  Incident: dragnet-ransomware-2022-2145
+  Ransomware victim claim by daixin: AirAsia Group; country: MY; sector: Hospitality and Tourism
+  First observed: 2022-11-19.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

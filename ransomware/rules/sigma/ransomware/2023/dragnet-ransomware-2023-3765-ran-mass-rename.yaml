@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-3765 — Mass File Rename (siegedsec)'
+id: 2e9c8323-6159-5ec7-b99a-a9047641f954
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by siegedsec.
+  Incident: dragnet-ransomware-2023-3765
+  Ransomware victim claim by siegedsec: National Office for centralized procurement; sector: Public Sector
+  First observed: 2023-12-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

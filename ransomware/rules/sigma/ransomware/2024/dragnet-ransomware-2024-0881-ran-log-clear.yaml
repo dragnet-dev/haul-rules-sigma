@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0881 — Event Log Clearing (underground)'
+id: 256b23ef-8547-502f-b52a-48fe5c0c27c1
+status: experimental
+description: |
+  Detects event log clearing associated with underground ransomware.
+  Incident: dragnet-ransomware-2024-0881
+  Ransomware victim claim by underground: Triathlon.group; country: DE; sector: Transportation/Logistics
+  First observed: 2024-01-26.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://47glxkuxyayqrvugfumgsblrdagvrah7gttfscgzn56eyss5wg3uvmqd.onion/packages/2c7730bd-8eaf-4762-a944-21327db0c5ad
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

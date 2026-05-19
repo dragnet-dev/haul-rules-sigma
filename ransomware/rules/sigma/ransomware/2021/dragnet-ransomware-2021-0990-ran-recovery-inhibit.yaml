@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0990 — Recovery Inhibition (ronggolawe)'
+id: 3cfb326b-e85c-5c3a-8649-8d857027ac7a
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with ronggolawe ransomware.
+  Incident: dragnet-ransomware-2021-0990
+  Ransomware victim claim by ronggolawe: Ministerio de Economía y Finanzas de Ecuador (Ecuador's Ministry of Finance); country: EC; sector: Public Sector
+  First observed: 2021-02-01.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

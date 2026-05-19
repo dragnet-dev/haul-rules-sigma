@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-3758 — Ransomware C2 Communication'
+id: 6fd12a4c-a1b6-56ec-bb32-3e854f122457
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-3758
+  Ransomware victim claim by weyhro: Montgomery Little & Soran, PC; country: US; sector: Business Services
+  First observed: 2025-03-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://weyhro.hk//leaks/montgomerylittle
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'https://weyhro.hk//leaks/montgomerylittle'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

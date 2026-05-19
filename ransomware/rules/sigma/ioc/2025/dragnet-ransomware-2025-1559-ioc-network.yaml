@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-1559 — Ransomware C2 Communication'
+id: 11076911-3fc9-53e1-b789-1af096d9ca88
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-1559
+  Ransomware victim claim by BrainCipher: bw-lv.de; country: DE; sector: Not Found
+  First observed: 2025-08-04.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://vkvsgl7lhipjirmz6j5ubp3w3bwvxgcdbpi3fsbqngfynetqtw4w5hyd.onion/s/8FCPi0BIdpizFIZR37TKl5sspCIe67JSidT+pRQgPZieippH2NdwZ+lDmdxSHjSJsOyldKqLlzSWfTm4a3tW5LUll0NnhU
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://vkvsgl7lhipjirmz6j5ubp3w3bwvxgcdbpi3fsbqngfynetqtw4w5hyd.onion/s/8FCPi0BIdpizFIZR37TKl5sspCIe67JSidT+pRQgPZieippH2NdwZ+lDmdxSHjSJsOyldKqLlzSWfTm4a3tW5LUll0NnhU'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

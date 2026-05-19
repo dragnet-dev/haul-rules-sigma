@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1321 — Recovery Inhibition (genesis)'
+id: 7fb21bc1-aef3-56bb-968e-642a8a355011
+status: test
+description: |
+  Detects boot/recovery disabling associated with genesis ransomware.
+  Incident: dragnet-ransomware-2025-1321
+  Ransomware victim claim by genesis: Sunair Electronics and Circuitronix.; country: US; sector: Technology
+  First observed: 2025-12-05.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://genesis6ixpb5mcy4kudybtw5op2wqlrkocfogbnenz3c647ibqixiad.onion/8a28a09b91639ab7decd/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

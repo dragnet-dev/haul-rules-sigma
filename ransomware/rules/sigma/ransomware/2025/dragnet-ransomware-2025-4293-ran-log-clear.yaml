@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4293 — Event Log Clearing (kawa4096)'
+id: d141cb92-e4cf-5cbc-9bf2-e379791dcb3c
+status: experimental
+description: |
+  Detects event log clearing associated with kawa4096 ransomware.
+  Incident: dragnet-ransomware-2025-4293
+  Ransomware victim claim by kawa4096: ******.org; country: US; sector: Not Found
+  First observed: 2025-06-25.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://kawasa2qo7345dt7ogxmx7qmn6z2hnwaoi3h5aeosupozkddqwp6lqqd.onion/t7sfhn48/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

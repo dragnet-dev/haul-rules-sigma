@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-1046 — Event Log Clearing (avaddon)'
+id: 067c8052-2be1-5fa9-9095-ea86cd4c3045
+status: deprecated
+description: |
+  Detects event log clearing associated with avaddon ransomware.
+  Incident: dragnet-ransomware-2021-1046
+  Ransomware victim claim by avaddon: Town of Freeport; country: US; sector: Public Sector
+  First observed: 2021-06-08.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

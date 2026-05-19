@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2397 — Mass File Rename (interlock)'
+id: 5e3cf91e-797b-5e0d-9f74-12bb70cfa079
+status: stable
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by interlock.
+  Incident: dragnet-ransomware-2026-2397
+  Ransomware victim claim by interlock: The Center for Hearing & Speech; country: US; sector: Healthcare
+  First observed: 2026-04-02.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://hz7krqig75lgdzl7rtxynw26m3vornjl24ikeyqb5vagbae2iectorqd.onion/index.php?p=
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

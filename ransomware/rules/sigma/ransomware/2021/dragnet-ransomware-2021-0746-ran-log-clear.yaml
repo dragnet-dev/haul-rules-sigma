@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0746 — Event Log Clearing (ransomexx)'
+id: 0f074c5c-d14b-5001-9563-a8481f4dcabf
+status: deprecated
+description: |
+  Detects event log clearing associated with ransomexx ransomware.
+  Incident: dragnet-ransomware-2021-0746
+  Ransomware victim claim by ransomexx: Wallace & Carey; sector: Agriculture and Food Production
+  First observed: 2021-09-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

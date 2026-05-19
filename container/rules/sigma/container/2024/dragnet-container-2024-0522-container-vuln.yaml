@@ -1,0 +1,28 @@
+title: 'Dragnet [Container]: dragnet-container-2024-0522 — Vulnerable Base Image Pull'
+id: 4f708bf6-ab1b-54ce-b3d6-6fab66cd0528
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-0522 (Tier 2, CVSS 9.8)
+  In pam_tacplus.c in pam_tacplus before 1.4.1, pam_sm_acct_mgmt does not zero out the arep data structure.
+  First observed: 2024-11-21.
+references:
+  - https://github.com/kravietz/pam_tacplus/commit/e4c00eba70a0f72c4de77b5f072c69708ec2beab
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:10'
+      - 'debian:9'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-7097 — Event Log Clearing (handala)'
+id: 01c28c3d-ab48-59de-aaf8-05738c4009de
+status: test
+description: |
+  Detects event log clearing associated with handala ransomware.
+  Incident: dragnet-ransomware-2025-7097
+  Ransomware victim claim by handala: 8200 Unit corpses; sector: Not Found
+  First observed: 2025-11-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://handala-hack.to/8200-unit-corpses/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0512 — Recovery Inhibition (spook)'
+id: bd40c996-41f5-5ace-b36f-ca01940f098a
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with spook ransomware.
+  Incident: dragnet-ransomware-2021-0512
+  Ransomware victim claim by spook: Grupo Vía; sector: Transportation/Logistics
+  First observed: 2021-10-18.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-0734 — Recovery Inhibition (ranstreet)'
+id: e259156c-e3bc-5f53-b805-14994da7ec90
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with ranstreet ransomware.
+  Incident: dragnet-ransomware-2023-0734
+  Ransomware victim claim by ranstreet: zonesoft.pt; country: PT; sector: Not Found
+  First observed: 2023-12-21.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

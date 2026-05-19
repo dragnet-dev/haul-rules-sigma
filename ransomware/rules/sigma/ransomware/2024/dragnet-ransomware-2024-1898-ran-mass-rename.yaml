@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-1898 — Mass File Rename (darkvault)'
+id: 03af46d6-f944-5bbc-b3f5-18be3f16b285
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by darkvault.
+  Incident: dragnet-ransomware-2024-1898
+  Ransomware victim claim by darkvault: journohq.com; country: US; sector: Technology
+  First observed: 2024-06-17.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://mdhby62yvvg6sd5jmx5gsyucs7ynb5j45lvvdh4dsymg43puitu7tfid.onion//post/ZjQyZWIxZWJmMjBjNGQ0ZTlhZWYzYT
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

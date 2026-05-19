@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-2835 — Mass File Rename (lamashtu)'
+id: c24da3e6-dd1f-5fca-9769-f08185c78b34
+status: stable
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by lamashtu.
+  Incident: dragnet-ransomware-2026-2835
+  Ransomware victim claim by lamashtu: ClientSolution EFO Service Srl Logitech Srl Safety; country: IT; sector: Business Services
+  First observed: 2026-04-13.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lamashtux5j74mcm7lwwgn5yrvuwtrpxjoyendif3v3hrztjesfoyayd.onion/post/e763caa5e6d912e3d06b36aaaceeb0b0
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

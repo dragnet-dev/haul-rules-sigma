@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-2147 — Event Log Clearing (ransomed)'
+id: ba0b33ad-18c5-5185-8138-3f70eda53029
+status: experimental
+description: |
+  Detects event log clearing associated with ransomed ransomware.
+  Incident: dragnet-ransomware-2023-2147
+  Ransomware victim claim by ransomed: Baumit Bulgaria; country: BG; sector: Manufacturing
+  First observed: 2023-10-13.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://f6amq3izzsgtna4vw24rpyhy3ofwazlgex2zqdssavevvkklmtudxjad.onion/?p=41
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

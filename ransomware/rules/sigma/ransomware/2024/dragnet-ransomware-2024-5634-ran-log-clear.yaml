@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5634 — Event Log Clearing (apos)'
+id: dbbe8f05-628a-54e9-8da2-ee890b10e488
+status: experimental
+description: |
+  Detects event log clearing associated with apos ransomware.
+  Incident: dragnet-ransomware-2024-5634
+  Ransomware victim claim by apos: Drogaria Preco Bom; country: BR; sector: Business Services
+  First observed: 2024-04-26.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://apos.blog/apos-raas/Drogaria-Preco-Bom-314d05883c88439791995e7f9a288a53
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

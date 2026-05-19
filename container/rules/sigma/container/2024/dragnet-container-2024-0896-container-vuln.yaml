@@ -1,0 +1,36 @@
+title: 'Dragnet [Container]: dragnet-container-2024-0896 — Vulnerable Base Image Pull'
+id: e5b9ab00-5ca6-5381-86fa-240a97ab81a5
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-0896 (Tier 2, CVSS 9.8)
+  Command injection is possible in the puppetlabs-apt module prior to version 9.0.0. A malicious actor is able to exploit this vulnerability only if they are able to provide unsanitized input to the module. This condition is rare in most deployments of Puppet and Puppet Enterprise.
+  First observed: 2024-11-21.
+references:
+  - https://access.redhat.com/security/cve/CVE-2022-3275
+  - https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/CH4NUKZKPY4MFQHFBTONJK2AWES4DFDA/
+  - https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/YR5LIOF5VKS4DC2NQWXTMPPXOYJC46XC/
+  - https://nvd.nist.gov/vuln/detail/CVE-2022-3275
+  - https://puppet.com/security/cve/CVE-2022-3275
+  - https://www.cve.org/CVERecord?id=CVE-2022-3275
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:10'
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

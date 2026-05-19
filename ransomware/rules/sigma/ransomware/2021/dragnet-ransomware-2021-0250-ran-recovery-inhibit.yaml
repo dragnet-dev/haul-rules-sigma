@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0250 — Recovery Inhibition (cryp70n1c0d3)'
+id: f82f077d-9a89-5087-92ca-6157db7de4ba
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with cryp70n1c0d3 ransomware.
+  Incident: dragnet-ransomware-2021-0250
+  Ransomware victim claim by cryp70n1c0d3: albatross.co.in; country: IN; sector: Not Found
+  First observed: 2021-12-18.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

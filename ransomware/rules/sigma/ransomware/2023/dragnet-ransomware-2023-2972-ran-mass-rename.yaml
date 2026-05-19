@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-2972 — Mass File Rename (moneymessage)'
+id: d54b7d67-90aa-5bdf-8899-3c63332388ae
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by moneymessage.
+  Incident: dragnet-ransomware-2023-2972
+  Ransomware victim claim by moneymessage: Pharmerica.com & BrightSpring Health Services; country: US; sector: Healthcare
+  First observed: 2023-04-08.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://blogvl7tjyjvsfthobttze52w36wwiz34hrfcmorgvdzb6hikucb7aqd.onion/news.php?id=3
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

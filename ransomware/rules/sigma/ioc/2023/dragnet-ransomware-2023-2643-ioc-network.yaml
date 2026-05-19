@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2023-2643 — Ransomware C2 Communication'
+id: 2bc8a591-fc30-55d0-996e-3f56238ca0a4
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2023-2643
+  Ransomware victim claim by metaencryptor: ICON Creative Studio; country: CA; sector: Technology
+  First observed: 2023-08-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://metacrptmytukkj7ajwjovdpjqzd7esg5v3sg344uzhigagpezcqlpyd.onion/0AFC:9bb479e6349e63cb6667d6db855c8dd1/0AFC:5301158f4b7ae0def1279607f4c9d47132ef7d82aeb96394419c30acafc9127c/0AFC:2586d1ca1e6244e55a713a4847b0dc3dc81ea4daad0da892f50959b65bc72a640f249f8301fff897b0775b685bbab48d
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://metacrptmytukkj7ajwjovdpjqzd7esg5v3sg344uzhigagpezcqlpyd.onion/0AFC:9bb479e6349e63cb6667d6db855c8dd1/0AFC:5301158f4b7ae0def1279607f4c9d47132ef7d82aeb96394419c30acafc9127c/0AFC:2586d1ca1e6244e55a713a4847b0dc3dc81ea4daad0da892f50959b65bc72a640f249f8301fff897b0775b685bbab48d'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

@@ -1,0 +1,28 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2020-0036 — Mass File Rename (ryuk)'
+id: 01443878-4b3e-5b95-b376-7f42a7ba2ca5
+status: deprecated
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by ryuk.
+  Incident: dragnet-ransomware-2020-0036
+  Ransomware victim claim by ryuk: Universal Health Services (UHS) Hospitals; country: US; sector: Healthcare
+  First observed: 2020-09-27.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

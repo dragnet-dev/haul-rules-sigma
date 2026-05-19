@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1970 — Mass File Rename (stormous)'
+id: 101c69c3-e480-5197-8e21-644040cf5c55
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by stormous.
+  Incident: dragnet-ransomware-2025-1970
+  Ransomware victim claim by stormous: www.jparkislandresort.com; country: PH; sector: Hospitality and Tourism
+  First observed: 2025-05-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://6sf5xa7eso3e3vk46i5tpcqhnlayczztj7zjktzaztlotyy75zs6j7qd.onion/jparkislandresort.com
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

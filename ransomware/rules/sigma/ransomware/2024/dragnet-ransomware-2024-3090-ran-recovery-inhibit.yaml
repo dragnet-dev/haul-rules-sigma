@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3090 — Recovery Inhibition (moneymessage)'
+id: 2d94ab08-c5f9-59b0-b5d8-abb0be34b1b9
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with moneymessage ransomware.
+  Incident: dragnet-ransomware-2024-3090
+  Ransomware victim claim by moneymessage: Kazyon; country: RU; sector: Business Services
+  First observed: 2024-12-13.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://blogvl7tjyjvsfthobttze52w36wwiz34hrfcmorgvdzb6hikucb7aqd.onion/news.php?id=1
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

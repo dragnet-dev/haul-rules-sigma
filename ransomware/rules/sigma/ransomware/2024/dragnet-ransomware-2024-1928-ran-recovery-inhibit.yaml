@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-1928 — Recovery Inhibition (argonauts)'
+id: 0b9fa3e3-8b4b-5ddc-b77a-1d77215e56e5
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with argonauts ransomware.
+  Incident: dragnet-ransomware-2024-1928
+  Ransomware victim claim by argonauts: RDC; country: CA; sector: Transportation/Logistics
+  First observed: 2024-12-03.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://jbmk7h6xlkedn2gg5yi76zca6y3jgdlp5wchlsrd7735tlnrmmvqe5ad.onion/?p=205
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

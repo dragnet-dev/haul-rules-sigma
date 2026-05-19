@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-3067 — Ransomware C2 Communication'
+id: be04f0d5-8e59-5aec-b1b7-033304929c93
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-3067
+  Ransomware victim claim by interlock: Huntwood Industries; country: US; sector: Manufacturing
+  First observed: 2025-08-25.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ph2ilpfayyumhbetpdu6zovwy4vvm7qz3puh7k4zbre7bsf4e4ym5lqd.onion/index.php?p=
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://ph2ilpfayyumhbetpdu6zovwy4vvm7qz3puh7k4zbre7bsf4e4ym5lqd.onion/index.php?p='
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

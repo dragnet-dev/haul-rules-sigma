@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2817 — Recovery Inhibition (argonauts)'
+id: b5e4e323-bacd-5dd5-b27b-a5d8f620047a
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with argonauts ransomware.
+  Incident: dragnet-ransomware-2024-2817
+  Ransomware victim claim by argonauts: NUUO; country: TW; sector: Technology
+  First observed: 2024-11-08.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://jbmk7h6xlkedn2gg5yi76zca6y3jgdlp5wchlsrd7735tlnrmmvqe5ad.onion/?p=144
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

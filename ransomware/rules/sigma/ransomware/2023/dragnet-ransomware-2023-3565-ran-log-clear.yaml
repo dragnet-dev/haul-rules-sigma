@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-3565 — Event Log Clearing (nokoyawa)'
+id: db7072b0-c5d4-52f8-98d7-aeb6f45cbfcd
+status: experimental
+description: |
+  Detects event log clearing associated with nokoyawa ransomware.
+  Incident: dragnet-ransomware-2023-3565
+  Ransomware victim claim by nokoyawa: Snodland C of E Primary School; country: GB; sector: Education
+  First observed: 2023-04-15.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://nokoleakb76znymx443veg4n6fytx6spck6pc7nkr4dvfuygpub6jsid.onion/leak/643b2f823ace4551e2e01be4
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

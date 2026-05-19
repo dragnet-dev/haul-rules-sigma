@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-1435 — Recovery Inhibition (freecivilian)'
+id: e1dc6c24-20a0-5ebf-83e7-3eabee9bc62f
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with freecivilian ransomware.
+  Incident: dragnet-ransomware-2022-1435
+  Ransomware victim claim by freecivilian: motorsich.com; sector: Manufacturing
+  First observed: 2022-12-31.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

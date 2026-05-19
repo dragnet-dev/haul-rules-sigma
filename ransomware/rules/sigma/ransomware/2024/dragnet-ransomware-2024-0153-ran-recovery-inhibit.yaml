@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-0153 — Recovery Inhibition (spacebears)'
+id: b54598cc-35c1-52c1-b150-98e28c669317
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with spacebears ransomware.
+  Incident: dragnet-ransomware-2024-0153
+  Ransomware victim claim by spacebears: BLADE; country: MC; sector: Transportation/Logistics
+  First observed: 2024-05-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://5butbkrljkaorg5maepuca25oma7eiwo6a2rlhvkblb4v6mf3ki2ovid.onion/companies/22/blade
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5496 — Mass File Rename (spacebears)'
+id: 8acade6b-1742-5087-8ab7-492ff1deb774
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by spacebears.
+  Incident: dragnet-ransomware-2024-5496
+  Ransomware victim claim by spacebears: Gemicar; country: ES; sector: Construction
+  First observed: 2024-07-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://5butbkrljkaorg5maepuca25oma7eiwo6a2rlhvkblb4v6mf3ki2ovid.onion/companies/28/gemicar
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

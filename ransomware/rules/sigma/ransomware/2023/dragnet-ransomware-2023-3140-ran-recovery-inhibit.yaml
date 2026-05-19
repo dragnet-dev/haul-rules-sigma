@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2023-3140 — Recovery Inhibition (underground)'
+id: f32bdead-dc08-5045-9766-3d5cbd2ec87b
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with underground ransomware.
+  Incident: dragnet-ransomware-2023-3140
+  Ransomware victim claim by underground: bulldogbag.com; country: CA; sector: Manufacturing
+  First observed: 2023-07-14.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://47glxkuxyayqrvugfumgsblrdagvrah7gttfscgzn56eyss5wg3uvmqd.onion/packages/d40d2b0b-06db-45a2-a3c6-ab15fe6ae13b
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

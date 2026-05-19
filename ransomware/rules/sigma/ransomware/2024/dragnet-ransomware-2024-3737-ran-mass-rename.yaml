@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3737 — Mass File Rename (trigona)'
+id: 709e4b6e-4041-5960-b011-f67cf451c52f
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by trigona.
+  Incident: dragnet-ransomware-2024-3737
+  Ransomware victim claim by trigona: Indoarsip; country: ID; sector: Business Services
+  First observed: 2024-03-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://krsbhaxbki6jr4zvwblvkaqzjkircj7cxf46qt3na5o5sj2hpikbupqd.onion/?page=1leak/f8101944
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-5162 — Ransomware C2 Communication'
+id: 58dc926d-df01-5cf5-95da-b178f92c415b
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-5162
+  Ransomware victim claim by lynx: Funlab; country: AU; sector: Hospitality and Tourism
+  First observed: 2024-10-02.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://lynxblog.net/leaks/66fdce7bcbfc63d2fbfb84b9
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://lynxblog.net/leaks/66fdce7bcbfc63d2fbfb84b9'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

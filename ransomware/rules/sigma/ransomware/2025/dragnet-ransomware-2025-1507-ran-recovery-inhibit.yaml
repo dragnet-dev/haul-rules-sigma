@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1507 — Recovery Inhibition (global)'
+id: 2ff54df0-0b6e-5c58-907b-23b10f0a37a5
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with global ransomware.
+  Incident: dragnet-ransomware-2025-1507
+  Ransomware victim claim by global: Dithelm Travel Group; country: TH; sector: Hospitality and Tourism
+  First observed: 2025-07-26.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

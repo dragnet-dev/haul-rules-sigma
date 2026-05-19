@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5190 — Mass File Rename (underground)'
+id: c0cfaf00-ee74-5b58-a319-27c11a756093
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by underground.
+  Incident: dragnet-ransomware-2024-5190
+  Ransomware victim claim by underground: KyungChang; sector: Manufacturing
+  First observed: 2024-03-06.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://47glxkuxyayqrvugfumgsblrdagvrah7gttfscgzn56eyss5wg3uvmqd.onion/packages/fb60ff1e-fd24-4931-8a61-ff6b7f885ee9
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

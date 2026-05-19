@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-7135 — Ransomware C2 Communication'
+id: f43a2886-2104-58e6-b88a-ececcf033b7e
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-7135
+  Ransomware victim claim by shinyhunters: KFC; country: US; sector: Hospitality and Tourism
+  First observed: 2025-06-26.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://breachforums.hn//kfc.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'https://breachforums.hn//kfc.html'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

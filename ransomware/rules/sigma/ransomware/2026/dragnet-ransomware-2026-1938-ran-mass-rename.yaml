@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-1938 — Mass File Rename (beast)'
+id: 75ff3b5c-7bc5-51c1-8472-e193e07b8edb
+status: stable
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by beast.
+  Incident: dragnet-ransomware-2026-1938
+  Ransomware victim claim by beast: project1631.com; country: ES; sector: Not Found
+  First observed: 2026-03-30.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://beast6azu4f7fxjakiayhnssybibsgjnmy77a6duufqw5afjzfjhzuqd.onion/card/project1631_com
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

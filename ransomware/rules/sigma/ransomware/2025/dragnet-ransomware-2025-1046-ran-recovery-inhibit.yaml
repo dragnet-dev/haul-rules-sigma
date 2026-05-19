@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1046 — Recovery Inhibition (anubis)'
+id: 4851aaaa-9c8a-5be8-ae42-8ed2a9a4ee6b
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with anubis ransomware.
+  Incident: dragnet-ransomware-2025-1046
+  Ransomware victim claim by anubis: Maine Oxy; country: US; sector: Manufacturing
+  First observed: 2025-10-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://om6q4a6cyipxvt7ioudxt24cw4oqu4yodmqzl25mqd2hgllymrgu4aqd.onion/r/cYEsBnPfSaq4VsASGWRQ+i9aGEHCEl5iBwrvH4aHEHQ3HrczH1bAJYi8fLGk73h9Ki0N8BC56uLM36dyHVNW5PYlROMG40
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-0352 — Mass File Rename (coinbasecartel)'
+id: 922939c2-0cb4-571a-bf73-a889cd325d29
+status: stable
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by coinbasecartel.
+  Incident: dragnet-ransomware-2026-0352
+  Ransomware victim claim by coinbasecartel: Silver Peak; country: US; sector: Technology
+  First observed: 2026-03-30.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://fjg4zi4opkxkvdz7mvwp7h6goe4tcby3hhkrz43pht4j3vakhy75znyd.onion/companies/silverp
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

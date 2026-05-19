@@ -1,0 +1,26 @@
+title: 'Dragnet [Container]: dragnet-container-2024-0791 — End-of-Life Base Image'
+id: a14c1afb-3a05-5995-a1b7-2ceb021af4cb
+status: deprecated
+description: |
+  Detects deployment of a container image based on an end-of-life product cycle.
+  EOL images receive no further security patches regardless of new CVEs.
+  Incident: dragnet-container-2024-0791
+  postgresql 12 reached end-of-life on 2024-11-21. All images based on this cycle are permanently unpatched.
+  First observed: 2024-11-21.
+references:
+  - https://endoflife.date/postgresql
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|startswith:
+      - 'postgres:12.'
+      - 'postgres:12-'
+  condition: selection
+falsepositives:
+  - Internal base images that pin to EOL cycles intentionally
+level: high

@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-2100 — Recovery Inhibition (mogilevich)'
+id: d130dbf6-6ac7-5855-8cc3-7693a2b6a15e
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with mogilevich ransomware.
+  Incident: dragnet-ransomware-2024-2100
+  Ransomware victim claim by mogilevich: BAZAARVOICE.COM; country: US; sector: Technology
+  First observed: 2024-02-26.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

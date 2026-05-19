@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-3050 — Recovery Inhibition (kelvinsecurity)'
+id: d79df289-35d3-57e4-afe6-7cf9142fee75
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with kelvinsecurity ransomware.
+  Incident: dragnet-ransomware-2022-3050
+  Ransomware victim claim by kelvinsecurity: Channel Navigator business intelligence IT; sector: Technology
+  First observed: 2022-05-13.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

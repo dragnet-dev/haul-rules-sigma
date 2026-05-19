@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1238 — Mass File Rename (payoutsking)'
+id: e4ed0ce4-efa0-5a5e-96ed-12f41458fda1
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by payoutsking.
+  Incident: dragnet-ransomware-2025-1238
+  Ransomware victim claim by payoutsking: Time Equities; country: US; sector: Financial Services
+  First observed: 2025-10-22.
+  Confidence: 90% (ransomware_live).
+references:
+  - https:/payoutsgn7cy6uliwevdqspncjpfxpmzgirwl2au65la7rfs5x3qnbqd.onion/post/X7Z1qJAQva5dXYuyPh1L
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

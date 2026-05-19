@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0923 — Recovery Inhibition (nefilim)'
+id: 1716b0f8-5505-53e3-abce-46a5ee3115b3
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with nefilim ransomware.
+  Incident: dragnet-ransomware-2021-0923
+  Ransomware victim claim by nefilim: Tegut. Part 1.; sector: Consumer Services
+  First observed: 2021-09-09.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

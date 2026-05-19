@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2022-0811 — Mass File Rename (karakurt)'
+id: b7b6fa98-e5a4-5e0c-9f77-8108e601e5e7
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by karakurt.
+  Incident: dragnet-ransomware-2022-0811
+  Ransomware victim claim by karakurt: PTSC; country: VN; sector: Energy
+  First observed: 2022-12-11.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://3f7nxkjway3d223j27lyad7v5cgmyaifesycvmwq7i7cbs23lb6llryd.onion/companies/cff50527-ebc9-453f-8d29-f52703786211
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

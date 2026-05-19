@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-5216 — Recovery Inhibition (threeam)'
+id: c5ab362c-8eea-5601-ae03-78cfb49e5cab
+status: experimental
+description: |
+  Detects boot/recovery disabling associated with threeam ransomware.
+  Incident: dragnet-ransomware-2024-5216
+  Ransomware victim claim by threeam: mctas.org.au; country: AU; sector: Healthcare
+  First observed: 2024-06-06.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://threeamkelxicjsaf2czjyz2lc4q3ngqkxhhlexyfcp2o6raw4rphyad.onionpost.php?id=38
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

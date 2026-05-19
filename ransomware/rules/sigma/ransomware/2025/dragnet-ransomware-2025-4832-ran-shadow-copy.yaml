@@ -1,0 +1,39 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-4832 — Shadow Copy Deletion (warlock)'
+id: 858d0e70-448c-5ff5-9b0c-eef08385315a
+status: experimental
+description: |
+  Detects shadow copy deletion commands associated with warlock ransomware.
+  Incident: dragnet-ransomware-2025-4832
+  Ransomware victim claim by warlock: BTHK; country: HK; sector: Not Found
+  First observed: 2025-04-02.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://drive.proton.me/urls/X8GSPAAQCC#t14ymwbfesCD
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Get-WmiObject Win32_ShadowCopy'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate backup solution maintenance (rare)
+level: high

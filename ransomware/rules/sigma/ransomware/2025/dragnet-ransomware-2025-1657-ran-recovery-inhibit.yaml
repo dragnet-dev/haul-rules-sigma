@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2025-1657 — Recovery Inhibition (arkana)'
+id: e2e0051c-4c6b-5e2d-8dc1-2e3916168099
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with arkana ransomware.
+  Incident: dragnet-ransomware-2025-1657
+  Ransomware victim claim by arkana: Oregon Surveillance Network - OSN!; country: US; sector: Not Found
+  First observed: 2025-03-26.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

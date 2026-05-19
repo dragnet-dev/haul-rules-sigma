@@ -1,0 +1,27 @@
+title: 'Dragnet [Container]: dragnet-container-2024-0313 — Vulnerable Base Image Pull'
+id: 642c128b-9bc4-58cc-b5aa-1a8275a52319
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-0313 (Tier 2, CVSS 9.8)
+  JerryScript commit 4e58ccf68070671e1fff5cd6673f0c1d5b80b166 is affected by: Buffer Overflow. The impact is: denial of service and possibly arbitrary code execution. The component is: function lit_char_to_utf8_bytes (jerry-core/lit/lit-char-helpers.c:377). The attack vector is: executing crafted javascript code. The fixed version is: after commit 505dace719aebb3308a3af223cfaa985159efae0.
+  First observed: 2024-11-21.
+references:
+  - https://github.com/jerryscript-project/jerryscript/issues/2476
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:10'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical

@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2024-3471 — Mass File Rename (trisec)'
+id: e2ac8149-5408-54a7-853e-7876bde1c182
+status: experimental
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by trisec.
+  Incident: dragnet-ransomware-2024-3471
+  Ransomware victim claim by trisec: www.cogans.ie; country: IE; sector: Business Services
+  First observed: 2024-02-16.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://orfc3joknhrzscdbuxajypgrvlcawtuagbj7f44ugbosuvavg3dc3zid.onion/cogans.ie.html
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

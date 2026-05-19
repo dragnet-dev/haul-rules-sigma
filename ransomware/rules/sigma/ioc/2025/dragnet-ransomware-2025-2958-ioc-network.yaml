@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2025-2958 — Ransomware C2 Communication'
+id: 87003c20-98ec-5f41-91aa-5b8a0a998792
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2025-2958
+  Ransomware victim claim by payoutsking: Peugeot Motocycles; country: FR; sector: Manufacturing
+  First observed: 2025-11-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - https://payoutsgn7cy6uliwevdqspncjpfxpmzgirwl2au65la7rfs5x3qnbqd.onion/r8owLrgM7KmuHs5yDdgc
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'https://payoutsgn7cy6uliwevdqspncjpfxpmzgirwl2au65la7rfs5x3qnbqd.onion/r8owLrgM7KmuHs5yDdgc'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

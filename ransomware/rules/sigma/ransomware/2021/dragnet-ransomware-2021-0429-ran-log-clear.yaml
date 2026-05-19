@@ -1,0 +1,32 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0429 — Event Log Clearing (spook)'
+id: 4bacd8d6-177b-5da4-821a-d2f84365fc3d
+status: deprecated
+description: |
+  Detects event log clearing associated with spook ransomware.
+  Incident: dragnet-ransomware-2021-0429
+  Ransomware victim claim by spook: Princess Yachts International; sector: Consumer Services
+  First observed: 2021-10-13.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

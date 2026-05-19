@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2024-3787 — Ransomware C2 Communication'
+id: fe144738-e2f7-54c6-a86a-c28014900704
+status: experimental
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2024-3787
+  Ransomware victim claim by ransomhub: Mellitah Oil & Gas / Enigas Ly (Eni Electricity, Oil & Gas); country: IT; sector: Energy
+  First observed: 2024-04-29.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ransomxifxwc5eteopdobynonjctkxxvap77yqifu2emfbecgbqdw6qd.onion/bf91a29c-c7aa-43f0-9f73-20638a1df323/
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://ransomxifxwc5eteopdobynonjctkxxvap77yqifu2emfbecgbqdw6qd.onion/bf91a29c-c7aa-43f0-9f73-20638a1df323/'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

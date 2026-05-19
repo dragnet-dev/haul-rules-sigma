@@ -1,0 +1,27 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2021-0290 — Recovery Inhibition (macaw)'
+id: f8eeb524-c0e1-52d7-81b1-fc2495531f51
+status: deprecated
+description: |
+  Detects boot/recovery disabling associated with macaw ransomware.
+  Incident: dragnet-ransomware-2021-0290
+  Ransomware victim claim by macaw: Sinclair Broadcast Group; country: US; sector: Telecommunication
+  First observed: 2021-10-16.
+references:
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

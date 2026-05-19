@@ -1,0 +1,40 @@
+title: 'Dragnet [Container]: dragnet-container-2024-1573 — Vulnerable Base Image Pull'
+id: a1db28bd-f7ad-5c3e-bf5c-7b21d92c9566
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2024-1573 (Tier 2, CVSS 9.8)
+  An exploitable SQL injection vulnerability exists in the administrator web portal function of coTURN prior to version 4.5.0.9. A login message with a specially crafted username can cause an SQL injection, resulting in authentication bypass, which could give access to the TURN server administrator web portal. An attacker can log in via the external interface of the TURN server to trigger this vulnerability.
+  First observed: 2024-11-21.
+references:
+  - https://lists.debian.org/debian-lts-announce/2019/02/msg00017.html
+  - https://talosintelligence.com/vulnerability_reports/TALOS-2018-0730
+  - https://www.cve.org/CVERecord?id=CVE-2018-4056
+  - https://www.debian.org/security/2019/dsa-4373
+author: dragnet-bot
+date: 2026-05-19
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+      - 'debian:8'
+      - 'debian:9'
+      - 'ubuntu:16.04'
+      - 'ubuntu:16.04-ESM'
+      - 'ubuntu:18.04'
+      - 'ubuntu:18.04-ESM'
+      - 'ubuntu:18.10'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical
