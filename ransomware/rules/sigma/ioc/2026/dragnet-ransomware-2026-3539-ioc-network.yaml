@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2026-3539 — Ransomware C2 Communication'
+id: b37a52e9-a3d8-5f6a-adc4-0693dfd3bca9
+status: stable
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2026-3539
+  Ransomware victim claim by qilin: Cz Collections; country: CZ; sector: Consumer Services
+  First observed: 2026-05-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=7703e181-abfd-4df1-8dfa-42b24cfcae3d
+author: dragnet-bot
+date: 2026-05-20
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=7703e181-abfd-4df1-8dfa-42b24cfcae3d'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

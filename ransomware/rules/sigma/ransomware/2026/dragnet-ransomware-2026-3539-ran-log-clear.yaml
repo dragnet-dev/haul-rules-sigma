@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-3539 — Event Log Clearing (qilin)'
+id: d509ccea-fbdd-5a3c-b6f1-12e2a90b36f3
+status: stable
+description: |
+  Detects event log clearing associated with qilin ransomware.
+  Incident: dragnet-ransomware-2026-3539
+  Ransomware victim claim by qilin: Cz Collections; country: CZ; sector: Consumer Services
+  First observed: 2026-05-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=7703e181-abfd-4df1-8dfa-42b24cfcae3d
+author: dragnet-bot
+date: 2026-05-20
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

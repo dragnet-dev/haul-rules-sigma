@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2026-3540 — Ransomware C2 Communication'
+id: 14f6dbf7-afbe-595a-b29f-7c7a4dbf249f
+status: stable
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2026-3540
+  Ransomware victim claim by qilin: WNS Lowery; country: US; sector: Business Services
+  First observed: 2026-05-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=e4c4a268-d65e-48e5-8e4c-7cb4de80c2f4
+author: dragnet-bot
+date: 2026-05-20
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=e4c4a268-d65e-48e5-8e4c-7cb4de80c2f4'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high
