@@ -1,0 +1,36 @@
+title: 'Dragnet [Container]: dragnet-container-2026-3191 — Vulnerable Base Image Pull'
+id: 5348b7a5-0c61-5523-8a30-5532c0111c38
+status: deprecated
+description: |
+  Detects deployment of a container image known to contain a critical vulnerability.
+  Incident: dragnet-container-2026-3191 (Tier 2, CVSS 9.1)
+  rust-openssl provides OpenSSL bindings for the Rust programming language. From 0.9.7 to before 0.10.79, X509Ref::ocsp_responders returns OCSP responder URLs from a certificate's AIA extension as OpensslString, whose Deref<Target = str> wraps the raw bytes with str::from_utf8_unchecked. OpenSSL does not enforce that the underlying IA5String is ASCII, so a certificate with non-UTF-8 bytes in its OCSP accessLocation causes safe Rust code to construct a &str that violates the UTF-8 invariant — resulting in undefined behavior. This vulnerability is fixed in 0.10.79.
+  First observed: 2026-05-15.
+references:
+  - https://access.redhat.com/security/cve/CVE-2026-42327
+  - https://github.com/rust-openssl/rust-openssl
+  - https://github.com/rust-openssl/rust-openssl/security/advisories/GHSA-xp3w-r5p5-63rr
+  - https://nvd.nist.gov/vuln/detail/CVE-2026-42327
+  - https://www.cve.org/CVERecord?id=CVE-2026-42327
+author: dragnet-bot
+date: 2026-05-20
+tags:
+  - attack.t1610
+  - attack.t1611
+  - dragnet.cve
+logsource:
+  category: container_image_pull
+detection:
+  selection:
+    Image|contains:
+      - 'chainguard:'
+      - 'debian:11'
+      - 'debian:12'
+      - 'debian:13'
+      - 'debian:14'
+      - 'wolfi:'
+  condition: selection
+falsepositives:
+  - Cached images pulled before the vulnerability was published
+  - Internal image mirrors that have not been updated
+level: critical
