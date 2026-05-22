@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-3541 — Recovery Inhibition (payload)'
+id: aabde8ba-bc83-59e6-b54c-1c63b53f779a
+status: stable
+description: |
+  Detects boot/recovery disabling associated with payload ransomware.
+  Incident: dragnet-ransomware-2026-3541
+  Ransomware victim claim by payload: A-Sonic Logistic Solutions; sector: Transportation/Logistics
+  First observed: 2026-05-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://payloadrz5yw227brtbvdqpnlhq3rdcdekdnn3rgucbcdeawq2v6vuyd.onion/posts/8c920770-c009-405a-9404-bb857715e3eb
+author: dragnet-bot
+date: 2026-05-22
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high

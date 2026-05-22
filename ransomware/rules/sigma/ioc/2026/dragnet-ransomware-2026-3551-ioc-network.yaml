@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2026-3551 — Ransomware C2 Communication'
+id: 86237d82-fbb4-59bc-9a21-6311c9d0a895
+status: stable
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2026-3551
+  Ransomware victim claim by qilin: Hamer Childs; country: GB; sector: Not Found
+  First observed: 2026-05-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=c5d607cc-33aa-4006-a808-599dc0997a32
+author: dragnet-bot
+date: 2026-05-22
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=c5d607cc-33aa-4006-a808-599dc0997a32'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

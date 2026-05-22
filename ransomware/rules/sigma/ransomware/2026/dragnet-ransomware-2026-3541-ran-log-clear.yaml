@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-3541 — Event Log Clearing (payload)'
+id: b99b5a0a-09a3-529a-9c57-92bf33cc96f6
+status: stable
+description: |
+  Detects event log clearing associated with payload ransomware.
+  Incident: dragnet-ransomware-2026-3541
+  Ransomware victim claim by payload: A-Sonic Logistic Solutions; sector: Transportation/Logistics
+  First observed: 2026-05-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://payloadrz5yw227brtbvdqpnlhq3rdcdekdnn3rgucbcdeawq2v6vuyd.onion/posts/8c920770-c009-405a-9404-bb857715e3eb
+author: dragnet-bot
+date: 2026-05-22
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

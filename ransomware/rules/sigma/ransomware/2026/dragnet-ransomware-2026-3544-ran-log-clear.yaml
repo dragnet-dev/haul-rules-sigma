@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-3544 — Event Log Clearing (nova)'
+id: f9f9f570-3a93-526a-8caf-073eabae4800
+status: stable
+description: |
+  Detects event log clearing associated with nova ransomware.
+  Incident: dragnet-ransomware-2026-3544
+  Ransomware victim claim by nova: Softseba; sector: Technology
+  First observed: 2026-05-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://novadmrkp4vbk2padk5t6pbxolndceuc7hrcq4mjaoyed6nxsqiuzyyd.onion/softseba
+author: dragnet-bot
+date: 2026-05-22
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

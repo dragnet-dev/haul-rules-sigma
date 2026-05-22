@@ -1,0 +1,34 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-3553 — Event Log Clearing (payload)'
+id: 350d5bc8-655c-540d-b04c-58f7739dbab3
+status: stable
+description: |
+  Detects event log clearing associated with payload ransomware.
+  Incident: dragnet-ransomware-2026-3553
+  Ransomware victim claim by payload: Robinsons; country: SG; sector: Consumer Services
+  First observed: 2026-05-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://payloadrz5yw227brtbvdqpnlhq3rdcdekdnn3rgucbcdeawq2v6vuyd.onion/posts/a2c7fa7b-5ee7-488b-a289-aa198eea5bee
+author: dragnet-bot
+date: 2026-05-22
+tags:
+  - attack.t1070.001
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_wevtutil:
+    Image|endswith: '\wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: 'Clear-EventLog'
+  condition: 1 of selection_*
+falsepositives:
+  - Legitimate log maintenance scripts
+level: high

@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2026-3560 — Ransomware C2 Communication'
+id: d6be195d-50c1-5386-a77f-7d9b01579687
+status: stable
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2026-3560
+  Ransomware victim claim by BrainCipher: sheppadviser.com.au; country: AU; sector: Business Services
+  First observed: 2026-05-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://vkvsgl7lhipjirmz6j5ubp3w3bwvxgcdbpi3fsbqngfynetqtw4w5hyd.onion/n/sheppadviser
+author: dragnet-bot
+date: 2026-05-22
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://vkvsgl7lhipjirmz6j5ubp3w3bwvxgcdbpi3fsbqngfynetqtw4w5hyd.onion/n/sheppadviser'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

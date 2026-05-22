@@ -1,0 +1,30 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-3542 — Mass File Rename (payload)'
+id: 5cfec16b-36c0-5710-b133-1b0549f1cdd5
+status: stable
+description: |
+  Detects high-frequency file rename events consistent with ransomware encryption by payload.
+  Incident: dragnet-ransomware-2026-3542
+  Ransomware victim claim by payload: G Theodor Freese; country: DE; sector: Manufacturing
+  First observed: 2026-05-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://payloadrz5yw227brtbvdqpnlhq3rdcdekdnn3rgucbcdeawq2v6vuyd.onion/posts/d2d3491f-ae6b-4d20-b97d-87914a821488
+author: dragnet-bot
+date: 2026-05-22
+tags:
+  - attack.t1486
+  - dragnet.ransomware
+logsource:
+  category: file_rename
+  product: windows
+  definition: 'Requires file system audit policy or Sysmon file events'
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.ransom'
+  condition: selection
+falsepositives:
+  - Backup tools that rename files during processing
+level: high

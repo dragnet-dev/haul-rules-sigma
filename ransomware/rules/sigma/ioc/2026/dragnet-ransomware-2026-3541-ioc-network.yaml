@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2026-3541 — Ransomware C2 Communication'
+id: f113c5e5-e473-578e-84fa-8b16f1656b59
+status: stable
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2026-3541
+  Ransomware victim claim by payload: A-Sonic Logistic Solutions; sector: Transportation/Logistics
+  First observed: 2026-05-21.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://payloadrz5yw227brtbvdqpnlhq3rdcdekdnn3rgucbcdeawq2v6vuyd.onion/posts/8c920770-c009-405a-9404-bb857715e3eb
+author: dragnet-bot
+date: 2026-05-22
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://payloadrz5yw227brtbvdqpnlhq3rdcdekdnn3rgucbcdeawq2v6vuyd.onion/posts/8c920770-c009-405a-9404-bb857715e3eb'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high

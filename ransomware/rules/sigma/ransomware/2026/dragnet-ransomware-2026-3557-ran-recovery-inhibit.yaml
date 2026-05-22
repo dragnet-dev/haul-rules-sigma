@@ -1,0 +1,29 @@
+title: 'Dragnet [Ransomware]: dragnet-ransomware-2026-3557 — Recovery Inhibition (qilin)'
+id: ed93f65f-f2f1-5169-abda-8b56d6b215e2
+status: stable
+description: |
+  Detects boot/recovery disabling associated with qilin ransomware.
+  Incident: dragnet-ransomware-2026-3557
+  Ransomware victim claim by qilin: Porter W Yett; country: GB; sector: Business Services
+  First observed: 2026-05-20.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=347b2dc8-7f13-4389-bc11-9c9f80a2721d
+author: dragnet-bot
+date: 2026-05-22
+tags:
+  - attack.t1490
+  - dragnet.ransomware
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains:
+      - 'recoveryenabled no'
+      - 'bootstatuspolicy ignoreallfailures'
+  condition: selection_bcdedit
+falsepositives:
+  - System administrators modifying boot configuration
+level: high
