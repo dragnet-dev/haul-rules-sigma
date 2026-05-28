@@ -1,0 +1,45 @@
+title: 'Dragnet [Supply]: dragnet-os-packages-2026-0459 — Compromised GitHub Action'
+id: 9ba35374-86af-5c3c-986a-dfd44f7db9bd
+status: deprecated
+description: |
+  Detects use of a GitHub Action known to be compromised or whose tag SHA changed unexpectedly.
+  Incident: dragnet-os-packages-2026-0459
+  Trivy ecosystem supply chain was briefly compromised
+  First observed: 2026-03-24.
+references:
+  - https://nvd.nist.gov/vuln/detail/CVE-2026-33634
+  - https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2026-33634
+  - https://www.wiz.io/blog/teampcp-attack-kics-github-action
+  - https://github.com/aquasecurity/trivy/security/advisories/GHSA-69fq-xp46-6x23
+  - https://github.com/team-telnyx/telnyx-python/security/advisories/GHSA-955r-262c-33jc
+  - https://github.com/BerriAI/litellm/issues/24518
+  - https://github.com/BerriAI/litellm/issues/24518#issuecomment-4127436387
+  - https://github.com/aquasecurity/trivy
+  - https://github.com/aquasecurity/trivy/discussions/10425
+  - https://github.com/pypa/advisory-database/tree/main/vulns/litellm/PYSEC-2026-2.yaml
+  - https://docs.litellm.ai/blog/security-update-march-2026
+  - https://futuresearch.ai/blog/litellm-pypi-supply-chain-attack
+  - https://inspector.pypi.io/project/litellm/1.82.7/packages/79/5f/b6998d42c6ccd32d36e12661f2734602e72a576d52a51f4245aef0b20b4d/litellm-1.82.7-py3-none-any.whl/litellm/proxy/proxy_server.py#line.130
+  - https://inspector.pypi.io/project/litellm/1.82.8/packages/f6/2c/731b614e6cee0bca1e010a36fd381fba69ee836fe3cb6753ba23ef2b9601/litellm-1.82.8.tar.gz/litellm-1.82.8/litellm_init.pth#line.1
+  - https://rosesecurity.dev/2026/03/20/typosquatting-trivy.html
+author: dragnet-bot
+date: 2026-05-28
+tags:
+  - attack.t1195.002
+  - attack.t1552.001
+  - dragnet.supply-chain
+  - dragnet.supply-chain
+logsource:
+  product: github
+  category: github_actions_workflow
+detection:
+  selection:
+    uses|contains:
+      - 'github.com/aquasecurity/trivy@'
+      - 'aquasecurity/trivy-action@'
+      - 'aquasecurity/setup-trivy@'
+  condition: selection
+falsepositives:
+  - Forks or mirrors of the action repository that are legitimately used
+  - Workflow files referencing the action for purposes other than execution
+level: critical
