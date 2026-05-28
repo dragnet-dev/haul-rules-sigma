@@ -1,0 +1,29 @@
+
+title: 'Dragnet [Ransomware/IOC]: dragnet-ransomware-2026-3658 — Ransomware C2 Communication'
+id: 87972e43-479e-5dfb-a595-90d32cbbdc05
+status: stable
+description: |
+  Detects network connections to known ransomware operator infrastructure.
+  Incident: dragnet-ransomware-2026-3658
+  Ransomware victim claim by dragonforce: allianceadjustment.com; country: US; sector: Business Services
+  First observed: 2026-05-25.
+  Confidence: 90% (ransomware_live).
+references:
+  - http://z3wqggtxft7id3ibr7srivv5gjof5fwg76slewnzwwakjuf3nlhukdid.onion/blog/?post_uuid=6b820b8a-91b2-4ac8-90ad-904d651fe7c8
+author: dragnet-bot
+date: 2026-05-28
+tags:
+  - attack.t1071.001
+  - attack.t1041
+  - dragnet.ransomware
+logsource:
+  category: network_connection
+  product: any
+detection:
+  selection_url:
+    DestinationHostname|contains:
+      - 'http://z3wqggtxft7id3ibr7srivv5gjof5fwg76slewnzwwakjuf3nlhukdid.onion/blog/?post_uuid=6b820b8a-91b2-4ac8-90ad-904d651fe7c8'
+  condition: selection_url
+falsepositives:
+  - Legitimate traffic to shared infrastructure
+level: high
